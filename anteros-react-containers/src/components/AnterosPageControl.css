@@ -1,0 +1,221 @@
+
+.nav {
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    padding-left:0;
+    margin-bottom:0;
+    list-style:none;
+}
+
+.nav-tabs {
+    border-bottom:1px solid #ddd;
+}
+
+.tabcontent-border {
+    border:1px solid #ddd;
+    border-top:0px;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom:-1px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color:#464a4c;
+    background-color:#fff;
+    border-color:#ddd #ddd #fff;
+}
+
+.nav-tabs .nav-link {
+    border:1px solid transparent;
+    border-top-right-radius:.25rem;
+    border-top-left-radius:.25rem;
+}
+
+.nav-link {
+    display:block;
+    padding:.5em 1em;
+}
+
+.tab-content > .active {
+    display:block;
+}
+
+
+
+.customtab li a.nav-link {
+    border: 0px;
+    padding: 15px 20px;
+    color: #54667a
+}
+
+.customtab li a.nav-link.active {
+    border-bottom: 2px solid #3FA9F4;
+    color: #3FA9F4;
+}
+
+.customtab li a.nav-link:hover {
+    color: #3FA9F4;
+}
+
+.vtabs {
+    display:table;
+}
+
+.vtabs .tabs-vertical {
+    width:150px;
+    border-bottom:0px;
+    border-right:1px solid rgba(120,130,140,0.13);
+    display:table-cell;
+    vertical-align:top;
+}
+
+.tabs-vertical li .nav-link.active, .tabs-vertical li .nav-link:hover, .tabs-vertical li .nav-link.active:focus {
+    background:#3FA9F4;
+    border:0px;
+    color:#fff;
+}
+
+.vtabs .tabs-vertical li .nav-link {
+    color:#263238;
+    margin-bottom:10px;
+    border:0px;
+    border-radius:4px 0 0 4px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color:#464a4c;
+    background-color:#fff;
+    border-color:#ddd #ddd #fff;
+}
+
+.nav-tabs .nav-link {
+    border:1px solid transparent;
+    border-top-right-radius:.25rem;
+    border-top-left-radius:.25rem;
+}
+
+.nav-link {
+    display:block;
+    padding:.5em 1em;
+}
+
+.vtabs {
+    display: table
+}
+
+.vtabs .tabs-vertical {
+    width: 150px;
+    border-bottom: 0px;
+    border-right: 1px solid rgba(120, 130, 140, 0.13);
+    display: table-cell;
+    vertical-align: top
+}
+
+.vtabs .tabs-vertical li .nav-link {
+    color: #263238;
+    margin-bottom: 10px;
+    border: 0px;
+}
+
+.vtabs .tab-content {
+    display: table-cell;
+    padding: 20px;
+    vertical-align: top
+}
+
+.tabs-vertical li .nav-link.active, .tabs-vertical li .nav-link:hover,
+.tabs-vertical li .nav-link.active:focus {
+    background: #009efb;
+    border: 0px;
+    color: #fff
+}
+
+.customvtab .tabs-vertical li .nav-link.active, .customvtab .tabs-vertical li .nav-link:hover,
+.customvtab .tabs-vertical li .nav-link:focus {
+    background: #fff;
+    border: 0px;
+    border-right: 2px solid #3FA9F4;
+    margin-right: -1px;
+    color: #3FA9F4;
+}
+
+.customtab2 li a.nav-link {
+    border: 0px;
+    margin-right: 3px;
+    color: #54667a
+}
+
+.customtab2 li a.nav-link.active {
+    background: #3FA9F4;
+    color: #fff
+}
+
+.customtab2 li a.nav-link:hover {
+    color: #fff;
+    background: #3FA9F4;
+}
+
+.nav.nav-pills .nav-item .nav-link.active {
+    border-color: #3FA9F4;
+    color: #fff;
+    border-bottom-color: transparent;
+    background-color: #3FA9F4;
+}
+
+
+/**
+** Page control
+**/
+
+.page-control { 
+  position: relative;
+  display: block;
+  background-color: #fbfbfb;
+  border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.page-control-vertical {
+  display: table;
+  background-color: #fbfbfb;
+  border: 1px solid rgba(0, 0, 0, .125);
+}
+
+
+.page-control-header {
+  padding-top: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  background-color: #eceff1;
+  display: block;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-control-header-vertical {
+  padding-top: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  background-color: #eceff1;
+  display: table;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-control-header-custom {
+  padding-top: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  display: block;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-control-header .nav-tabs{
+  border: 0px;
+}
+
+.page-control-header-custom .nav-tabs{
+  border: 0px;
+}
+
+

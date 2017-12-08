@@ -1,0 +1,427 @@
+.card {
+	box-shadow: 1px 1px 5px fade-out($color-text-light, 0.9);
+	
+
+	.card {
+		box-shadow: none;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	
+	margin-bottom: $card-margin-bottom;
+	border-radius: 0;
+	border: 1px solid #cfd8dc;
+
+	.card-header {
+		background-image: none;
+        background-color: #ffffff;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+        padding: 5px;
+        border-radius: 0;
+        min-height: 40px;
+        border-bottom: 1px solid rgba(0,0,0,.125);
+
+        &::after {
+           content: "";
+           display: table;
+           clear: both; 
+		}
+
+		&.bordered {
+			border-bottom: 1px solid $color-divider;
+		}
+
+		&.card-header-sm {
+			min-height: 40px;
+		}
+
+		&>span {
+			vertical-align: middle;
+		}
+
+		.pull-right {
+			margin-left: auto;
+		}
+
+		.header-block {
+			padding: 0.5rem $card-padding-x;;
+
+
+			@include media(xl) {
+				padding: 0.5rem $card-padding-x-xl;
+			}
+
+			@include media-down(sm) {
+				padding: 0.5rem $card-padding-x-sm;
+			}
+
+			.actions{
+	          position: absolute;
+	          top: 8px;
+	          right: 20px;
+            }
+		}
+
+		.title {
+			color: #4f5f6f;
+			display: inline-flex;
+			display: -webkit-inline-box;
+	        display: -ms-inline-flexbox;
+		}
+
+		.btn {
+			margin: 2px;
+		}
+
+		.nav-tabs {
+			border-color: transparent;
+			align-self: stretch;
+			display: flex;
+			position: relative;
+			top: 1px;
+			-ms-flex-item-align: stretch;
+	        display: -webkit-box;
+	        display: -ms-flexbox;
+
+            .nav-item {
+            	margin-left: 0;
+            	display: flex;
+            	align-self: stretch;
+				display: -webkit-box;
+	            display: -ms-flexbox;
+	            -ms-flex-item-align: stretch;
+
+                .nav-link {
+                	display: flex;
+                	align-self: stretch;
+                	align-items: center;
+                	color: $color-text;
+                	opacity: 0.7;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    border-radius: 0;
+                    font-size: 14px;
+                    border-top-width: 2px;
+                    border-bottom: 1px solid $color-divider;
+                    text-decoration: none;
+					display: -webkit-box;
+	                display: -ms-flexbox;
+	                -ms-flex-item-align: stretch;
+	                -webkit-box-align: center;
+	                -ms-flex-align: center;
+
+                    &.active {
+	                	border-top-color: $color-primary;
+	                	border-bottom-color: transparent;
+	                	opacity: 1;
+
+	                	&:hover,
+	                	&:focus {
+	                		opacity: 1;
+	                		background-color: $color-text-inverse;
+	                		border-color: $color-divider $color-divider transparent;
+	                		border-top-color: $color-primary;
+	                	}
+	                }
+
+	                &:hover,
+	                &:focus {
+	                	opacity: 1;
+	                	background-color: transparent;
+	                	border-color: transparent;
+	                }
+                }
+            }
+        }
+	}
+
+	.card-footer {
+	   background-color: #fafafa;
+	   .btn {
+			margin: 2px;
+		}
+    }
+
+	&.card-default {
+
+		& > .card-header {
+			background-color: #eceff1;
+			color: inherit;
+		}
+
+		.card-footer {
+	        background-color: #eceff1;
+        }
+
+	}
+
+	&.card-primary {
+		border-color: $color-primary;
+		& > .card-header {
+			background-color: $color-primary;
+			border-color: darken($color-primary,20%);
+			color: $color-text-inverse
+		}
+		& > .card-header .title{
+			color: $color-text-inverse
+		}
+		.card-footer {
+	        background-color: $color-primary;
+			border-color: darken($color-primary,20%);
+			color: $color-text-inverse
+        }
+		& > .card-block {
+			background-color: $color-primary;
+			color: $color-text-inverse
+		}
+	}
+
+	&.card-success {
+		& > .card-header {
+			background-color: $color-success;
+			border-color: darken($color-success,50%);
+			color: $color-text-inverse
+		}
+		& > .card-header .title{
+			color: $color-text-inverse
+		}
+		.card-footer {
+	        background-color: $color-success;
+			border-color: darken($color-success,50%);
+			color:$color-text-inverse
+        }
+		& > .card-block {
+			background-color: $color-success;
+			color: $color-text-inverse
+		}
+	}
+
+	&.card-info {
+		& > .card-header {
+			background-color: $color-info;
+			border-color: darken($color-info,20%);
+			color: $color-text-inverse
+		}
+		& > .card-header .title{
+			color: $color-text-inverse;
+		}
+		.card-footer {
+	        background-color: $color-info;
+			border-color: darken($color-info,20%);
+			color: $color-text-inverse
+        }
+		& > .card-block {
+			background-color: $color-info;
+			color: $color-text-inverse
+		}
+	}
+
+	&.card-warning {
+		& > .card-header {
+			background-color: $color-warning;
+			border-color: darken($color-warning,20%);
+			color: $color-text-inverse
+		}
+		& > .card-header .title{
+			color: $color-text-inverse
+		}
+		.card-footer {
+	        background-color: $color-warning;
+			border-color: darken($color-warning,20%);
+			color: $color-text-inverse
+        }
+		& > .card-block {
+			background-color: $color-warning;
+			color: $color-text-inverse
+		}
+	}
+
+	&.card-danger {
+		& > .card-header {
+			background-color: $color-danger;
+			border-color: darken($color-danger,20%);
+			color: $color-text-inverse
+		}
+		& > .card-header .title{
+			color: $color-text-inverse
+		}
+		.card-footer {
+	        background-color: $color-danger;
+			border-color: darken($color-danger,20%);
+			color: $color-text-inverse
+        }
+		& > .card-block {
+			background-color: $color-danger;
+			color: $color-text-inverse
+		}
+	}
+
+	&.card-inverse {
+		& > .card-header {
+			background-color: $color-inverse;
+			border-color: darken($color-inverse,20%);
+			color: $color-text-inverse;
+		}
+		& > .card-header .title{
+			color: $color-text-inverse;
+		}
+		.card-footer {
+	        background-color: $color-inverse;
+			border-color: darken($color-inverse,20%);
+			color: $color-text-inverse
+        }	
+		
+	}
+
+	.title-block,
+	.card-title-block {
+		padding-bottom: 0;
+		margin-bottom: 20px;
+		border: none;
+
+		@include clearfix();
+	}
+
+	.section {
+		margin-bottom: 20px;
+	}
+
+	.example,
+	.section.demo {
+		margin-bottom: 20px;
+	}
+}
+
+
+.card-block {
+	padding: $card-padding-x;
+	overflow: auto;
+
+	.tab-content {
+		padding: 15px;
+		border-color: transparent;
+	}
+
+	@include media(xl) {
+		padding: $card-padding-x-xl;
+	}
+
+	@include media-down(sm) {
+		padding: $card-padding-x-sm;
+	}
+}
+
+
+
+.card-block-without-scroll{
+	padding: 15px;
+}
+.card-block-without-scroll .tab-content{
+	padding: 10px;
+	border-color: transparent;
+}
+@media (min-width: 1200px)
+{
+	.card-block-without-scroll{
+		padding: 20px;
+	}
+}
+@media (max-width: 767px)
+{
+	.card-block-without-scroll{
+		padding: 10px;
+	}
+}
+
+.card-inverse {
+	color: $color-text-inverse;
+}
+
+.card-inverse .card-text {
+    color: $color-text-inverse;
+}
+
+.card-outline-primary {
+  background-color: transparent;
+  border-color: $color-primary;
+}
+.card.card-outline-primary > .card-header {
+  background-color: $color-primary;
+  border-color: $color-primary;
+}
+.card.card-outline-primary > .card-header .title{
+  color: $color-text-inverse
+}  
+
+.card-outline-secondary {
+  background-color: transparent;
+  border-color: $color-secondary;
+}
+
+.card-outline-info {
+  background-color: transparent;
+  border-color: $color-info;
+}
+.card.card-outline-info > .card-header {
+      background-color: $color-info;
+      border-color: $color-info;
+	  .title{
+    color: $color-text-inverse
+   }  
+}
+
+.card-outline-success {
+  background-color: transparent;
+  border-color: $color-success;
+}
+.card.card-outline-success > .card-header {
+   background-color: $color-success;
+   border-color: $color-success; 
+   .title{
+    color: $color-text-inverse
+   } 
+}
+
+
+.card-outline-warning {
+  background-color: transparent;
+  border-color:  $color-warning;
+}
+.card.card-outline-warning > .card-header {
+      background-color:  $color-warning;
+      border-color:  $color-warning; 
+	  .title{
+        color: $color-text-inverse
+      } 
+}
+	  
+
+.card-outline-danger {
+  background-color: transparent;
+  border-color: $color-danger;
+  .title{
+    color: $color-text-inverse
+  } 
+}
+.card.card-outline-danger > .card-header {
+  background-color: $color-danger;
+  border-color: $color-danger;
+  .title{
+   color: $color-text-inverse
+   } 
+}
+
+@media (min-width: 576px) {
+  .card-deck .card:not(:first-child) {
+       margin-left: 0px; 
+  }
+}

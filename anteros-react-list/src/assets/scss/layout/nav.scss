@@ -1,0 +1,336 @@
+a:not(.btn) {
+	// display: inline-block;
+	// position: relative;
+	// overflow: hidden;
+	// vertical-align: top;
+	// z-index: 0;
+	transition: $link-transition;
+	text-decoration: $link-decoration;
+	color: $link-color;
+
+	// &:before {
+	// 	&:extend(.underline-animation);
+	// }
+
+	&:hover{
+		text-decoration: $link-hover-decoration;
+		color: $link-hover-color;
+
+		&:before {
+			transform: scaleX(1);
+		}
+	}
+
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+span a {
+	vertical-align: text-bottom;   		
+} 
+
+
+[class^='nav'],
+[class*=' nav'] {
+	li > a {
+		// Display these anchors as block
+		display: block;
+
+		// Hide underline in anchors which are inside LI tag
+		&:before {
+			display: none;
+		}
+	}
+}
+
+
+.nav {
+	&.nav-tabs-bordered {
+		border-color: $color-primary;
+
+		& + .tab-content {
+			border-style: solid;
+		    border-width: 0 1px 1px 1px;
+		    border-color: $color-primary;
+		    padding: 10px 20px 0;
+		}
+
+		.nav-item {
+
+			.nav-link {
+				text-decoration: none;
+
+				&:hover {
+					color: #ffffff;	
+					background-color: $color-primary;
+					border: 1px solid $color-primary;
+				}
+
+				&.active {
+					border-color: $color-primary;
+					border-bottom-color: transparent;
+
+					&:hover {
+						background-color: #ffffff;
+						color: inherit;
+					}
+				}
+			}
+		}
+	}
+
+	&.nav-pills {
+
+		& + .tab-content {
+			border: 0;
+			padding: 5px;
+		}
+
+		.nav-item {
+
+			.nav-link {
+				text-decoration: none;
+				
+				&:hover {
+					color: $color-text;	
+					background-color: transparent;
+					border: 0;
+				}
+
+				&.active {
+					border-color: $color-primary;
+					border-bottom-color: transparent;
+					background-color: $color-primary;
+
+					&:hover {
+						background-color: $color-primary;
+						color: #ffffff;	
+					}
+				}
+			}
+		}
+	}
+}
+
+
+.nav {
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    padding-left:0;
+    margin-bottom:0;
+    list-style:none;
+}
+
+.nav-tabs {
+    border-bottom:1px solid #ddd;
+}
+
+.tabcontent-border {
+    border:1px solid #ddd;
+    border-top:0px;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom:-1px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color:#464a4c;
+    background-color:#fff;
+    border-color:#ddd #ddd #fff;
+}
+
+.nav-tabs .nav-link {
+    border:1px solid transparent;
+    border-top-right-radius:.25rem;
+    border-top-left-radius:.25rem;
+}
+
+.nav-link {
+    display:block;
+    padding:.5em 1em;
+}
+
+.tab-content > .active {
+    display:block;
+}
+
+
+
+.customtab li a.nav-link {
+    border: 0px;
+    padding: 15px 20px;
+    color: #54667a
+}
+
+.customtab li a.nav-link.active {
+    border-bottom: 2px solid $color-primary;
+    color: $color-primary;
+}
+
+.customtab li a.nav-link:hover {
+    color: $color-primary;
+}
+
+.vtabs {
+    display:table;
+}
+
+.vtabs .tabs-vertical {
+    width:150px;
+    border-bottom:0px;
+    border-right:1px solid rgba(120,130,140,0.13);
+    display:table-cell;
+    vertical-align:top;
+}
+
+.tabs-vertical li .nav-link.active, .tabs-vertical li .nav-link:hover, .tabs-vertical li .nav-link.active:focus {
+    background:$color-primary;
+    border:0px;
+    color:#fff;
+}
+
+.vtabs .tabs-vertical li .nav-link {
+    color:#263238;
+    margin-bottom:10px;
+    border:0px;
+    border-radius:4px 0 0 4px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color:#464a4c;
+    background-color:#fff;
+    border-color:#ddd #ddd #fff;
+}
+
+.nav-tabs .nav-link {
+    border:1px solid transparent;
+    border-top-right-radius:.25rem;
+    border-top-left-radius:.25rem;
+}
+
+.nav-link {
+    display:block;
+    padding:.5em 1em;
+}
+
+.vtabs {
+    display: table
+}
+
+.vtabs .tabs-vertical {
+    width: 150px;
+    border-bottom: 0px;
+    border-right: 1px solid rgba(120, 130, 140, 0.13);
+    display: table-cell;
+    vertical-align: top
+}
+
+.vtabs .tabs-vertical li .nav-link {
+    color: #263238;
+    margin-bottom: 10px;
+    border: 0px;
+}
+
+.vtabs .tab-content {
+    display: table-cell;
+    padding: 20px;
+    vertical-align: top
+}
+
+.tabs-vertical li .nav-link.active, .tabs-vertical li .nav-link:hover,
+.tabs-vertical li .nav-link.active:focus {
+    background: $color-primary;
+    border: 0px;
+    color: $color-text-inverse;
+}
+
+.customvtab .tabs-vertical li .nav-link.active, .customvtab .tabs-vertical li .nav-link:hover,
+.customvtab .tabs-vertical li .nav-link:focus {
+    background: #fff;
+    border: 0px;
+    border-right: 2px solid $color-primary;
+    margin-right: -1px;
+    color: $color-primary;
+}
+
+.customtab2 li a.nav-link {
+    border: 0px;
+    margin-right: 3px;
+    color: #54667a
+}
+
+.customtab2 li a.nav-link.active {
+    background: $color-primary;
+    color: #fff
+}
+
+.customtab2 li a.nav-link:hover {
+    color: #fff;
+    background: $color-primary;
+}
+
+.nav.nav-pills .nav-item .nav-link.active {
+    border-color: $color-primary;
+    color: #fff;
+    border-bottom-color: transparent;
+    background-color: $color-primary;
+}
+
+
+/**
+** Page control
+**/
+
+.page-control { 
+  position: relative;
+  display: block;
+  background-color: #fbfbfb;
+  border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.page-control-vertical {
+  display: table;
+  background-color: #fbfbfb;
+  border: 1px solid rgba(0, 0, 0, .125);
+}
+
+
+.page-control-header {
+  padding-top: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  background-color: #eceff1;
+  display: block;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-control-header-vertical {
+  padding-top: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  background-color: #eceff1;
+  display: table;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-control-header-custom {
+  padding-top: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  display: block;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-control-header .nav-tabs{
+  border: 0px;
+}
+
+.page-control-header-custom .nav-tabs{
+  border: 0px;
+}
+
+

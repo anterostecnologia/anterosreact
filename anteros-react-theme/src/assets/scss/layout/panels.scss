@@ -1,0 +1,90 @@
+.panel {
+	box-shadow: 1px 1px 5px fade-out($color-text-light, 0.9);	
+
+	.panel {
+		box-shadow: none;
+	}
+	
+	border-radius: 0;
+    border: 1px solid #cfd8dc;
+    
+
+    &.panel-primary {
+		border-color: $color-primary;
+   	    border-color: darken($color-primary,20%);
+		color: $color-text-inverse
+	}
+
+	&.panel-success {
+		background-color: $color-success;
+		border-color: darken($color-success,50%);
+		color: $color-text-inverse
+	}
+
+	&.panel-info {
+		background-color: $color-info;
+		border-color: darken($color-info,20%);
+		color: $color-text-inverse
+	}
+
+	&.panel-warning {
+		background-color: $color-warning;
+		border-color: darken($color-warning,20%);
+		color: $color-text-inverse
+	}
+
+	&.panel-danger {
+		background-color: $color-danger;
+		border-color: darken($color-danger,20%);
+		color: $color-text-inverse
+	}
+
+	&.panel-inverse {
+		background-color: $color-inverse;
+		border-color: darken($color-inverse,20%);
+		color: $color-text-inverse;
+	}
+
+}
+
+
+
+.panel-inverse {
+	color: $color-text-inverse;
+}
+
+.panel-inverse .panel-text {
+    color: $color-text-inverse;
+}
+
+.panel-outline-primary {
+  background-color: transparent;
+  border-color: $color-primary;
+}
+
+.panel-outline-secondary {
+  background-color: transparent;
+  border-color: $color-secondary;
+}
+
+.panel-outline-info {
+  background-color: transparent;
+  border-color: $color-info;
+}
+
+.panel-outline-success {
+  background-color: transparent;
+  border-color: $color-success;
+}
+
+
+.panel-outline-warning {
+  background-color: transparent;
+  border-color:  $color-warning;
+}
+	  
+
+.panel-outline-danger {
+  background-color: transparent;
+  border-color: $color-danger;
+}

@@ -1,0 +1,77 @@
+.badge {
+    font-size: 11px !important;
+    font-weight: 300;
+    height: 18px;
+    color: #fff;
+    padding: 3px 6px;
+    -webkit-border-radius: 12px !important;
+    -moz-border-radius: 12px !important;
+    border-radius: 12px !important;
+    text-shadow: none !important;
+    text-align: center;
+    vertical-align: middle;
+    margin: 3px;
+}
+
+.badge.badge-roundless {
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important
+}
+
+.badge.badge-empty {
+    display: inline-block;
+    padding: 0;
+    min-width: 8px;
+    height: 8px;
+    width: 8px
+}
+
+.badge-primary {
+    background-color: $color-primary
+}
+
+.badge-info {
+    background-color: $color-info
+}
+
+.badge-success {
+    background-color: $color-success
+}
+
+.badge-danger {
+    background-color: $color-danger
+}
+
+.badge-warning {
+    background-color: $color-warning
+}
+
+.badge-dark {
+   background-color: #526069 
+}
+
+.badge-anteros-default {
+    color: #76838f;
+    background-color: #e4eaec
+}
+
+.badge-radius {
+    border-radius: 3px
+}
+
+.badge-lg {
+    padding: 5px 9px 8px;
+    font-size: 16px
+}
+
+.badge-sm {
+    padding: 2px 5px;
+    font-size: 10px   
+}
+
+a.nav-link .badge {
+    position: absolute;
+    top: -8px;
+    right: -4px
+}

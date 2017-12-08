@@ -1,0 +1,94 @@
+.status-mark {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.status-mark-primary {
+    background-color: $color-primary
+}
+
+.status-mark-info {
+    background-color: $color-info
+}
+
+.status-mark-success {
+    background-color: $color-success
+}
+
+.status-mark-danger {
+    background-color: $color-danger
+}
+
+.status-mark-warning {
+    background-color: $color-warning
+}
+
+.status-mark-default {
+    background-color: #6c7a86
+}
+
+.status-mark-border-primary {
+    border: 2px solid;
+    border-color: $color-primary;
+    background-color: transparent;
+}
+
+.status-mark-border-info {
+    border: 2px solid;
+    border-color: $color-info;
+    background-color: transparent;
+}
+
+.status-mark-border-success {
+    border: 2px solid;
+    border-color: $color-success;
+    background-color: transparent;
+}
+
+.status-mark-border-danger {
+    border: 2px solid;
+    border-color: $color-danger;
+    background-color: transparent;
+}
+
+.status-mark-border-warning {
+    border: 2px solid;
+    border-color: $color-warning;
+    background-color: transparent;
+}
+
+.status-mark-border-default {
+    border: 2px solid;
+    border-color: #6c7a86;
+    background-color: transparent;
+}
+
+.img-status-mark > span {
+    position: relative;
+}
+
+.status-mark.top-right {
+    top: -12px;
+    right: 20%
+}
+
+.status-mark.top-left {
+    top: -12px;
+    left: -80%;
+}
+.status-mark.bottom-left {
+    bottom: -16px;
+    right: 80%;
+}
+.status-mark.bottom-right {
+    bottom: -16px;
+    right: 20%;
+}
+
+a.nav-link .status-mark {
+    position: absolute;
+    top: -8px;
+    right: -4px
+}

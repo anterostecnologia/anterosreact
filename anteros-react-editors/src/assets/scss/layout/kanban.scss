@@ -1,0 +1,116 @@
+.kanban {
+    padding: 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100%;
+    white-space: nowrap;
+    zoom: 1;
+  }
+  .kanban:before,
+  .kanban:after {
+    content: "";
+    display: table;
+  }
+  .kanban:after {
+    clear: both;
+  }
+  
+  .desk,
+  .desk-placeholder,
+  .desk-placeholder:hover {
+    width: 280px;
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+    min-height: 100px;
+    background-color: #e2e4e6;
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding-bottom: 20px;
+    margin-right: 20px;
+    vertical-align: top;
+  }
+  .desk .desk-head,
+  .desk-placeholder .desk-head,
+  .desk-placeholder:hover .desk-head {
+    position: relative;
+    padding: 5px 8px;
+    margin-bottom: 10px;
+    zoom: 1;
+  }
+  .desk .desk-head:before,
+  .desk-placeholder .desk-head:before,
+  .desk-placeholder:hover .desk-head:before,
+  .desk .desk-head:after,
+  .desk-placeholder .desk-head:after,
+  .desk-placeholder:hover .desk-head:after {
+    content: "";
+    display: table;
+  }
+  .desk .desk-head:after,
+  .desk-placeholder .desk-head:after,
+  .desk-placeholder:hover .desk-head:after {
+    clear: both;
+  }
+  .desk .desk-head .desk-name,
+  .desk-placeholder .desk-head .desk-name,
+  .desk-placeholder:hover .desk-head .desk-name {
+    font-weight: bold;
+    white-space: normal;
+    width: 100%;
+  }
+  .desk-items {
+    overflow-y: auto;
+    height: 100%;
+    padding-bottom: 20px;
+    font-size: 14px;
+  }
+  .desk-items .placeholder,
+  .desk-items .placeholder:hover {
+    height: 161px;
+    background-color: #d0d0d0;
+    margin: 10px;
+    min-height: 100px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    -webkit-transition: 0.15s;
+    -moz-transition: 0.15s;
+    -o-transition: 0.15s;
+    -ms-transition: 0.15s;
+    transition: 0.15s;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .kanban-card-item {
+    margin: 10px;
+    background: #fff;
+    min-height: 100px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    -webkit-transition: 0.15s;
+    -moz-transition: 0.15s;
+    -o-transition: 0.15s;
+    -ms-transition: 0.15s;
+    transition: 0.15s;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .kanban-card-item:hover {
+    background: #E1F5FE;
+  }
+  
+  .kanban-card-item .content-item {  
+    display: inline-flex;
+    word-wrap: break-word;
+    width: 100%
+  }
+  
+  
