@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosButton from './components/AnterosButton';
 import AnterosButtonGroup from './components/AnterosButtonGroup';
 import AnterosContainerButton from './components/AnterosContainerButton';

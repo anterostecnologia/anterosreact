@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosCard, { HeaderActions, FooterActions, AnterosCardDeck, AnterosCardGroup } from './components/AnterosCard';
 import AnterosCollapseContent from './components/AnterosCollapseContent';
 import AnterosForm, { AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn } from './components/AnterosForm';

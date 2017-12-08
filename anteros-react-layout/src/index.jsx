@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosFooter from './components/AnterosFooter';
 import AnterosFullScreen from './components/AnterosFullScreen';
 import AnterosHeader from './components/AnterosHeader';

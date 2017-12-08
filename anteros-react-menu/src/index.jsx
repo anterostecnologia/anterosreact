@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosAccordion, { AnterosAccordionItem } from './components/AnterosAccordion';
 import AnterosMenu from './components/AnterosMenu';
 import AnterosMenuItem from './components/AnterosMenuItem';

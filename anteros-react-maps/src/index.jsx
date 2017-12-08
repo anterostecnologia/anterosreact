@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosGoogleMaps, {
     AnterosMarkerClusterer, AnterosMarker, AnterosInfoWindow, AnterosPolygon,
     AnterosPolyline, AnterosRectangle, AnterosCircle, AnterosKmlLayer, AnterosTrafficLayer, AnterosHeatmapLayer,

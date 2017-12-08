@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosCheckbox from './components/AnterosCheckbox';
 import AnterosCheckboxSlide from './components/AnterosCheckboxSlide';
 import AnterosCheckboxToggle from './components/AnterosCheckboxToggle';

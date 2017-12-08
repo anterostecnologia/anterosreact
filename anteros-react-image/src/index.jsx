@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosImage from './components/AnterosImage';
 import AnterosImageCropper from './components/AnterosImageCropper';
 import AnterosImageMagnifier from './components/AnterosImageMagnifier';

@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import { AnterosError } from "./components/AnterosExceptions";
 import AnterosAlert from './components/AnterosAlert';
 import AnterosFade from './components/AnterosFade';

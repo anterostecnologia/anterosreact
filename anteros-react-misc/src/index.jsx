@@ -1,4 +1,3 @@
-import './assets/scss/main.scss';
 import AnterosKnob from './components/AnterosKnob';
 import AnterosObjectInspector, { InspectorItem } from "./components/AnterosObjectInspector";
 import AnterosPDFViewer from "./components/AnterosPDFViewer";
