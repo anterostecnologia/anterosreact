@@ -1,8 +1,8 @@
 {
-  "name": "anteros-react-buttons",
-  "version": "1.0.1",
-  "description": "Anteros components for React - Buttons",
-  "main": "lib/anteros-react-buttons.js",
+  "name": "anteros-react-navigation",
+  "version": "1.0.0",
+  "description": "Anteros components for React - Navigation",
+  "main": "lib/anteros-react-navigation.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",
@@ -10,7 +10,10 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.0.tgz",
+    "anteros-react-buttons": "^1.0.0",
+    "anteros-react-datasource": "^1.0.1",
+    "anteros-react-editors": "^1.0.0",
+    "anteros-react-menu": "^1.0.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
@@ -54,7 +57,6 @@
     "babel-preset-react": "^6.23.0",
     "bootstrap": "v4.0.0-alpha.6",
     "css-loader": "^0.27.1",
-    "npm-auth": "^1.1.0",
     "purifycss": "^1.1.9",
     "style-loader": "^0.13.2",
     "webpack": "^2.2.1",

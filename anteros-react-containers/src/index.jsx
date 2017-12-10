@@ -10,6 +10,7 @@ import AnterosPanel from "./components/AnterosPanel";
 import AnterosSplitter from "./components/AnterosSplitter";
 import AnterosStepWizard from './components/AnterosStepWizard';
 
+
 export {
     AnterosCard, HeaderActions, FooterActions, AnterosCardDeck, AnterosCardGroup, AnterosCollapseContent,
     AnterosForm, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn,
@@ -17,5 +18,5 @@ export {
     AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
     AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,
-    AnterosStepWizard
+    AnterosStepWizard, AnterosPagination
 };

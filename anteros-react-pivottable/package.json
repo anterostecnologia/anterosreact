@@ -1,8 +1,8 @@
 {
-  "name": "anteros-react-buttons",
-  "version": "1.0.1",
-  "description": "Anteros components for React - Buttons",
-  "main": "lib/anteros-react-buttons.js",
+  "name": "anteros-react-pivottable",
+  "version": "1.0.0",
+  "description": "Anteros components for React - Pivot table",
+  "main": "lib/anteros-react-pivottable.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",
@@ -11,6 +11,8 @@
   },
   "devDependencies": {
     "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.0.tgz",
+    "anteros-react-datasource": "^1.0.1",
+    "anteros-react-layout": "^1.0.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",

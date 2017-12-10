@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-datasource",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Anteros components for React - Datasource",
   "main": "lib/anteros-react-datasource.js",
   "scripts": {
