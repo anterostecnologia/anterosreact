@@ -9,7 +9,7 @@ const FirstChild = ({ children }) => (
 export const ENTER_TIMEOUT = 500;
 export const EXIT_TIMEOUT = 300;
 
-export default class AnterosAlert extends Component {
+export class AnterosAlert extends Component {
     constructor(props) {
         super(props);
         this.onClose = this.onClose.bind(this);

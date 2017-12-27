@@ -34,7 +34,7 @@ export default class AnterosBadge extends Component {
             className += " badge-radius";
         }
 
-        let style = {};
+        let style = {...this.props.style};
         if (this.props.backgroundColor) {
             style = { backgroundColor: this.props.backgroundColor };
         }

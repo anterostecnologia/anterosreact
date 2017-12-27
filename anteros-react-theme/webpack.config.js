@@ -18,6 +18,7 @@ let plugins = [];
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true, comments: false }));
+  plugins.push(new OptimizeCssAssetsPlugin());
   minimizeCSS = true;
   sufixCSS = '.min.css';
 } else {
@@ -25,7 +26,7 @@ if (env === 'build') {
 }
 
 plugins.push(new ExtractTextPlugin(libraryName+'-[name]'+sufixCSS));
-plugins.push(new OptimizeCssAssetsPlugin());
+
 
 module.exports = {
   entry: {

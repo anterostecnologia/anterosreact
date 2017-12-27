@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import ReactDOMServer from 'react-dom/server'
 import lodash from "lodash";
-import classNames from "classnames";
+
 
 export default class AnterosObjectInspector extends Component {
 

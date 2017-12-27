@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {AnterosButton} from "anteros-react-buttons";
 import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import classNames from "classnames";
+
 
 
 class AnterosCard extends Component {

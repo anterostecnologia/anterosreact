@@ -7,6 +7,7 @@ const env = require('yargs').argv.env;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ChunksPlugin = require('webpack-split-chunks');
+var nodeExternals = require('webpack-node-externals');
 
 
 let libraryName = 'anteros-react-maps';
@@ -40,30 +41,9 @@ module.exports = {
     umdNamedDefine: true
   },
   plugins: plugins,
-  externals: {
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
-    },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
-    },
-    'react-dom/server': {
-      root: 'ReactDOMServer',
-      commonjs2: 'react-dom/server',
-      commonjs: 'react-dom/server',
-      amd: 'react-dom/server'
-    },
-    'lodash': 'lodash',
-    'anteros-react-core': 'anteros-react-core',
-    'axios': 'axios',
-    'bootstrap':'bootstrap'
-  },
+  externals: nodeExternals({
+    whitelist: ['marker-clusterer-plus']
+  }),
   module: {
     loaders: [{
       test: /.js[x]?$/,

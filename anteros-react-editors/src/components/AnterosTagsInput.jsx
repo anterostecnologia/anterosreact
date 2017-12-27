@@ -1,8 +1,7 @@
 'use strict'
 const React = require('react')
 const PropTypes = require('prop-types')
-import classNames from "classnames";
-import { If, Then, Else } from "anteros-react-core";
+import { If, Then, Else, AnterosUtils } from "anteros-react-core";
 
 
 const KEYS = {
@@ -148,7 +147,7 @@ export default class AnterosTagsInput extends React.Component {
         ))
 
         const expandable = this.state.focused && this.state.query.length >= this.props.minQueryLength
-        const classNames = classNames([this.state.classNames.root],
+        const classNames = AnterosUtils.buildClassNames([this.state.classNames.root],
             (this.props.inputGridSize ? " col-sm-" + this.props.inputGridSize : ""));
 
 

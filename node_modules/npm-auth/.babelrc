@@ -1,0 +1,20 @@
+{
+  "presets": [
+    "latest",
+    "stage-1"
+  ],
+  "env": {
+    "development": {
+      "presets": [
+      ],
+      "plugins": [
+        "transform-object-rest-spread"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "transform-object-rest-spread"
+      ]
+    }
+  }
+}

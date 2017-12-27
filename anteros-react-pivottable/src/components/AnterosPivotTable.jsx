@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import classNames from "classnames";
 import { AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";

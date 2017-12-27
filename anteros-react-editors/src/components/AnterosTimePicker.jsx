@@ -3,7 +3,7 @@ import 'script-loader!./AnterosBootstrapDatetimepicker.js'
 import './AnterosBootstrapDatetimepicker.css';
 import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js'
 import lodash from "lodash";
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
@@ -158,7 +158,7 @@ export default class AnterosTimePicker extends React.Component {
       this.idCalendar = this.props.id;
     }
 
-    const className = classNames("input-group time",
+    const className = AnterosUtils.buildClassNames("input-group time",
       (this.props.className ? this.props.className : ""),
       colClasses);
 
@@ -167,7 +167,7 @@ export default class AnterosTimePicker extends React.Component {
       width = "";
     }
 
-    let classNameAddOn = classNames("input-group-addon",
+    let classNameAddOn = AnterosUtils.buildClassNames("input-group-addon",
       (this.props.primary || this.props.fullPrimary ? "btn btn-primary" : ""),
       (this.props.success || this.props.fullSucces ? "btn btn-success" : ""),
       (this.props.info || this.props.fullInfo ? "btn btn-info" : ""),
@@ -176,7 +176,7 @@ export default class AnterosTimePicker extends React.Component {
       (this.props.secondary || this.props.fullSecondary ? "btn btn-secondary" : ""),
       (this.props.default || this.props.fullDefault ? "" : ""));
 
-    let classNameInput = classNames("form-control",
+    let classNameInput = AnterosUtils.buildClassNames("form-control",
       (this.props.fullPrimary ? "btn-primary" : ""),
       (this.props.fullSucces ? "btn-success" : ""),
       (this.props.fullInfo ? "btn-info" : ""),

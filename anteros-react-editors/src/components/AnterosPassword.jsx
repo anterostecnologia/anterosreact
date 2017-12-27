@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import classNames from "classnames";
-import { If, Then } from "anteros-react-core";
+import { If, Then, AnterosUtils } from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
@@ -90,7 +89,7 @@ export default class AnterosPassword extends React.Component {
 
         const colClasses = buildGridClassNames(this.props, false, []);
 
-        let className = classNames("form-control",
+        let className = AnterosUtils.buildClassNames("form-control",
             (this.props.className ? this.props.className : ""),
             (this.props.inputGridSize ? " col-sm-" + this.props.inputGridSize : "")
             );
@@ -98,7 +97,7 @@ export default class AnterosPassword extends React.Component {
         if (this.props.id) {
             this.idPassword = this.props.id;
         }
-        let classNameLabel = classNames("control-label", (this.props.labelGridSize ? "col-sm-" + this.props.labelGridSize : ""));
+        let classNameLabel = AnterosUtils.buildClassNames("control-label", (this.props.labelGridSize ? "col-sm-" + this.props.labelGridSize : ""));
 
         let edit = <div>
             <If condition={this.props.label != undefined}>
@@ -128,7 +127,7 @@ export default class AnterosPassword extends React.Component {
         </div>;
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 {edit}
             </div>);
         } else {

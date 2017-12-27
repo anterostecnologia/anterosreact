@@ -1,0 +1,262 @@
+import React, { Component } from 'react';
+import lodash from 'lodash';
+
+export default class AnterosFloatingButton extends Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+        this.state = { open: false };
+        this.idFButton = lodash.uniqueId('FB');
+        this.idIconOpen = lodash.uniqueId('FB');
+        this.idIconClose = lodash.uniqueId('FB');
+        this.idLink = lodash.uniqueId('FB');
+        this.onDocumentClick = this.onDocumentClick.bind(this);
+        document.onclick = this.onDocumentClick;
+    }
+
+    componentDidMount() {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    onDocumentClick(event) {
+        if (this.props.autoClose && this.state.open && event.target.id != this.idLink &&
+            event.target.id != this.idIconClose && event.target.id != this.idIconOpen) {
+            this.setState(() => ({ open: false }));
+        }
+    }
+
+    onClick(event) {
+        if (this.props.openMode == 'click') {
+            event.preventDefault();
+            let isOpen = !this.state.open;
+            this.setState(() => ({ open: isOpen }));
+        }
+    }
+
+    renderChild(child, index) {
+        return React.cloneElement(child, { handleClick: (this.props.autoClose ? this.onClick : undefined), index: index, key: index });
+    }
+
+    render() {
+        let className = "fab-menu horizontal";
+        if (this.props.top) {
+            className += " fab-menu-top";
+        } else if (this.props.bottom) {
+            className += " fab-menu-bottom";
+        } else if (this.props.topLeft) {
+            className += " fab-menu-top-left";
+        } else if (this.props.topRight) {
+            className += " fab-menu-top-right";
+        } else if (this.props.bottomLeft) {
+            className += " fab-menu-bottom-left";
+        } else if (this.props.bottomRight) {
+            className += " fab-menu-bottom-right";
+        } else {
+            className += " fab-menu-top";
+        }
+         if (this.props.fixed) {
+            className += " fab-menu-fixed";
+        }
+
+        let classNameRef = "fab-menu-btn btn btn-float btn-rounded btn-icon";
+
+        if (this.props.success) {
+            classNameRef += " btn-success";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.primary) {
+            classNameRef += " btn-primary";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.danger) {
+            classNameRef += " btn-danger";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.info) {
+            classNameRef += " btn-info";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.warning) {
+            classNameRef += " btn-warning";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.secondary) {
+            classNameRef += " btn-secondary";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else {
+            classNameRef += " btn-primary";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        }
+
+       
+        return (<ul id={this.props.id ? this.props.id : this.idFButton} className={className} data-fab-toggle={this.props.openMode} data-fab-state={this.state.open ? "open" : "close"}>
+            <li>
+                <a href="#" id={this.idLink} className={classNameRef}
+                    style={{ backgroundColor: this.props.backgroundColor }}
+                    onClick={this.onClick}>
+                    <i style={{ color: this.props.color }} id={this.idIconOpen} className={"fab-icon-open "+this.props.iconOpen + " icon-center"}></i>
+                    <i style={{ color: this.props.color }} id={this.idIconClose} className={"fab-icon-close "+this.props.iconClose + " icon-center"}></i>
+                </a>
+
+                {this.props.children ? <ul className="fab-menu-inner">
+                    {this.props.children.map((c, i) => (this.renderChild(c, i)))}
+                </ul> : null}
+            </li>
+        </ul>)
+    }
+}
+
+
+AnterosFloatingButton.propTypes = {
+    iconOpen: React.PropTypes.string,
+    iconClose: React.PropTypes.string,
+    image: React.PropTypes.string,
+    hint: React.PropTypes.string.isRequired,
+    hintPosition: React.PropTypes.oneOf(['left', 'right', 'top', 'bottom']).isRequired,
+    backgroundColor: React.PropTypes.string,
+    color: React.PropTypes.string,
+    success: React.PropTypes.bool,
+    primary: React.PropTypes.bool,
+    danger: React.PropTypes.bool,
+    secondary: React.PropTypes.bool,
+    outline: React.PropTypes.bool,
+    onButtonClick: React.PropTypes.func,
+    autoClose: React.PropTypes.bool.isRequired,
+    openMode: React.PropTypes.oneOf(['click', 'hover']),
+    top: React.PropTypes.bool,
+    bottom: React.PropTypes.bool,
+    topLeft: React.PropTypes.bool,
+    topRight: React.PropTypes.bool,
+    bottomLeft: React.PropTypes.bool,
+    bottomRight: React.PropTypes.bool,
+    fixed: React.PropTypes.bool
+};
+
+AnterosFloatingButton.defaultProps = {
+    iconOpen: "icon-plus3",
+    iconClose: "icon-cross2",
+    hintPosition: "top",
+    autoClose: true,
+    openMode: 'hover'
+};
+
+
+
+
+export class AnterosFloatingButtonItem extends Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+        this.idItemRef = lodash.uniqueId("fbitem");
+    }
+
+    onClick(event) {
+        event.preventDefault();
+        if (this.props.handleClick) {
+            this.props.handleClick(event);
+        }
+        if (this.props.onButtonClick) {
+            this.props.onButtonClick(this.props.index);
+        }
+    }
+
+    render() {
+        let menuDropDown;
+        let badge;
+        let mark;
+        if (this.props.children) {
+            let _this = this;
+            let arrChildren = React.Children.toArray(this.props.children);
+            arrChildren.forEach(function (child) {
+                if (child.type && child.type.name == "AnterosDropdownMenu") {
+                    menuDropDown = child;
+                } else if (child.type && child.type.name == "AnterosBadge") {
+                    badge = child;
+                } else if (child.type && child.type.name == "AnterosStatusMark") {
+                    mark = child;
+                }
+            });
+        }
+
+        let classNameRef = "btn btn-rounded btn-icon btn-float";
+
+        if (this.props.success) {
+            classNameRef += " btn-success";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.primary) {
+            classNameRef += " btn-primary";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.danger) {
+            classNameRef += " btn-danger";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.info) {
+            classNameRef += " btn-info";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.warning) {
+            classNameRef += " btn-warning";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else if (this.props.secondary) {
+            classNameRef += " btn-secondary";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        } else {
+            classNameRef += " btn-primary";
+            if (this.props.outline) {
+                classNameRef += "-outline";
+            }
+        }
+        return (<li>
+            <div title={this.props.hint} data-placement={this.props.hintPosition} data-toggle="tooltip">
+                <a id={this.props.id?this.props.id:this.idItemRef} key={this.props.id?this.props.id:this.idItemRef}  style={{ backgroundColor: this.props.backgroundColor }}
+                    data-toggle="dropdown" 
+                    href="#" className={classNameRef} onClick={this.onClick}>
+                    {this.props.icon ? <i className={this.props.icon} style={{ color: this.props.color }} onClick={this.onClick} /> : null}
+                    <img src={this.props.image} className="img-responsive" style={{ width: this.props.imageWidth, height: this.props.height }} onClick={this.onClick} />
+                    {badge}
+                    {mark}
+                </a>
+                {menuDropDown}
+            </div>
+        </li>)
+    }
+}
+
+AnterosFloatingButtonItem.propTypes = {
+    id: React.PropTypes.string,
+    icon: React.PropTypes.string,
+    image: React.PropTypes.string,
+    hint: React.PropTypes.string,
+    hintPosition: React.PropTypes.oneOf(['left', 'right', 'top', 'bottom']).isRequired,
+    backgroundColor: React.PropTypes.string,
+    color: React.PropTypes.string,
+    success: React.PropTypes.bool,
+    primary: React.PropTypes.bool,
+    danger: React.PropTypes.bool,
+    secondary: React.PropTypes.bool,
+    info: React.PropTypes.bool,
+    onButtonClick: React.PropTypes.func
+};
+
+AnterosFloatingButtonItem.defaultProps = {
+    hintPosition: "left"
+};

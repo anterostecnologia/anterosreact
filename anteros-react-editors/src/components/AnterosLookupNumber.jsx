@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/bootstrap-maxlength.min.js'
 import lodash from "lodash";
-import classNames from "classnames";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosJacksonParser,AnterosStringUtils,AnterosObjectUtils } from "anteros-react-core";
+import { AnterosJacksonParser,AnterosStringUtils,AnterosObjectUtils,AnterosUtils } from "anteros-react-core";
 
 export default class AnterosLookupNumber extends React.Component {
     constructor(props) {
@@ -177,7 +176,7 @@ export default class AnterosLookupNumber extends React.Component {
         if (this.props.id) {
             this.idEdit = this.props.id;
         }
-        let className = classNames("input-group",
+        let className = AnterosUtils.buildClassNames("input-group",
             (this.props.className ? this.props.className : ""),
             colClasses);
 
@@ -194,7 +193,7 @@ export default class AnterosLookupNumber extends React.Component {
                 style={{ color: this.props.iconColor }}></i>);
         }
 
-        let classNameAddOn = classNames("input-group-addon",
+        let classNameAddOn = AnterosUtils.buildClassNames("input-group-addon",
             (this.props.primary || this.props.fullPrimary ? "btn btn-primary" : ""),
             (this.props.success || this.props.fullSucces ? "btn btn-success" : ""),
             (this.props.info || this.props.fullInfo ? "btn btn-info" : ""),
@@ -203,7 +202,7 @@ export default class AnterosLookupNumber extends React.Component {
             (this.props.secondary || this.props.fullSecondary ? "btn btn-secondary" : ""),
             (this.props.default || this.props.fullDefault ? "" : ""));
 
-        let classNameInput = classNames((colClasses.length > 0 || this.context.withinInputGroup || icon ? "form-control" : ""),
+        let classNameInput = AnterosUtils.buildClassNames((colClasses.length > 0 || this.context.withinInputGroup || icon ? "form-control" : ""),
             (this.props.fullPrimary ? "btn-primary" : ""),
             (this.props.fullSucces ? "btn-success" : ""),
             (this.props.fullInfo ? "btn-info" : ""),
@@ -244,7 +243,7 @@ export default class AnterosLookupNumber extends React.Component {
                 onBlur={this.onBlur}
             />;
             if (colClasses.length > 0) {
-                return (<div className={classNames(colClasses)}>
+                return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                     {edit}
                 </div>);
             } else {

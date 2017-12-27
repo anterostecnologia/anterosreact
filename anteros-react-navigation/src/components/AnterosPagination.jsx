@@ -17,7 +17,7 @@ const TITLES = {
 };
 
 
-class AnterosPagination extends Component {
+export class AnterosPagination extends Component {
     constructor(props) {
         super(props);
 
@@ -373,6 +373,6 @@ function range(start, end) {
     return res;
 }
 
-export default AnterosPagination;
+
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 
 
 const global = window

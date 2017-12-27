@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { AnterosError } from "anteros-react-core";
-import classNames from "classnames";
+import { AnterosError, AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
 export default class AnterosRadioGroup extends Component {
@@ -73,7 +72,7 @@ export default class AnterosRadioGroup extends Component {
     render() {
         const colClasses = buildGridClassNames(this.props, false, []);
 
-        let className = classNames("d-flex flex-column form-control",
+        let className = AnterosUtils.buildClassNames("d-flex flex-column form-control",
             (this.props.className ? this.props.className : ""));
 
         const { checkedIndex } = this.state;
@@ -85,7 +84,7 @@ export default class AnterosRadioGroup extends Component {
         </div>;
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 {radio}
             </div>);
         } else {

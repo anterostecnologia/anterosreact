@@ -1,11 +1,10 @@
 import React,{Component, PropTypes} from 'react';
-import classNames from 'classnames';
-import omit from 'lodash.omit';
+import lodash from 'lodash';
 import { AnterosUtils } from './AnterosUtils';
 
 
 
-export default class AnterosFade extends Component {
+export class AnterosFade extends Component {
   constructor(props) {
     super(props);
 
@@ -85,9 +84,9 @@ export default class AnterosFade extends Component {
       cssModule,
       tag: Tag
     } = this.props;
-    const attributes = omit(this.props, Object.keys(AnterosFade.propTypes));
+    const attributes = lodash.omit(this.props, Object.keys(AnterosFade.propTypes));
 
-    const classes = AnterosUtils.mapToCssModules(classNames(
+    const classes = AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames(
       className,
       baseClass,
       this.state.mounted ? baseClassIn : false

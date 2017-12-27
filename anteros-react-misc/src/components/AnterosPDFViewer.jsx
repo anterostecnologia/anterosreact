@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PDF from 'react-pdf-js/dist/react-pdf-js.min.js';
+import PDF from 'react-pdf-js';
 
 const styles = {};
 styles.navigation = {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-export default class AnterosNotFound extends Component {
+export class AnterosNotFound extends Component {
     render() {
         return (
             <div className="nb-error">

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import lodash from "lodash";
-import classNames from "classnames";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import { AnterosUtils } from "anteros-react-core";
@@ -198,7 +197,7 @@ class AnterosNumber extends Component {
         }
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        const className = classNames(
+        const className = AnterosUtils.buildClassNames(
             (this.props.className ? this.props.className : ""), (colClasses.length > 0 ? "form-control" : ""));
 
         if (this.props.id) {
@@ -219,7 +218,7 @@ class AnterosNumber extends Component {
         />);
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 {number}
             </div>);
         } else {

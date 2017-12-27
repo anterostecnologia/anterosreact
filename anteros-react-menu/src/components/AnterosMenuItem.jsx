@@ -15,17 +15,20 @@ export default class AnterosMenuItem extends Component {
     }
 
     toggleExpanded(event) {
-        let expanded = !this.props.isExpanded(this.props.id);
-        if (expanded) {
-            this.props.onExpandId(this.props.id)
-        } else {
-            this.props.onCollapseId(this.props.id);
-        }
+        let expanded = false;
+        if (this.props.isExpanded){
+            expanded = !this.props.isExpanded(this.props.id);
+            if (expanded) {
+                this.props.onExpandId(this.props.id)
+            } else {
+                this.props.onCollapseId(this.props.id);
+            }
 
-        this.props.setActiveId(this.props.id);
+            this.props.setActiveId(this.props.id);
 
-        if (this.props.onSelectMenuItem) {
-            this.props.onSelectMenuItem(this);
+            if (this.props.onSelectMenuItem) {
+                this.props.onSelectMenuItem(this);
+            }
         }
         event.stopPropagation();
     }
@@ -73,7 +76,7 @@ export default class AnterosMenuItem extends Component {
         }
 
         let classItem;
-        if (this.props.getActiveId() == this.props.id) {
+        if (this.props.getActiveId && this.props.getActiveId() == this.props.id) {
             classItem = "active";
         }
 
@@ -88,7 +91,7 @@ export default class AnterosMenuItem extends Component {
         if (this.context.horizontal) {
             if (newChildren && newChildren.length > 0) {
                 if (this.props.level == 1) {
-                    return (<li className={"nav-item "+(this.props.getActiveId() == this.props.id?"has-class":"")} onClick={this.onSelectMenuItem}>
+                    return (<li className={"nav-item "+(this.props.getActiveId && this.props.getActiveId() == this.props.id?"has-class":"")} onClick={this.onSelectMenuItem}>
                         <a>
                             {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
                             <span>{this.props.caption}</span>
@@ -102,7 +105,7 @@ export default class AnterosMenuItem extends Component {
                     if (this.props.level>=3){
                         className += "-"+this.props.level;
                     }
-                    return (<li className={className+(this.props.getActiveId() == this.props.id?" has-class":"")} onClick={this.onSelectMenuItem}>
+                    return (<li className={className+(this.props.getActiveId && this.props.getActiveId() == this.props.id?" has-class":"")} onClick={this.onSelectMenuItem}>
                         <a>
                             {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
                             <span>{this.props.caption}</span>
@@ -123,7 +126,7 @@ export default class AnterosMenuItem extends Component {
         } else {
             if (newChildren && newChildren.length > 0) {
                 arrowIcon = (<i className="fa arrow" style={{ float: "right", marginRight: "5px" }} />);
-                if (this.props.isExpanded(this.props.id)) {
+                if (this.props.isExpanded && this.props.isExpanded(this.props.id)) {
                     classItem = "open";
                     children = (<ul>{newChildren}</ul>);
                 }

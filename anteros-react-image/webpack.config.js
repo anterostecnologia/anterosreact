@@ -7,6 +7,7 @@ const env = require('yargs').argv.env;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ChunksPlugin = require('webpack-split-chunks');
+var nodeExternals = require('webpack-node-externals');
 
 
 let libraryName = 'anteros-react-image';
@@ -40,26 +41,9 @@ module.exports = {
     umdNamedDefine: true
   },
   plugins: plugins,
-  externals: {
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
-    },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
-    },
-    'lodash': 'lodash',
-    'anteros-react-core': 'anteros-react-core',
-    'anteros-react-datasource': 'anteros-react-datasource',
-    'anteros-react-layout': 'anteros-react-layout',
-    'axios': 'axios',
-    'bootstrap':'bootstrap'
-  },
+  externals: nodeExternals({
+    whitelist: ['cropperjs/dist/cropper.css','babel-runtime/regenerator', 'cropperjs','regenerator-runtime']
+  }),
   module: {
     loaders: [{
       test: /.js[x]?$/,

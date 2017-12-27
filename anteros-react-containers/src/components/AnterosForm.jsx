@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { If, Then, AnterosError} from "anteros-react-core";
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import {AnterosUtils} from 'anteros-react-core';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
 
@@ -20,7 +20,7 @@ export default class AnterosForm extends Component {
             ...attributes
   } = this.props;
 
-        const classes = classNames(
+        const classes = AnterosUtils.buildClassNames(
             className,
             inline ? 'form-inline' : false
         );
@@ -59,7 +59,7 @@ export class AnterosFormGroup extends Component {
             ...attributes
   } = this.props;
 
-        const className = classNames(
+        const className = AnterosUtils.buildClassNames(
             this.props.className,
             color ? `has-${color}` : false,
             row ? 'row' : false,
@@ -147,7 +147,7 @@ export class AnterosInputGroup extends Component {
                 if ((child.type && child.type.name === "AnterosEdit") ||
                     (child.type && child.type.name === "AnterosNumber") ||
                     (child.type && child.type.name === "AnterosTextArea")) {
-                    newChildren.push(React.cloneElement(child,{className: classNames(child.className,"form-control")}));
+                    newChildren.push(React.cloneElement(child,{className: AnterosUtils.buildClassNames(child.className,"form-control")}));
                 } else {
                     newChildren.push(child);
                 }
@@ -161,7 +161,7 @@ export class AnterosInputGroup extends Component {
         let children = this.buildChildren();
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        let className = classNames("input-group", colClasses);
+        let className = AnterosUtils.buildClassNames("input-group", colClasses);
 
         return (<div className={className}>
             <If condition={this.props.alignRight == false}>

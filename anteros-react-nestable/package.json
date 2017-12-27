@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-nestable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Anteros components for React - Nestable",
   "main": "lib/anteros-react-nestable.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.0.tgz",
+    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
@@ -47,6 +47,7 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
+    "webpack-node-externals": "^1.6.0",
     "webpack-split-chunks": "^0.2.1"
   },
   "dependencies": {

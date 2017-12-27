@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import classNames from "classnames";
+
 
 
 class AnterosPanel extends Component {

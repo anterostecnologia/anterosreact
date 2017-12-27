@@ -1,7 +1,8 @@
 import lodash from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import {AnterosUtils} from "anteros-react-core";
+
 
 const colWidths = ['xs', 'sm', 'md', 'lg', 'xl'];
 const stringOrNumberProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
@@ -79,7 +80,7 @@ export function buildGridClassNames(props, useHorizontalClass, attributes) {
                         }
                     }
 
-                    colClasses.push(classNames({
+                    colClasses.push(AnterosUtils.buildClassNames({
                         [colClass]: columnProp.size || columnProp.size === '',
                         [`push${colSizeInterfix}${columnProp.push}`]: columnProp.push || columnProp.push === 0,
                         [`pull${colSizeInterfix}${columnProp.pull}`]: columnProp.pull || columnProp.pull === 0,
@@ -118,7 +119,7 @@ export class AnterosCol extends Component {
             ...attributes
   } = this.props;
         const colClasses = buildGridClassNames(this.props, true, attributes);
-        const classes = classNames(
+        const classes = AnterosUtils.buildClassNames(
             className,
             (colClasses.length == 0 ? "col" : colClasses)
         );
@@ -219,7 +220,7 @@ export class AnterosRow extends Component {
             verticalClass = 'align-items-end';
         }
 
-        const classes = classNames(
+        const classes = AnterosUtils.buildClassNames(
             className,
             noGutters ? 'no-gutters' : null,
             'row',

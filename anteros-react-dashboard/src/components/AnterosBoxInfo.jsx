@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import classNames from "classnames";
 import { AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
@@ -41,7 +40,7 @@ export default class AnterosBoxInfo extends Component {
 
 
         return (
-            <div className={classNames(colClasses)} id={this.props.id}>
+            <div className={AnterosUtils.buildClassNames(colClasses)} id={this.props.id}>
                 <div className={className} onClick={this.onClick} style={{ ...this.props.style, backgroundColor: this.props.backgroundColor }}>
                     <div className="card-block" style={{ cursor: this.props.cursor, overflow: "hidden", backgroundColor: this.props.backgroundColor }}>
                         <h6 style={{ color: this.props.textColor }} className="text-uppercase">{this.props.title}</h6>

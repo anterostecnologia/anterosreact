@@ -1,6 +1,6 @@
 import {AnterosJacksonParser} from "anteros-react-core";
 
-export default class AnterosQueryBuilderData {
+export class AnterosQueryBuilderData {
 
     constructor() {
     }

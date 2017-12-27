@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-pivottable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Anteros components for React - Pivot table",
   "main": "lib/anteros-react-pivottable.js",
   "scripts": {
@@ -10,8 +10,8 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.0.tgz",
-    "anteros-react-datasource": "^1.0.1",
+    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
+    "anteros-react-datasource": "file:../anteros-react-datasource/anteros-react-datasource-1.0.3.tgz",
     "anteros-react-layout": "^1.0.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
@@ -47,6 +47,7 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
+    "webpack-node-externals": "^1.6.0",
     "webpack-split-chunks": "^0.2.1"
   },
   "dependencies": {

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import 'script-loader!emojionearea/dist/emojionearea.min.js'
 import 'emojionearea/dist/emojionearea.min.css';
 import lodash from "lodash";
-import classNames  from "classnames";
-import {If, Then} from "anteros-react-core";
+import {If, Then, AnterosUtils} from "anteros-react-core";
 
 export default class AnterosEmojiArea extends React.Component {
     constructor(props) {
@@ -75,14 +74,14 @@ export default class AnterosEmojiArea extends React.Component {
     }
 
     render() {
-        let className = classNames("form-control",
+        let className = AnterosUtils.buildClassNames("form-control",
             (this.props.className ? this.props.className : ""),
             (this.props.inputGridSize ? " col-sm-" + this.props.inputGridSize : ""));
 
         if (this.props.id) {
             this.idEmoji = this.props.id;
         }
-        let classNameLabel = classNames("control-label",(this.props.labelGridSize ? "col-sm-" + this.props.labelGridSize : ""));
+        let classNameLabel = AnterosUtils.buildClassNames("control-label",(this.props.labelGridSize ? "col-sm-" + this.props.labelGridSize : ""));
         return (
             <div>
                 <If condition={this.props.label!=undefined}>

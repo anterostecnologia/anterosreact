@@ -7,6 +7,7 @@ const env = require('yargs').argv.env;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ChunksPlugin = require('webpack-split-chunks');
+var nodeExternals = require('webpack-node-externals');
 
 
 let libraryName = 'anteros-react-editors';
@@ -40,27 +41,13 @@ module.exports = {
     umdNamedDefine: true
   },
   plugins: plugins,
-  externals: {
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
-    },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
-    },
-    'lodash': 'lodash',
-    'anteros-react-core': 'anteros-react-core',
-    'anteros-react-layout': 'anteros-react-layout',
-    'anteros-react-datasource': 'anteros-react-datasource',
-    'axios': 'axios',
-    'moment': 'moment',
-    'bootstrap':'bootstrap'
-  },
+  externals: nodeExternals({
+    whitelist: ['bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
+    'bootstrap-daterangepicker/daterangepicker.css',
+    'bootstrap-select/dist/css/bootstrap-select.min.css',
+    'emojionearea/dist/emojionearea.min.css','uuid','create-react-class',
+    'fbjs/lib/emptyObject', 'fbjs/lib/invariant', 'fbjs/lib/warning','object-assign']
+  }),
   module: {
     loaders: [{
       test: /.js[x]?$/,

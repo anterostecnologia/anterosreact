@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-export default class AnterosTimeout extends React.Component {
+export class AnterosTimeout extends React.Component {
 
     constructor(props) {
         super(props);

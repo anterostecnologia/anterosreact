@@ -2,9 +2,8 @@ import React from 'react'
 import 'script-loader!bootstrap-select/dist/js/bootstrap-select.min.js'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import lodash from 'lodash';
-import classNames from "classnames";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosError } from "anteros-react-core";
+import { AnterosError, AnterosUtils } from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
 export default class AnterosSelect extends React.Component {
@@ -224,7 +223,7 @@ export default class AnterosSelect extends React.Component {
             "data-style": dataStyle
         };
 
-        let className = classNames("selectpicker",
+        let className = AnterosUtils.buildClassNames("selectpicker",
             (showTick ? "show-tick" : ""),
             (showMenuArrow ? "show-menu-arrow" : ""),
             (dropup ? "dropup" : ""),
@@ -244,7 +243,7 @@ export default class AnterosSelect extends React.Component {
         }
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 <select readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} {...options}>
                     {newChildren}
                 </select>

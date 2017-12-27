@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import {AnterosUtils} from 'anteros-react-core';
 import lodash from 'lodash';
-import debounce from 'lodash/debounce';
-import omit from 'lodash/omit';
-import assign from 'lodash/assign';
 import Masonry from 'masonry-layout/dist/masonry.pkgd.min.js';
 import imagesloaded from 'imagesloaded/imagesloaded.pkgd.min.js';
 var isBrowser = typeof window !== 'undefined';
@@ -198,7 +195,7 @@ export default class AnterosMasonry extends React.Component {
         imagesloaded(this.masonryContainer)
             .on(
             this.props.updateOnEachImageLoad ? 'progress' : 'always',
-            debounce(
+            lodash.debounce(
                 function (instance) {
                     if (this.props.onImagesLoaded) {
                         this.props.onImagesLoaded(instance);
@@ -263,8 +260,8 @@ export default class AnterosMasonry extends React.Component {
     }
 
     render() {
-        var props = omit(this.props, Object.keys(propTypes));
-        return React.createElement(this.props.elementType, assign({id:this.props.idMasonry}, props, { ref: this.setRef }), this.props.children);
+        var props = lodash.omit(this.props, Object.keys(propTypes));
+        return React.createElement(this.props.elementType, lodash.assign({id:this.props.idMasonry}, props, { ref: this.setRef }), this.props.children);
     }
 }
 

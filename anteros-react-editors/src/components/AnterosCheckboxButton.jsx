@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
-import classNames from "classnames";
+
 
 export default class AnterosCheckboxButton extends Component {
     constructor(props) {

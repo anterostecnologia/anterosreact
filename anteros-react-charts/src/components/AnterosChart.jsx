@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Chart from 'chart.js';
-import isEqual from 'lodash/isEqual';
-import find from 'lodash/find';
+import {isEqual} from 'lodash';
+import {find} from 'lodash';
 
 
 export class AnterosChart extends React.Component {

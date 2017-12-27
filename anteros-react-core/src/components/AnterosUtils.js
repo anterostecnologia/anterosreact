@@ -1,5 +1,4 @@
-var invariant = require('invariant');
-import classNames from "classnames";
+import classNames from "./classnames";
 
 const tetherAttachements = [
   'top',
@@ -192,6 +191,7 @@ class AnterosUtils {
 
   buildClassNames() {
     var classes = [];
+    var hasOwn = {}.hasOwnProperty;
 
     for (var i = 0; i < arguments.length; i++) {
       var arg = arguments[i];

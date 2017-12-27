@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
 export default class AnterosLabel extends Component {
@@ -11,7 +11,7 @@ export default class AnterosLabel extends Component {
         const colClasses = buildGridClassNames(this.props, false, []);
         let className;
         if (colClasses.length > 0)
-            className = classNames("control-label", colClasses);
+            className = AnterosUtils.buildClassNames("control-label", colClasses);
             
         return (<label style={{ textAlign: this.props.textAlign }} className={className}>{this.props.caption}</label>);
     }

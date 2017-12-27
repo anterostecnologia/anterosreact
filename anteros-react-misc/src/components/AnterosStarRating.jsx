@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import classNames  from "classnames";
-import { If, Then, Else } from "anteros-react-core";
+import { If, Then, Else, AnterosUtils } from "anteros-react-core";
 
 const parentStyles = {
     overflow: 'hidden',
@@ -212,7 +211,7 @@ class AnterosStarRating extends Component {
     }
 
     render() {
-        const className = classNames("form-control",
+        const className = AnterosUtils.buildClassNames("form-control",
             (this.props.className ? this.props.className : ""),
             (this.props.inputGridSize ? " col-sm-" + this.props.inputGridSize : ""));
 

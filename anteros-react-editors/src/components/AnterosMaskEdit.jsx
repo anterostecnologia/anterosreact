@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash.omit';
 import { AnterosError } from "anteros-react-core";
 import lodash from "lodash";
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import 'script-loader!jquery.inputmask/dist/jquery.inputmask.bundle.js';
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
@@ -123,7 +122,7 @@ export default class AnterosMaskEdit extends Component {
         }
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        const className = classNames(
+        const className = AnterosUtils.buildClassNames(
             (this.props.className ? this.props.className : ""), (colClasses.length > 0 ? "form-control" : ""));
 
         if (this.props.id) {
@@ -141,7 +140,7 @@ export default class AnterosMaskEdit extends Component {
 
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 {edit}
             </div>);
         } else {

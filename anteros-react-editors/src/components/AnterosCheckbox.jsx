@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
 class AnterosCheckbox extends Component {
@@ -90,7 +90,7 @@ class AnterosCheckbox extends Component {
         const { name, id, value, disabled, rounded } = this.props;
         const { isChecked } = this.state;
         let className = `checkbox ${(rounded ? " rounded" : "")}`;
-        className = classNames(className, (this.props.primary ? "checkbox-primary" : ""),
+        className = AnterosUtils.buildClassNames(className, (this.props.primary ? "checkbox-primary" : ""),
             (this.props.info ? "checkbox-info" : ""),
             (this.props.danger ? "checkbox-danger" : ""),
             (this.props.warning ? "checkbox-warning" : ""),
@@ -106,7 +106,7 @@ class AnterosCheckbox extends Component {
         }
 
         return (
-            <div className={classNames(colClasses)} style={{ width: this.props.width, height: this.props.height }}>
+            <div className={AnterosUtils.buildClassNames(colClasses)} style={{ width: this.props.width, height: this.props.height }}>
                 <label style={{ margin: "0" }}>
                     <input className={className} id={id ? id : this.idCheckbox}
                         type="checkbox"

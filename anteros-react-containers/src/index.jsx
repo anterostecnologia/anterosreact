@@ -13,10 +13,9 @@ import AnterosStepWizard from './components/AnterosStepWizard';
 
 export {
     AnterosCard, HeaderActions, FooterActions, AnterosCardDeck, AnterosCardGroup, AnterosCollapseContent,
-    AnterosForm, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn,
-    AnterosLayout,  AnterosCol, AnterosRow, buildGridClassNames, columnProps,
+    AnterosForm, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn,    
     AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
     AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,
-    AnterosStepWizard, AnterosPagination
+    AnterosStepWizard
 };

@@ -2,7 +2,7 @@ import regeneratorRuntime from "babel-runtime/regenerator";
 import React from "react";
 import ReactDOM from "react-dom";
 import lodash from "lodash";
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
@@ -123,7 +123,7 @@ export default class AnterosImagePicker extends React.Component {
         if (this.props.dataSource && !readOnly) {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
         }
-        if (!readOnly) {
+        if (!readOnly && !this.props.disabled) {
             $('#' + this.idImage + "_input").click();
         }
     }
@@ -131,7 +131,7 @@ export default class AnterosImagePicker extends React.Component {
     render() {
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        let className = classNames((colClasses.length > 0 || icon ? "form-control" : ""), "fileUpload");
+        let className = AnterosUtils.buildClassNames((colClasses.length > 0 || icon ? "form-control" : ""), "fileUpload");
 
         if (colClasses.length > 0) {
             return (<div className="input-group" style={{ width: this.props.width }}>

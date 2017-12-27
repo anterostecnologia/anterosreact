@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import { AnterosUtils } from "anteros-react-core";
-import classNames from "classnames";
 import update from 'react-addons-update';
 
 
@@ -10,7 +9,7 @@ class Icon extends Component {
         const { children, className, ...props } = this.props;
 
         return (
-            <i className={classNames("nestable-icon", className)} {...props} />
+            <i className={AnterosUtils.buildClassNames("nestable-icon", className)} {...props} />
         );
     }
 }
@@ -28,7 +27,7 @@ export class AnterosNestableItem extends Component {
         let Handler;
 
         let itemProps = {
-            className: classNames(
+            className: AnterosUtils.buildClassNames(
                 "nestable-item" + (isCopy ? '-copy' : ''),
                 "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id,
                 {
@@ -65,7 +64,7 @@ export class AnterosNestableItem extends Component {
 
         const collapseIcon = hasChildren ? (
             <Icon
-                className={classNames("nestable-item-icon", isCollapsed ? "icon-plus-gray" : "icon-minus-gray")}
+                className={AnterosUtils.buildClassNames("nestable-item-icon", isCollapsed ? "icon-plus-gray" : "icon-minus-gray")}
                 onClick={e => options.onToggleCollapse(item)}
             />
         ) : '';
@@ -587,7 +586,7 @@ class AnterosNestable extends Component {
         const options = this.getItemOptions();
 
         return (
-            <div className={classNames("nestable", "nestable-" + group, { 'is-drag-active': dragItem })}>
+            <div className={AnterosUtils.buildClassNames("nestable", "nestable-" + group, { 'is-drag-active': dragItem })}>
                 <ol className="nestable-list nestable-group">
                     {items.map((item, i) => {
                         return (

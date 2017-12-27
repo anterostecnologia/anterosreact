@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'script-loader!jquery-asSpinner/dist/jquery-asSpinner.min.js'
 import 'jquery-asSpinner/dist/css/asSpinner.min.css';
 import lodash from "lodash";
-import { If, Then, Else } from "anteros-react-core";
+import { If, Then, Else, AnterosUtils } from "anteros-react-core";
 
 export default class AnterosSpinner extends React.Component {
     constructor(props) {
@@ -38,14 +38,14 @@ export default class AnterosSpinner extends React.Component {
     }
 
     render() {
-        let className = classNames("form-control",
+        let className = AnterosUtils.buildClassNames("form-control",
             (this.props.className ? this.props.className : ""),
             (this.props.inputGridSize ? " col-sm-" + this.props.inputGridSize : ""));
 
         if (this.props.id) {
             this.idSpinner = this.props.id;
         }
-        let classNameLabel = classNames("control-label",(this.props.labelGridSize ? "col-sm-" + this.props.labelGridSize : ""));
+        let classNameLabel = AnterosUtils.buildClassNames("control-label",(this.props.labelGridSize ? "col-sm-" + this.props.labelGridSize : ""));
         return (
             <div>
                 <If condition={this.props.label!=undefined}>

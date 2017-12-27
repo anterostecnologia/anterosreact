@@ -1,9 +1,8 @@
 import React from 'react'
 import 'script-loader!chosen-js/chosen.jquery.min.js'
 import lodash from 'lodash';
-import classNames from "classnames";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosError } from "anteros-react-core";
+import { AnterosError, AnterosUtils } from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
 
@@ -274,7 +273,7 @@ export default class AnterosLookupCombobox extends React.Component {
             dataStyle = "btn-warning";
         }
 
-        let className = classNames(
+        let className = AnterosUtils.buildClassNames(
             (colClasses.length > 0 ? "form-control" : ""),
             (this.props.className ? this.props.className : ""));
 
@@ -291,7 +290,7 @@ export default class AnterosLookupCombobox extends React.Component {
         }
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 <select onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value}>
                     {newChildren}
                 </select>

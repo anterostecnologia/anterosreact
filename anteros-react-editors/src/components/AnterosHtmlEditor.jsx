@@ -18,7 +18,7 @@ const DIRECT_PASSTHROUGH_EVENTS = [
 const PSEUDO_HIDDEN = { position: 'absolute', left: -200, top: -200, height: 0 };
 
 import lodash from "lodash";
-import classNames from "classnames";
+import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource"
 
@@ -299,7 +299,7 @@ export default class AnterosHtmlEditor extends React.Component {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
         }
         const colClasses = buildGridClassNames(this.props, false, []);
-        const className = classNames(
+        const className = AnterosUtils.buildClassNames(
             (this.props.className ? this.props.className : ""), (colClasses.length > 0 ? "form-control" : ""));
 
         // the textarea is controlled by tinymce... and react, neither of which agree on the value
@@ -321,7 +321,7 @@ export default class AnterosHtmlEditor extends React.Component {
         </div>;
 
         if (colClasses.length > 0) {
-            return (<div className={classNames(colClasses)}>
+            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                 {textArea}
             </div>);
         } else {

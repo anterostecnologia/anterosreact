@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+import {TransitionGroup} from 'react-transition-group';
 import {AnterosFade, AnterosUtils, If, Then, Else} from 'anteros-react-core';
 
 
@@ -115,7 +114,7 @@ export default class AnterosModal extends Component {
         }
 
         const classes = document.body.className.replace(/(^| )modal-open( |$)/, ' ');
-        document.body.className = AnterosUtils.mapToCssModules(classNames(classes).trim(), this.props.cssModule);
+        document.body.className = AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames(classes).trim(), this.props.cssModule);
         AnterosUtils.setScrollbarWidth(this.originalBodyPadding);
     }
 
@@ -135,7 +134,7 @@ export default class AnterosModal extends Component {
 
         document.body.appendChild(this._element);
 
-        document.body.className = AnterosUtils.mapToCssModules(classNames(
+        document.body.className = AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames(
             classes,
             'modal-open'
         ), this.props.cssModule);
@@ -238,7 +237,7 @@ export default class AnterosModal extends Component {
 
         return (
             <div 
-                className={AnterosUtils.mapToCssModules(classNames('modal-dialog', (this.props.extraSmall ? "modal-extra-small" : ""),
+                className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-dialog', (this.props.extraSmall ? "modal-extra-small" : ""),
                     (this.props.small ? "modal-small" : ""),
                     (this.props.medium ? "modal-medium" : ""),
                     (this.props.large ? "modal-large" : ""),
@@ -251,7 +250,7 @@ export default class AnterosModal extends Component {
             >
                 <div 
                     className={AnterosUtils.mapToCssModules(
-                        classNames('modal-content', this.props.contentClassName),
+                        AnterosUtils.buildClassNames('modal-content', this.props.contentClassName),
                         this.props.cssModule
                     )}
                 style={this.props.style}>
@@ -341,7 +340,7 @@ export default class AnterosModal extends Component {
                                     : modalTransitionTimeout
                             }
                             cssModule={cssModule}
-                            className={AnterosUtils.mapToCssModules(classNames('modal', modalClassName), cssModule)}
+                            className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal', modalClassName), cssModule)}
                             {...modalAttributes}
                         >
                             {this.renderModalDialog()}
@@ -366,7 +365,7 @@ export default class AnterosModal extends Component {
                                     : backdropTransitionTimeout
                             }
                             cssModule={cssModule}
-                            className={AnterosUtils.mapToCssModules(classNames('modal-backdrop', backdropClassName), cssModule)}
+                            className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-backdrop', backdropClassName), cssModule)}
                         />
                     )}
                 </TransitionGroup>
@@ -377,7 +376,7 @@ export default class AnterosModal extends Component {
             <div className={AnterosUtils.mapToCssModules(wrapClassName)}>
                 {isOpen && (
                     <div
-                        className={AnterosUtils.mapToCssModules(classNames('modal', 'show', modalClassName), cssModule)}
+                        className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal', 'show', modalClassName), cssModule)}
                         {...modalAttributes}
                     >
                         {this.renderModalDialog()}
@@ -385,7 +384,7 @@ export default class AnterosModal extends Component {
                 )}
                 {isOpen && backdrop && (
                     <div
-                        className={AnterosUtils.mapToCssModules(classNames('modal-backdrop', 'show', backdropClassName), cssModule)}
+                        className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-backdrop', 'show', backdropClassName), cssModule)}
                     />
                 )}
             </div>
@@ -463,7 +462,7 @@ export class ModalActions extends Component {
             cssModule,
             tag: Tag,
             ...attributes } = this.props;
-        const classes = AnterosUtils.mapToCssModules(classNames(
+        const classes = AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames(
             'modal-footer',
             className
         ), cssModule);

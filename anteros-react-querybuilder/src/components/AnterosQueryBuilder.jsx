@@ -1,5 +1,5 @@
 import uniqueId from 'uuid/v4';
-import cloneDeep from 'lodash/cloneDeep';
+import lodash from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {AnterosDatetimePicker,AnterosCheckbox, AnterosTextArea, AnterosTimePicker,
@@ -11,8 +11,7 @@ import {AnterosModal, ModalActions,AnterosForm } from "anteros-react-containers"
 import { AnterosRow, AnterosCol } from "anteros-react-layout";
 import { AnterosLabel } from "anteros-react-label";
 import {AnterosRadioButton, AnterosRadioButtonItem } from "anteros-react-buttons";
-import classNames from "classnames";
-import {AnterosStringUtils, If, Then, AnterosSweetAlert, AnterosError, AnterosObjectUtils} from "anteros-react-core";
+import { AnterosUtils, AnterosStringUtils, If, Then, AnterosSweetAlert, AnterosError, AnterosObjectUtils} from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
 
@@ -367,7 +366,7 @@ export default class AnterosQueryBuilder extends React.Component {
         this.setState({ ...this.state, activeSortIndex: index });
         const { onSortChange } = this.props;
         if (onSortChange) {
-            const newSort = cloneDeep(this.state.sort);
+            const newSort = lodash.cloneDeep(this.state.sort);
             onSortChange(newSort, index);
         }
     }
@@ -383,7 +382,7 @@ export default class AnterosQueryBuilder extends React.Component {
 
         const { onSortChange } = this.props;
         if (onSortChange) {
-            const newSort = cloneDeep(sort);
+            const newSort = lodash.cloneDeep(sort);
             onSortChange(newSort, this.state.activeSortIndex);
         }
     }
@@ -406,7 +405,7 @@ export default class AnterosQueryBuilder extends React.Component {
 
             const { onSortChange } = this.props;
             if (onSortChange) {
-                const newSort = cloneDeep(sort);
+                const newSort = lodash.cloneDeep(sort);
                 onSortChange(newSort, activeIndex);
             }
         }
@@ -429,7 +428,7 @@ export default class AnterosQueryBuilder extends React.Component {
             this.setState({ ...this.state, sort: sort, activeSortIndex: activeIndex });
             const { onSortChange } = this.props;
             if (onSortChange) {
-                const newSort = cloneDeep(sort);
+                const newSort = lodash.cloneDeep(sort);
                 onSortChange(newSort, activeIndex);
             }
         }
@@ -709,7 +708,7 @@ export default class AnterosQueryBuilder extends React.Component {
 
         const { onQueryChange } = this.props;
         if (onQueryChange) {
-            const query = cloneDeep(this.state.root);
+            const query = lodash.cloneDeep(this.state.root);
             onQueryChange(query);
         }
     }
@@ -864,7 +863,7 @@ class CustomSortItem extends React.Component {
 
     render() {
         let key = this.props.id;
-        let className = classNames("list-group-item justify-content-between",
+        let className = AnterosUtils.buildClassNames("list-group-item justify-content-between",
             (this.props.active || (this.props.sortFocused == this.props.recordData[this.props.dataFieldId]) ? "active" : ""),
             (this.props.disabled ? "disabled" : ""));
         return (

@@ -7,6 +7,7 @@ const env = require('yargs').argv.env;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ChunksPlugin = require('webpack-split-chunks');
+var nodeExternals = require('webpack-node-externals');
 
 
 let libraryName = 'anteros-react-querybuilder';
@@ -40,31 +41,9 @@ module.exports = {
     umdNamedDefine: true
   },
   plugins: plugins,
-  externals: {
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
-    },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
-    },
-    'lodash': 'lodash',
-    'anteros-react-core': 'anteros-react-core',
-    'anteros-react-buttons': 'anteros-react-buttons',
-    'anteros-react-editors': 'anteros-react-editors',
-    'anteros-react-datasource': 'anteros-react-datasource',
-    'anteros-react-containers': 'anteros-react-containers',
-    'anteros-react-list': 'anteros-react-list',
-    'anteros-react-layout': 'anteros-react-layout',
-    'anteros-react-label': 'anteros-react-label',
-    'axios': 'axios',
-    'bootstrap':'bootstrap'
-  },
+  externals: nodeExternals({
+    whitelist: ['uuid/v4']
+  }),
   module: {
     loaders: [{
       test: /.js[x]?$/,
