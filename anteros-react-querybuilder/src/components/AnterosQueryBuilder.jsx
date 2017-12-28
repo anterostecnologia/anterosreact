@@ -871,8 +871,8 @@ class CustomSortItem extends React.Component {
                 className={className} onClick={this.onClick} key={key}>
                 <AnterosCheckbox value={this.props.recordData.label} info checked={this.getChecked()} onCheckboxChange={this.onCheckboxChange} />
                 <div>
-                    <i className={this.isAsc() ? "fa fa-sort-alpha-asc" : "fa fa-arrow-right"} onDoubleClick={this.onDoubleClick}> </i>
-                    <i className={this.isAsc() ? "fa fa-arrow-left" : "fa fa-sort-alpha-desc"} onDoubleClick={this.onDoubleClick} />
+                    <i className={this.isAsc() ? "fa fa-sort-alpha-down" : "fa fa-arrow-right"} onDoubleClick={this.onDoubleClick}> </i>
+                    <i className={this.isAsc() ? "fa fa-arrow-left" : "fa fa-sort-alpha-up"} onDoubleClick={this.onDoubleClick} />
                 </div>
             </li>);
     }

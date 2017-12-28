@@ -9,6 +9,7 @@ import AnterosDivider from "./components/AnterosDivider";
 import AnterosPanel from "./components/AnterosPanel";
 import AnterosSplitter from "./components/AnterosSplitter";
 import AnterosStepWizard from './components/AnterosStepWizard';
+import { AnterosFormSteps, AnterosFormStep } from "./components/AnterosFormSteps";
 
 
 export {
@@ -17,5 +18,5 @@ export {
     AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
     AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,
-    AnterosStepWizard
+    AnterosStepWizard, AnterosFormSteps, AnterosFormStep
 };
