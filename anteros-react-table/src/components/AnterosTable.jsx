@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
-import { AnterosError, formatNumber, parseNumber, formatDate, parseDateWithFormat, isDate } from "anteros-react-core";
+import { AnterosError, AnterosUtils, AnterosDateUtils } from "anteros-react-core";
 
 
 export default class AnterosTable extends Component {
@@ -31,25 +31,25 @@ export default class AnterosTable extends Component {
     renderDate(column, value, record) {
         if (!column)
             return value;
-        return formatDate(value, this.props.dateFormat);
+        return AnterosDateUtils.formatDate(value, this.props.dateFormat);
     }
 
     renderDateTime(column, value, record) {
         if (!column)
             return value;
-        return formatDate(value, this.props.dateFormat + " " + this.props.timeFormat);
+        return AnterosDateUtils.formatDate(value, this.props.dateFormat + " " + this.props.timeFormat);
     }
 
     renderTime(column, value, record) {
         if (!column)
             return value;
-        return formatDate(value, this.props.timeFormat);
+        return AnterosDateUtils.formatDate(value, this.props.timeFormat);
     }
 
     renderNumber(column, value, record) {
         if (!column || !column.props.maskFormatNumber)
             return value;
-        return formatNumber(value, column.props.maskFormatNumber);
+        return AnterosUtils.formatNumber(value, column.props.maskFormatNumber);
     }
 
     renderImage(column, value, record) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import lodash from 'lodash';
 import {AnterosUtils} from "anteros-react-core";
 
-export default class AnterosRadioButton extends Component {
+export class AnterosRadioButton extends Component {
     constructor(props) {
         super(props);
         this.toggleRadioButtonChange = this.toggleRadioButtonChange.bind(this);

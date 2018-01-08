@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
 
-export default class AnterosFloatingButton extends Component {
+export class AnterosFloatingButton extends Component {
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
@@ -142,8 +142,8 @@ AnterosFloatingButton.propTypes = {
 };
 
 AnterosFloatingButton.defaultProps = {
-    iconOpen: "icon-plus3",
-    iconClose: "icon-cross2",
+    iconOpen: "fa fa-plus",
+    iconClose: "fa fa-times",
     hintPosition: "top",
     autoClose: true,
     openMode: 'hover'

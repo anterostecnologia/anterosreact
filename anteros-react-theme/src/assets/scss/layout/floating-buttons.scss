@@ -182,8 +182,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -10px;
-    margin-left: -8px;
+    margin-top: -9px;
+    margin-left: -9px;
 }
 
 .fab-menu-btn:focus, .fab-menu-btn:hover, .fab-menu[data-fab-state=open] .fab-menu-btn,
@@ -486,7 +486,8 @@
 .btn-float i {
     display: block;
     margin: 0;
-    top: 0
+    top: 0;
+    font-size: 20px;
 }
 
 .btn-float img {

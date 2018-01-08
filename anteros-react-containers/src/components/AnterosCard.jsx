@@ -59,7 +59,7 @@ class AnterosCard extends Component {
                             <p className="title"> {this.props.caption} </p>
                         </div>
 
-                        <div className="actions" style={style}>
+                        <div className="actions">
                             {headerActions}
                         </div>
                     </div>

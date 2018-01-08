@@ -427,7 +427,7 @@ export default class AnterosDataTable extends Component {
         $('#' + this.idTable + ' tbody').on('dblclick', 'td', function () {
             if (_this.props.onDoubleClick) {
                 var data = table.row(this).data();
-                _this.onDoubleClick(data);
+                _this.props.onDoubleClick(data);
             }
         });
 
