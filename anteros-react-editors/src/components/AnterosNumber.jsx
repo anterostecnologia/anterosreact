@@ -243,6 +243,7 @@ AnterosNumber.propTypes = {
     style: React.PropTypes.object,
     readOnly: React.PropTypes.bool.isRequired,
     onChangeValue: PropTypes.func,
+    onFocus: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     decimalSeparator: PropTypes.string,
     thousandSeparator: PropTypes.string,

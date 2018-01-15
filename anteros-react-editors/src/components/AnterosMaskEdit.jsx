@@ -134,6 +134,7 @@ export default class AnterosMaskEdit extends Component {
             disabled={(this.props.disabled ? true : false)}
             style={{ ...this.props.style, width: this.props.width }}
             readOnly={readOnly}
+            onFocus={this.props.onFocus}
             onChange={this.handleChange}
             value={this.state.value}
             ref={ref => (this.input = ref)} type='text' />;
@@ -164,6 +165,7 @@ AnterosMaskEdit.propTypes = {
     placeHolder: PropTypes.string,
     onChange: PropTypes.func,
     onComplete: PropTypes.func,
+    onFocus: PropTypes.func,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

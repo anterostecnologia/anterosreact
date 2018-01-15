@@ -84,7 +84,7 @@ export default class AnterosEdit extends React.Component {
             this.setState({ value: event.target.value });
         }
         if (this.props.onChange) {
-            this.props.onChange(event);
+            this.props.onChange(event,event.target.value);
         }
     }
 
@@ -155,6 +155,7 @@ export default class AnterosEdit extends React.Component {
                     type="text" value={this.state.value}
                     className={classNameInput}
                     onChange={this.handleChange}
+                    onFocus={this.props.onFocus}
                     onKeyDown={this.onKeyDown}
                     onKeyPress={this.onKeyPress}
                     readOnly={readOnly}
@@ -170,6 +171,7 @@ export default class AnterosEdit extends React.Component {
                 type="text" value={this.state.value}
                 style={{ ...this.props.style, width: this.props.width }}
                 className={classNameInput}
+                onFocus={this.props.onFocus}
                 readOnly={readOnly}
                 onKeyDown={this.onKeyDown}
                 onKeyPress={this.onKeyPress}
@@ -204,6 +206,7 @@ AnterosEdit.propTypes = {
     large: columnProps,
     extraLarge: columnProps,
     onButtonClick: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
     icon: React.PropTypes.string,
     iconColor: React.PropTypes.string,
     image: React.PropTypes.string,

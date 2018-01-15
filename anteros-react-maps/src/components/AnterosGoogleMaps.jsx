@@ -150,7 +150,7 @@ export default class AnterosGoogleMaps extends Component {
 
     componentDidMount() {
         let _this = this;
-        loadGoogleMapApi(`https://maps.googleapis.com/maps/api/js?key=${this.props.apiKey}&language=${this.props.language}&region=${this.props.region}`, () => {
+        loadGoogleMapApi(`https://maps.googleapis.com/maps/api/js?key=${this.props.apiKey}&language=${this.props.language}&region=${this.props.region}&libraries=places`, () => {
             let options = {
                 backgroundColor: _this.props.backgroundColor,
                 clickableIcons: _this.props.clickableIcons,

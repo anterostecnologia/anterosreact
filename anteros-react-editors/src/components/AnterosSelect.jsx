@@ -128,7 +128,7 @@ export default class AnterosSelect extends React.Component {
                 throw new AnterosError("Foi encontrado um registro sem ID no dataSource passado para o Select.");
             }
             if (!record.hasOwnProperty(_this.props.dataFieldText) || (!record[_this.props.dataFieldText])) {
-                throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para a Select.");
+                throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para o Select.");
             }
 
             children.push(React.createElement(AnterosSelectOption, {
@@ -330,8 +330,6 @@ export class AnterosSelectOption extends React.Component {
     render() {
         const { divider, group, name, children, disabled, keyWordsToSearch, title, style,
             icon, content, subText, className, label } = this.props;
-
-
         if (group) {
             return (
                 <optgroup label={label}>
