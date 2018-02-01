@@ -428,8 +428,23 @@ export default class AnterosDataTable extends Component {
             if (_this.props.onDoubleClick) {
                 var data = table.row(this).data();
                 _this.props.onDoubleClick(data);
+            } else if (this.props.onCellDoubleClick){
+                var data = table.row(this).data(); 
+                var row = table.cell( this ).index().row;              
+                var column = table.cell( this ).index().column;              
+                _this.props.onCellDoubleClick(row,column, data);
             }
         });
+
+        $('#' + this.idTable + ' tbody').on( 'click', 'td', function () {
+            if (_this.props.onCellClick) {
+                var data = table.row(this).data(); 
+                var row = table.cell( this ).index().row;              
+                var column = table.cell( this ).index().column;              
+                _this.props.onCellClick(row,column, data);
+            }
+        } );
+
 
 
         let element = this.divTable.querySelector(".dataTables_scrollBody");
@@ -736,6 +751,8 @@ AnterosDataTable.propTypes = {
     onUnSelectRecord: React.PropTypes.func,
     onSelectAllRecords: React.PropTypes.func,
     onUnSelectAllRecords: React.PropTypes.func,
+    onCellClick: React.PropTypes.func,
+    onCellDoubleClick: React.PropTypes.func,
     onPageChange: React.PropTypes.func,
     onDoubleClick: React.PropTypes.func,
     renderDetails: React.PropTypes.func,
