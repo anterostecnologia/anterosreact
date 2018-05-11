@@ -19,7 +19,7 @@ export default class AnterosRadioGroup extends Component {
             this.props.children.forEach(function findIndex(element, index) {
                 if (element.props.value == _this.props.value) {
                     _this.index = index;
-                    _this.value = element.value;
+                    _this.value = element.props.value;
                 }
 
             });
@@ -33,8 +33,8 @@ export default class AnterosRadioGroup extends Component {
         let _this = this;
         if (nextProps.children) {
             nextProps.children.forEach(function findIndex(element, index) {
-                if (element.props.value == nextProps.props.value) {
-                    _this.value = element.value;
+                if (element.props.value == nextProps.value) {
+                    _this.value = element.props.value ;
                     _this.index = index;
                 }
             });
@@ -72,8 +72,7 @@ export default class AnterosRadioGroup extends Component {
     render() {
         const colClasses = buildGridClassNames(this.props, false, []);
 
-        let className = AnterosUtils.buildClassNames("d-flex flex-column form-control",
-            (this.props.className ? this.props.className : ""));
+        let className = AnterosUtils.buildClassNames("d-flex flex-column form-control", (this.props.className ? this.props.className : ""));
 
         const { checkedIndex } = this.state;
         const { horizontal, children, extraSmall: columnProps, small, medium, large, extraLarge, onRadioChange, ...props } = this.props;
