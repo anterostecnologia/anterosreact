@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/bootstrap-maxlength.min.js'
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
+import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
@@ -84,7 +84,7 @@ export default class AnterosEdit extends React.Component {
             this.setState({ value: event.target.value });
         }
         if (this.props.onChange) {
-            this.props.onChange(event,event.target.value);
+            this.props.onChange(event, event.target.value);
         }
     }
 
@@ -160,24 +160,28 @@ export default class AnterosEdit extends React.Component {
                     onKeyPress={this.onKeyPress}
                     readOnly={readOnly}
                     maxLength={this.props.maxLength}
+                    placeholder={this.props.placeHolder}
                 />
                 <div className={classNameAddOn} onClick={this.props.onButtonClick}>
                     <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick} /></span></div>
             </div>);
         } else {
-            const edit = <div className="input-group" style={{ width: this.props.width }}><input
-                disabled={(this.props.disabled ? true : false)}
-                id={this.idEdit} ref={ref => this.input = ref}
-                type="text" value={this.state.value}
-                style={{ ...this.props.style, width: this.props.width }}
-                className={classNameInput}
-                onFocus={this.props.onFocus}
-                readOnly={readOnly}
-                onKeyDown={this.onKeyDown}
-                onKeyPress={this.onKeyPress}
-                onChange={this.handleChange}
-                maxLength={this.props.maxLength}
-            /></div>;
+            const edit = <div className="input-group" style={{ width: this.props.width }}>
+                <input
+                    disabled={(this.props.disabled ? true : false)}
+                    id={this.idEdit} ref={ref => this.input = ref}
+                    type="text" value={this.state.value}
+                    style={{ ...this.props.style, width: this.props.width }}
+                    className={classNameInput}
+                    onFocus={this.props.onFocus}
+                    readOnly={readOnly}
+                    onKeyDown={this.onKeyDown}
+                    onKeyPress={this.onKeyPress}
+                    onChange={this.handleChange}
+                    maxLength={this.props.maxLength}
+                    placeholder={this.props.placeHolder}
+                />
+            </div>;
             if (colClasses.length > 0) {
                 return (<div className={AnterosUtils.buildClassNames(colClasses)}>
                     {edit}
@@ -216,5 +220,6 @@ AnterosEdit.propTypes = {
 
 AnterosEdit.defaultProps = {
     value: '',
+    placeHolder: "",
     readOnly: false
 }

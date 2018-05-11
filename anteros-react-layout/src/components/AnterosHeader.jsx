@@ -39,11 +39,11 @@ export default class AnterosHeader extends Component {
                     </div>
                 </div>
                 <div className="header-block header-block-collapse hidden-lg-up">
-                    <button className="collapse-btn" id="sidebar-collapse-btn" onClick={this.onSidebarCollapseButtonClick}>
+                    <button className="collapse-btn" id="sidebar-collapse-btn" style={{ color: "#969696" }} onClick={this.onSidebarCollapseButtonClick}>
                         <i className="fa fa-bars"></i>
-                    </button> 
+                    </button>
                 </div>
-                {menu}    
+                {menu}
                 <div className="header-block header-block-search hidden-sm-down">
                     <form role="search">
                         <div className="input-container"> <i className="fa fa-search"></i> <input type="search" placeholder="Localizar" />
