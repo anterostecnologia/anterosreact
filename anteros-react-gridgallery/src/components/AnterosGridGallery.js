@@ -3,9 +3,7 @@ import React, {
     Component
 } from 'react';
 
-import Lightbox from 'react-images';
-
-
+import Lightbox from 'react-images'
 
 export default class AnterosGridGallery extends Component {
     constructor(props) {
