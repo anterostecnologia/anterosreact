@@ -1,78 +1,130 @@
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-buttons
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-core
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-charts
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-buttons
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-containers
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-charts
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-core
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-menu
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-dashboard
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-layout
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-datasource
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-containers
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-dropzone
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-datasource
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-editors
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-dashboard
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-gridgallery
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-dropzone
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-image
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-editors
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-kanban
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-gridgallery
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-label
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-image
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-layout
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-kanban
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-list
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-label
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-maps
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-list
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-masonry
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-maps
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-menu
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-masonry
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-misc
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-misc
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-navigation
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-navigation
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-nestable
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-nestable
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-pivottable
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-pivottable
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-querybuilder
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-querybuilder
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-security
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-security
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-table
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-table
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-theme
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-theme
+npm install
 npm run dev
+npm run build
 npm pack
-cd /Users/edson/projetos_react/anteros-react2/anteros-react-treeview
+cd /Volumes/DadosMac/workspace_react/AnterosReact/anteros-react-treeview
+npm install
 npm run dev
+npm run build
 npm pack

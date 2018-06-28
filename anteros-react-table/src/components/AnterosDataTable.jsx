@@ -428,7 +428,7 @@ export default class AnterosDataTable extends Component {
             if (_this.props.onDoubleClick) {
                 var data = table.row(this).data();
                 _this.props.onDoubleClick(data);
-            } else if (this.props.onCellDoubleClick){
+            } else if (_this.props.onCellDoubleClick){
                 var data = table.row(this).data(); 
                 var row = table.cell( this ).index().row;              
                 var column = table.cell( this ).index().column;              

@@ -15,6 +15,7 @@ class AnterosNumber extends Component {
         this.prepareProps = this.prepareProps.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
         this.state = this.prepareProps(this.props);
         this.inputSelectionStart = 0;
         this.inputSelectionEnd = 0;
@@ -190,6 +191,12 @@ class AnterosNumber extends Component {
         this.inputSelectionEnd = 0;
     }
 
+    onKeyPress(event) {
+        if (this.props.onKeyPress) {
+            this.props.onKeyPress(event);
+        }
+    }
+
     render() {
         let readOnly = this.props.readOnly;
         if (this.props.dataSource && !readOnly) {
@@ -215,6 +222,8 @@ class AnterosNumber extends Component {
             onChange={this.handleChange}
             onFocus={this.handleFocus}
             onMouseUp={this.handleFocus}
+            onKeyPress={this.onKeyPress}
+            onKeyUp={this.onKeyPress}
         />);
 
         if (colClasses.length > 0) {
@@ -243,6 +252,7 @@ AnterosNumber.propTypes = {
     style: React.PropTypes.object,
     readOnly: React.PropTypes.bool.isRequired,
     onChangeValue: PropTypes.func,
+    onKeyPress: PropTypes.func,
     onFocus: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     decimalSeparator: PropTypes.string,

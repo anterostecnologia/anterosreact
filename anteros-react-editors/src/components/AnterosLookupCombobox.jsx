@@ -289,14 +289,20 @@ export default class AnterosLookupCombobox extends React.Component {
             this.idSelect = this.props.id;
         }
 
+        if (this.props.disabled) {
+            this.isDisabled = true;
+        } else {
+            this.isDisabled = false;
+        }
+
         if (colClasses.length > 0) {
             return (<div className={AnterosUtils.buildClassNames(colClasses)}>
-                <select onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value}>
+                <select disabled={this.isDisabled} onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value}>
                     {newChildren}
                 </select>
             </div>);
         } else {
-            return (<select onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value} >
+            return (<select disabled={this.isDisabled} onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value} >
                 {newChildren}
             </select>);
         }

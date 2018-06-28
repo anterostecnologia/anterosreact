@@ -3,6 +3,18 @@ import React, { Component } from 'react';
 
 
 export default class AnterosBadge extends Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick(event) {
+        event.stopPropagation();
+        if (this.props.onClick) {
+            this.props.onClick(event, this);
+        }
+    }
+
     render() {
         let className = "badge";
 
@@ -34,7 +46,7 @@ export default class AnterosBadge extends Component {
             className += " badge-radius";
         }
 
-        let style = {...this.props.style};
+        let style = { ...this.props.style };
         if (this.props.backgroundColor) {
             style = { backgroundColor: this.props.backgroundColor };
         }
@@ -42,7 +54,7 @@ export default class AnterosBadge extends Component {
             style = { ...style, color: this.props.color };
         }
 
-        return (<span style={style} className={className}>{this.props.caption}</span>);
+        return (<span style={style} onClick={this.onClick} className={className}>{this.props.caption}</span>);
     }
 }
 

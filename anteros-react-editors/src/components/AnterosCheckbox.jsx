@@ -106,7 +106,7 @@ class AnterosCheckbox extends Component {
         }
 
         return (
-            <div className={AnterosUtils.buildClassNames(colClasses)} style={{ width: this.props.width, height: this.props.height }}>
+            <div className={AnterosUtils.buildClassNames(colClasses)} style={{ width: this.props.width, height: this.props.height, ...this.props.style }}>
                 <label style={{ margin: "0" }}>
                     <input className={className} id={id ? id : this.idCheckbox}
                         type="checkbox"
