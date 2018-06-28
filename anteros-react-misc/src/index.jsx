@@ -6,9 +6,15 @@ import AnterosRibbon from './components/AnterosRibbon';
 import AnterosSlider from './components/AnterosSlider';
 import AnterosSpinner from './components/AnterosSpinner';
 import AnterosStarRating from './components/AnterosStarRating';
+import AnterosBarcode from './components/AnterosBarcode';
+import AnterosIdleTimer from './components/AnterosIdleTimer';
+import AnterosTimeAgo from './components/AnterosTimeAgo';
+import AnterosQRCode from './components/AnterosQRCode';
+import AnterosRecaptcha from './components/AnterosRecaptcha';
 
 export {
     AnterosKnob, AnterosObjectInspector,InspectorItem ,
     AnterosPDFViewer, AnterosProgressBar, AnterosRibbon,
-    AnterosSlider, AnterosSpinner, AnterosStarRating
+    AnterosSlider, AnterosSpinner, AnterosStarRating, AnterosBarcode,
+    AnterosIdleTimer,AnterosTimeAgo, AnterosQRCode, AnterosRecaptcha
 };

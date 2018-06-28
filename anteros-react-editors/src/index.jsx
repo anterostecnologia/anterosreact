@@ -21,6 +21,9 @@ import AnterosLookupNumber from './components/AnterosLookupNumber';
 import AnterosLookupCombobox, { AnterosLookupComboboxOption } from "./components/AnterosLookupCombobox";
 import AnterosCombobox, { AnterosComboboxOption } from "./components/AnterosCombobox";
 import AnterosHtmlEditor from "./components/AnterosHtmlEditor";
+import AnterosCreditCard from './components/AnterosCreditCard';
+import AnterosMultiSelect from './components/AnterosMultiSelect';
+
 
 
 export {
@@ -31,5 +34,6 @@ export {
     AnterosRadioGroup, AnterosRadio, AnterosSelect, AnterosSelectOption,
     AnterosTagsInput, AnterosTextArea, AnterosTimePicker, AnterosLookupEdit,
     AnterosLookupNumber, AnterosLookupCombobox, AnterosLookupComboboxOption,
-    AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor
+    AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,
+    AnterosMultiSelect
 };
