@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
 import 'script-loader!bootstrap-switch/dist/js/bootstrap-switch.min.js';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosCheckboxToggle extends Component {
     constructor(props) {
@@ -116,30 +116,30 @@ export default class AnterosCheckboxToggle extends Component {
 
 
 AnterosCheckboxToggle.propTypes = {
-    danger: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    dangerOff: React.PropTypes.bool,
-    successOff: React.PropTypes.bool,
-    infoOff: React.PropTypes.bool,
-    warningOff: React.PropTypes.bool,
-    primaryOff: React.PropTypes.bool,
-    id: React.PropTypes.string,
-    mini: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    large: React.PropTypes.bool,
-    extraLarge: React.PropTypes.bool,
-    checkedValue: React.PropTypes.string,
-    uncheckedValue: React.PropTypes.string,
-    round: React.PropTypes.bool,
-    square: React.PropTypes.bool,
-    value: React.PropTypes.string,
-    disabled: React.PropTypes.bool.isRequired,
-    labelWidth: React.PropTypes.string,
-    display: React.PropTypes.string
+    danger: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    dangerOff: PropTypes.bool,
+    successOff: PropTypes.bool,
+    infoOff: PropTypes.bool,
+    warningOff: PropTypes.bool,
+    primaryOff: PropTypes.bool,
+    id: PropTypes.string,
+    mini: PropTypes.bool,
+    small: PropTypes.bool,
+    large: PropTypes.bool,
+    extraLarge: PropTypes.bool,
+    checkedValue: PropTypes.string,
+    uncheckedValue: PropTypes.string,
+    round: PropTypes.bool,
+    square: PropTypes.bool,
+    value: PropTypes.string,
+    disabled: PropTypes.bool.isRequired,
+    labelWidth: PropTypes.string,
+    display: PropTypes.string
 };
 
 AnterosCheckboxToggle.defaultProps = {

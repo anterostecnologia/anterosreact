@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosCheckboxButton extends Component {
     constructor(props) {
@@ -49,15 +49,15 @@ export default class AnterosCheckboxButton extends Component {
 }
 
 AnterosCheckboxButton.propTypes = {
-    onChange: React.PropTypes.func,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    large: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool
+    onChange: PropTypes.func,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool
 }
 
 
@@ -161,32 +161,32 @@ export class AnterosCheckboxButtonItem extends Component {
 
 
 AnterosCheckboxButtonItem.propTypes = {
-    checked: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    oval: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    link: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    large: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    default: React.PropTypes.bool,
-    pillLeft: React.PropTypes.bool,
-    pillRight: React.PropTypes.bool,
-    block: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    borderColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    dropdown: React.PropTypes.bool,
-    icon: React.PropTypes.string,
-    iconColor: React.PropTypes.string,
-    image: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    hint: React.PropTypes.string,
-    hintPosition: React.PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
+    checked: PropTypes.bool,
+    disabled: PropTypes.bool,
+    oval: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    link: PropTypes.bool,
+    warning: PropTypes.bool,
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool,
+    default: PropTypes.bool,
+    pillLeft: PropTypes.bool,
+    pillRight: PropTypes.bool,
+    block: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    borderColor: PropTypes.string,
+    color: PropTypes.string,
+    dropdown: PropTypes.bool,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    image: PropTypes.string,
+    caption: PropTypes.string,
+    hint: PropTypes.string,
+    hintPosition: PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
 };
 
 AnterosCheckboxButtonItem.defaultProps = {

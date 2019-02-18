@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, { Component } from 'react';
 import { AnterosUtils } from "anteros-react-core";
 import update from 'react-addons-update';
-
+import PropTypes from 'prop-types';
 
 class Icon extends Component {
     render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'script-loader!jquery-knob/dist/jquery.knob.min.js';
 import lodash from 'lodash';
-
+import PropTypes from 'prop-types';
 
 
 export default class AnterosKnob extends Component {
@@ -63,28 +63,28 @@ export default class AnterosKnob extends Component {
 
 
 AnterosKnob.propTypes = {
-    id: React.PropTypes.string,
-    height: React.PropTypes.string.isRequired,
-    width: React.PropTypes.string.isRequired,
-    showCursor: React.PropTypes.bool.isRequired,
-    thickness: React.PropTypes.number,
-    showInput: React.PropTypes.bool.isRequired,
-    showPrevious: React.PropTypes.bool.isRequired,
-    minValue: React.PropTypes.number.isRequired,
-    maxValue: React.PropTypes.number.isRequired,
-    stepValue: React.PropTypes.number.isRequired,
-    angleOffset: React.PropTypes.number,
-    lineRound: React.PropTypes.bool.isRequired,
-    angleArc: React.PropTypes.number,
-    rotationType: React.PropTypes.oneOf(['anticlockwise', 'clockwise']),
-    value: React.PropTypes.number.isRequired,
-    color: React.PropTypes.string,
-    backgroundColor: React.PropTypes.string,
-    inputColor: React.PropTypes.string,
-    fontFamily: React.PropTypes.string,
-    fontWeight: React.PropTypes.string,
-    onChangeValue: React.PropTypes.func,
-    readOnly : React.PropTypes.bool
+    id: PropTypes.string,
+    height: PropTypes.string.isRequired,
+    width: PropTypes.string.isRequired,
+    showCursor: PropTypes.bool.isRequired,
+    thickness: PropTypes.number,
+    showInput: PropTypes.bool.isRequired,
+    showPrevious: PropTypes.bool.isRequired,
+    minValue: PropTypes.number.isRequired,
+    maxValue: PropTypes.number.isRequired,
+    stepValue: PropTypes.number.isRequired,
+    angleOffset: PropTypes.number,
+    lineRound: PropTypes.bool.isRequired,
+    angleArc: PropTypes.number,
+    rotationType: PropTypes.oneOf(['anticlockwise', 'clockwise']),
+    value: PropTypes.number.isRequired,
+    color: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    inputColor: PropTypes.string,
+    fontFamily: PropTypes.string,
+    fontWeight: PropTypes.string,
+    onChangeValue: PropTypes.func,
+    readOnly : PropTypes.bool
 }
 
 AnterosKnob.defaultProps = {

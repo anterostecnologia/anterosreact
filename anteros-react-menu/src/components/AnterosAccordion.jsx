@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AnterosError } from "anteros-react-core";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosAccordion extends Component {
     constructor(props) {
@@ -119,17 +119,17 @@ export class AnterosAccordionItem extends Component {
 
 
 AnterosAccordionItem.propTypes = {
-    disabled: React.PropTypes.bool,
-    id: React.PropTypes.string,
-    success: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    iconColor: React.PropTypes.string,
-    image: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    onSelectAccordionItem: React.PropTypes.func
+    disabled: PropTypes.bool,
+    id: PropTypes.string,
+    success: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    info: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    image: PropTypes.string,
+    caption: PropTypes.string,
+    onSelectAccordionItem: PropTypes.func
 }

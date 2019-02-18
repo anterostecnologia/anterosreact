@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosDivider extends Component {
     constructor(props){
@@ -32,13 +32,13 @@ export default class AnterosDivider extends Component {
 
 
 AnterosDivider.propTypes = {
-    horizontal: React.PropTypes.bool,
-    vertical: React.PropTypes.bool,
-    left: React.PropTypes.bool,
-    rigth: React.PropTypes.bool,
-    top: React.PropTypes.bool,
-    bottom: React.PropTypes.bool,
-    color: React.PropTypes.string
+    horizontal: PropTypes.bool,
+    vertical: PropTypes.bool,
+    left: PropTypes.bool,
+    rigth: PropTypes.bool,
+    top: PropTypes.bool,
+    bottom: PropTypes.bool,
+    color: PropTypes.string
 }
 
 AnterosDivider.defaultProps = {

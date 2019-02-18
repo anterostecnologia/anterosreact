@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-list",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "Anteros components for React - List",
   "main": "lib/anteros-react-list.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
+    "anteros-react-core": "^1.0.7",
+    "anteros-react-datasource": "^1.0.7",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",

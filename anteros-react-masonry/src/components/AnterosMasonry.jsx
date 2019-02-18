@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {AnterosUtils} from 'anteros-react-core';
 import lodash from 'lodash';
 import Masonry from 'masonry-layout/dist/masonry.pkgd.min.js';
 import imagesloaded from 'imagesloaded/imagesloaded.pkgd.min.js';
-var isBrowser = typeof window !== 'undefined';
+
 
 
 var propTypes = {
@@ -267,14 +266,14 @@ export default class AnterosMasonry extends React.Component {
 
 
 AnterosMasonry.propTypes = {
-    enableResizableChildren: React.PropTypes.bool,
-    disableImagesLoaded: React.PropTypes.bool,
-    updateOnEachImageLoad: React.PropTypes.bool,
-    options: React.PropTypes.object,
-    className: React.PropTypes.string,
-    elementType: React.PropTypes.string,
-    onLayoutComplete: React.PropTypes.func,
-    onRemoveComplete: React.PropTypes.func
+    enableResizableChildren: PropTypes.bool,
+    disableImagesLoaded: PropTypes.bool,
+    updateOnEachImageLoad: PropTypes.bool,
+    options: PropTypes.object,
+    className: PropTypes.string,
+    elementType: PropTypes.string,
+    onLayoutComplete: PropTypes.func,
+    onRemoveComplete: PropTypes.func
 }
 
 AnterosMasonry.defaultProps = {

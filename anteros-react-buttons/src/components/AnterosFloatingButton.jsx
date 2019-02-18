@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
+import PropTypes from 'prop-types';
 
 export class AnterosFloatingButton extends Component {
     constructor(props) {
@@ -117,28 +118,28 @@ export class AnterosFloatingButton extends Component {
 
 
 AnterosFloatingButton.propTypes = {
-    iconOpen: React.PropTypes.string,
-    iconClose: React.PropTypes.string,
-    image: React.PropTypes.string,
-    hint: React.PropTypes.string.isRequired,
-    hintPosition: React.PropTypes.oneOf(['left', 'right', 'top', 'bottom']).isRequired,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    success: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    outline: React.PropTypes.bool,
-    onButtonClick: React.PropTypes.func,
-    autoClose: React.PropTypes.bool.isRequired,
-    openMode: React.PropTypes.oneOf(['click', 'hover']),
-    top: React.PropTypes.bool,
-    bottom: React.PropTypes.bool,
-    topLeft: React.PropTypes.bool,
-    topRight: React.PropTypes.bool,
-    bottomLeft: React.PropTypes.bool,
-    bottomRight: React.PropTypes.bool,
-    fixed: React.PropTypes.bool
+    iconOpen: PropTypes.string,
+    iconClose: PropTypes.string,
+    image: PropTypes.string,
+    hint: PropTypes.string.isRequired,
+    hintPosition: PropTypes.oneOf(['left', 'right', 'top', 'bottom']).isRequired,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    success: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool,
+    outline: PropTypes.bool,
+    onButtonClick: PropTypes.func,
+    autoClose: PropTypes.bool.isRequired,
+    openMode: PropTypes.oneOf(['click', 'hover']),
+    top: PropTypes.bool,
+    bottom: PropTypes.bool,
+    topLeft: PropTypes.bool,
+    topRight: PropTypes.bool,
+    bottomLeft: PropTypes.bool,
+    bottomRight: PropTypes.bool,
+    fixed: PropTypes.bool
 };
 
 AnterosFloatingButton.defaultProps = {
@@ -242,19 +243,19 @@ export class AnterosFloatingButtonItem extends Component {
 }
 
 AnterosFloatingButtonItem.propTypes = {
-    id: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string,
-    hint: React.PropTypes.string,
-    hintPosition: React.PropTypes.oneOf(['left', 'right', 'top', 'bottom']).isRequired,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    success: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    onButtonClick: React.PropTypes.func
+    id: PropTypes.string,
+    icon: PropTypes.string,
+    image: PropTypes.string,
+    hint: PropTypes.string,
+    hintPosition: PropTypes.oneOf(['left', 'right', 'top', 'bottom']).isRequired,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    success: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool,
+    info: PropTypes.bool,
+    onButtonClick: PropTypes.func
 };
 
 AnterosFloatingButtonItem.defaultProps = {

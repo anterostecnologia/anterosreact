@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosIcon extends Component {
     constructor(props) {
@@ -7,15 +7,16 @@ export default class AnterosIcon extends Component {
     }
 
     render() {
-        return (<i className={this.props.icon} aria-hidden="true" style={{ paddingRight: "4px", backgroundColor: this.props.backgroundColor, color: this.props.color }}></i>);
+        return (<i className={this.props.icon?this.props.icon:this.props.name} aria-hidden="true" style={{ paddingRight: "4px", backgroundColor: this.props.backgroundColor, color: this.props.color }}></i>);
     }
 
 }
 
 
 AnterosIcon.propTypes = {
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    icon: React.PropTypes.string
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    icon: PropTypes.string,
+    name: PropTypes.string
 }
 

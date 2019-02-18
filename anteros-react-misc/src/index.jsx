@@ -11,10 +11,17 @@ import AnterosIdleTimer from './components/AnterosIdleTimer';
 import AnterosTimeAgo from './components/AnterosTimeAgo';
 import AnterosQRCode from './components/AnterosQRCode';
 import AnterosRecaptcha from './components/AnterosRecaptcha';
+import AnterosTour,{AnterosTourStep} from './components/AnterosTour';
+import AnterosFloater from './components/AnterosFloater';
+import AnterosLinearProgressBar from './components/AnterosLinearProgressBar'
+import AnterosSpeedometer from './components/AnterosSpeedometer';
+import AnterosRadialGauge from './components/AnterosRadialGauge';
 
 export {
     AnterosKnob, AnterosObjectInspector,InspectorItem ,
     AnterosPDFViewer, AnterosProgressBar, AnterosRibbon,
     AnterosSlider, AnterosSpinner, AnterosStarRating, AnterosBarcode,
-    AnterosIdleTimer,AnterosTimeAgo, AnterosQRCode, AnterosRecaptcha
+    AnterosIdleTimer,AnterosTimeAgo, AnterosQRCode, AnterosRecaptcha, AnterosTour, 
+    AnterosTourStep,AnterosLinearProgressBar,AnterosFloater,AnterosSpeedometer,
+    AnterosRadialGauge
 };

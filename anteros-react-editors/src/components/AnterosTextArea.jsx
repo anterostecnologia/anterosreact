@@ -5,7 +5,7 @@ import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-
+import PropTypes from 'prop-types';
 
 function isBase64(str) {
     try {
@@ -179,23 +179,23 @@ export default class AnterosTextArea extends React.Component {
 
 
 AnterosTextArea.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
-    value: React.PropTypes.string.isRequired,
-    placeHolder: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    maxLenght: React.PropTypes.number.isRequired,
-    rows: React.PropTypes.number,
+    dataField: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    placeHolder: PropTypes.string,
+    disabled: PropTypes.bool,
+    maxLenght: PropTypes.number.isRequired,
+    rows: PropTypes.number,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    width: React.PropTypes.string,
-    height: React.PropTypes.string
+    width: PropTypes.string,
+    height: PropTypes.string
 };
 
 AnterosTextArea.defaultProps = {

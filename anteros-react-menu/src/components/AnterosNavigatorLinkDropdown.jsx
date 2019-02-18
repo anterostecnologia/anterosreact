@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosNavigatorLinkDropdown extends Component {
     constructor(props) {
@@ -59,13 +59,13 @@ export default class AnterosNavigatorLinkDropdown extends Component {
 
 
 AnterosNavigatorLinkDropdown.propTypes = {
-    active: React.PropTypes.bool,
-    href: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    caption: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string,
-    onSelectLink: React.PropTypes.func
+    active: PropTypes.bool,
+    href: PropTypes.string,
+    disabled: PropTypes.bool,
+    caption: PropTypes.string,
+    icon: PropTypes.string,
+    image: PropTypes.string,
+    onSelectLink: PropTypes.func
 };
 
 AnterosNavigatorLinkDropdown.defaultProps = {

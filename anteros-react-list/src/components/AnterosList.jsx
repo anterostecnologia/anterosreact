@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
 import { AnterosError, AnterosUtils } from "anteros-react-core";
-
+import PropTypes from 'prop-types';
+import { AnterosLocalDatasource, AnterosRemoteDatasource } from "anteros-react-datasource";
 
 export default class AnterosList extends Component {
     constructor(props) {
@@ -79,13 +80,17 @@ export default class AnterosList extends Component {
 
 
     buildChildrensFromDataSource() {
-        if (!(this.props.dataSource.constructor === Array)) {
+        let sourceData = this.props.dataSource;
+        if (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource){
+            sourceData = this.props.dataSource.getData();
+        }
+        if (!(sourceData.constructor === Array)) {
             throw new AnterosError("O dataSource deve ser obrigatoriamente um array de dados.");
         }
         let children = [];
         let index = 0;
         let _this = this;
-        this.props.dataSource.map(record => {
+        sourceData.map(record => {
             if (!record.hasOwnProperty(_this.props.dataFieldId) || (!record[_this.props.dataFieldId])) {
                 throw new AnterosError("Foi encontrado um registro sem ID no dataSource passado para a Lista.");
             }
@@ -352,23 +357,23 @@ export class AnterosListItem extends Component {
 
 
 AnterosList.propTypes = {
-    activeBackColor: React.PropTypes.string,
-    activeColor: React.PropTypes.string,
-    alignCenter: React.PropTypes.bool,
-    alignLeft: React.PropTypes.bool,
-    alignRight: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    height: React.PropTypes.string,
-    justify: React.PropTypes.bool,
-    onSelectListItem: React.PropTypes.func,
-    width: React.PropTypes.string,
-    showBorder: React.PropTypes.bool,
-    dataFieldText: React.PropTypes.string,
-    dataFieldId: React.PropTypes.string,
-    activeIndex: React.PropTypes.number,
-    onMouseOver: React.PropTypes.func,
-    onMouseOut: React.PropTypes.func
+    activeBackColor: PropTypes.string,
+    activeColor: PropTypes.string,
+    alignCenter: PropTypes.bool,
+    alignLeft: PropTypes.bool,
+    alignRight: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    height: PropTypes.string,
+    justify: PropTypes.bool,
+    onSelectListItem: PropTypes.func,
+    width: PropTypes.string,
+    showBorder: PropTypes.bool,
+    dataFieldText: PropTypes.string,
+    dataFieldId: PropTypes.string,
+    activeIndex: PropTypes.number,
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func
 };
 
 AnterosList.defaultProps = {
@@ -380,32 +385,32 @@ AnterosList.defaultProps = {
 
 
 AnterosListItem.propTypes = {
-    active: React.PropTypes.bool,
-    activeBackColor: React.PropTypes.string,
-    activeColor: React.PropTypes.string,
-    alignCenter: React.PropTypes.bool,
-    alignLeft: React.PropTypes.bool,
-    alignRight: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    color: React.PropTypes.string,
-    danger: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    hide: React.PropTypes.bool,
-    href: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    id: React.PropTypes.number.isRequired,
-    image: React.PropTypes.string,
-    imageCircle: React.PropTypes.bool,
-    imageHeight: React.PropTypes.string,
-    imageWidth: React.PropTypes.string,
-    info: React.PropTypes.bool,
-    justify: React.PropTypes.bool,
-    onSelectListItem: React.PropTypes.func,
-    success: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    showBorder: React.PropTypes.bool,
-    key: React.PropTypes.string
+    active: PropTypes.bool,
+    activeBackColor: PropTypes.string,
+    activeColor: PropTypes.string,
+    alignCenter: PropTypes.bool,
+    alignLeft: PropTypes.bool,
+    alignRight: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    caption: PropTypes.string,
+    color: PropTypes.string,
+    danger: PropTypes.bool,
+    disabled: PropTypes.bool,
+    hide: PropTypes.bool,
+    href: PropTypes.string,
+    icon: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    image: PropTypes.string,
+    imageCircle: PropTypes.bool,
+    imageHeight: PropTypes.string,
+    imageWidth: PropTypes.string,
+    info: PropTypes.bool,
+    justify: PropTypes.bool,
+    onSelectListItem: PropTypes.func,
+    success: PropTypes.bool,
+    warning: PropTypes.bool,
+    showBorder: PropTypes.bool,
+    key: PropTypes.string
 };
 
 AnterosListItem.defaultProps = {

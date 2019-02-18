@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AnterosError } from "anteros-react-core";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosMainLayout extends Component {
 
@@ -37,7 +37,7 @@ export default class AnterosMainLayout extends Component {
 
 
 AnterosMainLayout.propTypes = {
-    horizontal: React.PropTypes.bool
+    horizontal: PropTypes.bool
 }
 
 AnterosMainLayout.defaultProps = {
@@ -45,5 +45,5 @@ AnterosMainLayout.defaultProps = {
 }
 
 AnterosMainLayout.childContextTypes = {
-    horizontal: React.PropTypes.bool
+    horizontal: PropTypes.bool
 }

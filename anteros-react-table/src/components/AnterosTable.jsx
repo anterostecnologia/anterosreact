@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
 import { AnterosError, AnterosUtils, AnterosDateUtils } from "anteros-react-core";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosTable extends Component {
     constructor(props) {
@@ -186,24 +186,24 @@ export default class AnterosTable extends Component {
     }
 }
 AnterosTable.propTypes = {
-    id: React.PropTypes.string,
-    dataSource: React.PropTypes.array.isRequired,
-    decimalSeparator: React.PropTypes.string.isRequired,
-    thousandsSeparator: React.PropTypes.string.isRequired,
-    height: React.PropTypes.string,
-    width: React.PropTypes.string,
-    showBorder: React.PropTypes.bool.isRequired,
-    showStripedRows: React.PropTypes.bool.isRequired,
-    showHover: React.PropTypes.bool.isRequired,
-    dateFormat: React.PropTypes.oneOf(['DD/MM/YYYY', 'DD-MM-YYYY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY/MM/DD', 'YYYY-MM-DD']).isRequired,
-    timeFormat: React.PropTypes.oneOf(['HH:mm:ss', 'HH:mm', 'hh:mm:ss', 'hh:mm']).isRequired,
-    tabIndex: React.PropTypes.number.isRequired,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    inverse: React.PropTypes.bool
+    id: PropTypes.string,
+    dataSource: PropTypes.array.isRequired,
+    decimalSeparator: PropTypes.string.isRequired,
+    thousandsSeparator: PropTypes.string.isRequired,
+    height: PropTypes.string,
+    width: PropTypes.string,
+    showBorder: PropTypes.bool.isRequired,
+    showStripedRows: PropTypes.bool.isRequired,
+    showHover: PropTypes.bool.isRequired,
+    dateFormat: PropTypes.oneOf(['DD/MM/YYYY', 'DD-MM-YYYY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY/MM/DD', 'YYYY-MM-DD']).isRequired,
+    timeFormat: PropTypes.oneOf(['HH:mm:ss', 'HH:mm', 'hh:mm:ss', 'hh:mm']).isRequired,
+    tabIndex: PropTypes.number.isRequired,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    primary: PropTypes.bool,
+    inverse: PropTypes.bool
 }
 
 AnterosTable.defaultProps = {
@@ -233,25 +233,25 @@ export class AnterosTableColumn extends Component {
 }
 
 AnterosTableColumn.propTypes = {
-    title: React.PropTypes.string.isRequired,
-    headerAlign: React.PropTypes.oneOf(['left', 'center', 'right']),
-    headerAlignRight: React.PropTypes.bool,
-    headerAlignCenter: React.PropTypes.bool,
-    textAlign: React.PropTypes.oneOf(['left', 'center', 'right']),
-    textAlignRight: React.PropTypes.bool,
-    textAlignCenter: React.PropTypes.bool,
-    render: React.PropTypes.func,
-    dataField: React.PropTypes.string.isRequired,
-    dataType: React.PropTypes.oneOf(['number', 'date', 'date_time', 'time', 'string', 'image']).isRequired,
-    maskFormatNumber: React.PropTypes.string,
-    onClickHeaderColumn: React.PropTypes.func,
-    onClickCellRow: React.PropTypes.func,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    inverse: React.PropTypes.bool
+    title: PropTypes.string.isRequired,
+    headerAlign: PropTypes.oneOf(['left', 'center', 'right']),
+    headerAlignRight: PropTypes.bool,
+    headerAlignCenter: PropTypes.bool,
+    textAlign: PropTypes.oneOf(['left', 'center', 'right']),
+    textAlignRight: PropTypes.bool,
+    textAlignCenter: PropTypes.bool,
+    render: PropTypes.func,
+    dataField: PropTypes.string.isRequired,
+    dataType: PropTypes.oneOf(['number', 'date', 'date_time', 'time', 'string', 'image']).isRequired,
+    maskFormatNumber: PropTypes.string,
+    onClickHeaderColumn: PropTypes.func,
+    onClickCellRow: PropTypes.func,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    primary: PropTypes.bool,
+    inverse: PropTypes.bool
 }
 
 

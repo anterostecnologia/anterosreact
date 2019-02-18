@@ -3874,7 +3874,7 @@ class AnterosDateUtils {
         }
 
         if (timeString) {
-            var token = this.parseTokenTimezone.exec(timeString)
+            var token = parseTokenTimezone.exec(timeString)
             if (token) {
                 dateStrings.time = timeString.replace(token[1], '')
                 dateStrings.timezone = token[1]
@@ -3887,13 +3887,13 @@ class AnterosDateUtils {
     }
 
     parseYear(dateString, additionalDigits) {
-        var parseTokenYYY = this.parseTokensYYY[additionalDigits]
-        var parseTokenYYYYY = this.parseTokensYYYYY[additionalDigits]
+        var parseTokenYYY = parseTokensYYY[additionalDigits]
+        var parseTokenYYYYY = parseTokensYYYYY[additionalDigits]
 
         var token
 
         // YYYY or ±YYYYY
-        token = this.parseTokenYYYY.exec(dateString) || this.parseTokenYYYYY.exec(dateString)
+        token = parseTokenYYYY.exec(dateString) || parseTokenYYYYY.exec(dateString)
         if (token) {
             var yearString = token[1]
             return {
@@ -3903,7 +3903,7 @@ class AnterosDateUtils {
         }
 
         // YY or ±YYY
-        token = this.parseTokenYY.exec(dateString) || this.parseTokenYYY.exec(dateString)
+        token = parseTokenYY.exec(dateString) || parseTokenYYY.exec(dateString)
         if (token) {
             var centuryString = token[1]
             return {
@@ -3930,14 +3930,14 @@ class AnterosDateUtils {
         var week
 
         // YYYY
-        if (dateString.length === 0) {
+        if (!dateString || dateString.length === 0) {
             date = new Date(0)
             date.setUTCFullYear(year)
             return date
         }
 
         // YYYY-MM
-        token = this.parseTokenMM.exec(dateString)
+        token = parseTokenMM.exec(dateString)
         if (token) {
             date = new Date(0)
             month = this.parseInt(token[1], 10) - 1
@@ -3946,7 +3946,7 @@ class AnterosDateUtils {
         }
 
         // YYYY-DDD or YYYYDDD
-        token = this.parseTokenDDD.exec(dateString)
+        token = parseTokenDDD.exec(dateString)
         if (token) {
             date = new Date(0)
             var dayOfYear = this.parseInt(token[1], 10)
@@ -3955,7 +3955,7 @@ class AnterosDateUtils {
         }
 
         // YYYY-MM-DD or YYYYMMDD
-        token = this.parseTokenMMDD.exec(dateString)
+        token = parseTokenMMDD.exec(dateString)
         if (token) {
             date = new Date(0)
             month = this.parseInt(token[1], 10) - 1
@@ -3965,14 +3965,14 @@ class AnterosDateUtils {
         }
 
         // YYYY-Www or YYYYWww
-        token = this.parseTokenWww.exec(dateString)
+        token = parseTokenWww.exec(dateString)
         if (token) {
             week = this.parseInt(token[1], 10) - 1
             return dayOfISOYear(year, week)
         }
 
         // YYYY-Www-D or YYYYWwwD
-        token = this.parseTokenWwwD.exec(dateString)
+        token = parseTokenWwwD.exec(dateString)
         if (token) {
             week = this.parseInt(token[1], 10) - 1
             var dayOfWeek = this.parseInt(token[2], 10) - 1
@@ -3989,14 +3989,14 @@ class AnterosDateUtils {
         var minutes
 
         // hh
-        token = this.parseTokenHH.exec(timeString)
+        token = parseTokenHH.exec(timeString)
         if (token) {
             hours = this.parseFloat(token[1].replace(',', '.'))
             return (hours % 24) * MILLISECONDS_IN_HOUR
         }
 
         // hh:mm or hhmm
-        token = this.parseTokenHHMM.exec(timeString)
+        token = parseTokenHHMM.exec(timeString)
         if (token) {
             hours = this.parseInt(token[1], 10)
             minutes = this.parseFloat(token[2].replace(',', '.'))
@@ -4005,7 +4005,7 @@ class AnterosDateUtils {
         }
 
         // hh:mm:ss or hhmmss
-        token = this.parseTokenHHMMSS.exec(timeString)
+        token = parseTokenHHMMSS.exec(timeString)
         if (token) {
             hours = this.parseInt(token[1], 10)
             minutes = this.parseInt(token[2], 10)
@@ -4024,20 +4024,20 @@ class AnterosDateUtils {
         var absoluteOffset
 
         // Z
-        token = this.parseTokenTimezoneZ.exec(timezoneString)
+        token = parseTokenTimezoneZ.exec(timezoneString)
         if (token) {
             return 0
         }
 
         // ±hh
-        token = this.parseTokenTimezoneHH.exec(timezoneString)
+        token = parseTokenTimezoneHH.exec(timezoneString)
         if (token) {
             absoluteOffset = this.parseInt(token[2], 10) * 60
             return (token[1] === '+') ? -absoluteOffset : absoluteOffset
         }
 
         // ±hh:mm or ±hhmm
-        token = this.parseTokenTimezoneHHMM.exec(timezoneString)
+        token = parseTokenTimezoneHHMM.exec(timezoneString)
         if (token) {
             absoluteOffset = this.parseInt(token[2], 10) * 60 + this.parseInt(token[3], 10)
             return (token[1] === '+') ? -absoluteOffset : absoluteOffset
@@ -4883,6 +4883,9 @@ class AnterosDateUtils {
     }
 
     parseDateWithFormat(value, format) {
+        if (!value){
+            return 0;
+        }
         value = value + "";
         format = format + "";
         var i_val = 0;
@@ -5042,6 +5045,9 @@ class AnterosDateUtils {
 
         return formattingTokensRegExp
     }
+
+
+    
 }
 
 

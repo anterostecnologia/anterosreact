@@ -356,4 +356,13 @@ export class Scatter extends React.Component {
 }
 
 export const defaults = Chart.defaults;
-export { Chart };
+
+
+AnterosChart.Doughnut = Doughnut;
+AnterosChart.Pie = Pie;
+AnterosChart.Bar = Bar;
+AnterosChart.HorizontalBar = HorizontalBar;
+AnterosChart.Radar = Radar;
+AnterosChart.Polar = Polar;
+AnterosChart.Bubble = Bubble;
+AnterosChart.Scatter = Scatter;

@@ -34,7 +34,8 @@ module.exports = {
     'default': __dirname + '/src/assets/scss/dark-blue.scss',
     'dark-blue': __dirname + '/src/assets/scss/dark-blue.scss',
     'dark-green': __dirname + '/src/assets/scss/dark-green.scss',
-    'gazin': __dirname + '/src/assets/scss/gazin.scss'
+    'gazin': __dirname + '/src/assets/scss/gazin.scss',
+    'versatil-condominio': __dirname + '/src/assets/scss/versatil-condominio.scss'
   },
   devtool: 'source-map',
   output: {

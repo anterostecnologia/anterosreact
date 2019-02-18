@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AnterosUtils } from "anteros-react-core";
+import PropTypes from 'prop-types';
 
 export default class AnterosProgressBar extends Component {
     constructor(props) {
@@ -27,18 +28,18 @@ export default class AnterosProgressBar extends Component {
 }
 
 AnterosProgressBar.propTypes = {
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    striped: React.PropTypes.bool,
-    animated: React.PropTypes.bool,
-    showText: React.PropTypes.bool,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    value: React.PropTypes.number.isRequired,
-    height: React.PropTypes.number
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    striped: PropTypes.bool,
+    animated: PropTypes.bool,
+    showText: PropTypes.bool,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    value: PropTypes.number.isRequired,
+    height: PropTypes.number
 };
 
 AnterosProgressBar.defaultProps = {

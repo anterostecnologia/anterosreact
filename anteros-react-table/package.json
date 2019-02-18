@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-table",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "Anteros components for React - Table",
   "main": "lib/anteros-react-table.js",
   "scripts": {
@@ -10,8 +10,9 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
-    "anteros-react-datasource": "file:../anteros-react-datasource/anteros-react-datasource-1.0.3.tgz",
+    "anteros-react-core": "^1.0.7",
+    "anteros-react-datasource": "^1.0.7",
+    "axios": "^0.18.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",

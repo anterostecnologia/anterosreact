@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 var TimeSlider = require('./AnterosTimeSlider.js');
 import './timeslider.css';
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
+import PropTypes from 'prop-types';
 
 export default class AnterosTimeSlider extends React.Component {
     constructor(props) {
@@ -58,29 +58,29 @@ export default class AnterosTimeSlider extends React.Component {
 }
 
 AnterosTimeSlider.propTypes = {
-    startTimestamp: React.PropTypes.number,
-    currentTimestamp: React.PropTypes.number,
-    hoursPerRuler: React.PropTypes.number,
-    graduationStep: React.PropTypes.number,
-    distanceBetweenGtitle: React.PropTypes.number,
-    updateTimestampInterval: React.PropTypes.number,
-    updateInterval: React.PropTypes.number,
-    showMs: React.PropTypes.bool,
-    initCells: React.PropTypes.object,
-    rulerEnableMove: React.PropTypes.bool,
-    timecellEnableMove: React.PropTypes.bool,
-    timecellEnableResize: React.PropTypes.bool,
-    onAddTimecell: React.PropTypes.function,
-    onToggleTimecell: React.PropTypes.function,
-    onRemoveTimecell: React.PropTypes.function,
-    onRemoveAllTimecells: React.PropTypes.function,
-    onDblclickTimecell: React.PropTypes.function,
-    onMovetimecell: React.PropTypes.function,
-    onResizeTimecell: React.PropTypes.function,
-    onChangeTimecell: React.PropTypes.function,
-    onDblclickRuler: React.PropTypes.function,
-    onMoveRuler: React.PropTypes.function,
-    onChangeRuler: React.PropTypes.function
+    startTimestamp: PropTypes.number,
+    currentTimestamp: PropTypes.number,
+    hoursPerRuler: PropTypes.number,
+    graduationStep: PropTypes.number,
+    distanceBetweenGtitle: PropTypes.number,
+    updateTimestampInterval: PropTypes.number,
+    updateInterval: PropTypes.number,
+    showMs: PropTypes.bool,
+    initCells: PropTypes.object,
+    rulerEnableMove: PropTypes.bool,
+    timecellEnableMove: PropTypes.bool,
+    timecellEnableResize: PropTypes.bool,
+    onAddTimecell: PropTypes.function,
+    onToggleTimecell: PropTypes.function,
+    onRemoveTimecell: PropTypes.function,
+    onRemoveAllTimecells: PropTypes.function,
+    onDblclickTimecell: PropTypes.function,
+    onMovetimecell: PropTypes.function,
+    onResizeTimecell: PropTypes.function,
+    onChangeTimecell: PropTypes.function,
+    onDblclickRuler: PropTypes.function,
+    onMoveRuler: PropTypes.function,
+    onChangeRuler: PropTypes.function
 };
 
 AnterosTimeSlider.defaultProps = {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-
+import PropTypes from 'prop-types';
 
 export default class AnterosStatusMark extends Component {
     render() {
@@ -59,22 +58,22 @@ export default class AnterosStatusMark extends Component {
 
 
 AnterosStatusMark.propTypes = {
-    primary: React.PropTypes.string,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    pillFormat: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    onlyBorder: React.PropTypes.bool.isRequired,
-    borderColor: React.PropTypes.string,
-    width: React.PropTypes.string,
-    height: React.PropTypes.string,
-    topRight: React.PropTypes.bool.isRequired,
-    topLeft: React.PropTypes.bool.isRequired,
-    bottomRight: React.PropTypes.bool.isRequired,
-    bottomLeft: React.PropTypes.bool.isRequired
+    primary: PropTypes.string,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    pillFormat: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    onlyBorder: PropTypes.bool.isRequired,
+    borderColor: PropTypes.string,
+    width: PropTypes.string,
+    height: PropTypes.string,
+    topRight: PropTypes.bool.isRequired,
+    topLeft: PropTypes.bool.isRequired,
+    bottomRight: PropTypes.bool.isRequired,
+    bottomLeft: PropTypes.bool.isRequired
 
 
 }

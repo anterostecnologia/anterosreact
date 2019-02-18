@@ -328,28 +328,28 @@ AnterosMultiSelect.propTypes = {
                 .PropTypes
                 .instanceOf(AnterosRemoteDatasource)
         ]),
-    dataField: React.PropTypes.string,
-    onChangeSelect: React.PropTypes.func,
-    multipleSeparator: React.PropTypes.string.isRequired,
-    searchEnabled: React.PropTypes.bool.isRequired,
-    searchPlaceHolder: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool.isRequired,
-    width: React.PropTypes.string,
-    primary: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    container: React.PropTypes.string,
+    dataField: PropTypes.string,
+    onChangeSelect: PropTypes.func,
+    multipleSeparator: PropTypes.string.isRequired,
+    searchEnabled: PropTypes.bool.isRequired,
+    searchPlaceHolder: PropTypes.string.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    width: PropTypes.string,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    info: PropTypes.bool,
+    danger: PropTypes.bool,
+    success: PropTypes.bool,
+    warning: PropTypes.bool,
+    container: PropTypes.string,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    dataFieldText: React.PropTypes.string,
-    dataFieldId: React.PropTypes.string,
-    value: React.PropTypes.string
+    dataFieldText: PropTypes.string,
+    dataFieldId: PropTypes.string,
+    value: PropTypes.string
 };
 
 AnterosMultiSelect.defaultProps = {
@@ -418,16 +418,16 @@ export class AnterosMultiSelectOption extends React.Component {
 }
 
 AnterosMultiSelectOption.propTypes = {
-    label: React.PropTypes.string,
-    subText: React.PropTypes.string,
-    group: React.PropTypes.bool,
-    divider: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    title: React.PropTypes.string,
-    style: React.PropTypes.string,
-    className: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    content: React.PropTypes.element
+    label: PropTypes.string,
+    subText: PropTypes.string,
+    group: PropTypes.bool,
+    divider: PropTypes.bool,
+    disabled: PropTypes.bool,
+    title: PropTypes.string,
+    style: PropTypes.string,
+    className: PropTypes.string,
+    icon: PropTypes.string,
+    content: PropTypes.element
 };
 
 AnterosMultiSelectOption.defaultProps = {

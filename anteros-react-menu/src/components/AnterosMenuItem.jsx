@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import lodash from 'lodash';
+import PropTypes from 'prop-types';
 import { AnterosError } from "anteros-react-core";
 
 
@@ -46,7 +46,7 @@ export default class AnterosMenuItem extends Component {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if (child.type && child.type.name == "AnterosMenuItem") {
+                if (child.type && child.type.name === "AnterosMenuItem") {
                     if (child.props.visible) {
                         newChildren.push(React.createElement(AnterosMenuItem, {
                             key: child.props.id,
@@ -76,7 +76,7 @@ export default class AnterosMenuItem extends Component {
         }
 
         let classItem;
-        if (this.props.getActiveId && this.props.getActiveId() == this.props.id) {
+        if (this.props.getActiveId && this.props.getActiveId() === this.props.id) {
             classItem = "active";
         }
 
@@ -90,37 +90,23 @@ export default class AnterosMenuItem extends Component {
 
         if (this.context.horizontal) {
             if (newChildren && newChildren.length > 0) {
-                if (this.props.level == 1) {
-                    return (<li className={"nav-item "+(this.props.getActiveId && this.props.getActiveId() == this.props.id?"has-class":"")} onClick={this.onSelectMenuItem}>
-                        <a>
-                            {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
-                            <span>{this.props.caption}</span>
-                        </a>
-                        <ul className={"tree-" + this.props.level + " open"}>
-                            {newChildren}
-                        </ul>
-                    </li>);
-                } else {
-                    let className = "nav-sub-item";
-                    if (this.props.level>=3){
-                        className += "-"+this.props.level;
-                    }
-                    return (<li className={className+(this.props.getActiveId && this.props.getActiveId() == this.props.id?" has-class":"")} onClick={this.onSelectMenuItem}>
-                        <a>
-                            {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
-                            <span>{this.props.caption}</span>
-                        </a>
-                        <ul className={"tree-" + this.props.level + " open"}>
-                            {newChildren}
-                        </ul>
-                    </li>);
-                }
-            } else {
-                return (<li className="nav-item" onClick={this.onSelectMenuItem}>
-                    <a>
-                        <span>  {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth}/></span>
+                return (<li onClick={this.onSelectMenuItem}>
+                    <span>
+                        {/* eslint-disable-next-line */}
+                        {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
                         {this.props.caption}
-                    </a>
+                    </span>
+                    <ul className={"submenu"}>
+                        {newChildren}
+                    </ul>
+                </li>);                
+            } else {
+                return (<li onClick={this.onSelectMenuItem}>
+                    <span>
+                        {/* eslint-disable-next-line */}
+                        {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
+                        {this.props.caption}
+                    </span>
                 </li>);
             }
         } else {
@@ -134,6 +120,7 @@ export default class AnterosMenuItem extends Component {
             return (
                 <li className={classItem} onClick={this.toggleExpanded} id={this.props.id}>
                     <a href={this.props.href} style={{ paddingLeft: (((this.props.level - 1) * 10) + 10) + "px" }}>
+                        {/* eslint-disable-next-line */}
                         {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} /> {this.props.caption} {arrowIcon}
                     </a>
                     {children}
@@ -147,17 +134,17 @@ export default class AnterosMenuItem extends Component {
 
 
 AnterosMenuItem.propTypes = {
-    active: React.PropTypes.bool,
-    icon: React.PropTypes.string,
-    iconColor: React.PropTypes.string,
-    image: React.PropTypes.string,
-    imageWidth: React.PropTypes.string,
-    imageHeight: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    onSelectMenuItem: React.PropTypes.func,
-    href: React.PropTypes.string,
-    visible: React.PropTypes.bool,
-    divider: React.PropTypes.bool
+    active: PropTypes.bool,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    image: PropTypes.string,
+    imageWidth: PropTypes.string,
+    imageHeight: PropTypes.string,
+    caption: PropTypes.string,
+    onSelectMenuItem: PropTypes.func,
+    href: PropTypes.string,
+    visible: PropTypes.bool,
+    divider: PropTypes.bool
 };
 
 AnterosMenuItem.defaultProps = {
@@ -171,5 +158,5 @@ AnterosMenuItem.defaultProps = {
 };
 
 AnterosMenuItem.contextTypes = {
-    horizontal: React.PropTypes.bool
+    horizontal: PropTypes.bool
 };

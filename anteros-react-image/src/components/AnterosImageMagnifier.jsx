@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 class AnterosMagnifier extends Component {
     constructor(props) {
@@ -47,38 +48,38 @@ class AnterosMagnifier extends Component {
 
 AnterosMagnifier.propTypes = {
     // the size of the magnifier window
-    size: React.PropTypes.number.isRequired,
+    size: PropTypes.number.isRequired,
 
     // x position on screen
-    x: React.PropTypes.number.isRequired,
+    x: PropTypes.number.isRequired,
 
     // y position on screen
-    y: React.PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
 
     // x position relative to the image
-    offsetX: React.PropTypes.number.isRequired,
+    offsetX: PropTypes.number.isRequired,
 
     // y position relative to the image
-    offsetY: React.PropTypes.number.isRequired,
+    offsetY: PropTypes.number.isRequired,
 
     // the offset of the zoom bubble from the cursor
-    cursorOffset: React.PropTypes.shape({
-        x: React.PropTypes.number.isRequired,
-        y: React.PropTypes.number.isRequired
+    cursorOffset: PropTypes.shape({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired
     }).isRequired,
 
     // the size of the non-zoomed-in image
-    smallImage: React.PropTypes.shape({
-        src: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired
+    smallImage: PropTypes.shape({
+        src: PropTypes.string.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
     }).isRequired,
 
     // the size of the zoomed-in image
-    zoomImage: React.PropTypes.shape({
-        src: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired
+    zoomImage: PropTypes.shape({
+        src: PropTypes.string.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
     }).isRequired
 }
 
@@ -155,26 +156,26 @@ export default class AnterosImageMagnifier extends Component {
 AnterosImageMagnifier.propTypes = {
 
     // the size of the magnifier window
-    size: React.PropTypes.number,
+    size: PropTypes.number,
 
     // the offset of the zoom bubble from the cursor
-    cursorOffset: React.PropTypes.shape({
-        x: React.PropTypes.number.isRequired,
-        y: React.PropTypes.number.isRequired
+    cursorOffset: PropTypes.shape({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired
     }),
 
     // the size of the non-zoomed-in image
-    image: React.PropTypes.shape({
-        src: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired
+    image: PropTypes.shape({
+        src: PropTypes.string.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
     }).isRequired,
 
     // the size of the zoomed-in image
-    zoomImage: React.PropTypes.shape({
-        src: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired
+    zoomImage: PropTypes.shape({
+        src: PropTypes.string.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
     }).isRequired
 }
 

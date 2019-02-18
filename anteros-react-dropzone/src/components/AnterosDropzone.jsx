@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import "dropzone/dist/dropzone.css";
-
+import PropTypes from 'prop-types';
 
 
 let Dropzone = null
@@ -319,36 +319,36 @@ function extend() {
 };
 
 AnterosDropzone.propTypes = {
-    configDropzoneJs: React.PropTypes.object.isRequired,
-    config: React.PropTypes.object.isRequired,
-    onInit: React.PropTypes.func,
-    onDrop: React.PropTypes.func,
-    onDragStart: React.PropTypes.func,
-    onDragend: React.PropTypes.func,
-    onDragEnter: React.PropTypes.func,
-    onDragOver: React.PropTypes.func,
-    onDragLeave: React.PropTypes.func,
-    onAddedFile: React.PropTypes.func,
-    onRemovedFile: React.PropTypes.func,
-    onThumbnail: React.PropTypes.func,
-    onError: React.PropTypes.func,
-    onProcessing: React.PropTypes.func,
-    onUploadProgress: React.PropTypes.func,
-    onSending: React.PropTypes.func,
-    onSuccess: React.PropTypes.func,
-    onComplete: React.PropTypes.func,
-    onCanceled: React.PropTypes.func,
-    onMaxFilesReached: React.PropTypes.func,
-    onMaxFilesExceeded: React.PropTypes.func,
-    onProcessingMultiple: React.PropTypes.func,
-    onSendingMultiple: React.PropTypes.func,
-    onSuccessMultiple: React.PropTypes.func,
-    onCompleteMultiple: React.PropTypes.func,
-    onCanceledMultiple: React.PropTypes.func,
-    onTotalUploadProgress: React.PropTypes.func,
-    onReset: React.PropTypes.func,
-    onQueueComplete: React.PropTypes.func,
-    language: React.PropTypes.string.isRequired
+    configDropzoneJs: PropTypes.object.isRequired,
+    config: PropTypes.object.isRequired,
+    onInit: PropTypes.func,
+    onDrop: PropTypes.func,
+    onDragStart: PropTypes.func,
+    onDragend: PropTypes.func,
+    onDragEnter: PropTypes.func,
+    onDragOver: PropTypes.func,
+    onDragLeave: PropTypes.func,
+    onAddedFile: PropTypes.func,
+    onRemovedFile: PropTypes.func,
+    onThumbnail: PropTypes.func,
+    onError: PropTypes.func,
+    onProcessing: PropTypes.func,
+    onUploadProgress: PropTypes.func,
+    onSending: PropTypes.func,
+    onSuccess: PropTypes.func,
+    onComplete: PropTypes.func,
+    onCanceled: PropTypes.func,
+    onMaxFilesReached: PropTypes.func,
+    onMaxFilesExceeded: PropTypes.func,
+    onProcessingMultiple: PropTypes.func,
+    onSendingMultiple: PropTypes.func,
+    onSuccessMultiple: PropTypes.func,
+    onCompleteMultiple: PropTypes.func,
+    onCanceledMultiple: PropTypes.func,
+    onTotalUploadProgress: PropTypes.func,
+    onReset: PropTypes.func,
+    onQueueComplete: PropTypes.func,
+    language: PropTypes.string.isRequired
 
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-editors",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "Anteros components for React - Editors",
   "main": "lib/anteros-react-editors.js",
   "scripts": {
@@ -10,9 +10,10 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
-    "anteros-react-datasource": "file:../anteros-react-datasource/anteros-react-datasource-1.0.3.tgz",
-    "anteros-react-layout": "file:../anteros-react-layout/anteros-react-layout-1.0.2.tgz",
+    "anteros-react-containers": "^1.0.9",
+    "anteros-react-core": "^1.0.7",
+    "anteros-react-datasource": "^1.0.7",
+    "anteros-react-layout": "^1.0.9",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
@@ -47,6 +48,7 @@
     "moment": "^2.19.3",
     "node-sass": "^4.5.3",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
+    "payment": "^2.3.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "react": "^15.5.0",

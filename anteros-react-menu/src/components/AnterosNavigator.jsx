@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AnterosNavigatorLink from "./AnterosNavigatorLink";
 import lodash from 'lodash';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosNavigator extends Component {
     constructor(props) {
@@ -75,14 +75,14 @@ export default class AnterosNavigator extends Component {
 }
 
 AnterosNavigator.propTypes = {
-    align: React.PropTypes.string,
-    stack: React.PropTypes.string,
-    pillFormat: React.PropTypes.bool,
-    justified: React.PropTypes.bool,
-    activeBackColor: React.PropTypes.string,
-    activeColor: React.PropTypes.string,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string
+    align: PropTypes.string,
+    stack: PropTypes.string,
+    pillFormat: PropTypes.bool,
+    justified: PropTypes.bool,
+    activeBackColor: PropTypes.string,
+    activeColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string
 
 };
 

@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Promise from 'promise';
 // import './AnterosStepWizard.css';
-import { AnterosError } from "anteros-react-core";
+
 /**
  * Author: Mark Paul
  *         newbreedofgeek

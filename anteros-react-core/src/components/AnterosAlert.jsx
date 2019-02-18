@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
-
+import PropTypes from 'prop-types';
 
 const FirstChild = ({ children }) => (
     React.Children.toArray(children)[0] || null
@@ -171,32 +171,32 @@ export class AnterosAlert extends Component {
 
 
 AnterosAlert.propTypes = {
-    showBorder: React.PropTypes.bool,
-    fill: React.PropTypes.bool,
-    isOpen: React.PropTypes.bool,
-    onClose: React.PropTypes.func,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    purple: React.PropTypes.bool,
-    greyDarker: React.PropTypes.bool,
-    blueDirty: React.PropTypes.bool,
-    aquamarine: React.PropTypes.bool,
-    facebook: React.PropTypes.bool,
-    twitter: React.PropTypes.bool,
-    googlePlus: React.PropTypes.bool,
-    linkedin: React.PropTypes.bool,
-    showBorderLeft: React.PropTypes.bool,
-    textColored: React.PropTypes.bool,
-    avatar32: React.PropTypes.bool,
-    avatar16: React.PropTypes.bool,
-    avatar48: React.PropTypes.bool,
-    avatar64: React.PropTypes.bool,
-    autoCloseInterval: React.PropTypes.number.isRequired,
-    transitionAppearTimeout: React.PropTypes.number,
-    transitionEnterTimeout: React.PropTypes.number,
-    transitionLeaveTimeout: React.PropTypes.number,
+    showBorder: PropTypes.bool,
+    fill: PropTypes.bool,
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.func,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    purple: PropTypes.bool,
+    greyDarker: PropTypes.bool,
+    blueDirty: PropTypes.bool,
+    aquamarine: PropTypes.bool,
+    facebook: PropTypes.bool,
+    twitter: PropTypes.bool,
+    googlePlus: PropTypes.bool,
+    linkedin: PropTypes.bool,
+    showBorderLeft: PropTypes.bool,
+    textColored: PropTypes.bool,
+    avatar32: PropTypes.bool,
+    avatar16: PropTypes.bool,
+    avatar48: PropTypes.bool,
+    avatar64: PropTypes.bool,
+    autoCloseInterval: PropTypes.number.isRequired,
+    transitionAppearTimeout: PropTypes.number,
+    transitionEnterTimeout: PropTypes.number,
+    transitionLeaveTimeout: PropTypes.number,
 };
 
 AnterosAlert.defaultProps = {

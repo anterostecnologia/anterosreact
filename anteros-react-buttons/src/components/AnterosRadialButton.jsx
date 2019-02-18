@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import AnterosFloatingButtonCore from "./AnterosFloatingButtonCore";
-
+import PropTypes from 'prop-types';
 
 
 export default class AnterosRadialButton extends Component {

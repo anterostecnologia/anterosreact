@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import lodash from "lodash";
 import { AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
@@ -59,23 +60,23 @@ export default class AnterosBoxInfo extends Component {
 }
 
 AnterosBoxInfo.propTypes = {
-    id: React.PropTypes.string,
-    className: React.PropTypes.string,
-    danger: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    icon: React.PropTypes.string.isRequired,
+    id: PropTypes.string,
+    className: PropTypes.string,
+    danger: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    icon: PropTypes.string.isRequired,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    onBoxClick: React.PropTypes.func,
-    cursor: React.PropTypes.string,
-    textColor: React.PropTypes.string,
+    onBoxClick: PropTypes.func,
+    cursor: PropTypes.string,
+    textColor: PropTypes.string,
 }
 
 AnterosBoxInfo.defaultProps = {

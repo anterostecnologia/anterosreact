@@ -1,13 +1,8 @@
 /*************************************************************
-*						App Variables
-**************************************************************/
-
-
-/*************************************************************
 *					  Colors Definitions
 **************************************************************/
-
 $color-primary: #3FA9F4;// #85CE36;//#3FA9F4 !default;
+$color-primary-two: #3FA9F4;// #85CE36;//#3FA9F4 !default;
 $color-primary-light: lighten($color-primary, 10%) !default; 
 $color-primary-lighter: lighten($color-primary-light, 6%) !default; 
 $color-primary-dark: darken($color-primary, 10%) !default;
@@ -24,24 +19,28 @@ $color-text-inverse: #ffffff !default;
 $color-text-passive: #c5c5c5 !default;
 
 $color-success: #5cb85c;// #4bcf99 !default;
+$color-success-darker: darken($color-success, 6%) !default;
 $color-info: #5bc0de;//#76D4F5 !default;
+$color-info-darker: darken($color-info, 6%) !default;
 $color-warning: #f0ad4e;//#fe974b !default;
+$color-warning-darker: darken($color-warning, 6%) !default;
 $color-danger: #d9534f;//#FF4444 !default;
+$color-danger-darker: darken($color-danger, 6%) !default;
 $color-secondary: #6b7a85;//#131e26 !default;
+$color-secondary-darker: darken($color-secondary, 6%) !default;
 $color-inverse: #131e26 !default;
 $color-default: #ffffff;
+$sidebar-background: linear-gradient($color-primary,$color-primary-two);
+$sidebar-menu-background: transparent;
 
 
 /*************************************************************
 *					Common Element Variables
 **************************************************************/
-
 // Buttons
 $btn-radius: 25px !default;
-
 $btn-primary-color: $color-primary !default;
 $btn-primary-color-text: $color-text-inverse !default;
-
 
 // Links
 $link-color: white; 
@@ -55,8 +54,7 @@ $link-hover-decoration: none !default;
 $header-height: 55px !default;
 $header-height-xs: 50px !default;
 $header-hover: ligthen(black,20%);
-
-
+$header-background: linear-gradient(to right, $color-primary,$color-primary-two);
 
 // Sidebar
 $sidebar-width: 230px !default;
@@ -69,7 +67,10 @@ $sidebar-color-text-active:  #005A8A;
 $sidebar-header-color: $color-primary;
 $sidebar-header-text: $color-text;
 $sidebar-color-active:  lighten($sidebar-color-primary, 10%);
-
+$sidebar-font-size: 0.9rem;
+$sidebar-font-icon-size: 1.1rem;
+$sidebar-background: linear-gradient($color-primary,$color-primary-two);
+$sidebar-menu-background: transparent;
 
 // Search
 $input-search-color: #eceff1;
@@ -98,12 +99,10 @@ $content-padding-y-sm: 20px !default;
 $content-padding-x-xs: 10px !default;
 $content-padding-y-xs: 15px !default;
 
-
 // Card
 $card-padding-x: 15px !default;
 $card-padding-x-xl: 20px !default;
 $card-padding-x-sm: 10px !default;
-
 $card-margin-bottom: 10px;
 
 // Item list
@@ -114,10 +113,49 @@ $chart-color-primary: $color-primary !default;
 $chart-color-secondary: lighten($chart-color-primary, 10%) !default;
 
 
-
-/* ***************************************************
-*			Page Specific Element Variables
-****************************************************** */
-
 // Dashboard
 $dashboard-stat-icon-color: #BDBDBD !default;
+
+// Notifications
+$notifications-font-base-path: '../fonts' !default;
+$notifications-transition-time: 0.4s !default;
+$notifications-container-top: 0 !default;
+$notifications-container-right: 0 !default;
+$notifications-container-z-index: 999999 !default;
+$notifications-container-width: 320px !default;
+$notifications-container-top-padding: 0px !default;
+$notifications-container-max-height: calc(100% - 30px) !default;
+$notifications-container-right-padding: 15px !default;
+$notifications-border-radius: 2px !default;
+$notifications-padding-top: 15px !default;
+$notifications-padding-right: 15px !default;
+$notifications-padding-bottom: 15px !default;
+$notifications-padding-left: 58px !default;
+$notifications-color: #fff !default;
+$notifications-background-color: #ccc !default;
+$notifications-box-shadow: 0 0 12px #999 !default;
+$notifications-cursor: pointer !default;
+$notifications-font-size: 1em !default;
+$notifications-line-height: 1.2em !default;
+$notifications-opacity: 0.9 !default;
+$notifications-margin-top: 15px !default;
+$notifications-icon-top: 50% !default;
+$notifications-icon-left: 15px !default;
+$notifications-icon-margin-top: -14px !default;
+$notifications-icon-width: 28px !default;
+$notifications-icon-height: 28px !default;
+$notifications-icon-font-size: 28px !default;
+$notifications-icon-line-height: 28px !default;
+$notifications-hover-opacity: 1 !default;
+$notifications-title-font-size: 1em !default;
+$notifications-title-line-height: 1.2em !default;
+$notifications-title-font-weight: bold !default;
+$notifications-title-margin: 0 0 5px 0 !default;
+$notifications-info-background-color: #2f96b4 !default;
+$notifications-info-content: "\f05a" !default;
+$notifications-success-background-color: $color-success !default;
+$notifications-success-content: "\f058" !default;
+$notifications-warning-background-color: $color-warning !default;
+$notifications-warning-content: "\f06a" !default;
+$notifications-error-background-color: $color-danger !default;
+$notifications-error-content: "\f057" !default;

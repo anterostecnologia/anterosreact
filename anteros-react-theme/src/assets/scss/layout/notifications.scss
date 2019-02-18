@@ -1,0 +1,114 @@
+
+@font-face {
+  font-family: 'Notification';
+  src: url('#{$notifications-font-base-path}/notification.eot?s3g3t9');
+  src: url('#{$notifications-font-base-path}/notification.eot?#iefixs3g3t9') format('embedded-opentype'),
+  url('#{$notifications-font-base-path}/notification.woff?s3g3t9') format('woff'),
+  url('#{$notifications-font-base-path}/notification.ttf?s3g3t9') format('truetype'),
+  url('#{$notifications-font-base-path}/notification.svg?s3g3t9#notification') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.notification-container {
+  box-sizing: border-box;
+  position: fixed;
+  top: $notifications-container-top;
+  right: $notifications-container-right;
+  z-index: $notifications-container-z-index;
+  width: $notifications-container-width;
+  padding: $notifications-container-top-padding $notifications-container-right-padding;
+  max-height: $notifications-container-max-height;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.notification {
+  box-sizing: border-box;
+  padding: $notifications-padding-top $notifications-padding-right $notifications-padding-bottom $notifications-padding-left;
+  border-radius: $notifications-border-radius;
+  color: $notifications-color;
+  background-color: $notifications-background-color;
+  box-shadow: $notifications-box-shadow;
+  cursor: $notifications-cursor;
+  font-size: $notifications-font-size;
+  line-height: $notifications-line-height;
+  position: relative;
+  opacity: $notifications-opacity;
+  margin-top: $notifications-margin-top;
+  .title {
+    font-size: $notifications-title-font-size;
+    line-height: $notifications-title-line-height;
+    font-weight: $notifications-title-font-weight;
+    margin: $notifications-title-margin;
+  }
+  &:hover, &:focus {
+    opacity: $notifications-hover-opacity;
+  }
+}
+
+.notification-enter {
+  visibility: hidden;
+  transform: translate3d(100%, 0, 0);
+}
+
+.notification-enter.notification-enter-active {
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+  transition: all $notifications-transition-time;
+}
+
+.notification-leave {
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+}
+
+.notification-leave.notification-leave-active {
+  visibility: hidden;
+  transform: translate3d(100%, 0, 0);
+  transition: all $notifications-transition-time;
+}
+
+.notification {
+  &:before {
+    position: absolute;
+    top: $notifications-icon-top;
+    left: $notifications-icon-left;
+    margin-top: $notifications-icon-margin-top;
+    display: block;
+    font-family: 'Notification';
+    width: $notifications-icon-width;
+    height: $notifications-icon-height;
+    font-size: $notifications-icon-font-size;
+    text-align: center;
+    line-height: $notifications-icon-line-height;
+  }
+}
+
+.notification-info {
+  background-color: $notifications-info-background-color;
+  &:before {
+    content: $notifications-info-content;
+  }
+}
+
+.notification-success {
+  background-color: $notifications-success-background-color;
+  &:before {
+    content: $notifications-success-content;
+  }
+}
+
+.notification-warning {
+  background-color: $notifications-warning-background-color;
+  &:before {
+    content: $notifications-warning-content;
+  }
+}
+
+.notification-error {
+  background-color: $notifications-error-background-color;
+  &:before {
+    content: $notifications-error-content;
+  }
+}

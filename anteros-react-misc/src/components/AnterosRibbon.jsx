@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class AnterosRibbon extends Component {
 
@@ -46,16 +47,16 @@ export default class AnterosRibbon extends Component {
 }
 
 AnterosRibbon.propTypes = {
-    danger: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    icon: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    text: React.PropTypes.string,
-    reverse: React.PropTypes.bool,
-    vertical: React.PropTypes.bool,
+    danger: PropTypes.bool,
+    success: PropTypes.bool,
+    primary: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    icon: PropTypes.string,
+    caption: PropTypes.string,
+    text: PropTypes.string,
+    reverse: PropTypes.bool,
+    vertical: PropTypes.bool,
 };
 
 AnterosRibbon.defaultProps = {

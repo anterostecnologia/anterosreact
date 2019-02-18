@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import {isEqual} from 'lodash';
 import {debounce} from 'lodash';
@@ -39,7 +40,7 @@ export class AnterosEChart extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         const _this = this;
         return (!_this.state.instance
-            || !_isEqual(nextProps.options, _this.props.options)
+            || !isEqual(nextProps.options, _this.props.options)
             || (nextProps.group !== _this.props.group)
         );
     }
@@ -142,19 +143,19 @@ export class AnterosEChart extends Component {
 
 
 AnterosEChart.propTypes = {
-    className: React.PropTypes.string,
-    style: React.PropTypes.object,
-    theme: React.PropTypes.string,
-    group: React.PropTypes.string,
-    options: React.PropTypes.object.isRequired,
-    initOpts: React.PropTypes.object,
-    notMerge: React.PropTypes.bool,
-    lazyUpdate: React.PropTypes.bool,
-    loading: React.PropTypes.bool,
-    optsLoading: React.PropTypes.object,
-    onReady: React.PropTypes.func,
-    resizable: React.PropTypes.bool,
-    onEvents: React.PropTypes.object
+    className: PropTypes.string,
+    style: PropTypes.object,
+    theme: PropTypes.string,
+    group: PropTypes.string,
+    options: PropTypes.object.isRequired,
+    initOpts: PropTypes.object,
+    notMerge: PropTypes.bool,
+    lazyUpdate: PropTypes.bool,
+    loading: PropTypes.bool,
+    optsLoading: PropTypes.object,
+    onReady: PropTypes.func,
+    resizable: PropTypes.bool,
+    onEvents: PropTypes.object
 };
 
 AnterosEChart.defaultProps = {

@@ -3,6 +3,8 @@ import 'script-loader!emojionearea/dist/emojionearea.min.js'
 import 'emojionearea/dist/emojionearea.min.css';
 import lodash from "lodash";
 import {If, Then, AnterosUtils} from "anteros-react-core";
+import PropTypes from 'prop-types';
+
 
 export default class AnterosEmojiArea extends React.Component {
     constructor(props) {
@@ -107,13 +109,13 @@ export default class AnterosEmojiArea extends React.Component {
 
 
 AnterosEmojiArea.propTypes = {
-    value: React.PropTypes.string.isRequired,
-    placeHolder: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    maxLenght: React.PropTypes.number.isRequired,
-    label: React.PropTypes.string,
-    inputGridSize: React.PropTypes.number,
-    labelGridSize: React.PropTypes.number
+    value: PropTypes.string.isRequired,
+    placeHolder: PropTypes.string,
+    disabled: PropTypes.bool,
+    maxLenght: PropTypes.number.isRequired,
+    label: PropTypes.string,
+    inputGridSize: PropTypes.number,
+    labelGridSize: PropTypes.number
 };
 
 AnterosEmojiArea.defaultProps = {

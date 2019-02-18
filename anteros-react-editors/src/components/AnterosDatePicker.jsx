@@ -6,6 +6,8 @@ import lodash from "lodash";
 import { AnterosDateUtils, AnterosUtils } from 'anteros-react-core';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import PropTypes from 'prop-types';
+
 
 export default class AnterosDatePicker extends React.Component {
   constructor(props) {
@@ -213,34 +215,34 @@ export default class AnterosDatePicker extends React.Component {
 
 
 AnterosDatePicker.propTypes = {
-  dataSource: React.PropTypes.oneOfType([
-    React.PropTypes.instanceOf(AnterosLocalDatasource),
-    React.PropTypes.instanceOf(AnterosRemoteDatasource)
+  dataSource: PropTypes.oneOfType([
+    PropTypes.instanceOf(AnterosLocalDatasource),
+    PropTypes.instanceOf(AnterosRemoteDatasource)
   ]),
-  dataField: React.PropTypes.string,
-  placeHolder: React.PropTypes.string,
-  format: React.PropTypes.string,
-  value: React.PropTypes.string.isRequired,
-  disabled: React.PropTypes.bool,
+  dataField: PropTypes.string,
+  placeHolder: PropTypes.string,
+  format: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   extraSmall: columnProps,
   small: columnProps,
   medium: columnProps,
   large: columnProps,
   extraLarge: columnProps,
-  primary: React.PropTypes.bool,
-  success: React.PropTypes.bool,
-  info: React.PropTypes.bool,
-  danger: React.PropTypes.bool,
-  warning: React.PropTypes.bool,
-  secondary: React.PropTypes.bool,
-  default: React.PropTypes.bool,
-  fullPrimary: React.PropTypes.bool,
-  fullSuccess: React.PropTypes.bool,
-  fullInfo: React.PropTypes.bool,
-  fullDanger: React.PropTypes.bool,
-  fullWarning: React.PropTypes.bool,
-  fullSecondary: React.PropTypes.bool,
-  style: React.PropTypes.object
+  primary: PropTypes.bool,
+  success: PropTypes.bool,
+  info: PropTypes.bool,
+  danger: PropTypes.bool,
+  warning: PropTypes.bool,
+  secondary: PropTypes.bool,
+  default: PropTypes.bool,
+  fullPrimary: PropTypes.bool,
+  fullSuccess: PropTypes.bool,
+  fullInfo: PropTypes.bool,
+  fullDanger: PropTypes.bool,
+  fullWarning: PropTypes.bool,
+  fullSecondary: PropTypes.bool,
+  style: PropTypes.object
 };
 
 AnterosDatePicker.defaultProps = {

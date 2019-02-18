@@ -237,20 +237,20 @@ class AnterosNumber extends Component {
 }
 
 AnterosNumber.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
-    className: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
+    dataField: PropTypes.string,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    style: React.PropTypes.object,
-    readOnly: React.PropTypes.bool.isRequired,
+    style: PropTypes.object,
+    readOnly: PropTypes.bool.isRequired,
     onChangeValue: PropTypes.func,
     onKeyPress: PropTypes.func,
     onFocus: PropTypes.func,

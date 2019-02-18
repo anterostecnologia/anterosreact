@@ -7,6 +7,8 @@ import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import 'script-loader!jquery.inputmask/dist/jquery.inputmask.bundle.js';
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 
+
+
 export default class AnterosMaskEdit extends Component {
 
     constructor(props) {
@@ -152,15 +154,15 @@ export default class AnterosMaskEdit extends Component {
 
 
 AnterosMaskEdit.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
+    dataField: PropTypes.string,
     id: PropTypes.string,
     disabled: PropTypes.bool,
     mask: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-    maskPattern: React.PropTypes.oneOf(['cnpj', 'cpf', 'fone', 'cep']),
+    maskPattern: PropTypes.oneOf(['cnpj', 'cpf', 'fone', 'cep']),
     value: PropTypes.string,
     placeHolder: PropTypes.string,
     onChange: PropTypes.func,

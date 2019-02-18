@@ -195,6 +195,7 @@ export class AnterosRow extends Component {
             horizontalEnd,
             horizontalAround,
             horizontalBetween,
+            width,
             ...attributes
   } = this.props;
 
@@ -229,7 +230,7 @@ export class AnterosRow extends Component {
         );
 
         return (
-            <Tag {...attributes} className={classes} />
+            <Tag {...attributes} className={classes} style={{width}} />
         );
     };
 }

@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
 import AnterosKanbanCardDragPreview from './AnterosKanbanCardDragPreview';
-
+import PropTypes from 'prop-types';
 
 
 const layerStyles = {

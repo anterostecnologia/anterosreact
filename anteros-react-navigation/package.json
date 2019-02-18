@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-navigation",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "Anteros components for React - Navigation",
   "main": "lib/anteros-react-navigation.js",
   "scripts": {
@@ -10,11 +10,11 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-buttons": "file:../anteros-react-buttons/anteros-react-buttons-1.0.3.tgz",
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
-    "anteros-react-datasource": "file:../anteros-react-datasource/anteros-react-datasource-1.0.3.tgz",
-    "anteros-react-editors": "file:../anteros-react-editors/anteros-react-editors-1.0.1.tgz",
-    "anteros-react-menu": "file:../anteros-react-menu/anteros-react-menu-1.0.1.tgz",
+    "anteros-react-buttons": "^1.0.9",
+    "anteros-react-core": "^1.0.7",
+    "anteros-react-datasource": "^1.0.7",
+    "anteros-react-editors": "^1.0.7",
+    "anteros-react-menu": "^1.0.6",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
@@ -34,6 +34,7 @@
     "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
+    "fsevents": "^1.2.4",
     "lodash": "^4.17.4",
     "lodash.omit": "^4.5.0",
     "node-sass": "^4.5.3",

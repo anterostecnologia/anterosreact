@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
+import PropTypes from 'prop-types';
 
 
 const global = window
@@ -391,22 +391,22 @@ class AnterosSplitter extends React.Component {
 }
 
 AnterosSplitter.propTypes = {
-    id: React.PropTypes.string,
-    splitterElements: React.PropTypes.arrayOf(React.PropTypes.any),
-    sizes: React.PropTypes.array.isRequired,
-    minSize: React.PropTypes.number,
-    gutterSize: React.PropTypes.number,
-    snapOffset: React.PropTypes.number,
-    direction: React.PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-    cursor: React.PropTypes.string,
-    onDrag: React.PropTypes.func,
-    onDragStart: React.PropTypes.func,
-    onDragEnd: React.PropTypes.func,
-    gutter: React.PropTypes.func,
-    elementStyle: React.PropTypes.object,
-    gutterStyle: React.PropTypes.object,
-    height: React.PropTypes.string,
-    width: React.PropTypes.string
+    id: PropTypes.string,
+    splitterElements: PropTypes.arrayOf(PropTypes.any),
+    sizes: PropTypes.array.isRequired,
+    minSize: PropTypes.number,
+    gutterSize: PropTypes.number,
+    snapOffset: PropTypes.number,
+    direction: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
+    cursor: PropTypes.string,
+    onDrag: PropTypes.func,
+    onDragStart: PropTypes.func,
+    onDragEnd: PropTypes.func,
+    gutter: PropTypes.func,
+    elementStyle: PropTypes.object,
+    gutterStyle: PropTypes.object,
+    height: PropTypes.string,
+    width: PropTypes.string
 }
 
 AnterosSplitter.defaultProps = {

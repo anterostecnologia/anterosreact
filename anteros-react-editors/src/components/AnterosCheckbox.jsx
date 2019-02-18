@@ -3,6 +3,7 @@ import lodash from 'lodash';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import {AnterosUtils} from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import PropTypes from 'prop-types';
 
 class AnterosCheckbox extends Component {
     constructor(props) {
@@ -28,9 +29,9 @@ class AnterosCheckbox extends Component {
             if (value == undefined || value == null) {
                 value = false;
             }
-            this.state = { isChecked: (value == nextProps.valueChecked) };
+            this.setState({ isChecked: (value == nextProps.valueChecked) });
         } else {
-            this.state = { isChecked: nextProps.checked };
+            this.setState({ isChecked: nextProps.checked });
         }
     }
 
@@ -126,36 +127,37 @@ class AnterosCheckbox extends Component {
 }
 
 AnterosCheckbox.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
-    value: React.PropTypes.string.isRequired,
-    valueChecked: React.PropTypes.oneOfType([React.PropTypes.string,
-    React.PropTypes.bool,
-    React.PropTypes.number]).isRequired,
-    valueUnchecked: React.PropTypes.oneOfType([React.PropTypes.string,
-    React.PropTypes.bool,
-    React.PropTypes.number]).isRequired,
-    onCheckboxChange: React.PropTypes.func,
-    id: React.PropTypes.string,
-    className: React.PropTypes.string,
+    dataField: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    valueChecked: PropTypes.oneOfType([PropTypes.string,
+    PropTypes.bool,
+    PropTypes.number]).isRequired,
+    valueUnchecked: PropTypes.oneOfType([PropTypes.string,
+    PropTypes.bool,
+    PropTypes.number]).isRequired,
+    onCheckboxChange: PropTypes.func,
+    id: PropTypes.string,
+    className: PropTypes.string,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    width: React.PropTypes.string,
-    height: React.PropTypes.string,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    default: React.PropTypes.bool,
-    collapseContent : React.PropTypes.string
+    width: PropTypes.string,
+    height: PropTypes.string,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool,
+    default: PropTypes.bool,
+    collapseContent : PropTypes.string,
+    style: PropTypes.style
 };
 
 AnterosCheckbox.defaultProps = {

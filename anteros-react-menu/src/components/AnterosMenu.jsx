@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AnterosMenuItem from './AnterosMenuItem';
-import lodash from 'lodash';
+import PropTypes from 'prop-types';
+ 
 
 
 export default class AnterosMenu extends Component {
@@ -89,22 +90,18 @@ export default class AnterosMenu extends Component {
     }
 
     if (horizontal) {
-      return (<div className="horizontal-fixed">
-        <div className="main-menu" id="horizontal-fixed">
-          <div className="main-menu-content" style={{ width: "auto" }}>
-            <ul className="main-navigation">
-              {children}
-            </ul>
-          </div>
-        </div>
-      </div>);
+      return (<nav className="horizontal-menu">
+                <ul>
+                  {children}
+                </ul>
+              </nav>);
     } else {
       return (
-        <aside className="sidebar">
+        <aside className="sidebar" style={this.props.style}>
           <div className="sidebar-container">
             <div className="sidebar-header">
               <div className="brand hidden-md-up">
-                <img src={this.props.logo} />
+                <img src={this.props.logo} alt=""/>
               </div>
             </div>
             <nav className="menu">
@@ -112,11 +109,7 @@ export default class AnterosMenu extends Component {
                 {children}
               </ul>
             </nav>
-          </div>
-          <footer className="sidebar-footer">
-            <ul className="nav " id="customize-menu">
-            </ul>
-          </footer>
+          </div>          
         </aside>
       );
     }
@@ -125,15 +118,15 @@ export default class AnterosMenu extends Component {
 
 
 AnterosMenu.contextTypes = {
-  horizontal: React.PropTypes.bool
+  horizontal: PropTypes.bool
 }
 
 AnterosMenu.childContextTypes = {
-  horizontal: React.PropTypes.bool
+  horizontal: PropTypes.bool
 }
 
 AnterosMenu.propTypes = {
-  horizontal: React.PropTypes.bool
+  horizontal: PropTypes.bool
 }
 
 AnterosMenu.defaultProps = {

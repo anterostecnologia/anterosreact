@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import AnterosButton from './AnterosButton';
 import lodash from "lodash";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosDropdownButton extends Component {
     constructor(props) {
@@ -10,17 +10,22 @@ export default class AnterosDropdownButton extends Component {
         this.idButton = lodash.uniqueId("btn");
         this.buildChildren = this.buildChildren.bind(this);
         this.onClickItem = this.onClickItem.bind(this);
+        this.dropped = false;
     }
 
     componentDidMount() {
         $('#' + this.idButton).on('hide.bs.dropdown', function (event) {
             return false;
         });
-        $(document).on('click',this.onClickItem);
+        $('#' + this.idButton).removeClass("show");
     }
 
     onClickItem(event) {
-        $('#' + this.idButton).removeClass("show");
+        if (!this.dropped){
+            $('#' + this.idButton).addClass("show");
+        } else {
+            $('#' + this.idButton).removeClass("show");
+        }
     }
     
 
@@ -46,7 +51,7 @@ export default class AnterosDropdownButton extends Component {
         }
 
         return (<div className="btn-group" id={this.idButton} >
-            <AnterosButton  {...rest} dropdown onClickItem={this.onClickItem}>
+            <AnterosButton  {...rest} dropdown onButtonClick={this.onClickItem}>
             </AnterosButton>
             {children}
         </div >);
@@ -55,26 +60,26 @@ export default class AnterosDropdownButton extends Component {
 
 
 AnterosDropdownButton.propTypes = {
-    oval: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    large: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    pillLeft: React.PropTypes.bool,
-    pillRight: React.PropTypes.bool,
-    block: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    borderColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    onClickButton: React.PropTypes.func,
-    hint: React.PropTypes.string,
-    hintPosition: React.PropTypes.string,
-    hintSize: React.PropTypes.string
+    oval: PropTypes.bool,
+    success: PropTypes.bool,
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool,
+    pillLeft: PropTypes.bool,
+    pillRight: PropTypes.bool,
+    block: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    borderColor: PropTypes.string,
+    color: PropTypes.string,
+    icon: PropTypes.string,
+    image: PropTypes.string,
+    caption: PropTypes.string,
+    onClickButton: PropTypes.func,
+    hint: PropTypes.string,
+    hintPosition: PropTypes.string,
+    hintSize: PropTypes.string
 };
 
 AnterosDropdownButton.defaultProps = {

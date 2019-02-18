@@ -7,10 +7,13 @@ import AnterosDropdownMenu from './components/AnterosDropdownMenu';
 import AnterosDropdownMenuItem from './components/AnterosDropdownMenuItem';
 import { AnterosFloatingButton, AnterosFloatingButtonItem } from './components/AnterosFloatingButton';
 import { AnterosRadioButton, AnterosRadioButtonItem } from "./components/AnterosRadioButton";
-
+import  AnterosAdvancedDropdown,{AnterosAdvancedDropdownItem} from './components/AnterosAdvancedDropdown';
+import AnterosAdvancedDropdownMenu from './components/AnterosAdvancedDropdownMenu';
+import AnterosAdvancedDropdownToggle from './components/AnterosAdvancedDropdownToggle';
 
 export {
     AnterosButton,AnterosButtonGroup,AnterosContainerButton,AnterosDropdownButton,AnterosDropdownDivider,
     AnterosDropdownMenu,AnterosDropdownMenuItem,AnterosFloatingButton, AnterosRadioButton, AnterosRadioButtonItem,
-    AnterosFloatingButtonItem
+    AnterosFloatingButtonItem, AnterosAdvancedDropdown, AnterosAdvancedDropdownItem,AnterosAdvancedDropdownMenu,
+    AnterosAdvancedDropdownToggle
 };

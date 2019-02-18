@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { AnterosError, AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import PropTypes from 'prop-types';
+
 
 export default class AnterosRadioGroup extends Component {
     constructor(props) {
@@ -70,15 +72,13 @@ export default class AnterosRadioGroup extends Component {
     }
 
     render() {
-        const colClasses = buildGridClassNames(this.props, false, []);
-
-        let className = AnterosUtils.buildClassNames("d-flex flex-column form-control", (this.props.className ? this.props.className : ""));
-
-        const { checkedIndex } = this.state;
         const { horizontal, children, extraSmall: columnProps, small, medium, large, extraLarge, onRadioChange, ...props } = this.props;
+        const colClasses = buildGridClassNames(this.props, false, []);
+        let className = AnterosUtils.buildClassNames("d-flex form-control",horizontal?"":"flex-column", (this.props.className ? this.props.className : ""));
+        const { checkedIndex } = this.state;        
         const style = horizontal ? { display: 'inline-flex', width: '100%' } : {};
 
-        let radio = <div className={className} {...props}>
+        let radio = <div className={className} {...props} style={style}>
             {children.map((c, i) => (this.renderChild(c, i, i === checkedIndex)))}
         </div>;
 
@@ -93,10 +93,10 @@ export default class AnterosRadioGroup extends Component {
 }
 
 AnterosRadioGroup.propTypes = {
-    horizontal: React.PropTypes.bool,
-    children: React.PropTypes.node,
-    value: React.PropTypes.string,
-    onRadioChange: React.PropTypes.func,
+    horizontal: PropTypes.bool,
+    children: PropTypes.node,
+    value: PropTypes.string,
+    onRadioChange: PropTypes.func,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
@@ -125,12 +125,12 @@ export class AnterosRadio extends Component {
 }
 
 AnterosRadio.propTypes = {
-    value: React.PropTypes.string,
-    label: React.PropTypes.string,
-    checked: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
-    onClick: React.PropTypes.func
+    value: PropTypes.string,
+    label: PropTypes.string,
+    checked: PropTypes.bool,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+    onClick: PropTypes.func
 };
 
 AnterosRadio.defaultProps = {

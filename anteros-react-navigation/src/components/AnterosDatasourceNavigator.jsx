@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {AnterosButton, AnterosButtonGroup} from "anteros-react-buttons";
 import { AnterosEdit } from "anteros-react-editors";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-
+import PropTypes from 'prop-types';
 
 
 class AnterosDatasourceNavigator extends Component {
@@ -178,12 +178,12 @@ class AnterosDatasourceNavigator extends Component {
 }
 
 AnterosDatasourceNavigator.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]).isRequired,
-    showEditButtons: React.PropTypes.bool.isRequired,
-    onError: React.PropTypes.func
+    showEditButtons: PropTypes.bool.isRequired,
+    onError: PropTypes.func
 }
 
 AnterosDatasourceNavigator.defaultProps = {

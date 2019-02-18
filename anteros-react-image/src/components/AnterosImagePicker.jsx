@@ -1,11 +1,11 @@
-import regeneratorRuntime from "babel-runtime/regenerator";
 import React from "react";
 import ReactDOM from "react-dom";
 import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-
+import PropTypes from 'prop-types';
+import regeneratorRuntime from "babel-runtime/regenerator";
 
 let base64ImageFile = function (imageFile) {
     return new Promise((resolve, reject) => {
@@ -207,20 +207,20 @@ export default class AnterosImagePicker extends React.Component {
 
 
 AnterosImagePicker.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
-    value: React.PropTypes.string.isRequired,
-    placeHolder: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    onSelect: React.PropTypes.func,
-    onError: React.PropTypes.func,
-    onInvalidImage: React.PropTypes.func,
-    width: React.PropTypes.string.isRequired,
-    height: React.PropTypes.string.isRequired,
-    readOnly: React.PropTypes.bool.isRequired,
+    dataField: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    placeHolder: PropTypes.string,
+    disabled: PropTypes.bool,
+    onSelect: PropTypes.func,
+    onError: PropTypes.func,
+    onInvalidImage: PropTypes.func,
+    width: PropTypes.string.isRequired,
+    height: PropTypes.string.isRequired,
+    readOnly: PropTypes.bool.isRequired,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

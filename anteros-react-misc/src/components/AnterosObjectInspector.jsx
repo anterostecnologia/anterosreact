@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
-import ReactDOMServer from 'react-dom/server'
-import lodash from "lodash";
+
 
 
 export default class AnterosObjectInspector extends Component {
@@ -48,8 +46,8 @@ export class InspectorItem extends React.Component {
 }
 
 InspectorItem.propTypes = {
-    label: React.PropTypes.string,
-    value: React.PropTypes.any
+    label: PropTypes.string,
+    value: PropTypes.any
 }
 
 InspectorItem.defaultProps = {

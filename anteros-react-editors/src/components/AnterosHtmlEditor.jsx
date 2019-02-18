@@ -332,11 +332,11 @@ export default class AnterosHtmlEditor extends React.Component {
 
 
 AnterosHtmlEditor.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
+    dataField: PropTypes.string,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

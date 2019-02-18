@@ -726,22 +726,22 @@ AnterosQueryBuilder.propTypes = {
     onQueryChange: PropTypes.func,
     onSortChange: PropTypes.func,
     onError: PropTypes.func,
-    height: React.PropTypes.string,
-    allowSort: React.PropTypes.bool.isRequired,
-    allowSaveFilter: React.PropTypes.bool.isRequired,
-    onSearchButtonClick: React.PropTypes.func,
-    disabled: React.PropTypes.bool.isRequired,
-    onSaveFilter: React.PropTypes.func,
-    onRenameFilter: React.PropTypes.func,
-    onRemoveFilter: React.PropTypes.func,
-    onSelectActiveFilter: React.PropTypes.func,
-    onGetFilters: React.PropTypes.func,
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    height: PropTypes.string,
+    allowSort: PropTypes.bool.isRequired,
+    allowSaveFilter: PropTypes.bool.isRequired,
+    onSearchButtonClick: PropTypes.func,
+    disabled: PropTypes.bool.isRequired,
+    onSaveFilter: PropTypes.func,
+    onRenameFilter: PropTypes.func,
+    onRemoveFilter: PropTypes.func,
+    onSelectActiveFilter: PropTypes.func,
+    onGetFilters: PropTypes.func,
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    formName: React.PropTypes.string,
-    id: React.PropTypes.string
+    formName: PropTypes.string,
+    id: PropTypes.string
 }
 
 AnterosQueryBuilder.defaultProps = {
@@ -778,11 +778,11 @@ export class QueryField extends React.Component {
 }
 
 QueryField.propTypes = {
-    name: React.PropTypes.string.isRequired,
-    nameSql : React.PropTypes.string,
-    label: React.PropTypes.string.isRequired,
-    dataType: React.PropTypes.oneOf(['string', 'number', 'date', 'date_time', 'time']).isRequired,
-    sortable: React.PropTypes.bool.isRequired
+    name: PropTypes.string.isRequired,
+    nameSql : PropTypes.string,
+    label: PropTypes.string.isRequired,
+    dataType: PropTypes.oneOf(['string', 'number', 'date', 'date_time', 'time']).isRequired,
+    sortable: PropTypes.bool.isRequired
 }
 
 QueryField.defaultProps = {
@@ -800,8 +800,8 @@ export class QueryFieldValue extends React.Component {
 }
 
 QueryFieldValue.propTypes = {
-    label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired
 }
 
 

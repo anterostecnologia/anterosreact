@@ -3,6 +3,8 @@ import lodash from "lodash";
 import { If, Then, AnterosUtils } from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import PropTypes from 'prop-types';
+
 
 export default class AnterosPassword extends React.Component {
     constructor(props) {
@@ -28,9 +30,9 @@ export default class AnterosPassword extends React.Component {
             if (!value) {
                 value = '';
             }
-            this.state = { value: value, reveal: nextProps.reveal };
+            this.setState({ value: value, reveal: nextProps.reveal });
         } else {
-            this.state = { value: nextProps.value, reveal: nextProps.reveal };
+            this.setState({ value: nextProps.value, reveal: nextProps.reveal });
         }
     }
 
@@ -138,20 +140,20 @@ export default class AnterosPassword extends React.Component {
 
 
 AnterosPassword.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
-    value: React.PropTypes.string.isRequired,
-    placeHolder: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    maxLenght: React.PropTypes.number,
-    reveal: React.PropTypes.bool.isRequired,
-    label: React.PropTypes.string,
-    inputGridSize: React.PropTypes.number,
-    labelGridSize: React.PropTypes.number,
-    required: React.PropTypes.bool.isRequired,
+    dataField: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    placeHolder: PropTypes.string,
+    disabled: PropTypes.bool,
+    maxLenght: PropTypes.number,
+    reveal: PropTypes.bool.isRequired,
+    label: PropTypes.string,
+    inputGridSize: PropTypes.number,
+    labelGridSize: PropTypes.number,
+    required: PropTypes.bool.isRequired,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

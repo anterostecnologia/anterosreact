@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import lodash from 'lodash';
 
 
@@ -42,6 +43,6 @@ export default class AnterosCollapseContent extends Component {
 
 
 AnterosCollapseContent.propTypes = {
-    onShowCollapse : React.PropTypes.func,
-    onHideCollapse : React.PropTypes.func
+    onShowCollapse : PropTypes.func,
+    onHideCollapse : PropTypes.func
 };

@@ -4,7 +4,7 @@ import lodash from 'lodash';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosError, AnterosUtils } from "anteros-react-core";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosLookupCombobox extends React.Component {
     constructor(props) {
@@ -311,40 +311,40 @@ export default class AnterosLookupCombobox extends React.Component {
 }
 
 AnterosLookupCombobox.propTypes = {
-    lookupDataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    lookupDataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    lookupDataFieldText: React.PropTypes.string,
-    lookupDataFieldId: React.PropTypes.string,
+    lookupDataFieldText: PropTypes.string,
+    lookupDataFieldId: PropTypes.string,
 
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataFieldId: React.PropTypes.string,
+    dataFieldId: PropTypes.string,
 
-    dataField: React.PropTypes.string,
-    onChangeSelect: React.PropTypes.func,
-    multiple: React.PropTypes.bool.isRequired,
-    searchEnabled: React.PropTypes.bool.isRequired,
-    maxSelectedOptions: React.PropTypes.number.isRequired,
-    placeHolder: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool.isRequired,
-    width: React.PropTypes.string,
-    primary: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    container: React.PropTypes.string,
+    dataField: PropTypes.string,
+    onChangeSelect: PropTypes.func,
+    multiple: PropTypes.bool.isRequired,
+    searchEnabled: PropTypes.bool.isRequired,
+    maxSelectedOptions: PropTypes.number.isRequired,
+    placeHolder: PropTypes.string.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    width: PropTypes.string,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    info: PropTypes.bool,
+    danger: PropTypes.bool,
+    success: PropTypes.bool,
+    warning: PropTypes.bool,
+    container: PropTypes.string,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    value: React.PropTypes.any
+    value: PropTypes.any
 };
 
 AnterosLookupCombobox.defaultProps = {
@@ -398,17 +398,17 @@ export class AnterosLookupComboboxOption extends React.Component {
 }
 
 AnterosLookupComboboxOption.propTypes = {
-    label: React.PropTypes.string,
-    value: React.PropTypes.any,
-    subText: React.PropTypes.string,
-    group: React.PropTypes.bool,
-    divider: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    title: React.PropTypes.string,
-    style: React.PropTypes.string,
-    className: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    content: React.PropTypes.element
+    label: PropTypes.string,
+    value: PropTypes.any,
+    subText: PropTypes.string,
+    group: PropTypes.bool,
+    divider: PropTypes.bool,
+    disabled: PropTypes.bool,
+    title: PropTypes.string,
+    style: PropTypes.string,
+    className: PropTypes.string,
+    icon: PropTypes.string,
+    content: PropTypes.element
 };
 
 AnterosLookupComboboxOption.defaultProps = {

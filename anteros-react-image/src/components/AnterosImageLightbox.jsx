@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 const MIN_ZOOM_LEVEL = 0;
 const MAX_ZOOM_LEVEL = 300;

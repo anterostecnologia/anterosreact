@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
 import { AnterosError } from "anteros-react-core";
+import PropTypes from 'prop-types';
 
 function _getSelectedNodes(nodes) {
   let selectedNodes = [];
@@ -408,35 +409,35 @@ class AnterosTreeView extends Component {
 
 
 AnterosTreeView.propTypes = {
-  selectable: React.PropTypes.bool,
-  color: React.PropTypes.string,
-  backColor: React.PropTypes.string,
-  borderColor: React.PropTypes.string,
-  hoverColor: React.PropTypes.string,
-  hoverBackColor: React.PropTypes.string,
-  focusedColor: React.PropTypes.string,
-  focusedBackColor: React.PropTypes.string,
-  selectedColor: React.PropTypes.string,
-  selectedBackColor: React.PropTypes.string,
-  iconColor: React.PropTypes.string,
-  iconBackColor: React.PropTypes.string,
-  enableLinks: React.PropTypes.bool,
-  highlightSelected: React.PropTypes.bool,
-  showBorder: React.PropTypes.bool,
-  showTags: React.PropTypes.bool,
-  nodes: React.PropTypes.arrayOf(React.PropTypes.object),
-  onDoubleClick: React.PropTypes.func,
-  onClick: React.PropTypes.func,
-  onFocusedNode: React.PropTypes.func,
-  onLoosedFocusNode: React.PropTypes.func,
-  onSelectedNode: React.PropTypes.func,
-  onUnSelectedNode: React.PropTypes.func,
-  onRemovedNode: React.PropTypes.func,
-  onLoadDataSource: React.PropTypes.func,
-  onAddedNode: React.PropTypes.func,
-  onExpandedNode: React.PropTypes.func,
-  onCollapsedNode: React.PropTypes.func,
-  dataSource: React.PropTypes.array
+  selectable: PropTypes.bool,
+  color: PropTypes.string,
+  backColor: PropTypes.string,
+  borderColor: PropTypes.string,
+  hoverColor: PropTypes.string,
+  hoverBackColor: PropTypes.string,
+  focusedColor: PropTypes.string,
+  focusedBackColor: PropTypes.string,
+  selectedColor: PropTypes.string,
+  selectedBackColor: PropTypes.string,
+  iconColor: PropTypes.string,
+  iconBackColor: PropTypes.string,
+  enableLinks: PropTypes.bool,
+  highlightSelected: PropTypes.bool,
+  showBorder: PropTypes.bool,
+  showTags: PropTypes.bool,
+  nodes: PropTypes.arrayOf(PropTypes.object),
+  onDoubleClick: PropTypes.func,
+  onClick: PropTypes.func,
+  onFocusedNode: PropTypes.func,
+  onLoosedFocusNode: PropTypes.func,
+  onSelectedNode: PropTypes.func,
+  onUnSelectedNode: PropTypes.func,
+  onRemovedNode: PropTypes.func,
+  onLoadDataSource: PropTypes.func,
+  onAddedNode: PropTypes.func,
+  onExpandedNode: PropTypes.func,
+  onCollapsedNode: PropTypes.func,
+  dataSource: PropTypes.array
 };
 
 AnterosTreeView.defaultProps = {

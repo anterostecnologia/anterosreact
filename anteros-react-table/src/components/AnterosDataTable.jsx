@@ -16,7 +16,7 @@ import 'script-loader!datatables.net-buttons/js/buttons.html5.min.js';
 import 'script-loader!./AnterosDataTables.buttons.bootstrap.js';
 import { AnterosError, AnterosUtils, AnterosDateUtils, Anteros } from "anteros-react-core";
 import { AnterosDatasource, AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "anteros-react-datasource";
-
+import PropTypes from 'prop-types';
 
 const DATASOURCE_EVENTS = [dataSourceEvents.AFTER_CLOSE,
 dataSourceEvents.AFTER_CANCEL,
@@ -50,6 +50,7 @@ export default class AnterosDataTable extends Component {
         this.currentRow = undefined;
         this.currentCol = undefined;
         this.dataTable;
+        this.resize = this.resize.bind(this);
 
     }
 
@@ -232,9 +233,13 @@ export default class AnterosDataTable extends Component {
         } else {
             data = this.props.dataSource;
         }
+        let custom = {};
+        if (this.showExportButtons) {
+            custom = {dom : "<'row'<'col-md-4'B><'col-md-4'l><'col-md-4'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>"};
+        }
 
         var table = $('#' + this.idTable).DataTable({
-            dom: "<'row'<'col-md-4'B><'col-md-4'l><'col-md-4'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+            ...custom,
             columns: this.buildColumns(),
             keys: true,
             scrollY: this.props.height,
@@ -670,6 +675,17 @@ export default class AnterosDataTable extends Component {
         return result;
     }
 
+    getDatatable(width, height){
+        var datatable = $('#' + this.idTable).dataTable();
+        return datatable;
+    }
+    resize(width, height){
+        let elementBody = this.divTable.querySelector(".dataTables_scrollBody");
+        let elementScroll = this.divTable.querySelector(".DTFC_ScrollWrapper");
+        window.$(elementBody).css("max-height",height);
+        window.$(elementScroll).css("height",height+50);
+    }
+
     render() {
 
         let className = "display nowrap";
@@ -696,77 +712,77 @@ export default class AnterosDataTable extends Component {
 
         return (
             <div tabIndex={this.props.tabIndex} ref={ref => this.divTable = ref} style={{ pointerEvents: (this.props.disabled ? "none" : "auto"), borderColor: "silver", border: "1px", width: "100%", height: "100%" }}>
-                <div id={this.idTable + "_header"} className="row">
+                    <div id={this.idTable + "_header"} className="row">
+                    </div>
+                    <table ref={ref => this.table = ref} id={this.idTable} className={className} cellSpacing="0">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
-                <table ref={ref => this.table = ref} id={this.idTable} className={className} cellSpacing="0">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
         )
     }
 }
 
 AnterosDataTable.propTypes = {
-    id: React.PropTypes.string,
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    id: PropTypes.string,
+    dataSource: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    decimalSeparator: React.PropTypes.string.isRequired,
-    thousandsSeparator: React.PropTypes.string.isRequired,
-    height: React.PropTypes.string,
-    width: React.PropTypes.string,
-    pageStart: React.PropTypes.number,
-    pageLength: React.PropTypes.number,
-    pageLengthOptions: React.PropTypes.arrayOf(React.PropTypes.number),
-    pageType: React.PropTypes.oneOf(['numbers', 'simple', 'simple_numbers', 'full', 'full_numbers', 'first_last_numbers']).isRequired,
-    dateFormat: React.PropTypes.oneOf(['DD/MM/YYYY', 'DD-MM-YYYY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY/MM/DD', 'YYYY-MM-DD']).isRequired,
-    timeFormat: React.PropTypes.oneOf(['HH:mm:ss', 'HH:mm', 'hh:mm:ss', 'hh:mm']).isRequired,
-    initialOrder: React.PropTypes.array,
-    fixedOrder: React.PropTypes.array,
-    initialSearchCondition: React.PropTypes.string,
-    fixedColumnsLeft: React.PropTypes.number.isRequired,
-    fixedColumnsRight: React.PropTypes.number.isRequired,
-    enableOrderByColumn: React.PropTypes.bool.isRequired,
-    enableOrderByMultipleColumns: React.PropTypes.bool.isRequired,
-    enablePaging: React.PropTypes.bool.isRequired,
-    enableSearching: React.PropTypes.bool.isRequired,
-    enableCheckboxSelect: React.PropTypes.bool.isRequired,
-    showLoadingIndicator: React.PropTypes.bool.isRequired,
-    showBorder: React.PropTypes.bool.isRequired,
-    showExportButtons: React.PropTypes.bool.isRequired,
-    showStripedRows: React.PropTypes.bool.isRequired,
-    showHover: React.PropTypes.bool.isRequired,
-    showDetails: React.PropTypes.bool.isRequired,
-    stateSave: React.PropTypes.bool.isRequired,
-    tabIndex: React.PropTypes.number.isRequired,
-    onStateLoaded: React.PropTypes.func,
-    onStateSave: React.PropTypes.func,
-    onStateLoad: React.PropTypes.func,
-    onSelectRecord: React.PropTypes.func,
-    onUnSelectRecord: React.PropTypes.func,
-    onSelectAllRecords: React.PropTypes.func,
-    onUnSelectAllRecords: React.PropTypes.func,
-    onCellClick: React.PropTypes.func,
-    onCellDoubleClick: React.PropTypes.func,
-    onPageChange: React.PropTypes.func,
-    onDoubleClick: React.PropTypes.func,
-    renderDetails: React.PropTypes.func,
-    primary: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    exportButtonsPrimary: React.PropTypes.bool,
-    exportButtonsSuccess: React.PropTypes.bool,
-    exportButtonsInfo: React.PropTypes.bool,
-    exportButtonsWarning: React.PropTypes.bool,
-    exportButtonsDanger: React.PropTypes.bool,
-    disabled: React.PropTypes.bool.isRequired
+    decimalSeparator: PropTypes.string.isRequired,
+    thousandsSeparator: PropTypes.string.isRequired,
+    height: PropTypes.string,
+    width: PropTypes.string,
+    pageStart: PropTypes.number,
+    pageLength: PropTypes.number,
+    pageLengthOptions: PropTypes.arrayOf(PropTypes.number),
+    pageType: PropTypes.oneOf(['numbers', 'simple', 'simple_numbers', 'full', 'full_numbers', 'first_last_numbers']).isRequired,
+    dateFormat: PropTypes.oneOf(['DD/MM/YYYY', 'DD-MM-YYYY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY/MM/DD', 'YYYY-MM-DD']).isRequired,
+    timeFormat: PropTypes.oneOf(['HH:mm:ss', 'HH:mm', 'hh:mm:ss', 'hh:mm']).isRequired,
+    initialOrder: PropTypes.array,
+    fixedOrder: PropTypes.array,
+    initialSearchCondition: PropTypes.string,
+    fixedColumnsLeft: PropTypes.number.isRequired,
+    fixedColumnsRight: PropTypes.number.isRequired,
+    enableOrderByColumn: PropTypes.bool.isRequired,
+    enableOrderByMultipleColumns: PropTypes.bool.isRequired,
+    enablePaging: PropTypes.bool.isRequired,
+    enableSearching: PropTypes.bool.isRequired,
+    enableCheckboxSelect: PropTypes.bool.isRequired,
+    showLoadingIndicator: PropTypes.bool.isRequired,
+    showBorder: PropTypes.bool.isRequired,
+    showExportButtons: PropTypes.bool.isRequired,
+    showStripedRows: PropTypes.bool.isRequired,
+    showHover: PropTypes.bool.isRequired,
+    showDetails: PropTypes.bool.isRequired,
+    stateSave: PropTypes.bool.isRequired,
+    tabIndex: PropTypes.number.isRequired,
+    onStateLoaded: PropTypes.func,
+    onStateSave: PropTypes.func,
+    onStateLoad: PropTypes.func,
+    onSelectRecord: PropTypes.func,
+    onUnSelectRecord: PropTypes.func,
+    onSelectAllRecords: PropTypes.func,
+    onUnSelectAllRecords: PropTypes.func,
+    onCellClick: PropTypes.func,
+    onCellDoubleClick: PropTypes.func,
+    onPageChange: PropTypes.func,
+    onDoubleClick: PropTypes.func,
+    renderDetails: PropTypes.func,
+    primary: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    exportButtonsPrimary: PropTypes.bool,
+    exportButtonsSuccess: PropTypes.bool,
+    exportButtonsInfo: PropTypes.bool,
+    exportButtonsWarning: PropTypes.bool,
+    exportButtonsDanger: PropTypes.bool,
+    disabled: PropTypes.bool.isRequired
 };
 
 
@@ -834,31 +850,31 @@ export class AnterosDataTableColumn extends Component {
 }
 
 AnterosDataTableColumn.propTypes = {
-    align: React.PropTypes.oneOf(['left', 'right', 'center']).isRequired,
-    alignCenter: React.PropTypes.bool.isRequired,
-    alignLeft: React.PropTypes.bool.isRequired,
-    alignRight: React.PropTypes.bool.isRequired,
-    titleAlign: React.PropTypes.oneOf(['left', 'right', 'center']).isRequired,
-    titleAlignCenter: React.PropTypes.bool.isRequired,
-    titleAlignLeft: React.PropTypes.bool.isRequired,
-    titleAlignRight: React.PropTypes.bool.isRequired,
-    dataField: React.PropTypes.string.isRequired,
-    dataType: React.PropTypes.oneOf(['number', 'date', 'date_time', 'time', 'string', 'image']).isRequired,
-    maskFormatNumber: React.PropTypes.string,
-    title: React.PropTypes.string.isRequired,
-    width: React.PropTypes.string,
-    cellTitleClassName: React.PropTypes.string,
-    cellRowClassName: React.PropTypes.string,
-    defaultContent: React.PropTypes.string,
-    render: React.PropTypes.func,
-    orderable: React.PropTypes.bool.isRequired,
-    searchable: React.PropTypes.bool.isRequired,
-    visible: React.PropTypes.bool.isRequired,
-    orderByColumns: React.PropTypes.arrayOf(React.PropTypes.string),
-    onCreatedCell: React.PropTypes.func,
-    imageWidth: React.PropTypes.string,
-    imageHeight: React.PropTypes.string,
-    imageCircle: React.PropTypes.bool
+    align: PropTypes.oneOf(['left', 'right', 'center']).isRequired,
+    alignCenter: PropTypes.bool.isRequired,
+    alignLeft: PropTypes.bool.isRequired,
+    alignRight: PropTypes.bool.isRequired,
+    titleAlign: PropTypes.oneOf(['left', 'right', 'center']).isRequired,
+    titleAlignCenter: PropTypes.bool.isRequired,
+    titleAlignLeft: PropTypes.bool.isRequired,
+    titleAlignRight: PropTypes.bool.isRequired,
+    dataField: PropTypes.string.isRequired,
+    dataType: PropTypes.oneOf(['number', 'date', 'date_time', 'time', 'string', 'image']).isRequired,
+    maskFormatNumber: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    width: PropTypes.string,
+    cellTitleClassName: PropTypes.string,
+    cellRowClassName: PropTypes.string,
+    defaultContent: PropTypes.string,
+    render: PropTypes.func,
+    orderable: PropTypes.bool.isRequired,
+    searchable: PropTypes.bool.isRequired,
+    visible: PropTypes.bool.isRequired,
+    orderByColumns: PropTypes.arrayOf(PropTypes.string),
+    onCreatedCell: PropTypes.func,
+    imageWidth: PropTypes.string,
+    imageHeight: PropTypes.string,
+    imageCircle: PropTypes.bool
 };
 
 
@@ -875,5 +891,6 @@ AnterosDataTableColumn.defaultProps = {
     orderable: true,
     searchable: true,
     visible: true,
-    dataType: 'string'
+    dataType: 'string',
+    defaultContent:''
 };

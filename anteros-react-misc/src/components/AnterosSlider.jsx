@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import nouislider from 'nouislider/distribute/nouislider.min.js';
 import 'nouislider/distribute/nouislider.css';
 import lodash from "lodash";
+import PropTypes from 'prop-types';
 
 export default class AnterosSlider extends React.Component {
     constructor(props) {
@@ -97,62 +98,62 @@ export default class AnterosSlider extends React.Component {
 }
 
 AnterosSlider.propTypes = {
-    backgroundColor: React.PropTypes.string,
-    borderColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    primary : React.PropTypes.bool,
-    secondary : React.PropTypes.bool,
-    success : React.PropTypes.bool,
-    danger : React.PropTypes.bool,
-    warning : React.PropTypes.bool,
-    info : React.PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    borderColor: PropTypes.string,
+    color: PropTypes.string,
+    primary : PropTypes.bool,
+    secondary : PropTypes.bool,
+    success : PropTypes.bool,
+    danger : PropTypes.bool,
+    warning : PropTypes.bool,
+    info : PropTypes.bool,
     // http://refreshless.com/nouislider/slider-options/#section-animate
-    animate: React.PropTypes.bool,
+    animate: PropTypes.bool,
     // http://refreshless.com/nouislider/behaviour-option/
-    behaviour: React.PropTypes.string,
+    behaviour: PropTypes.string,
     // http://refreshless.com/nouislider/slider-options/#section-Connect
-    connect: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.bool),
-        React.PropTypes.bool
+    connect: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.bool),
+        PropTypes.bool
     ]),
     // http://refreshless.com/nouislider/slider-options/#section-cssPrefix
-    cssPrefix: React.PropTypes.string,
+    cssPrefix: PropTypes.string,
     // http://refreshless.com/nouislider/slider-options/#section-orientation
-    direction: React.PropTypes.oneOf(['ltr', 'rtl']),
+    direction: PropTypes.oneOf(['ltr', 'rtl']),
     // http://refreshless.com/nouislider/more/#section-disable
-    disabled: React.PropTypes.bool,
+    disabled: PropTypes.bool,
     // http://refreshless.com/nouislider/slider-options/#section-limit
-    limit: React.PropTypes.number,
+    limit: PropTypes.number,
     // http://refreshless.com/nouislider/slider-options/#section-margin
-    margin: React.PropTypes.number,
+    margin: PropTypes.number,
     // http://refreshless.com/nouislider/events-callbacks/#section-change
-    onChange: React.PropTypes.func,
+    onChange: PropTypes.func,
     // http://refreshless.com/nouislider/events-callbacks/
-    onEnd: React.PropTypes.func,
+    onEnd: PropTypes.func,
     // http://refreshless.com/nouislider/events-callbacks/#section-set
-    onSet: React.PropTypes.func,
+    onSet: PropTypes.func,
     // http://refreshless.com/nouislider/events-callbacks/#section-slide
-    onSlide: React.PropTypes.func,
+    onSlide: PropTypes.func,
     // http://refreshless.com/nouislider/events-callbacks/
-    onStart: React.PropTypes.func,
+    onStart: PropTypes.func,
     // http://refreshless.com/nouislider/events-callbacks/#section-update
-    onUpdate: React.PropTypes.func,
+    onUpdate: PropTypes.func,
     // http://refreshless.com/nouislider/slider-options/#section-orientation
-    orientation: React.PropTypes.oneOf(['horizontal', 'vertical']),
+    orientation: PropTypes.oneOf(['horizontal', 'vertical']),
     // http://refreshless.com/nouislider/pips/
-    pips: React.PropTypes.object,
+    pips: PropTypes.object,
     // http://refreshless.com/nouislider/slider-values/#section-range
-    range: React.PropTypes.object.isRequired,
+    range: PropTypes.object.isRequired,
     // http://refreshless.com/nouislider/slider-options/#section-start
-    start: React.PropTypes.arrayOf(React.PropTypes.number).isRequired,
+    start: PropTypes.arrayOf(PropTypes.number).isRequired,
     // http://refreshless.com/nouislider/slider-options/#section-step
-    step: React.PropTypes.number,
+    step: PropTypes.number,
     // http://refreshless.com/nouislider/slider-options/#section-tooltips
-    tooltips: React.PropTypes.oneOfType([
-        React.PropTypes.bool,
-        React.PropTypes.arrayOf(
-            React.PropTypes.shape({
-                to: React.PropTypes.func
+    tooltips: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.arrayOf(
+            PropTypes.shape({
+                to: PropTypes.func
             })
         )
     ])

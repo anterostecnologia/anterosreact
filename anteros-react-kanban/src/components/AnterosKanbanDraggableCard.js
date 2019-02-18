@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-
+import PropTypes from 'prop-types';
 
 
 function getStyles(isDragging) {
@@ -100,10 +100,10 @@ AnterosKanbanCardComponent.propTypes = {
     id: PropTypes.string,
     stopScrolling: PropTypes.func,
     cardComponent: PropTypes.any.isRequired,
-    onBeginDragCard: React.PropTypes.func,
-    onEndDragCard: React.PropTypes.func,
-    onHoverCard: React.PropTypes.func,
-    onClickCard: React.PropTypes.func
+    onBeginDragCard: PropTypes.func,
+    onEndDragCard: PropTypes.func,
+    onHoverCard: PropTypes.func,
+    onClickCard: PropTypes.func
   }
 
 

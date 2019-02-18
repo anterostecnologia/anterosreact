@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import lodash from "lodash";
 
 
@@ -26,6 +27,9 @@ export default class AnterosButton extends Component {
 
     render() {
         let className = "btn";
+        if (this.props.className){
+            className += " "+this.props.className;
+        }
         if (this.props.oval) {
             className += " btn-oval";
         }
@@ -119,42 +123,42 @@ export default class AnterosButton extends Component {
 
         if (this.props.facebook) {
             className += " btn-facebook";
-            customIcon = "fa fa-facebook";
+            customIcon = "fab fa-facebook";
         }
 
         if (this.props.twitter) {
             className += " btn-twitter";
-            customIcon = "fa fa-twitter";
+            customIcon = "fab fa-twitter";
         }
 
         if (this.props.googlePlus) {
             className += " btn-googleplus";
-            customIcon = "fa fa-google-plus";
+            customIcon = "fab fa-google-plus";
         }
 
         if (this.props.linkedin) {
             className += " btn-linkedin";
-            customIcon = "fa fa-linkedin";
+            customIcon = "fab fa-linkedin";
         }
 
         if (this.props.instagram) {
             className += " btn-instagram";
-            customIcon = "fa fa-instagram";
+            customIcon = "fab fa-instagram";
         }
 
         if (this.props.pinterest) {
             className += " btn-pinterest";
-            customIcon = "fa fa-pinterest";
+            customIcon = "fab fa-pinterest";
         }
 
         if (this.props.dribbble) {
             className += " btn-dribbble";
-            customIcon = "fa fa-dribbble";
+            customIcon = "fab fa-dribbble";
         }
 
         if (this.props.youtube) {
             className += " btn-youtube";
-            customIcon = "fa fa-youtube";
+            customIcon = "fab fa-youtube";
         }
 
         if (this.props.pullRight){
@@ -197,7 +201,12 @@ export default class AnterosButton extends Component {
 
         let icon;
         if (customIcon) {
-            icon = (<i data-user={this.props.dataUser} onClick={this.onClick} className={customIcon} style={{ color: this.props.iconColor }}></i>);
+            icon = (<i data-user={this.props.dataUser} onClick={this.onClick} className={customIcon} style={{ color: this.props.iconColor, fontSize: this.props.iconSize }}></i>);
+        }
+
+        let image;
+        if (this.props.image){
+            image = <img data-user={this.props.dataUser} onClick={this.onClick} src={this.props.image}/>;
         }
 
         return (
@@ -205,53 +214,54 @@ export default class AnterosButton extends Component {
                 onClick={this.onClick} style={style}
                 ref={ref => this.button = ref}
                 type="button" className={className}>
-                {icon}<img data-user={this.props.dataUser} onClick={this.onClick} src={this.props.image} /> {this.props.caption}{this.props.children}
+                {icon}{image}{this.props.caption?<span style={{paddingLeft:"4px"}}>{this.props.caption}</span>:null}{this.props.children}
             </button>
         )
     }
 }
 
 AnterosButton.propTypes = {
-    disabled: React.PropTypes.bool,
-    oval: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    link: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    large: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    default: React.PropTypes.bool,
-    pillLeft: React.PropTypes.bool,
-    pillRight: React.PropTypes.bool,
-    pullRight: React.PropTypes.bool,
-    block: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    borderColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    dropdown: React.PropTypes.bool,
-    icon: React.PropTypes.string,
-    iconColor: React.PropTypes.string,
-    image: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    onButtonClick: React.PropTypes.func,
-    hint: React.PropTypes.string,
-    hintPosition: React.PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
-    facebook: React.PropTypes.bool,
-    twitter: React.PropTypes.bool,
-    googlePlus: React.PropTypes.bool,
-    linkedin: React.PropTypes.bool,
-    instagram: React.PropTypes.bool,
-    pinterest: React.PropTypes.bool,
-    dribbble: React.PropTypes.bool,
-    youtube: React.PropTypes.bool,
-    inline: React.PropTypes.bool,
-    dataUser: React.PropTypes.string,
-    route: React.PropTypes.string,
-    visible : React.PropTypes.bool.isRequired,
-    collapseContent : React.PropTypes.string
+    disabled: PropTypes.bool,
+    oval: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    link: PropTypes.bool,
+    warning: PropTypes.bool,
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    primary: PropTypes.bool,
+    danger: PropTypes.bool,
+    secondary: PropTypes.bool,
+    default: PropTypes.bool,
+    pillLeft: PropTypes.bool,
+    pillRight: PropTypes.bool,
+    pullRight: PropTypes.bool,
+    block: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    borderColor: PropTypes.string,
+    color: PropTypes.string,
+    dropdown: PropTypes.bool,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    iconSize: PropTypes.string,
+    image: PropTypes.string,
+    caption: PropTypes.string,
+    onButtonClick: PropTypes.func,
+    hint: PropTypes.string,
+    hintPosition: PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
+    facebook: PropTypes.bool,
+    twitter: PropTypes.bool,
+    googlePlus: PropTypes.bool,
+    linkedin: PropTypes.bool,
+    instagram: PropTypes.bool,
+    pinterest: PropTypes.bool,
+    dribbble: PropTypes.bool,
+    youtube: PropTypes.bool,
+    inline: PropTypes.bool,
+    dataUser: PropTypes.string,
+    route: PropTypes.string,
+    visible : PropTypes.bool.isRequired,
+    collapseContent : PropTypes.string
 };
 
 AnterosButton.defaultProps = {

@@ -5,6 +5,7 @@ import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import PropTypes from 'prop-types';
 
 export default class AnterosColorPicker extends React.Component {
     constructor(props) {
@@ -126,20 +127,20 @@ export default class AnterosColorPicker extends React.Component {
 
 
 AnterosColorPicker.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string,
-    value: React.PropTypes.string.isRequired,
-    format: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool,
+    dataField: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    format: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    onChange: React.PropTypes.func
+    onChange: PropTypes.func
 };
 
 AnterosColorPicker.defaultProps = {

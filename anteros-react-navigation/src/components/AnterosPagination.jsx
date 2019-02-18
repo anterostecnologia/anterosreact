@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import AnterosNavigatorLink  from "anteros-react-menu";
-import lodash from 'lodash';
+import PropTypes from 'prop-types';
 import { AnterosError } from "anteros-react-core";
 import { AnterosDatasource, dataSourceEvents } from "anteros-react-datasource";
 
@@ -307,19 +306,19 @@ export class AnterosPagination extends Component {
 }
 
 AnterosPagination.propTypes = {
-    current: React.PropTypes.number,
-    totalPages: React.PropTypes.number,
-    visiblePages: React.PropTypes.number,
-    titles: React.PropTypes.object,
-    images: React.PropTypes.object,
-    icons: React.PropTypes.object,
-    onPageChanged: React.PropTypes.func,
-    large: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    horizontalAlign: React.PropTypes.oneOf(['start', 'center', 'end']),
-    horizontalStart: React.PropTypes.bool,
-    horizontalCenter: React.PropTypes.bool,
-    horizontalEnd: React.PropTypes.bool,
+    current: PropTypes.number,
+    totalPages: PropTypes.number,
+    visiblePages: PropTypes.number,
+    titles: PropTypes.object,
+    images: PropTypes.object,
+    icons: PropTypes.object,
+    onPageChanged: PropTypes.func,
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    horizontalAlign: PropTypes.oneOf(['start', 'center', 'end']),
+    horizontalStart: PropTypes.bool,
+    horizontalCenter: PropTypes.bool,
+    horizontalEnd: PropTypes.bool,
 };
 
 AnterosPagination.defaultProps = {
@@ -352,15 +351,15 @@ export class AnterosPaginationPage extends Component {
 };
 
 AnterosPaginationPage.propTypes = {
-    hidden: React.PropTypes.bool,
-    active: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    className: React.PropTypes.string,
-    onClick: React.PropTypes.func,
-    image: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    href: React.PropTypes.string,
-    dataSource: React.PropTypes.objectOf(AnterosDatasource)
+    hidden: PropTypes.bool,
+    active: PropTypes.bool,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+    onClick: PropTypes.func,
+    image: PropTypes.string,
+    icon: PropTypes.string,
+    href: PropTypes.string,
+    dataSource: PropTypes.objectOf(AnterosDatasource)
 };
 
 

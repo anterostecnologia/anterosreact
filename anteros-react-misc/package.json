@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-misc",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "Anteros components for React - Misc",
   "main": "lib/anteros-react-misc.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "anteros-react-core": "file:../anteros-react-core/anteros-react-core-1.0.3.tgz",
+    "anteros-react-core": "^1.0.7",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
@@ -24,6 +24,7 @@
     "bootstrap": "v4.0.0-alpha.6",
     "classnames": "^2.2.5",
     "css-loader": "^0.27.1",
+    "d3": "^5.5.0",
     "eslint": "^3.19.0",
     "eslint-config": "^0.3.0",
     "eslint-config-rallycoding": "^3.2.0",
@@ -41,6 +42,7 @@
     "purifycss-webpack": "^0.7.0",
     "react": "^15.5.0",
     "react-dom": "^15.5.0",
+    "react-joyride": "^2.0.0-11",
     "react-pdf-js": "^3.0.0",
     "react-transition-group": "^2.2.1",
     "sass-loader": "^6.0.6",
@@ -59,8 +61,14 @@
     "babel-preset-react": "^6.23.0",
     "bootstrap": "v4.0.0-alpha.6",
     "css-loader": "^0.27.1",
+    "jsbarcode": "^3.9.0",
+    "npm": "^6.2.0",
     "purifycss": "^1.1.9",
+    "qr.js": "0.0.0",
     "style-loader": "^0.13.2",
+    "timeago.js": "^3.0.2",
+    "to": "^0.2.9",
+    "update": "^0.7.4",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   },

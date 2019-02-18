@@ -6,7 +6,7 @@ import axios from 'axios';
 import { convertJsonToObject } from '../../app/utils/AnterosJacksonParser';
 import { connect } from "react-redux";
 import { handleLogin, handleLogout, setToken } from '../actions/authenticationActions';
-
+import PropTypes from 'prop-types';
 
 class AnterosLogin extends Component {
 

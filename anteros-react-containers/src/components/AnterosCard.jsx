@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
-import {AnterosButton} from "anteros-react-buttons";
+import PropTypes from 'prop-types';
 import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
 
 
 class AnterosCard extends Component {
+    constructor(props){
+        super(props);
+        this.cardBlock = undefined;
+    }
+
+    getCardBlockWidth(){
+        return this.cardBlock.clientWidth;
+    }
+
+    getCardBlockHeight(){
+        return this.cardBlock.clientHeight;
+    }
+
     render() {
 
         const colClasses = buildGridClassNames(this.props, false, []);
@@ -13,6 +26,7 @@ class AnterosCard extends Component {
         let newChildren = [];
         let headerActions;
         let footerActions;
+        let childFooterActions = undefined;
         if (this.props.children) {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
@@ -21,11 +35,15 @@ class AnterosCard extends Component {
                     headerActions = child.props.children;
                 } else if (child.type && child.type.name == "FooterActions") {
                     footerActions = child.props.children;
+                    childFooterActions = child;
                 } else {
                     newChildren.push(child);
                 }
             });
         }
+
+        let classNameFooterActions = AnterosUtils.buildClassNames("card-footer",(childFooterActions?childFooterActions.props.className:null));
+        let styleFooterActions = (childFooterActions?childFooterActions.props.style:null);
 
         let className = AnterosUtils.buildClassNames("card card-default",
             (this.props.textCenter ? "text-center" : ""),
@@ -40,7 +58,7 @@ class AnterosCard extends Component {
 
         let imageTop, imageBottom;
         if (this.props.image && (this.props.imageTop || this.props.imageOverlay)) {
-            imageTop = <img src={this.props.image} className={this.props.imageOverlay ? "card-img" : "card-image-top"} />;
+            imageTop = <img style={this.props.imageStyle} src={this.props.image} className={this.props.imageOverlay ? "card-img" : "card-image-top"} />;
         } else if (this.props.image && this.props.imageBottom) {
             imageBottom = <img src={this.props.image} className="card-image-bottom" />;
         } else if (this.props.image) {
@@ -65,14 +83,14 @@ class AnterosCard extends Component {
                     </div>
                 </div>) : null}
                 {imageTop}
-                <div className={this.props.imageOverlay ? "card-img-overlay" : (this.props.withScroll == false ? "card-block-without-scroll" : "card-block")}>
+                <div ref={ref => (this.cardBlock = ref)} className={this.props.imageOverlay ? "card-img-overlay" : (this.props.withScroll == false ? "card-block-without-scroll" : "card-block")}>
                     {(this.props.title ? <h4 className="card-title">{this.props.title}</h4> : null)}
                     {(this.props.subTitle ? <h6 className="card-subtitle">{this.props.subTitle}</h6> : null)}
                     {(this.props.text ? <p className="card-text">{this.props.text}</p> : null)}
                     {newChildren}
                 </div>
                 {imageBottom}
-                {(footerActions && this.props.showFooter) ? <div className="card-footer">{footerActions}</div> : false}
+                {(footerActions && this.props.showFooter) ? <div className={classNameFooterActions} style={styleFooterActions}>{footerActions}</div> : false}
             </div>
         )
     }
@@ -80,37 +98,38 @@ class AnterosCard extends Component {
 
 
 AnterosCard.propTypes = {
-    className: React.PropTypes.string,
-    danger: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    primary: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    image: React.PropTypes.string,
-    imageTop: React.PropTypes.bool,
-    imageBottom: React.PropTypes.bool,
-    cardInverse: React.PropTypes.bool,
-    title: React.PropTypes.string,
-    subTitle: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    text: React.PropTypes.string,
-    textCenter: React.PropTypes.bool,
-    textRight: React.PropTypes.bool,
-    id: React.PropTypes.string,
-    outline: React.PropTypes.bool.isRequired,
-    withScroll: React.PropTypes.bool.isRequired,
-    showHeader: React.PropTypes.bool.isRequired,
-    showFooter: React.PropTypes.bool.isRequired,
-    minHeight: React.PropTypes.string,
-    minWidth: React.PropTypes.string,
-    style: React.PropTypes.object,
+    className: PropTypes.string,
+    danger: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    image: PropTypes.string,
+    imageStyle : PropTypes.style,
+    imageTop: PropTypes.bool,
+    imageBottom: PropTypes.bool,
+    cardInverse: PropTypes.bool,
+    title: PropTypes.string,
+    subTitle: PropTypes.string,
+    caption: PropTypes.string,
+    text: PropTypes.string,
+    textCenter: PropTypes.bool,
+    textRight: PropTypes.bool,
+    id: PropTypes.string,
+    outline: PropTypes.bool.isRequired,
+    withScroll: PropTypes.bool.isRequired,
+    showHeader: PropTypes.bool.isRequired,
+    showFooter: PropTypes.bool.isRequired,
+    minHeight: PropTypes.string,
+    minWidth: PropTypes.string,
+    style: PropTypes.object,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    visible: React.PropTypes.bool
+    visible: PropTypes.bool
 
 };
 

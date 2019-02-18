@@ -5,6 +5,7 @@ var PropTypes = require('prop-types');
 var ReactDOM = require('react-dom');
 var qr = require('qr.js');
 
+
 function getBackingStorePixelRatio(ctx) {
     return (
         ctx.webkitBackingStorePixelRatio ||

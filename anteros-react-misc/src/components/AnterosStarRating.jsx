@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { If, Then, Else, AnterosUtils } from "anteros-react-core";
+import PropTypes from 'prop-types';
 
 const parentStyles = {
     overflow: 'hidden',
@@ -244,9 +245,9 @@ AnterosStarRating.propTypes = {
     size: PropTypes.number,
     color1: PropTypes.string,
     color2: PropTypes.string,
-    label: React.PropTypes.string,
-    inputGridSize: React.PropTypes.number,
-    labelGridSize: React.PropTypes.number
+    label: PropTypes.string,
+    inputGridSize: PropTypes.number,
+    labelGridSize: PropTypes.number
 }
 
 export default AnterosStarRating

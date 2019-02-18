@@ -3,8 +3,9 @@ import 'script-loader!jquery-asSpinner/dist/jquery-asSpinner.min.js'
 import 'jquery-asSpinner/dist/css/asSpinner.min.css';
 import lodash from "lodash";
 import { If, Then, Else, AnterosUtils } from "anteros-react-core";
+import PropTypes from 'prop-types';
 
-export default class AnterosSpinner extends React.Component {
+export default class AnterosSpinner extends Component {
     constructor(props) {
         super(props);
         this.idSpinner = lodash.uniqueId("spinner");
@@ -69,15 +70,15 @@ export default class AnterosSpinner extends React.Component {
 
 
 AnterosSpinner.propTypes = {
-    value: React.PropTypes.string.isRequired,
-    placeHolder: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    step: React.PropTypes.number.isRequired,
-    precision: React.PropTypes.number.isRequired,
-    looping: React.PropTypes.bool.isRequired,
-    mouseWheel: React.PropTypes.bool.isRequired
+    value: PropTypes.string.isRequired,
+    placeHolder: PropTypes.string,
+    disabled: PropTypes.bool,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    step: PropTypes.number.isRequired,
+    precision: PropTypes.number.isRequired,
+    looping: PropTypes.bool.isRequired,
+    mouseWheel: PropTypes.bool.isRequired
 };
 
 AnterosSpinner.defaultProps = {

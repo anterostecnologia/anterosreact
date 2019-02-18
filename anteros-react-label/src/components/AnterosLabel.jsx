@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import PropTypes from 'prop-types';
 
 export default class AnterosLabel extends Component {
 
@@ -13,18 +14,19 @@ export default class AnterosLabel extends Component {
         if (colClasses.length > 0)
             className = AnterosUtils.buildClassNames("control-label", colClasses);
             
-        return (<label style={{ textAlign: this.props.textAlign }} className={className}>{this.props.caption}</label>);
+        return (<label style={{...this.props.style, textAlign: this.props.textAlign }} className={className}>{this.props.caption}</label>);
     }
 }
 
 AnterosLabel.propTypes = {
-    caption: React.PropTypes.string.isRequired,
-    textAlign: React.PropTypes.oneOf(['left', 'right']),
+    caption: PropTypes.string.isRequired,
+    textAlign: PropTypes.oneOf(['left', 'right']),
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
-    extraLarge: columnProps
+    extraLarge: columnProps,
+    style : PropTypes.style
 }
 
 AnterosLabel.defaultProps = {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import { AnterosUtils} from "anteros-react-core";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import PropTypes from 'prop-types';
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import 'script-loader!./AnterosPivot';
 import 'script-loader!./AnterosPivotGChart';
@@ -225,27 +224,27 @@ export default class AnterosPivotTable extends Component {
 }
 
 AnterosPivotTable.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    id: React.PropTypes.string,
-    locale: React.PropTypes.string.isRequired,
-    showCharts: React.PropTypes.bool.isRequired,
-    aggregatorName: React.PropTypes.string.isRequired,
-    rendererName: React.PropTypes.string.isRequired,
-    rowOrder: React.PropTypes.oneOf(['asc', 'desc']),
-    colOrder: React.PropTypes.oneOf(['asc', 'desc']),
-    filter: React.PropTypes.func,
-    inclusions: React.PropTypes.object,
-    exclusions: React.PropTypes.object,
-    rendererOptions: React.PropTypes.object,
-    aggregators: React.PropTypes.object,
-    rendererOptions: React.PropTypes.object,
-    onRefresh: React.PropTypes.func,
-    menuLimit: React.PropTypes.number.isRequired,
-    onClickValue: React.PropTypes.func
+    id: PropTypes.string,
+    locale: PropTypes.string.isRequired,
+    showCharts: PropTypes.bool.isRequired,
+    aggregatorName: PropTypes.string.isRequired,
+    rendererName: PropTypes.string.isRequired,
+    rowOrder: PropTypes.oneOf(['asc', 'desc']),
+    colOrder: PropTypes.oneOf(['asc', 'desc']),
+    filter: PropTypes.func,
+    inclusions: PropTypes.object,
+    exclusions: PropTypes.object,
+    rendererOptions: PropTypes.object,
+    aggregators: PropTypes.object,
+    rendererOptions: PropTypes.object,
+    onRefresh: PropTypes.func,
+    menuLimit: PropTypes.number.isRequired,
+    onClickValue: PropTypes.func
 }
 
 AnterosPivotTable.defaultProps = {
@@ -276,15 +275,15 @@ export class AnterosPivotTableField extends Component {
 }
 
 AnterosPivotTableField.propTypes = {
-    name: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    showInRow: React.PropTypes.bool.isRequired,
-    showInColumn: React.PropTypes.bool.isRequired,
-    showInValues: React.PropTypes.bool.isRequired,
-    showInAggregators: React.PropTypes.bool.isRequired,
-    sorter: React.PropTypes.func,
-    deriver: React.PropTypes.func,
-    visible: React.PropTypes.bool
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    showInRow: PropTypes.bool.isRequired,
+    showInColumn: PropTypes.bool.isRequired,
+    showInValues: PropTypes.bool.isRequired,
+    showInAggregators: PropTypes.bool.isRequired,
+    sorter: PropTypes.func,
+    deriver: PropTypes.func,
+    visible: PropTypes.bool
 }
 
 AnterosPivotTableField.defaultProps = {

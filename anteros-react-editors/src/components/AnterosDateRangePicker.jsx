@@ -5,7 +5,7 @@ import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js'
 import lodash from "lodash";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import {Anteros, AnterosDateUtils, AnterosUtils} from "anteros-react-core";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosDateRangePicker extends React.Component {
     constructor(props) {
@@ -186,29 +186,29 @@ export default class AnterosDateRangePicker extends React.Component {
 
 
 AnterosDateRangePicker.propTypes = {
-    placeHolder: React.PropTypes.string,
-    format: React.PropTypes.string,
-    value: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool,
+    placeHolder: PropTypes.string,
+    format: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    primary: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    secondary: React.PropTypes.bool,
-    default: React.PropTypes.bool,
-    fullPrimary: React.PropTypes.bool,
-    fullSuccess: React.PropTypes.bool,
-    fullInfo: React.PropTypes.bool,
-    fullDanger: React.PropTypes.bool,
-    fullWarning: React.PropTypes.bool,
-    fullSecondary: React.PropTypes.bool,
-    style: React.PropTypes.object
+    primary: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    danger: PropTypes.bool,
+    warning: PropTypes.bool,
+    secondary: PropTypes.bool,
+    default: PropTypes.bool,
+    fullPrimary: PropTypes.bool,
+    fullSuccess: PropTypes.bool,
+    fullInfo: PropTypes.bool,
+    fullDanger: PropTypes.bool,
+    fullWarning: PropTypes.bool,
+    fullSecondary: PropTypes.bool,
+    style: PropTypes.object
 };
 
 AnterosDateRangePicker.defaultProps = {

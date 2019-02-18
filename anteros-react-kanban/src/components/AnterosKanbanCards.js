@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import lodash from 'lodash';
 import Card from './AnterosKanbanDraggableCard';
+import PropTypes from 'prop-types';
 
 const specs = {
   drop(props, monitor, component) {

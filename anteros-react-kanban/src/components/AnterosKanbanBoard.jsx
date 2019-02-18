@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import { DragDropContext, DragLayer, DropTarget, DragSource } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
 import HTML5Backend, { getEmptyImage } from 'react-dnd-html5-backend';
 import { AnterosDatasource, AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "anteros-react-datasource";
 import AnterosKanbanCardsContainer from './AnterosKanbanCardsContainer';
 import AnterosKanbanCustomDragLayer from './AnterosKanbanCustomDragLayer';
+import PropTypes from 'prop-types';
 
 const DATASOURCE_EVENTS = [
     dataSourceEvents.AFTER_OPEN,
@@ -148,18 +148,18 @@ class AnterosKanbanBoard extends Component {
 
 
 AnterosKanbanBoard.propTypes = {
-    id: React.PropTypes.string,
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    id: PropTypes.string,
+    dataSource: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataFieldColumn: React.PropTypes.string,
-    cardComponent: React.PropTypes.any.isRequired,
-    onBeginDragCard: React.PropTypes.func,
-    onEndDragCard: React.PropTypes.func,
-    onHoverCard: React.PropTypes.func,
-    onClickCard: React.PropTypes.func
+    dataFieldColumn: PropTypes.string,
+    cardComponent: PropTypes.any.isRequired,
+    onBeginDragCard: PropTypes.func,
+    onEndDragCard: PropTypes.func,
+    onHoverCard: PropTypes.func,
+    onClickCard: PropTypes.func
 }
 
 
@@ -195,14 +195,14 @@ export class AnterosKanbanColumn extends React.Component {
 }
 
 AnterosKanbanColumn.propTypes = {
-    dataFieldValue: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-    renderTitle: React.PropTypes.func,
-    backgroundColorTitle: React.PropTypes.string,
-    opacity: React.PropTypes.string,
-    fontColorTitle: React.PropTypes.string,
-    centerTitle: React.PropTypes.bool,
-    width: React.PropTypes.string    
+    dataFieldValue: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    renderTitle: PropTypes.func,
+    backgroundColorTitle: PropTypes.string,
+    opacity: PropTypes.string,
+    fontColorTitle: PropTypes.string,
+    centerTitle: PropTypes.bool,
+    width: PropTypes.string    
 }
 
 

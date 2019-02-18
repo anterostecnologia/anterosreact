@@ -1,4 +1,8 @@
 import classNames from "./classnames";
+var ReactDOM = require('react-dom');
+var Tween = require('tween');
+var raf = require('raf');
+
 
 const tetherAttachements = [
   'top',
@@ -484,6 +488,81 @@ class AnterosUtils {
 
     return ids.concat(childrenIds);
   };
+
+ 
+  
+  calculateScrollOffset(element, offset, alignment) {
+    var body = document.body,
+        html = document.documentElement;
+    var elementRect = element.getBoundingClientRect();
+    var clientHeight = html.clientHeight;
+    var documentHeight = Math.max( body.scrollHeight, body.offsetHeight, 
+                                   html.clientHeight, html.scrollHeight, html.offsetHeight );
+    offset = offset || 0; // additional offset to top
+    var scrollPosition;
+    switch(alignment) {
+        case 'top': scrollPosition = elementRect.top; break;
+        case 'middle': scrollPosition = elementRect.bottom - clientHeight / 2 - elementRect.height / 2; break;
+        case 'bottom': scrollPosition = elementRect.bottom - clientHeight; break;
+        default: scrollPosition = elementRect.bottom - clientHeight / 2 - elementRect.height / 2; break; //defaul to middle
+      }
+    var maxScrollPosition = documentHeight - clientHeight;
+    return Math.min(scrollPosition + offset + window.pageYOffset,
+                    maxScrollPosition);
+  }
+  
+  scrollToComponent(ref, options) {
+    options = options || {
+      offset: 0,
+      align: 'middle'
+    };
+    var element = ReactDOM.findDOMNode(ref);
+    if (element === null) return 0;
+    return this.scrollTo(0, this.calculateScrollOffset(element, options.offset, options.align), options);
+  };
+
+
+  scrollTo(x, y, options) {
+    options = options || {};
+  
+    // start position
+    var start = this.scroll();
+  
+    // setup tween
+    var tween = Tween(start)
+      .ease(options.ease || 'out-circ')
+      .to({ top: y, left: x })
+      .duration(options.duration || 1000);
+  
+    // scroll
+    tween.update(function(o){
+      window.scrollTo(o.left | 0, o.top | 0);
+    });
+  
+    // handle end
+    tween.on('end', function(){
+      animate = function(){};
+    });
+  
+    // animate
+    function animate() {
+      raf(animate);
+      tween.update();
+    }
+  
+    animate();
+    
+    return tween;
+  }
+  
+
+   scroll() {
+    var y = window.pageYOffset || document.documentElement.scrollTop;
+    var x = window.pageXOffset || document.documentElement.scrollLeft;
+    return { top: y, left: x };
+  }
+
+
 }
 
 const instance = new AnterosUtils();

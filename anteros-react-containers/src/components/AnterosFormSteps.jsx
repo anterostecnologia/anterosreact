@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {AnterosButton} from "anteros-react-buttons";
 import lodash from 'lodash';
 import { AnterosError, AnterosUtils } from "anteros-react-core";
-
+import PropTypes from 'prop-types';
 
 
 export class AnterosFormSteps extends Component {
@@ -95,19 +95,19 @@ export class AnterosFormSteps extends Component {
 
 
 AnterosFormSteps.propTypes = {
-    contentHeight: React.PropTypes.string,
-    contentStyle: React.PropTypes.object,
-    circle: React.PropTypes.bool.isRequired,
-    backCaption: React.PropTypes.string.isRequired,
-    nextCaption: React.PropTypes.string.isRequired,
-    finishCaption: React.PropTypes.string.isRequired,
-    buttonOutline: React.PropTypes.bool.isRequired,
-    height: React.PropTypes.string,
-    width: React.PropTypes.string,
-    style: React.PropTypes.object,
-    onBackClick: React.PropTypes.func,
-    onFinishClick: React.PropTypes.func,
-    onNextClick: React.PropTypes.func
+    contentHeight: PropTypes.string,
+    contentStyle: PropTypes.object,
+    circle: PropTypes.bool.isRequired,
+    backCaption: PropTypes.string.isRequired,
+    nextCaption: PropTypes.string.isRequired,
+    finishCaption: PropTypes.string.isRequired,
+    buttonOutline: PropTypes.bool.isRequired,
+    height: PropTypes.string,
+    width: PropTypes.string,
+    style: PropTypes.object,
+    onBackClick: PropTypes.func,
+    onFinishClick: PropTypes.func,
+    onNextClick: PropTypes.func
 
 };
 
@@ -169,9 +169,9 @@ export class AnterosFormStep extends Component {
 
 
 AnterosFormStep.propTypes = {
-    caption: React.PropTypes.string.isRequired,
-    description: React.PropTypes.string.isRequired,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string
+    caption: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    image: PropTypes.string
 };
 

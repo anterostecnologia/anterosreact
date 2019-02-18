@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {AnterosNavigatorLink} from "anteros-react-menu";
 import lodash from 'lodash';
 import { AnterosError } from "anteros-react-core";
+import PropTypes from 'prop-types';
 
 export default class AnterosPageControl extends Component {
     constructor(props) {
@@ -115,11 +115,11 @@ export default class AnterosPageControl extends Component {
 }
 
 AnterosPageControl.propTypes = {
-    vertical: React.PropTypes.bool.isRequired,
-    custom1: React.PropTypes.bool.isRequired,
-    custom2: React.PropTypes.bool.isRequired,
-    pill: React.PropTypes.bool.isRequired,
-    onPageChange: React.PropTypes.func
+    vertical: PropTypes.bool.isRequired,
+    custom1: PropTypes.bool.isRequired,
+    custom2: PropTypes.bool.isRequired,
+    pill: PropTypes.bool.isRequired,
+    onPageChange: PropTypes.func
 
 }
 
@@ -157,14 +157,14 @@ class AnterosTabLink extends Component {
 }
 
 AnterosTabLink.propTypes = {
-    active: React.PropTypes.bool.isRequired,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string,
-    imageCircle: React.PropTypes.bool.isRequired,
-    imageHeight: React.PropTypes.string,
-    imageWidth: React.PropTypes.string,
-    onPageChange: React.PropTypes.func,
-    onTabLinkClick: React.PropTypes.func
+    active: PropTypes.bool.isRequired,
+    icon: PropTypes.string,
+    image: PropTypes.string,
+    imageCircle: PropTypes.bool.isRequired,
+    imageHeight: PropTypes.string,
+    imageWidth: PropTypes.string,
+    onPageChange: PropTypes.func,
+    onTabLinkClick: PropTypes.func
 }
 
 AnterosTabLink.defaultProps = {
@@ -202,14 +202,14 @@ class AnterosTabContent extends Component {
 }
 
 AnterosTabContent.propTypes = {
-    active: React.PropTypes.bool.isRequired,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string,
-    imageCircle: React.PropTypes.bool.isRequired,
-    imageHeight: React.PropTypes.string,
-    imageWidth: React.PropTypes.string,
-    onPageChange: React.PropTypes.func,
-    onTabClick: React.PropTypes.func
+    active: PropTypes.bool.isRequired,
+    icon: PropTypes.string,
+    image: PropTypes.string,
+    imageCircle: PropTypes.bool.isRequired,
+    imageHeight: PropTypes.string,
+    imageWidth: PropTypes.string,
+    onPageChange: PropTypes.func,
+    onTabClick: PropTypes.func
 }
 
 AnterosTabContent.defaultProps = {

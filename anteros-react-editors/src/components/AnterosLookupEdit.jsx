@@ -4,6 +4,9 @@ import lodash from "lodash";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import { AnterosJacksonParser,AnterosStringUtils,AnterosObjectUtils, AnterosUtils } from "anteros-react-core";
+import PropTypes from 'prop-types';
+
+
 
 export default class AnterosLookupEdit extends React.Component {
     constructor(props) {
@@ -252,35 +255,35 @@ export default class AnterosLookupEdit extends React.Component {
 }
 
 AnterosLookupEdit.contextTypes = {
-    withinInputGroup: React.PropTypes.bool
+    withinInputGroup: PropTypes.bool
 };
 
 
 AnterosLookupEdit.propTypes = {
-    dataSource: React.PropTypes.oneOfType([
-        React.PropTypes.instanceOf(AnterosLocalDatasource),
-        React.PropTypes.instanceOf(AnterosRemoteDatasource)
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
-    dataField: React.PropTypes.string.isRequired,
-    lookupField: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string.isRequired,
-    placeHolder: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    maxLenght: React.PropTypes.number.isRequired,
+    dataField: PropTypes.string.isRequired,
+    lookupField: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    placeHolder: PropTypes.string,
+    disabled: PropTypes.bool,
+    maxLenght: PropTypes.number.isRequired,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    onButtonClick: React.PropTypes.func,
-    onLookupData: React.PropTypes.func.isRequired,
-    icon: React.PropTypes.string,
-    iconColor: React.PropTypes.string,
-    image: React.PropTypes.string,
-    style: React.PropTypes.object,
-    readOnly: React.PropTypes.bool.isRequired,
-    validateOnExit: React.PropTypes.bool.isRequired,
-    validateMessage: React.PropTypes.string.isRequired
+    onButtonClick: PropTypes.func,
+    onLookupData: PropTypes.func.isRequired,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    image: PropTypes.string,
+    style: PropTypes.object,
+    readOnly: PropTypes.bool.isRequired,
+    validateOnExit: PropTypes.bool.isRequired,
+    validateMessage: PropTypes.string.isRequired
 };
 
 AnterosLookupEdit.defaultProps = {

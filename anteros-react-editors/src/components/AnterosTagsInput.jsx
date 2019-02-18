@@ -220,9 +220,9 @@ AnterosTagsInput.propTypes = {
     classNames: PropTypes.object,
     allowNew: PropTypes.bool,
     allowBackspace: PropTypes.bool,
-    label: React.PropTypes.string,
-    inputGridSize: React.PropTypes.number,
-    labelGridSize: React.PropTypes.number,
+    label: PropTypes.string,
+    inputGridSize: PropTypes.number,
+    labelGridSize: PropTypes.number,
     tagComponent: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.element

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 
 export default class AnterosCustomLabel extends Component {
 
@@ -40,17 +40,17 @@ export default class AnterosCustomLabel extends Component {
 }
 
 AnterosCustomLabel.propTypes = {
-    primary: React.PropTypes.bool,
-    success: React.PropTypes.bool,
-    info: React.PropTypes.bool,
-    warning: React.PropTypes.bool,
-    danger: React.PropTypes.bool,
-    dark: React.PropTypes.bool,
-    pillFormat: React.PropTypes.bool,
-    outline: React.PropTypes.bool,
-    large: React.PropTypes.bool,
-    small: React.PropTypes.bool,
-    caption: React.PropTypes.string.isRequired
+    primary: PropTypes.bool,
+    success: PropTypes.bool,
+    info: PropTypes.bool,
+    warning: PropTypes.bool,
+    danger: PropTypes.bool,
+    dark: PropTypes.bool,
+    pillFormat: PropTypes.bool,
+    outline: PropTypes.bool,
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    caption: PropTypes.string.isRequired
 }
 
 AnterosCustomLabel.defaultProps = {

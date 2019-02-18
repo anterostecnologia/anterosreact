@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AnterosNavigatorLink from "anteros-react-menu";
-import lodash from 'lodash';
+import PropTypes from 'prop-types';
+
 
 export default class AnterosTab extends Component {
     constructor(props) {
@@ -20,13 +20,13 @@ export default class AnterosTab extends Component {
 }
 
 AnterosTab.propTypes = {
-    onTabLinkClick: React.PropTypes.func,
-    onTabClick: React.PropTypes.func,
-    vertical : React.PropTypes.bool.isRequired,
-    custom1 : React.PropTypes.bool.isRequired,
-    custom2 : React.PropTypes.bool.isRequired,
-    pill : React.PropTypes.bool.isRequired,
-    onPageChange : React.PropTypes.func
+    onTabLinkClick: PropTypes.func,
+    onTabClick: PropTypes.func,
+    vertical : PropTypes.bool.isRequired,
+    custom1 : PropTypes.bool.isRequired,
+    custom2 : PropTypes.bool.isRequired,
+    pill : PropTypes.bool.isRequired,
+    onPageChange : PropTypes.func
 }
 
 AnterosTab.defaultProps = {

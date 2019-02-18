@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-
+import PropTypes from 'prop-types';
 
 export default class AnterosDropdownMenuItem extends Component {
     constructor(props, context) {
@@ -55,12 +55,12 @@ export default class AnterosDropdownMenuItem extends Component {
 
 
 AnterosDropdownMenuItem.propTypes = {
-    disabled: React.PropTypes.bool,
-    icon: React.PropTypes.string,
-    image: React.PropTypes.string,
-    caption: React.PropTypes.string,
-    onSelectMenuItem: React.PropTypes.func,
-    href: React.PropTypes.string
+    disabled: PropTypes.bool,
+    icon: PropTypes.string,
+    image: PropTypes.string,
+    caption: PropTypes.string,
+    onSelectMenuItem: PropTypes.func,
+    href: PropTypes.string
 };
 
 AnterosDropdownMenuItem.defaultProps = {
