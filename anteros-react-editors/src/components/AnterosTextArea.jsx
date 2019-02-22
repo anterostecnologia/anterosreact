@@ -44,12 +44,12 @@ export default class AnterosTextArea extends React.Component {
                 value = '';
             }
             if (isBase64(value)) {
-                this.state = { value: atob(value) };
+                this.setState({ value: atob(value) });
             } else {
-                this.state = { value: value };
+                this.setState({ value: value });
             }
         } else {
-            this.state = { value: nextProps.value };
+            this.setState({ value: nextProps.value });
         }
     }
 

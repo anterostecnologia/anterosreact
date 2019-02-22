@@ -762,11 +762,11 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.ajaxDeleteConfigHandler = handler;
     }
 
-    open(ajaxConfig) {
+    open(ajaxConfig, callback) {
         super.open();
         if (ajaxConfig && ajaxConfig != null) {
             let _this = this;
-            this.executeAjax((ajaxConfig ? ajaxConfig : this.ajaxConfig), dataSourceEvents.AFTER_OPEN);
+            this.executeAjax((ajaxConfig ? ajaxConfig : this.ajaxConfig), dataSourceEvents.AFTER_OPEN, callback);
         } else {
             this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
         }
@@ -854,7 +854,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.executeAjax(ajaxPageConfig, dataSourceEvents.AFTER_GOTO_PAGE);
     }
 
-    executeAjax(ajaxConfig, event) {
+    executeAjax(ajaxConfig, event, callback) {
         let _this = this;
         this.executed = false;
         axios((ajaxConfig ? ajaxConfig : this.ajaxConfig)
@@ -901,8 +901,14 @@ class AnterosRemoteDatasource extends AnterosDatasource {
             _this.executed = true;
             _this.first();
             _this.dispatchEvent(event);
+            if (callback){
+                callback();
+            }
         }).catch(function (error) {
             if (_this.executed) {
+                if (callback){
+                    callback(error);
+                }
                 throw new Error(error);
             } else {
                 _this.dispatchEvent(dataSourceEvents.ON_ERROR, error);

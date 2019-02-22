@@ -25,7 +25,7 @@ class AnterosPanel extends Component {
 
         let style = { ...this.props.style, height: this.props.height, width: this.props.width, minHeight: this.props.minHeight, minWidth: this.props.minWidth };    
         if (!this.props.border){
-            style = {...style, border:0};
+            style = {...style, border:0, boxShadow:"none"};
         }
         return (
             <div id={this.props.id} className={className} style={style}>

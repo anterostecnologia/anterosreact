@@ -9,7 +9,7 @@ export default class AnterosCheckboxSlide extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state = { checked: (nextProps.checked ? true : false), disabled: (nextProps.disabled ? true : false) }
+        this.setState({ checked: (nextProps.checked ? true : false), disabled: (nextProps.disabled ? true : false) });
     }
 
     onClick(event) {

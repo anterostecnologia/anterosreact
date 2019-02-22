@@ -36,9 +36,9 @@ export default class AnterosClockPicker extends React.Component {
       if (!value) {
         value = '';
       }
-      this.state = { value: value };
+      this.setState({ value: value });
     } else {
-      this.state = { value: nextProps.value };
+      this.setState({ value: nextProps.value });
     }
   }
 

@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import lodash from 'lodash';
 import { AnterosError, AnterosUtils } from "anteros-react-core";
 import PropTypes from 'prop-types';
-import { AnterosLocalDatasource, AnterosRemoteDatasource } from "anteros-react-datasource";
+import { AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "anteros-react-datasource";
+
+const DATASOURCE_EVENTS = [dataSourceEvents.AFTER_CLOSE,
+    dataSourceEvents.AFTER_CANCEL,
+    dataSourceEvents.AFTER_POST,
+    dataSourceEvents.AFTER_EDIT,
+    dataSourceEvents.AFTER_INSERT,
+    dataSourceEvents.AFTER_OPEN,
+    dataSourceEvents.AFTER_SCROLL,
+    dataSourceEvents.AFTER_GOTO_PAGE,
+    dataSourceEvents.AFTER_DELETE];
 
 export default class AnterosList extends Component {
     constructor(props) {
@@ -16,6 +26,12 @@ export default class AnterosList extends Component {
         this.buildChildrensFromDataSource = this.buildChildrensFromDataSource.bind(this);
         this.rebuildedChildrens = [];
         this.gotoItemById = this.gotoItemById.bind(this);
+        this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
+        this.getRecordDataFromChildren = this.getRecordDataFromChildren.bind(this);
+
+        if ((this.props.dataSource instanceof AnterosRemoteDatasource) || (this.props.dataSource instanceof AnterosLocalDatasource)) {
+            this.props.dataSource.addEventListener(DATASOURCE_EVENTS, this.onDatasourceEvent);
+        }
     }
     componentDidMount() {
 
@@ -25,8 +41,33 @@ export default class AnterosList extends Component {
         this.setState({ activeIndex: nextProps.activeIndex });
     }
 
-    handleSelectItem(index) {
+    componentWillUnmount() {
+        if ((this.props.dataSource instanceof AnterosRemoteDatasource) || (this.props.dataSource instanceof AnterosLocalDatasource)) {
+            this.props.dataSource.removeEventListener(DATASOURCE_EVENTS, this.onDatasourceEvent);
+        }
+    }
+
+    onDatasourceEvent(event, error) {
+        if (event == dataSourceEvents.AFTER_SCROLL) {
+            if (this.props.onSelectListItem && !this.props.dataSource.isEmpty()) {
+                this.setState({activeIndex: this.props.dataSource.getRecno()})
+                this.props.onSelectListItem(this.props.dataSource.getRecno(), this.props.dataSource.getCurrentRecord());
+            }
+        } else {
+            this.setState({activeIndex: this.props.dataSource.getRecno()})
+            if (this.props.onSelectListItem && !this.props.dataSource.isEmpty()) {
+                this.props.onSelectListItem(this.props.dataSource.getRecno(), this.props.dataSource.getCurrentRecord());
+            }
+        }
+    }
+
+    handleSelectItem(index, data) {
         this.setState({ activeIndex: index });
+        if (this.props.dataSource && (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource)){
+            this.props.dataSource.gotoRecordByData(data);
+        } else if (this.props.onSelectListItem){
+            this.props.onSelectListItem(index,data);
+        }        
     }
 
     handleKeyDown(event) {
@@ -36,27 +77,34 @@ export default class AnterosList extends Component {
                 let index = this.state.activeIndex;
                 if (index - 1 >= 0) {
                     this.setState({ activeIndex: index - 1 });
+                    this.handleSelectItem(index - 1, this.getRecordDataFromChildren(index-1));
                 }
             } else if ((event.keyCode == 40) || (event.keyCode == 39)) {
                 let index = this.state.activeIndex;
-                if (index + 1 < this.numberOfItens)
+                if (index + 1 < this.numberOfItens){
                     this.setState({ activeIndex: index + 1 });
+                    this.handleSelectItem(index + 1, this.getRecordDataFromChildren(index+1));
+                }
             } else if (event.keyCode == 33) {
                 this.setState((prevState, props) => {
                     return { activeIndex: (prevState.activeIndex - 5 >= 0 ? prevState.activeIndex - 5 : 0) };
                 })
+                this.handleSelectItem(this.state.activeIndex, this.getRecordDataFromChildren(this.state.activeIndex));
             } else if (event.keyCode == 34) {
                 this.setState((prevState, props) => {
                     return { activeIndex: (prevState.activeIndex + 5 < this.numberOfItens ? prevState.activeIndex + 5 : this.numberOfItens - 1) };
                 })
+                this.handleSelectItem(this.state.activeIndex, this.getRecordDataFromChildren(this.state.activeIndex));
             } else if (event.keyCode == 36) {
                 this.setState((prevState, props) => {
                     return { activeIndex: 0 };
                 })
+                this.handleSelectItem(0, this.getRecordDataFromChildren(0));
             } else if (event.keyCode == 35) {
                 this.setState((prevState, props) => {
                     return { activeIndex: this.numberOfItens - 1 };
                 })
+                this.handleSelectItem(this.state.activeIndex, this.getRecordDataFromChildren(this.state.activeIndex));
             }
         }
     }
@@ -107,9 +155,17 @@ export default class AnterosList extends Component {
                 _this.state.activeIndex = index;
             }
 
-            var { component, key, id, ...rest } = this.props;
-            const DynamicComponent = component;
+            var { component, key, id, ...rest } = this.props;            
             if (component) {
+                let DynamicComponent = component;
+                let compProps = {};
+                if (component.hasOwnProperty("component")){
+                    DynamicComponent = component.component;
+                }
+                if (component.hasOwnProperty("props")){
+                    compProps = component.props;
+                }
+                
                 children.push(React.createElement(DynamicComponent,
                     {
                         key: record[_this.props.dataFieldId],
@@ -117,7 +173,7 @@ export default class AnterosList extends Component {
                         active: active,
                         index: index,
                         handleSelectItem: _this.handleSelectItem,
-                        recordData: record, ...rest
+                        recordData: record, ...compProps,  ...rest
                     }));
             } else {
                 children.push(React.createElement(AnterosListItem, {
@@ -157,6 +213,16 @@ export default class AnterosList extends Component {
         });
         this.numberOfItens = index;
         return children;
+    }
+
+    getRecordDataFromChildren(index){
+        let result;
+        this.rebuildedChildrens.map(item => {
+            if (item.props.index === index){
+                result = item.props.recordData;
+            }
+        });
+        return result;
     }
 
     rebuildChildrens() {
@@ -272,10 +338,10 @@ export class AnterosListItem extends Component {
         event.preventDefault();
         if (!this.props.disabled) {
             if (this.props.handleSelectItem) {
-                this.props.handleSelectItem(this.props.index, this);
+                this.props.handleSelectItem(this.props.index, this.props.recordData);
             }
             if (this.props.onSelectListItem) {
-                this.props.onSelectListItem(this.props.index, this);
+                this.props.onSelectListItem(this.props.index, this.props.recordData);
             }
         }
     }

@@ -33,9 +33,9 @@ export default class AnterosLookupNumber extends React.Component {
             if (!value) {
                 value = '';
             }
-            this.state = { value: value };
+            this.setState({ value: value });
         } else {
-            this.state = { value: nextProps.value };
+            this.setState({ value: nextProps.value });
         }
     }
 
@@ -220,7 +220,7 @@ export default class AnterosLookupNumber extends React.Component {
                     disabled={(this.props.disabled ? true : false)}
                     id={this.idEdit} ref={ref => this.input = ref}
                     type="text" value={this.state.value}
-                    style={{ textAlign:'right' }}
+                    style={{ textAlign:'right', margin: 0 }}
                     className={classNameInput}
                     onChange={this.handleChange}
                     onKeyDown={this.onKeyDown}
@@ -228,7 +228,7 @@ export default class AnterosLookupNumber extends React.Component {
                     onBlur={this.onBlur}
                     readOnly={readOnly}
                 />
-                <div className={classNameAddOn} onClick={this.props.onButtonClick}>
+                <div className={classNameAddOn} style={{margin: 0}}  onClick={this.props.onButtonClick}>
                     <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick} /></span></div>
             </div>);
         } else {
@@ -236,8 +236,9 @@ export default class AnterosLookupNumber extends React.Component {
                 disabled={(this.props.disabled ? true : false)}
                 id={this.idEdit} ref={ref => this.input = ref}
                 type="text" value={this.state.value}
-                style={{ ...this.props.style, width: this.props.width, textAlign:'right' }}
+                style={{ ...this.props.style, width: this.props.width, textAlign:'right', margin: 0 }}
                 className={classNameInput}
+
                 readOnly={readOnly}
                 onKeyDown={this.onKeyDown}
                 onKeyPress={this.onKeyPress}

@@ -112,11 +112,15 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         } else {
             this.setState({value: event.target.value});
         }
+        
         if (this.props.onChange) {
             this
                 .props
                 .onChange(event, event.target.value);
         }
+
+        if (!this.context.validationForm.immediate) return;
+        this.checkError();
     }
 
     onKeyPress(event) {
@@ -262,6 +266,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                         value={this.state.value}
                         className={classNameInput}
                         onChange={this.handleChange}
+                        onBlur={this._handleBlur}
                         onFocus={this.props.onFocus}
                         onKeyDown={this.onKeyDown}
                         onKeyPress={this.onKeyPress}
@@ -277,7 +282,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
             );
         } else {
             const edit = <div
-                className="input-group"
+                // className="input-group"
                 style={{
                 width: this.props.width
             }}>
@@ -305,6 +310,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                     onKeyDown={this.onKeyDown}
                     onKeyPress={this.onKeyPress}
                     onChange={this.handleChange}
+                    onBlur={this._handleBlur}
                     maxLength={this.props.maxLength}
                     placeholder={this.props.placeHolder}/> {this.displayErrorMessage()}
                 {this.displaySuccessMessage()}

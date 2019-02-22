@@ -21,9 +21,9 @@ export default class AnterosLookupEdit extends React.Component {
             if (!value) {
                 value = '';
             }
-            this.state = { value: value };
+            this.setState({ value: value });
         } else {
-            this.state = { value: this.props.value };
+            this.setState({ value: this.props.value });
         }
         this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
     }
@@ -215,11 +215,13 @@ export default class AnterosLookupEdit extends React.Component {
 
 
         if (this.props.icon) {
-            return (<div className={className} style={{ ...this.props.style, width: width }} ref={ref => this.divInput = ref}>
+            return (<div className={className} style={{ ...this.props.style, width: width }} 
+            ref={ref => this.divInput = ref}>
                 <input
                     disabled={(this.props.disabled ? true : false)}
                     id={this.idEdit} ref={ref => this.input = ref}
                     type="text" value={this.state.value}
+                    style={{margin: 0}} 
                     className={classNameInput}
                     onChange={this.handleChange}
                     onKeyDown={this.onKeyDown}
@@ -227,7 +229,7 @@ export default class AnterosLookupEdit extends React.Component {
                     onBlur={this.onBlur}
                     readOnly={readOnly}
                 />
-                <div className={classNameAddOn} onClick={this.props.onButtonClick}>
+                <div className={classNameAddOn} style={{margin: 0}} onClick={this.props.onButtonClick}>
                     <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick} /></span></div>
             </div>);
         } else {

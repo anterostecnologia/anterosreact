@@ -24,8 +24,8 @@ export class AnterosBaseInputControl extends React.Component {
         this.displaySuccessMessage = this.displaySuccessMessage.bind(this);
         this.checkError = this.checkError.bind(this);
         this.changeInputErrorClass = this.changeInputErrorClass.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this._handleBlur = this._handleBlur.bind(this);
+        this._handleChange = this._handleChange.bind(this);
         this.validateInput = this.validateInput.bind(this);
         this.setDirty = this.setDirty.bind(this);
         this.filterProps = this.filterProps.bind(this);
@@ -77,6 +77,8 @@ export class AnterosBaseInputControl extends React.Component {
         errorMessage = Object.assign({}, AnterosForm.defaultErrorMessage, defaultErrorMessage, errorMessage);
         let input = this.getInputRef();
         if (input) {
+            
+            input.checkValidity();
             let validityState = input.validity;
             let newErrorMessage = "";
             for (let prop in validityState) {
@@ -144,12 +146,12 @@ export class AnterosBaseInputControl extends React.Component {
         }
     }
 
-    handleBlur(e) {
+    _handleBlur(e) {
         if (this.context.validationForm.immediate) return;
         this.checkError();
     }
 
-    handleChange(e) {
+    _handleChange(e) {
         if (this.props.onChange) this.props.onChange(e);
         if (!this.context.validationForm.immediate) return;
         this.checkError();
@@ -157,6 +159,7 @@ export class AnterosBaseInputControl extends React.Component {
 
     validateInput(){
         this.setDirty();
+        this.checkError();
         this.buildErrorMessage();
     }
 
@@ -367,16 +370,16 @@ AnterosForm.childContextTypes = {
 };
 
 AnterosForm.defaultErrorMessage = {
-    required: "This field is required",
-    pattern: "Input value does not match the pattern",
-    type: "Input value does not match the type",
-    step: "Step mismatch",
-    minLength: "Please enter at least {minLength} characters",
-    min: "Number is too low",
-    max: "Number is too high",
-    fileType: "File type mismatch",
-    maxFileSize: "File size exceed limit",
-    validator: "Validator check failed"
+    required: "Este campo deve ser preenchido",
+    pattern: "O valor de entrada não corresponde ao padrão",
+    type: "O valor de entrada não corresponde ao tipo",
+    step: "Passo incorreto",
+    minLength: "Por favor, insira pelo menos {minLength} caracteres",
+    min: "O número é muito baixo",
+    max: "O número é muito alto",
+    fileType: "Tipo de arquivo incorreto",
+    maxFileSize: "Tamanho do arquivo excedido",
+    validator: "A verificação do validador falhou"
 }
 
 export class AnterosFormGroup extends Component {

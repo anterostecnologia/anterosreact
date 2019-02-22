@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { AnterosError } from "anteros-react-core";
+import {AnterosError} from "anteros-react-core";
 import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import 'script-loader!jquery.inputmask/dist/jquery.inputmask.bundle.js';
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
+import {AnterosBaseInputControl} from 'anteros-react-containers';
 
-
-
-export default class AnterosMaskEdit extends Component {
+export default class AnterosMaskEdit extends AnterosBaseInputControl {
 
     constructor(props) {
         super(props);
@@ -18,140 +17,261 @@ export default class AnterosMaskEdit extends Component {
             throw new AnterosError('Informe a máscara ou o padrão de máscara para o AnterosMaskEdit.');
         }
         this.idEdit = lodash.uniqueId("maskEdit");
-        this.onComplete = this.onComplete.bind(this);
+        this.onChangeValue = this
+            .onChangeValue
+            .bind(this);
         if (this.props.dataSource) {
-            let value = this.props.dataSource.fieldByName(this.props.dataField);
+            let value = this
+                .props
+                .dataSource
+                .fieldByName(this.props.dataField);
             if (!value) {
                 value = '';
             }
-            this.state = { value: value };
+            this.state = {
+                value: value
+            };
         } else {
-            this.state = { value: this.props.value };
+            this.state = {
+                value: this.props.value
+            };
         }
-        this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
+        this.onDatasourceEvent = this
+            .onDatasourceEvent
+            .bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.dataSource) {
-            let value = nextProps.dataSource.fieldByName(nextProps.dataField);
+            let value = nextProps
+                .dataSource
+                .fieldByName(nextProps.dataField);
             if (!value) {
                 value = '';
             }
-            this.state = { value: value };
+            this.setState({value: value});
         } else {
-            this.state = { value: nextProps.value };
+            this.setState({value: nextProps.value});
         }
     }
 
     componentDidMount() {
+        this._componentDidMount();
         let _this = this;
+        
         if (this.props.maskPattern == 'cnpj') {
-            $(this.input).inputmask('99.999.999/9999-99', { "alias": this.props.placeHolder,"oncomplete": function(){ 
-                _this.onComplete(_this.input.inputmask.unmaskedvalue());
-            } });
+            $(this.inputRef.current).inputmask('99.999.999/9999-99', {
+                "alias": this.props.placeHolder,
+                "onincomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncleared": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                }
+            });
         } else if (this.props.maskPattern == 'cpf') {
-            $(this.input).inputmask('999.999.999-99', { "alias": this.props.placeHolder,"oncomplete": function(event){ 
-                _this.onComplete(_this.input.inputmask.unmaskedvalue());
-            } });
+            $(this.inputRef.current).inputmask('999.999.999-99', {
+                "alias": this.props.placeHolder,
+                "onincomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncleared": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                }
+            });
         } else if (this.props.maskPattern == 'cep') {
-            $(this.input).inputmask('99999-999', { "alias": this.props.placeHolder, "oncomplete": function(event){ 
-                _this.onComplete(_this.input.inputmask.unmaskedvalue());
-            } });
+            $(this.inputRef.current).inputmask('99999-999', {
+                "alias": this.props.placeHolder,
+                "onincomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncleared": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                }
+            });
         } else if (this.props.maskPattern == 'fone') {
-            $(this.input).inputmask({
-                mask: ["(99) 9999-9999", "(99) 99999-9999",],
-                keepStatic: true, "alias": this.props.placeHolder, "oncomplete": function(event){ 
-                _this.onComplete(_this.input.inputmask.unmaskedvalue());
-            }
+            $(this.inputRef.current).inputmask({
+                mask: [
+                    "(99) 9999-9999", "(99) 99999-9999"
+                ],
+                keepStatic: true,
+                "alias": this.props.placeHolder,
+                "onincomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncleared": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                }
             });
         } else {
-            $(this.input).inputmask(this.props.mask, { "alias": this.props.placeHolder, "oncomplete": function(event){ 
-                _this.onComplete(_this.input.inputmask.unmaskedvalue());
-            } });
+            $(this.inputRef.current).inputmask(this.props.mask, {
+                "alias": this.props.placeHolder,
+                "onincomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncleared": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                },
+                "oncomplete": function () {
+                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
+                    _this.onChangeValue(value);
+                }
+            });
         }
 
         if (this.props.dataSource) {
-            this.props.dataSource.addEventListener(
-                [dataSourceEvents.AFTER_CLOSE,
-                dataSourceEvents.AFTER_OPEN,
-                dataSourceEvents.AFTER_GOTO_PAGE,
-                dataSourceEvents.AFTER_CANCEL,
-                dataSourceEvents.AFTER_SCROLL], this.onDatasourceEvent);
-            this.props.dataSource.addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+            this
+                .props
+                .dataSource
+                .addEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_OPEN, dataSourceEvents.AFTER_GOTO_PAGE, dataSourceEvents.AFTER_CANCEL, dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
         }
     }
 
     componentWillUnmount() {
+        this._componentWillUnmount();
         if ((this.props.dataSource)) {
-            this.props.dataSource.removeEventListener(
-                [dataSourceEvents.AFTER_CLOSE,
-                dataSourceEvents.AFTER_OPEN,
-                dataSourceEvents.AFTER_GOTO_PAGE,
-                dataSourceEvents.AFTER_CANCEL,
-                dataSourceEvents.AFTER_SCROLL], this.onDatasourceEvent);
-            this.props.dataSource.removeEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+            this
+                .props
+                .dataSource
+                .removeEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_OPEN, dataSourceEvents.AFTER_GOTO_PAGE, dataSourceEvents.AFTER_CANCEL, dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .removeEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
         }
     }
 
     onDatasourceEvent(event, error) {
-        let value = this.props.dataSource.fieldByName(this.props.dataField);
+        let value = this
+            .props
+            .dataSource
+            .fieldByName(this.props.dataField);
         if (!value) {
             value = '';
         }
-        this.setState({ value: value });
+        this.setState({...this.state,value: value});
     }
 
     handleChange(event) {
         onComplete(event.target.value);
     }
 
-    onComplete(value){
+    onChangeValue(value) {
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
-            this.props.dataSource.setFieldByName(this.props.dataField, value);
+            this
+                .props
+                .dataSource
+                .setFieldByName(this.props.dataField, value);
         } else {
-            this.setState({ value });
+            this.setState({...this.state,value});
         }
         if (this.props.onChange) {
-            this.props.onChange(value);
+            this
+                .props
+                .onChange(value);
         }
+
+        if (!this.context.validationForm.immediate) 
+            return;
+        this.checkError();
     }
 
+    checkError(e) {
+        let isPristine = this.state.isPristine;
+        if (isPristine) this.setDirty();
+        this.buildErrorMessage();
+        this.changeInputErrorClass();
+    }
 
     render() {
         let readOnly = this.props.readOnly;
+        let {required, minlength, maxlength, pattern} = this.props;
         if (this.props.dataSource && !readOnly) {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
         }
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        const className = AnterosUtils.buildClassNames(
-            (this.props.className ? this.props.className : ""), (colClasses.length > 0 ? "form-control" : ""));
+        const className = AnterosUtils.buildClassNames((this.props.className
+            ? this.props.className
+            : ""), (colClasses.length > 0
+            ? "form-control"
+            : ""));
 
         if (this.props.id) {
             this.idEdit = this.props.id;
         }
 
-        const edit = <input id={this.idEdit}
+        const edit = <input
+            id={this.idEdit}
             className={className}
-            disabled={(this.props.disabled ? true : false)}
-            style={{ ...this.props.style, width: this.props.width }}
+            disabled={(this.props.disabled
+            ? true
+            : false)}
+            style={{
+            ...this.props.style,
+            width: this.props.width
+        }}
             readOnly={readOnly}
+            required
+            minlength
+            maxlength
+            pattern
             onFocus={this.props.onFocus}
             onChange={this.handleChange}
+            onBlur={this._handleBlur}
             value={this.state.value}
-            ref={ref => (this.input = ref)} type='text' />;
-
+            ref={this.inputRef}
+            type='text'/>;
 
         if (colClasses.length > 0) {
-            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
-                {edit}
-            </div>);
+            return (
+                <div className={AnterosUtils.buildClassNames(colClasses)}>
+                    {edit}
+                    {this.displayErrorMessage()}
+                    {this.displaySuccessMessage()}
+                </div>
+            );
         } else {
-            return edit
+            return (
+                <div>{edit}{this.displayErrorMessage()} {this.displaySuccessMessage()}</div>
+            );
         }
     }
 }
-
 
 AnterosMaskEdit.propTypes = {
     dataSource: PropTypes.oneOfType([
@@ -161,7 +281,9 @@ AnterosMaskEdit.propTypes = {
     dataField: PropTypes.string,
     id: PropTypes.string,
     disabled: PropTypes.bool,
-    mask: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    mask: PropTypes.oneOfType([
+        PropTypes.string, PropTypes.arrayOf(PropTypes.string)
+    ]),
     maskPattern: PropTypes.oneOf(['cnpj', 'cpf', 'fone', 'cep']),
     value: PropTypes.string,
     placeHolder: PropTypes.string,
@@ -179,4 +301,3 @@ AnterosMaskEdit.propTypes = {
 AnterosMaskEdit.defaultProps = {
     disabled: false
 }
-

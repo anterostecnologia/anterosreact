@@ -42,9 +42,9 @@ export default class AnterosDatePicker extends React.Component {
       if (value instanceof Date) {
         value = AnterosDateUtils.formatDate(value, nextProps.format);
       }
-      this.state = { value: value };
+      this.setState({ value: value });
     } else {
-      this.state = { value: nextProps.value };
+      this.setState({ value: nextProps.value });
     }
   }
 
@@ -204,9 +204,12 @@ export default class AnterosDatePicker extends React.Component {
 
     return (
       <div className={className} id={this.props.id} style={{ ...this.props.style, width: width }} ref={ref => this.divInput = ref}>
-        <input disabled={(this.props.disabled ? true : false)} id={this.idCalendar} ref={ref => this.input = ref} type="text" value={this.state.value} className={classNameInput} onChange={this.handleChange}
+        <input disabled={(this.props.disabled ? true : false)} id={this.idCalendar} 
+        ref={ref => this.input = ref} type="text"
+        style={{margin: 0}} 
+        value={this.state.value} className={classNameInput} onChange={this.handleChange}
           onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} readOnly={readOnly} />
-        <div className={classNameAddOn}>
+        <div className={classNameAddOn} style={{margin: 0}}>
           <span><i className={icon} /><img src={this.props.image} /></span></div>
       </div>
     );

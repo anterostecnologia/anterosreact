@@ -15,7 +15,7 @@ export default class AnterosEmojiArea extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state = {value: nextProps.value};
+        this.setState({value: nextProps.value});
     }
     
     componentDidMount() {

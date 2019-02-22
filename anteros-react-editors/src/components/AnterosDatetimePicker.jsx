@@ -40,9 +40,9 @@ export default class AnterosDatetimePicker extends React.Component {
       if (value instanceof Date) {
         value = AnterosDateUtils.formatDate(value, nextProps.format);
       }
-      this.state = { value: value };
+      this.setState({ value: value });
     } else {
-      this.state = { value: nextProps.value };
+      this.setState({ value: nextProps.value });
     }
   }
 

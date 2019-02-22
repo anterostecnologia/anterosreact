@@ -41,7 +41,7 @@ export default class AnterosRadioGroup extends Component {
                 }
             });
         }
-        this.state = { checkedIndex: this.index, value: this.value };
+        this.setState({ checkedIndex: this.index, value: this.value });
     }
 
     getValue() {
@@ -76,7 +76,8 @@ export default class AnterosRadioGroup extends Component {
         const colClasses = buildGridClassNames(this.props, false, []);
         let className = AnterosUtils.buildClassNames("d-flex form-control",horizontal?"":"flex-column", (this.props.className ? this.props.className : ""));
         const { checkedIndex } = this.state;        
-        const style = horizontal ? { display: 'inline-flex', width: '100%' } : {};
+        let style = horizontal ? { display: 'inline-flex', width: '100%' } : {};
+        style = {...style, ...this.props.style};
 
         let radio = <div className={className} {...props} style={style}>
             {children.map((c, i) => (this.renderChild(c, i, i === checkedIndex)))}
@@ -101,7 +102,8 @@ AnterosRadioGroup.propTypes = {
     small: columnProps,
     medium: columnProps,
     large: columnProps,
-    extraLarge: columnProps
+    extraLarge: columnProps,
+    style: PropTypes.style
 };
 
 export class AnterosRadio extends Component {
