@@ -17,7 +17,7 @@ const AnterosAdvancedDropdownMenu = (props, context) => {
   const { className, cssModule, right, tag, flip, modifiers, persist, ...attrs } = props;
   const classes = AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames(
     className,
-    'dropdown-menu',
+    'custom-dropdown-menu',
     {
       'dropdown-menu-right': right,
       show: context.isOpen,

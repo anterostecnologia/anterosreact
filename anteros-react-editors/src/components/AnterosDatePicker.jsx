@@ -145,11 +145,10 @@ export default class AnterosDatePicker extends React.Component {
   }
 
   handleChange(event) {
+    this.setState({ value: event.target.value });
     if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
       let value = AnterosDateUtils.parseDateWithFormat(event.target.value, this.props.format);
       this.props.dataSource.setFieldByName(this.props.dataField, value);
-    } else {
-      this.setState({ value: event.target.value });
     }
     if (this.props.onChange) {
       this.props.onChange(event);

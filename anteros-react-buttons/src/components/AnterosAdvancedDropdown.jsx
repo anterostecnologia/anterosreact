@@ -106,7 +106,7 @@ export default class AnterosAdvancedDropdown extends React.Component {
       return;
     }
 
-    const menuClass = mapToCssModules('dropdown-menu', this.props.cssModule);
+    const menuClass = mapToCssModules('custom-dropdown-menu', this.props.cssModule);
     const itemClass = mapToCssModules('dropdown-item', this.props.cssModule);
     const disabledClass = mapToCssModules('disabled', this.props.cssModule);
 

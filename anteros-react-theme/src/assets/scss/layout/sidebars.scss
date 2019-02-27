@@ -344,23 +344,23 @@
   .collapsed-sidebar .app-app-content {
     width: 100%; }
   
-  .dropdown-menu, .notification-icon .dropdown-menu, .cart-icon .dropdown-menu, .app-dropdown .dropdown-menu {
+  .custom-dropdown-menu, .notification-icon .custom-dropdown-menu, .cart-icon .custom-dropdown-menu, .app-dropdown .custom-dropdown-menu {
     padding: 0;
     transform: translateY(70px) !important;
     display: block;
     visibility: hidden;
     left: auto !important;
     opacity: 0; }
-    .dropdown-menu::before, .notification-icon .dropdown-menu::before, .cart-icon .dropdown-menu::before, .app-dropdown .dropdown-menu::before, .dropdown-menu::after, .notification-icon .dropdown-menu::after, .cart-icon .dropdown-menu::after, .app-dropdown .dropdown-menu::after {
+    .custom-dropdown-menu::before, .notification-icon .custom-dropdown-menu::before, .cart-icon .custom-dropdown-menu::before, .app-dropdown .custom-dropdown-menu::before, .custom-dropdown-menu::after, .notification-icon .custom-dropdown-menu::after, .cart-icon .custom-dropdown-menu::after, .app-dropdown .custom-dropdown-menu::after {
       border-left: 9px solid transparent;
       border-right: 9px solid transparent;
       right: 10%; }
-    .dropdown-menu::before, .notification-icon .dropdown-menu::before, .cart-icon .dropdown-menu::before, .app-dropdown .dropdown-menu::before {
+    .custom-dropdown-menu::before, .notification-icon .custom-dropdown-menu::before, .cart-icon .custom-dropdown-menu::before, .app-dropdown .custom-dropdown-menu::before {
       border-bottom: 11px solid #DEE4E8;
       content: "";
       position: absolute;
       top: -11px; }
-    .dropdown-menu::after, .notification-icon .dropdown-menu::after, .cart-icon .dropdown-menu::after, .app-dropdown .dropdown-menu::after {
+    .custom-dropdown-menu::after, .notification-icon .custom-dropdown-menu::after, .cart-icon .custom-dropdown-menu::after, .app-dropdown .custom-dropdown-menu::after {
       border-bottom: 9px solid #fff;
       content: "";
       position: absolute;
@@ -376,38 +376,38 @@
         .app-sidebar .top-sidebar .sidebar-user-block ul li:not(:first-child) a:hover {
           background-color: $color-primary-two; }
   
-  .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .dropdown-menu {
+  .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .custom-dropdown-menu {
     transform: translateY(65px) !important; }
-    .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .dropdown-menu:after, .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .dropdown-menu:before {
+    .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .custom-dropdown-menu:after, .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .custom-dropdown-menu:before {
       border-bottom-color: $color-primary; }
   
   .app-dropdown a i {
     line-height: 1.5;
     font-size: 0.8rem; }
   
-  .app-dropdown.show .dropdown-menu {
+  .app-dropdown.show .custom-dropdown-menu {
     opacity: 1;
     transform: translateY(49px) !important;
     visibility: visible; }
   
-  .app-dropdown .dropdown-menu {
+  .app-dropdown .custom-dropdown-menu {
     width: 14rem;
     right: 0px !important; }
-    .app-dropdown .dropdown-menu ul li a {
+    .app-dropdown .custom-dropdown-menu ul li a {
       display: block;
       color: #727891;
       padding: 0.625rem; }
-      .app-dropdown .dropdown-menu ul li a i {
+      .app-dropdown .custom-dropdown-menu ul li a i {
         margin-right: 0.9375rem;
         font-size: 1.125rem;
         vertical-align: -4px; }
-      .app-dropdown .dropdown-menu ul li a .badge {
+      .app-dropdown .custom-dropdown-menu ul li a .badge {
         border-radius: 100%;
         height: 25px;
         width: 25px;
         line-height: 25px;
         padding: 0 !important; }
-      .app-dropdown .dropdown-menu ul li a:hover {
+      .app-dropdown .custom-dropdown-menu ul li a:hover {
         color: #fff;
         background: $color-primary-two; }
   
@@ -440,7 +440,7 @@
 }
 
 
-.user-menu .dropdown-menu::after {
+.user-menu .custom-dropdown-menu::after {
 	border-bottom: 9px solid $color-primary;
 	content: "";
 	position: absolute;

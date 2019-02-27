@@ -27,13 +27,17 @@ class AnterosCard extends Component {
         let headerActions;
         let footerActions;
         let childFooterActions = undefined;
+        let footerActionsVisible = true;
+        let headerActionsVisible = true;
         if (this.props.children) {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
                 if (child.type && child.type.name == "HeaderActions") {
                     headerActions = child.props.children;
+                    headerActionsVisible = child.props.visible;
                 } else if (child.type && child.type.name == "FooterActions") {
+                    footerActionsVisible = child.props.visible;
                     footerActions = child.props.children;
                     childFooterActions = child;
                 } else {
@@ -44,6 +48,9 @@ class AnterosCard extends Component {
 
         let classNameFooterActions = AnterosUtils.buildClassNames("card-footer",(childFooterActions?childFooterActions.props.className:null));
         let styleFooterActions = (childFooterActions?childFooterActions.props.style:null);
+        if (!footerActionsVisible){
+            styleFooterActions = {...styleFooterActions,display:"none"};
+        }
 
         let className = AnterosUtils.buildClassNames("card card-default",
             (this.props.textCenter ? "text-center" : ""),
@@ -70,7 +77,7 @@ class AnterosCard extends Component {
         }
 
         return (
-            <div id={this.props.id} className={className} style={style} >
+            <div id={this.props.id} className={className} style={style} onClick={this.props.onCardClick}>
                 {this.props.showHeader == true ? (<div className="card-header">
                     <div className="header-block">
                         <div className="caption">
@@ -83,7 +90,8 @@ class AnterosCard extends Component {
                     </div>
                 </div>) : null}
                 {imageTop}
-                <div ref={ref => (this.cardBlock = ref)} className={this.props.imageOverlay ? "card-img-overlay" : (this.props.withScroll == false ? "card-block-without-scroll" : "card-block")}>
+                <div ref={ref => (this.cardBlock = ref)} style={this.props.styleBlock}
+                    className={this.props.imageOverlay ? "card-img-overlay" : (this.props.withScroll == false ? "card-block-without-scroll" : "card-block")}>
                     {(this.props.title ? <h4 className="card-title">{this.props.title}</h4> : null)}
                     {(this.props.subTitle ? <h6 className="card-subtitle">{this.props.subTitle}</h6> : null)}
                     {(this.props.text ? <p className="card-text">{this.props.text}</p> : null)}
@@ -124,13 +132,14 @@ AnterosCard.propTypes = {
     minHeight: PropTypes.string,
     minWidth: PropTypes.string,
     style: PropTypes.object,
+    styleBlock: PropTypes.object,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    visible: PropTypes.bool
-
+    visible: PropTypes.bool,
+    onCardClick: PropTypes.func
 };
 
 AnterosCard.defaultProps = {
@@ -148,10 +157,26 @@ export class HeaderActions extends Component {
     }
 }
 
+HeaderActions.propTypes = {
+    visible: PropTypes.func
+ };
+ 
+ HeaderActions.defaultProps = {
+     visible: true
+ }
+
 export class FooterActions extends Component {
     render() {
         return (<div>{this.props.children}</div>);
     }
+}
+
+FooterActions.propTypes = {
+   visible: PropTypes.func
+};
+
+FooterActions.defaultProps = {
+    visible: true
 }
 
 export class AnterosCardGroup extends Component {
