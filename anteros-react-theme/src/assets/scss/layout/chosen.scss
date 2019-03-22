@@ -354,9 +354,11 @@ background-clip: padding-box;
 /* @end */
 /* @group Disabled Support */
 .chosen-disabled {
-  opacity: 0.5 !important;
+  // opacity: 0.5 !important;
   cursor: default;
 }
+
+
 
 .chosen-disabled .chosen-single {
   cursor: default;
@@ -457,6 +459,14 @@ background-clip: padding-box;
     background-size: 52px 37px !important;
     background-repeat: no-repeat !important;
   }
+}
+
+.chosen-disabled {
+  opacity: 1 !important;
+}
+
+.chosen-disabled .chosen-single {
+  background-color: #eceeef;
 }
 
 /* @end */

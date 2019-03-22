@@ -4,22 +4,16 @@ import {AnterosError} from "anteros-react-core";
 import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
-import 'script-loader!jquery.inputmask/dist/jquery.inputmask.bundle.js';
+import 'script-loader!jquery.maskedinput/src/jquery.maskedinput.js';
 import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
 import {AnterosBaseInputControl} from 'anteros-react-containers';
 
-export default class AnterosMaskEdit extends AnterosBaseInputControl {
+export default class AnterosIpAddressEdit extends AnterosBaseInputControl {
 
     constructor(props) {
         super(props);
 
-        if (!props.mask && !props.maskPattern) {
-            throw new AnterosError('Informe a máscara ou o padrão de máscara para o AnterosMaskEdit.');
-        }
-        this.idEdit = lodash.uniqueId("maskEdit");
-        this.onChangeValue = this
-            .onChangeValue
-            .bind(this);
+        this.idEdit = lodash.uniqueId("ipEdit");
         if (this.props.dataSource) {
             let value = this
                 .props
@@ -59,107 +53,38 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
         this._componentDidMount();
         let _this = this;
 
-        if (this.props.maskPattern == 'cnpj') {
-            $(this.inputRef.current).inputmask('99.999.999/9999-99', {
-                "alias": this.props.placeHolder,
-                "onincomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncleared": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
+        var ipv4Mask = new MaskedInput({format: '000:ip.000:ip.000:ip.000:ip'});
+        ipv4Mask
+            .$el
+            .addClass('ip-field')
+            .appendTo(this.inputRef.current);
+        ipv4Mask.fieldOption('ip', {
+            'type': MaskedInput.PartType.NUMBER,
+            'placeholder': '',
+            'validator': function (content, part) {
+                content = content.replace(/[^-0-9]/g, ''); // Numeric values
+                if (part.length > 0 && content.length > part.length) {
+                    content = content.substr(0, part.length);
                 }
-            });
-        } else if (this.props.maskPattern == 'cpf') {
-            $(this.inputRef.current).inputmask('999.999.999-99', {
-                "alias": this.props.placeHolder,
-                "onincomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncleared": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
+                if (content) {
+                    if (parseInt(content, 10) > 255) {
+                        return '255';
+                    }
+                    if (parseInt(content, 10) < 0) {
+                        return '0';
+                    }
                 }
-            });
-        } else if (this.props.maskPattern == 'cep') {
-            $(this.inputRef.current).inputmask('99999-999', {
-                "alias": this.props.placeHolder,
-                "onincomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncleared": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
+                if (!content) {
+                    return false; // Do not accept empty value
                 }
-            });
-        } else if (this.props.maskPattern == 'placa') {
-            $(this.inputRef.current).inputmask('AAA-*****', {
-                "alias": this.props.placeHolder,
-                "onincomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncleared": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                }
-            });
-        } else if (this.props.maskPattern == 'fone') {
-            $(this.inputRef.current).inputmask({
-                mask: [
-                    "(99) 9999-9999", "(99) 99999-9999"
-                ],
-                keepStatic: true,
-                "alias": this.props.placeHolder,
-                "onincomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncleared": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                }
-            });
-        } else {
-            $(this.inputRef.current).inputmask(this.props.mask, {
-                "alias": this.props.placeHolder,
-                "onincomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncleared": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                },
-                "oncomplete": function () {
-                    let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
-                    _this.onChangeValue(value);
-                }
-            });
-        }
+                return content;
+            },
+            'padding': false,
+            'wholeNumber': true
+        }).resize();
+
+        // if (this.props.ipv6)     $(this.inputRef.current).ipAddress({v:6}); else
+        // $(this.inputRef.current).ipAddress();
 
         if (this.props.dataSource) {
             this
@@ -206,10 +131,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
     }
 
     handleChange(event) {
-        onComplete(event.target.value);
-    }
-
-    onChangeValue(value) {
+        let value = event.target.value;
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
             this
                 .props
@@ -271,10 +193,10 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
             width: this.props.width
         }}
             readOnly={readOnly}
-            required={required}
-            minlength={minlength}
-            maxlength={maxlength}
-            pattern={pattern}
+            required
+            minlength
+            maxlength
+            pattern
             onFocus={this.props.onFocus}
             onChange={this.handleChange}
             onBlur={this._handleBlur}
@@ -298,7 +220,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
     }
 }
 
-AnterosMaskEdit.propTypes = {
+AnterosIpAddressEdit.propTypes = {
     dataSource: PropTypes.oneOfType([
         PropTypes.instanceOf(AnterosLocalDatasource),
         PropTypes.instanceOf(AnterosRemoteDatasource)
@@ -306,24 +228,20 @@ AnterosMaskEdit.propTypes = {
     dataField: PropTypes.string,
     id: PropTypes.string,
     disabled: PropTypes.bool,
-    mask: PropTypes.oneOfType([
-        PropTypes.string, PropTypes.arrayOf(PropTypes.string)
-    ]),
-    maskPattern: PropTypes.oneOf(['cnpj', 'cpf', 'fone', 'cep', 'placa']),
     value: PropTypes.string,
     placeHolder: PropTypes.string,
     onChange: PropTypes.func,
-    onComplete: PropTypes.func,
     onFocus: PropTypes.func,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    style: PropTypes.object
+    style: PropTypes.object,
+    ipv6: PropTypes.bool
 };
 
-AnterosMaskEdit.defaultProps = {
+AnterosIpAddressEdit.defaultProps = {
     disabled: false,
-    required: false
+    ipv6: false
 }

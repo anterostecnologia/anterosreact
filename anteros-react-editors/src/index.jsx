@@ -24,6 +24,7 @@ import AnterosHtmlEditor from "./components/AnterosHtmlEditor";
 import AnterosCreditCard from './components/AnterosCreditCard';
 import AnterosMultiSelect from './components/AnterosMultiSelect';
 import AnterosFeedback from './components/AnterosFeedback';
+import AnterosIpAddressEdit from './components/AnterosIpAddressEdit';
 
 
 export {
@@ -35,5 +36,5 @@ export {
     AnterosTagsInput, AnterosTextArea, AnterosTimePicker, AnterosLookupEdit,
     AnterosLookupNumber, AnterosLookupCombobox, AnterosLookupComboboxOption,
     AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,
-    AnterosMultiSelect,AnterosFeedback
+    AnterosMultiSelect,AnterosFeedback, AnterosIpAddressEdit
 };

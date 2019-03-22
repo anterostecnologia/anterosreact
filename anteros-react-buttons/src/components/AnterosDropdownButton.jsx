@@ -23,8 +23,10 @@ export default class AnterosDropdownButton extends Component {
     onClickItem(event) {
         if (!this.dropped){
             $('#' + this.idButton).addClass("show");
+            this.dropped = true;
         } else {
             $('#' + this.idButton).removeClass("show");
+            this.dropped = false;
         }
     }
     

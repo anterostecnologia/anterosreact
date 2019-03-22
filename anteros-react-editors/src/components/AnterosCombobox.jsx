@@ -193,8 +193,6 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
             }
         }
 
-        if (!this.context.validationForm.immediate) 
-            return;
         this.checkError();
     }
 
@@ -345,6 +343,9 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
                         minlength
                         maxlength
                         pattern
+                        disabled={(this.props.disabled
+                            ? true
+                            : false)}
                         onChange={this.onChangeSelect}
                         readOnly={readOnly}
                         id={this.idSelect}
@@ -367,6 +368,9 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
                         minlength
                         maxlength
                         pattern
+                        disabled={(this.props.disabled
+                            ? true
+                            : false)}
                         readOnly={readOnly}
                         id={this.idSelect}
                         className={className}

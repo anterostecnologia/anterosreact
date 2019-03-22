@@ -119,7 +119,6 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                 .onChange(event, event.target.value);
         }
 
-        if (!this.context.validationForm.immediate) return;
         this.checkError();
     }
 
@@ -356,5 +355,6 @@ AnterosEdit.propTypes = {
 AnterosEdit.defaultProps = {
     value: '',
     placeHolder: "",
-    readOnly: false
+    readOnly: false,
+    required: false
 }

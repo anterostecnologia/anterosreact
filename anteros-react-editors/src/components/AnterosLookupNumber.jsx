@@ -20,7 +20,7 @@ export default class AnterosLookupNumber extends React.Component {
             if (!value) {
                 value = '';
             }
-            this.state = { value: value };
+            this.state = { value: value};
         } else {
             this.state = { value: this.props.value };
         }
@@ -103,7 +103,13 @@ export default class AnterosLookupNumber extends React.Component {
                     if (!promise instanceof Promise) {
                         throw new AnterosError('onLookupData deve retornar um objeto Promise. AnterosLookupEdit.');
                     }
+                    if (_this.props.onStartLookupData){ 
+                        _this.props.onStartLookupData(_this);
+                    }
                     promise.then(function (data) {
+                        if (_this.props.onFinishedLookupData){
+                            _this.props.onFinishedLookupData(_this);
+                        }
                         if ((data == "") || (data == undefined) || (data == null)) {
                             if (_this.props.validateOnExit == true) {
                                 if (_this.props.onLookupDataError) {
@@ -119,6 +125,9 @@ export default class AnterosLookupNumber extends React.Component {
 
                         _this.props.dataSource.setFieldByName(_this.props.dataField, newData);
                     }, function (err) {
+                        if (_this.props.onFinishedLookupData){
+                            _this.props.onFinishedLookupData(_this);
+                        }
                         _this.props.onLookupDataError(err.message);
                         _this.input.focus();
                     });
@@ -130,7 +139,13 @@ export default class AnterosLookupNumber extends React.Component {
                 if (!promise instanceof Promise) {
                     throw new AnterosError('onLookupData deve retornar um objeto Promise. AnterosLookupEdit.');
                 }
+                if (_this.props.onStartLookupData){ 
+                    _this.props.onStartLookupData(_this);
+                }
                 promise.then(function (data) {
+                    if (_this.props.onFinishedLookupData){
+                        _this.props.onFinishedLookupData(_this);
+                    }
                     if ((data == "") || (data == undefined) || (data == null)) {
                         if (_this.props.validateOnExit == true) {
                             if (_this.props.onLookupDataError) {
@@ -148,6 +163,9 @@ export default class AnterosLookupNumber extends React.Component {
                     }
                     _this.setState({ value: newValue });
                 }, function (err) {
+                    if (_this.props.onFinishedLookupData){
+                        _this.props.onFinishedLookupData(_this);
+                    }
                     _this.props.onLookupDataError(err.message);
                     _this.input.focus();
                 });
@@ -193,6 +211,10 @@ export default class AnterosLookupNumber extends React.Component {
                 onClick={this.onButtonClick}
                 className={this.props.icon}
                 style={{ color: this.props.iconColor }}></i>);
+        }
+
+        if (this.state.loading){
+
         }
 
         let classNameAddOn = AnterosUtils.buildClassNames("input-group-addon",
@@ -279,6 +301,8 @@ AnterosLookupNumber.propTypes = {
     extraLarge: columnProps,
     onButtonClick: PropTypes.func,
     onLookupData: PropTypes.func.isRequired,
+    onStartLookupData: PropTypes.func,
+    onFinishedLookupData: PropTypes.func,
     icon: PropTypes.string,
     iconColor: PropTypes.string,
     image: PropTypes.string,

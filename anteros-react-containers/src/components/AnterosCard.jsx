@@ -78,7 +78,7 @@ class AnterosCard extends Component {
 
         return (
             <div id={this.props.id} className={className} style={style} onClick={this.props.onCardClick}>
-                {this.props.showHeader == true ? (<div className="card-header">
+                {this.props.showHeader == true ? (<div className="card-header" style={this.props.styleHeader}>
                     <div className="header-block">
                         <div className="caption">
                             <p className="title"> {this.props.caption} </p>
@@ -133,6 +133,7 @@ AnterosCard.propTypes = {
     minWidth: PropTypes.string,
     style: PropTypes.object,
     styleBlock: PropTypes.object,
+    styleHeader: PropTypes.object,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

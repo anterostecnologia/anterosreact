@@ -11,39 +11,75 @@ export class AnterosBaseInputControl extends React.Component {
             isPristine: true,
             errorMessage: ""
         }
-        if (React.createRef) this.inputRef = React.createRef();
-        else this.inputRef = (element) => {
-            //Before React 16.3
-            this.inputRefLegacy = element;
-        }
-        this.setError = this.setError.bind(this);
-        this.getInputRef = this.getInputRef.bind(this);
-        this.clearError = this.clearError.bind(this);
-        this.buildErrorMessage = this.buildErrorMessage.bind(this);
-        this.displayErrorMessage = this.displayErrorMessage.bind(this);
-        this.displaySuccessMessage = this.displaySuccessMessage.bind(this);
-        this.checkError = this.checkError.bind(this);
-        this.changeInputErrorClass = this.changeInputErrorClass.bind(this);
-        this._handleBlur = this._handleBlur.bind(this);
-        this._handleChange = this._handleChange.bind(this);
-        this.validateInput = this.validateInput.bind(this);
-        this.setDirty = this.setDirty.bind(this);
-        this.filterProps = this.filterProps.bind(this);
-        this._componentDidMount = this._componentDidMount.bind(this);
-        this._componentWillUnmount = this._componentWillUnmount.bind(this);
+        if (React.createRef) 
+            this.inputRef = React.createRef();
+        else 
+            this.inputRef = (element) => {
+                //Before React 16.3
+                this.inputRefLegacy = element;
+            }
+        this.setError = this
+            .setError
+            .bind(this);
+        this.getInputRef = this
+            .getInputRef
+            .bind(this);
+        this.clearError = this
+            .clearError
+            .bind(this);
+        this.buildErrorMessage = this
+            .buildErrorMessage
+            .bind(this);
+        this.displayErrorMessage = this
+            .displayErrorMessage
+            .bind(this);
+        this.displaySuccessMessage = this
+            .displaySuccessMessage
+            .bind(this);
+        this.checkError = this
+            .checkError
+            .bind(this);
+        this.changeInputErrorClass = this
+            .changeInputErrorClass
+            .bind(this);
+        this._handleBlur = this
+            ._handleBlur
+            .bind(this);
+        this._handleChange = this
+            ._handleChange
+            .bind(this);
+        this.validateInput = this
+            .validateInput
+            .bind(this);
+        this.setDirty = this
+            .setDirty
+            .bind(this);
+        this.filterProps = this
+            .filterProps
+            .bind(this);
+        this._componentDidMount = this
+            ._componentDidMount
+            .bind(this);
+        this._componentWillUnmount = this
+            ._componentWillUnmount
+            .bind(this);
     }
 
-    
-
     _componentDidMount() {
-        if (this.context.validationForm){
-            this.context.validationForm.attachToForm(this);
+        if (this.context.validationForm) {
+            this
+                .context
+                .validationForm
+                .attachToForm(this);
         }
     }
 
     _componentWillUnmount() {
-        if (this.context.validationForm){
-            this.context.validationForm.detachFromForm(this);
+        if (this.context.validationForm) {
+            this
+                .context
+                .validationForm
+                .detachFromForm(this);
         }
     }
 
@@ -51,46 +87,53 @@ export class AnterosBaseInputControl extends React.Component {
         return this.inputRefLegacy || this.inputRef.current;
     }
 
-    setError(errorMessage){
-        this.getInputRef().setCustomValidity(errorMessage);
-        this.setState({ errorMessage });
+    setError(errorMessage) {
+        this
+            .getInputRef()
+            .setCustomValidity(errorMessage);
+        this.setState({errorMessage});
     }
 
-    clearError(){
-      this.setError("");
+    clearError() {
+        this.setError("");
     }
 
     buildErrorMessage() {
         let map = {
             valueMissing: "required",
             customError: "",
-            stepMismatch:"step",
+            stepMismatch: "step",
             patternMismatch: "pattern",
             rangeUnderflow: "min",
             rangeOverflow: "max",
             typeMismatch: "type"
         }
 
-        let { errorMessage } = this.props;
+        let {errorMessage} = this.props;
         let defaultErrorMessage = this.context.validationForm.defaultErrorMessage || {};
-        if (typeof (errorMessage) === "string") errorMessage = { required: errorMessage };
+        if (typeof(errorMessage) === "string") 
+            errorMessage = {
+                required: errorMessage
+            };
         errorMessage = Object.assign({}, AnterosForm.defaultErrorMessage, defaultErrorMessage, errorMessage);
         let input = this.getInputRef();
         if (input) {
-            
+
             input.checkValidity();
             let validityState = input.validity;
             let newErrorMessage = "";
             for (let prop in validityState) {
                 if (validityState[prop]) {
-                    if (prop === "customError") newErrorMessage = input.validationMessage;
-                    else newErrorMessage = errorMessage[map[prop]];
+                    if (prop === "customError") 
+                        newErrorMessage = input.validationMessage;
+                    else 
+                        newErrorMessage = errorMessage[map[prop]];
                     break;
                 }
             }
 
             if (this.props.minLength) {
-                if (input.value.length < +this.props.minLength) {
+                if (input.value.length < + this.props.minLength) {
                     input.setCustomValidity(errorMessage["minLength"]);
                     newErrorMessage = errorMessage["minLength"].replace("{minLength}", this.props.minLength);
                 } else {
@@ -113,121 +156,172 @@ export class AnterosBaseInputControl extends React.Component {
                 }
             }
 
-            this.setState({ errorMessage: newErrorMessage });
+            this.setState({errorMessage: newErrorMessage});
         }
     }
 
     displayErrorMessage() {
-        return this.state.errorMessage ? <div className="invalid-feedback">{this.state.errorMessage}</div>:null;
+        return this.state.errorMessage
+            ? <div className="invalid-feedback">{this.state.errorMessage}</div>
+            : null;
     }
 
     displaySuccessMessage(displayBlock) {
-        return (!this.state.isPristine && !this.state.errorMessage && this.props.successMessage) ?
-            <div className={"valid-feedback" + (displayBlock?" d-block":"")}>{this.props.successMessage}</div> : null;
+        return (!this.state.isPristine && !this.state.errorMessage && this.props.successMessage)
+            ? <div
+                    className={"valid-feedback" + (displayBlock
+                    ? " d-block"
+                    : "")}>{this.props.successMessage}</div>
+            : null;
     }
 
     checkError(e) {
-        let isPristine = this.state.isPristine;
-        if (isPristine) this.setDirty();
-        this.buildErrorMessage();
-        this.changeInputErrorClass();
+        if (this.context && this.context.validationForm) {
+            if (this.context.validationForm.immediate) {
+                let isPristine = this.state.isPristine;
+                if (isPristine) 
+                    this.setDirty();
+                this.buildErrorMessage();
+                this.changeInputErrorClass();
+            }
+        }
     }
 
     changeInputErrorClass() {
         const inputRef = this.getInputRef();
         if (inputRef.type !== "radio") {
             if (!inputRef.validity.valid) {
-                inputRef.classList.add("is-invalid")
-                inputRef.classList.remove("is-valid");
+                inputRef
+                    .classList
+                    .add("is-invalid")
+                inputRef
+                    .classList
+                    .remove("is-valid");
             } else {
-                inputRef.classList.remove("is-invalid")
-                inputRef.classList.add("is-valid");
+                inputRef
+                    .classList
+                    .remove("is-invalid")
+                inputRef
+                    .classList
+                    .add("is-valid");
             }
         }
     }
 
     _handleBlur(e) {
-        if (this.context.validationForm.immediate) return;
         this.checkError();
     }
 
     _handleChange(e) {
-        if (this.props.onChange) this.props.onChange(e);
-        if (!this.context.validationForm.immediate) return;
+        if (this.props.onChange) 
+            this.props.onChange(e);
         this.checkError();
     }
 
-    validateInput(){
+    validateInput() {
         this.setDirty();
         this.checkError();
         this.buildErrorMessage();
     }
 
-    setDirty(){
-        this.setState({...this.state, isPristine: false });
+    setDirty() {
+        this.setState({
+            ...this.state,
+            isPristine: false
+        });
     }
 
-    filterProps(){
+    filterProps() {
         let {
-           errorMessage, successMessage, validator, defaultErrorMessage,
-            attachToForm, detachFromForm, setFormDirty, label, immediate,
+            errorMessage,
+            successMessage,
+            validator,
+            defaultErrorMessage,
+            attachToForm,
+            detachFromForm,
+            setFormDirty,
+            label,
+            immediate,
             ...rest
-       } = this.props;
+        } = this.props;
         return rest;
     }
 }
 
 AnterosBaseInputControl.propTypes = {
     name: PropTypes.string.isRequired,
-    errorMessage: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    errorMessage: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 }
 
 AnterosBaseInputControl.contextTypes = {
     validationForm: PropTypes.object
 }
 
-
 export default class AnterosForm extends Component {
 
     constructor(props) {
         super(props);
         this.inputs = {};
-        this.attachToForm = this.attachToForm.bind(this);
-        this.detachFromForm = this.detachFromForm.bind(this);
-        this.getChildContext = this.getChildContext.bind(this);
-        this.isBaseFormControl = this.isBaseFormControl.bind(this);
-        this.validateInputs = this.validateInputs.bind(this);
-        this.setFormDirty = this.setFormDirty.bind(this);
-        this.getFormData = this.getFormData.bind(this);
-        this.mapInputs = this.mapInputs.bind(this);
-        this.findFirstErrorInput = this.findFirstErrorInput.bind(this);
-        this.getErrorInputs = this.getErrorInputs.bind(this);
-        this.validate = this.validate.bind(this);
-        this.resetValidationState = this.resetValidationState.bind(this);
+        this.attachToForm = this
+            .attachToForm
+            .bind(this);
+        this.detachFromForm = this
+            .detachFromForm
+            .bind(this);
+        this.getChildContext = this
+            .getChildContext
+            .bind(this);
+        this.isBaseFormControl = this
+            .isBaseFormControl
+            .bind(this);
+        this.validateInputs = this
+            .validateInputs
+            .bind(this);
+        this.setFormDirty = this
+            .setFormDirty
+            .bind(this);
+        this.getFormData = this
+            .getFormData
+            .bind(this);
+        this.mapInputs = this
+            .mapInputs
+            .bind(this);
+        this.findFirstErrorInput = this
+            .findFirstErrorInput
+            .bind(this);
+        this.getErrorInputs = this
+            .getErrorInputs
+            .bind(this);
+        this.validate = this
+            .validate
+            .bind(this);
+        this.resetValidationState = this
+            .resetValidationState
+            .bind(this);
     }
 
-
-    attachToForm(component){
+    attachToForm(component) {
         this.inputs[component.props.name] = component;
     }
 
-    detachFromForm(component){
+    detachFromForm(component) {
         delete this.inputs[component.props.name]
     }
 
     getChildContext() {
         return {
-          validationForm: {
-            attachToForm: this.attachToForm,
-            detachFromForm: this.detachFromForm,
-            immediate: this.props.immediate,
-            defaultErrorMessage: this.props.defaultErrorMessage
-          }
+            validationForm: {
+                attachToForm: this.attachToForm,
+                detachFromForm: this.detachFromForm,
+                immediate: this.props.immediate,
+                defaultErrorMessage: this.props.defaultErrorMessage
+            }
         }
     }
 
     isBaseFormControl(element) {
-        if (typeof element !== "function") return false;
+        if (typeof element !== "function") 
+            return false;
         while (Object.getPrototypeOf(element) !== Object.prototype) {
             if (Object.getPrototypeOf(element) === AnterosBaseInputControl) {
                 return true;
@@ -239,20 +333,24 @@ export default class AnterosForm extends Component {
 
     validateInputs() {
         for (let prop in this.inputs) {
-            this.inputs[prop].validateInput();
+            this
+                .inputs[prop]
+                .validateInput();
         }
     }
 
     setFormDirty() {
         let form = this.refs.form;
-        if (!form.classList.contains('was-validated')) form.classList.add('was-validated');
-    }
-
-
+        if (!form.classList.contains('was-validated')) 
+            form.classList.add('was-validated');
+        }
+    
     getFormData() {
         let model = {};
         for (let name in this.inputs) {
-            let inputRef = this.inputs[name].getInputRef();
+            let inputRef = this
+                .inputs[name]
+                .getInputRef();
             let value = null;
             switch (inputRef.type) {
                 case "checkbox":
@@ -279,21 +377,25 @@ export default class AnterosForm extends Component {
     }
 
     mapInputs(inputs) {
-        let arr = Object.keys(inputs).map(prop => inputs[prop]);
+        let arr = Object
+            .keys(inputs)
+            .map(prop => inputs[prop]);
         return arr;
     }
 
-    findFirstErrorInput(inputs){
+    findFirstErrorInput(inputs) {
         return inputs.find(input => !input.getInputRef().validity.valid);
     }
 
-    getErrorInputs(inputs){
+    getErrorInputs(inputs) {
         let map = {};
         inputs.forEach(input => {
             let inputRef = input.getInputRef();
             let validityState = inputRef.validity;
-            if (!validityState.valid) map[inputRef.name] = input;
-        })
+            if (!validityState.valid) 
+                map[inputRef.name] = input;
+            }
+        )
         return map;
     }
 
@@ -305,37 +407,61 @@ export default class AnterosForm extends Component {
         this.validateInputs();
 
         if (form.checkValidity() === false) {
-            if (this.props.onErrorValidate) this.props.onErrorValidate(formData, this.getErrorInputs(inputArr));
+            if (this.props.onErrorValidate) 
+                this.props.onErrorValidate(formData, this.getErrorInputs(inputArr));
             if (this.props.setFocusOnError) {
                 let firstErrorInput = this.findFirstErrorInput(inputArr);
-                firstErrorInput.getInputRef().focus();
+                firstErrorInput
+                    .getInputRef()
+                    .focus();
+            }
+        } else {
+            if (this.props.onValidated) 
+                this.props.onValidated(formData, inputArr);
             }
         }
-        else {
-            if (this.props.onValidated) this.props.onValidated(formData, inputArr);
-        }
-    }
 
-    resetValidationState(isClearValue){
+    resetValidationState(isClearValue) {
         for (let prop in this.inputs) {
-            this.inputs[prop].setState({...this.inputs[prop].state, errorMessage: "", isPristine: true });
-            let inputRef = this.inputs[prop].getInputRef();
-            inputRef.classList.remove("is-valid");
-            inputRef.classList.remove("is-invalid");
+            this
+                .inputs[prop]
+                .setState({
+                    ...this.inputs[prop].state,
+                    errorMessage: "",
+                    isPristine: true
+                });
+            let inputRef = this
+                .inputs[prop]
+                .getInputRef();
+            inputRef
+                .classList
+                .remove("is-valid");
+            inputRef
+                .classList
+                .remove("is-invalid");
             inputRef.setCustomValidity("");
             if (isClearValue) {
-                if (inputRef.type == "checkbox") inputRef.checked = false;
+                if (inputRef.type == "checkbox") 
+                    inputRef.checked = false;
                 inputRef.value = "";
             }
         }
-        this.refs.form.classList.remove("was-validated");
+        this
+            .refs
+            .form
+            .classList
+            .remove("was-validated");
     }
 
     render() {
         const {
             className,
             inline,
-            onSubmit, onErrorSubmit, immediate, setFocusOnError, defaultErrorMessage,
+            onSubmit,
+            onErrorSubmit,
+            immediate,
+            setFocusOnError,
+            defaultErrorMessage,
             ...attributes
         } = this.props;
 

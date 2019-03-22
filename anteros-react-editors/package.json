@@ -43,6 +43,7 @@
     "file-loader": "^0.10.1",
     "jquery-mask-plugin": "^1.14.12",
     "jquery.inputmask": "^3.3.4",
+    "jquery.maskedinput": "^1.4.1",
     "lodash": "^4.17.4",
     "lodash.omit": "^4.5.0",
     "moment": "^2.19.3",
