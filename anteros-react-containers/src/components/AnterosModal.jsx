@@ -406,7 +406,9 @@ export default class AnterosModal extends React.Component {
             ? "modal-medium"
             : ""), (this.props.large
             ? "modal-large"
-            : ""), (this.props.full
+            : ""), (this.props.semifull
+              ? "modal-semi-full"
+              : ""),(this.props.full
             ? "modal-full"
             : ""), this.props.className, {
             [`modal-${this.props.size}`]: this.props.size
@@ -510,6 +512,7 @@ render() {
           />)
           : <div className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-backdrop', 'show', backdropClassName), cssModule)} />
       );
+      
 
       return (
         <AnterosPortal node={this._element}>
@@ -582,7 +585,10 @@ AnterosModal.propTypes = {
     small: PropTypes.bool,
     medium: PropTypes.bool,
     large: PropTypes.bool,
-    full: PropTypes.bool
+    full: PropTypes.bool,
+    semifull: PropTypes.bool,
+    width : PropTypes.string,
+    style : PropTypes.style
   };
   
   AnterosModal.defaultProps = {

@@ -324,6 +324,5 @@ AnterosMaskEdit.propTypes = {
 };
 
 AnterosMaskEdit.defaultProps = {
-    disabled: false,
-    required: false
+    disabled: false
 }

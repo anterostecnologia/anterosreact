@@ -16,7 +16,7 @@ export class AnterosFloatingButton extends Component {
     }
 
     componentDidMount() {
-        $('[data-toggle="tooltip"]').tooltip();
+        // $('[data-toggle="tooltip"]').tooltip();
     }
 
     onDocumentClick(event) {

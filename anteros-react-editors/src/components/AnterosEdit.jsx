@@ -355,6 +355,5 @@ AnterosEdit.propTypes = {
 AnterosEdit.defaultProps = {
     value: '',
     placeHolder: "",
-    readOnly: false,
-    required: false
+    readOnly: false
 }

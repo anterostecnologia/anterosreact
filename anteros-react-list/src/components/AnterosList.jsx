@@ -139,12 +139,12 @@ export default class AnterosList extends Component {
         let index = 0;
         let _this = this;
         sourceData.map(record => {
-            if (!record.hasOwnProperty(_this.props.dataFieldId) || (!record[_this.props.dataFieldId])) {
-                throw new AnterosError("Foi encontrado um registro sem ID no dataSource passado para a Lista.");
-            }
-            if (!record.hasOwnProperty(_this.props.dataFieldText) || (!record[_this.props.dataFieldText])) {
-                throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para a Lista.");
-            }
+            // if (!record.hasOwnProperty(_this.props.dataFieldId) || (!record[_this.props.dataFieldId])) {
+            //     throw new AnterosError("Foi encontrado um registro sem ID no dataSource passado para a Lista.");
+            // }
+            // if (!record.hasOwnProperty(_this.props.dataFieldText) || (!record[_this.props.dataFieldText])) {
+            //     throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para a Lista.");
+            // }
             let active = (record.active == undefined ? false : record.active);
             if (_this.state.activeIndex >= 0) {
                 active = false;
@@ -165,21 +165,30 @@ export default class AnterosList extends Component {
                 if (component.hasOwnProperty("props")){
                     compProps = component.props;
                 }
+
+                let id = record[_this.props.dataFieldId];
+                if (!id){
+                    id = Math.random();
+                }
                 
                 children.push(React.createElement(DynamicComponent,
                     {
-                        key: record[_this.props.dataFieldId],
-                        id: record[_this.props.dataFieldId],
+                        key: id,
+                        id: id,
                         active: active,
                         index: index,
                         handleSelectItem: _this.handleSelectItem,
                         recordData: record, ...compProps,  ...rest
                     }));
             } else {
+                let id = record[_this.props.dataFieldId];
+                if (!id){
+                    id = Math.random();
+                }
                 children.push(React.createElement(AnterosListItem, {
-                    key: record[_this.props.dataFieldId],
+                    key: id,
                     disabled: record.disabled,
-                    id: record[_this.props.dataFieldId],
+                    id: id,
                     index: index,
                     active: active,
                     success: record.success,

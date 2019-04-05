@@ -97,6 +97,12 @@ export default class AnterosDataTable extends Component {
         this.refreshData = this
             .refreshData
             .bind(this);
+        this.refresh = this
+            .refresh
+            .bind(this);
+        this.isBase64 = this
+            .isBase64
+            .bind(this);
         this.currentRow = undefined;
         this.currentCol = undefined;
         this.dataTable;
@@ -168,25 +174,11 @@ export default class AnterosDataTable extends Component {
     }
 
     renderBoolean(data, type, full, meta) {
-        var temp = document.createElement('div');
-
-        let newData = data;
         if (data === true) {
-            newData = 'Sim';
-        } else if (data === false) {
-            newData = 'Não';
+            return 'Sim';
+        } else {
+            return 'Não';
         }
-
-        ReactDOM.render(
-            <div
-            style={{
-            textAlign: 'center',
-            width: '100%',
-            height: '100%'
-        }}>
-            {newData}
-        </div>, temp);
-        return temp.innerHTML;
     }
 
     renderNumber(data, type, full, meta) {
@@ -236,6 +228,17 @@ export default class AnterosDataTable extends Component {
         return _mask.apply(data);
     }
 
+    isBase64(str) {
+        if (!str || str === '' || str.trim() === '') {
+            return false;
+        }
+        try {
+            return btoa(atob(str)) == str;
+        } catch (err) {
+            return false;
+        }
+    }
+
     renderImage(data, type, full, meta) {
         let column = this.getColumnByIndex(meta.col);
         let width,
@@ -249,9 +252,17 @@ export default class AnterosDataTable extends Component {
             height = column.props.imageHeight;
         }
 
+        let isb64 = this.isBase64(data);
+
         var temp = document.createElement('div');
         ReactDOM.render(
-            <img className={classNameImage} src={data} height={height} width={width}/>, temp);
+            <img
+            className={classNameImage}
+            src={isb64
+            ? 'data:image;base64,' + data
+            : data}
+            height={height}
+            width={width}/>, temp);
         return temp.innerHTML;
     }
 
@@ -756,9 +767,13 @@ export default class AnterosDataTable extends Component {
                 : "auto");
         }
     }
+    refresh() {
+        var datatable = $('#' + this.idTable).dataTable();
+        datatable.fnAdjustColumnSizing();
+    }
 
     refreshData() {
-        if (this.divTable) {
+        if (this.divTable && this.props.dataSource) {
             if (this.props.dataSource && ((this.props.dataSource instanceof AnterosLocalDatasource) || (this.props.dataSource instanceof AnterosRemoteDatasource))) {
                 if (this.props.dataSource.getState() != 'dsBrowse') {
                     return;

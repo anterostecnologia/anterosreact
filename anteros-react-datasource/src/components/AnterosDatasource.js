@@ -4,8 +4,11 @@ import axios from 'axios';
 import { cloneDeep, clone } from 'lodash';
 import React from 'react';
 
-
-
+export const dataSourceConstants = {
+    DS_BROWSE : 'dsBrowse',
+    DS_INSERT : 'dsInsert',
+    DS_EDIT : 'dsEdit'
+};
 
 export const dataSourceEvents = {
     BEFORE_OPEN: 'beforeOpen',
@@ -87,7 +90,7 @@ class AnterosDatasource {
         this.totalRecords = 0;
         this.grandTotalRecords = 0;
         this.sizeOfPage = 0;
-        this.dsState = 'dsBrowse';
+        this.dsState = dataSourceConstants.DS_BROWSE;
         this.currentRecord = null;
         this.currentRecno = -1;
         this.primaryKeyFields = [];
@@ -200,7 +203,7 @@ class AnterosDatasource {
         return this.currentRecno;
     }
     gotoRecordByPrimaryKey(values) {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
         if (!values) {
@@ -242,7 +245,7 @@ class AnterosDatasource {
         }
     }
     gotoRecord(recno) {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -264,7 +267,7 @@ class AnterosDatasource {
 
     gotoRecordByData(record) {
         let _this = this;
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -300,7 +303,7 @@ class AnterosDatasource {
         }
 
         let record = this.data[this.currentRecno];
-        if (this.getState() == 'dsEdit') {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
             record = this.currentRecord;
         }
 
@@ -324,7 +327,7 @@ class AnterosDatasource {
         if (this.isEmpty()) {
             return;
         }
-        if (this.getState() == 'dsBrowse') {
+        if (this.getState() == dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro não está sendo inserido ou editado.');
         }
         let newValue = value;
@@ -337,7 +340,7 @@ class AnterosDatasource {
     }
 
     locate(values) {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -381,7 +384,7 @@ class AnterosDatasource {
     }
 
     first() {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -396,7 +399,7 @@ class AnterosDatasource {
     }
 
     last() {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -412,7 +415,7 @@ class AnterosDatasource {
 
 
     next() {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -433,7 +436,7 @@ class AnterosDatasource {
     }
 
     prior() {
-        if (this.getState() != 'dsBrowse') {
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
 
@@ -478,10 +481,10 @@ class AnterosDatasource {
     }
 
     _validateInsert() {
-        if (this.getState() == 'dsEdit') {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
         }
-        if (this.getState() == 'dsInsert') {
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
     }
@@ -497,7 +500,7 @@ class AnterosDatasource {
         this.data[nextRecord - 1] = {};
         this.currentRecord = this.data[nextRecord - 1];
         this.currentRecno = nextRecord - 1;
-        this.dsState = 'dsInsert';
+        this.dsState = dataSourceConstants.DS_INSERT;
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
         this.dispatchEvent(dataSourceEvents.AFTER_INSERT);
     }
@@ -512,10 +515,10 @@ class AnterosDatasource {
         if (this.isBOF()) {
             throw new AnterosDatasourceError('Fim do Datasource encontrado.');
         }
-        if (this.getState() == 'dsEdit') {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
         }
-        if (this.getState() == 'dsInsert') {
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
     }
@@ -530,7 +533,7 @@ class AnterosDatasource {
             this.currentRecord = undefined;
         else
             this.currentRecord = this.data[this.currentRecno];
-        this.dsState = 'dsBrowse';
+        this.dsState = dataSourceConstants.DS_BROWSE;
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
         this.dispatchEvent(dataSourceEvents.AFTER_DELETE);
 
@@ -548,10 +551,10 @@ class AnterosDatasource {
         if (this.isBOF()) {
             throw new AnterosDatasourceError('Fim do Datasource encontrado.');
         }
-        if (this.getState() == 'dsEdit') {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
         }
-        if (this.getState() == 'dsInsert') {
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
     }
@@ -559,13 +562,13 @@ class AnterosDatasource {
     edit() {
         this._validateEdit();
         this.dispatchEvent(dataSourceEvents.BEFORE_EDIT);
-        this.dsState = 'dsEdit';
+        this.dsState = dataSourceConstants.DS_EDIT;
         this.currentRecord = cloneDeep(this.currentRecord);
         this.dispatchEvent(dataSourceEvents.AFTER_EDIT);
     }
 
     _validatePost() {
-        if (this.dsState == 'dsBrowse') {
+        if (this.dsState == dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError("Registro não está sendo inserido ou editado.");
         }
     }
@@ -573,17 +576,17 @@ class AnterosDatasource {
     post(callback) {
         this._validatePost();
         this.dispatchEvent(dataSourceEvents.BEFORE_POST);
-        if (this.dsState == 'dsEdit') {
+        if (this.dsState == dataSourceConstants.DS_EDIT) {
             this.data[this.getRecno()] = this.currentRecord;
         }
-        this.dsState = 'dsBrowse';
+        this.dsState = dataSourceConstants.DS_BROWSE;
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
         if (callback)
             callback();
     }
 
     _validateCancel() {
-        if (this.dsState == 'dsBrowse') {
+        if (this.dsState == dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError("Registro não está sendo inserido ou editado.");
         }
     }
@@ -591,18 +594,18 @@ class AnterosDatasource {
     cancel() {
         this._validateCancel();
         this.dispatchEvent(dataSourceEvents.BEFORE_CANCEL);
-        if (this.dsState == 'dsInsert') {
+        if (this.dsState == dataSourceConstants.DS_INSERT) {
             this.data.splice(this.currentRecno, 1);
             this.currentRecord = this.oldRecordInsert;
             this.currentRecno = this.oldRecnoInsert;
             this.totalRecords--;
             this.grandTotalRecords--;
-            this.dsState = 'dsBrowse';
+            this.dsState = dataSourceConstants.DS_BROWSE;
             this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
         } else {
             this.currentRecord = this.data[this.currentRecno];
         }
-        this.dsState = 'dsBrowse';
+        this.dsState = dataSourceConstants.DS_BROWSE;
         this.dispatchEvent(dataSourceEvents.AFTER_CANCEL);
     }
 
@@ -688,17 +691,17 @@ class AnterosLocalDatasource extends AnterosDatasource {
     edit() {
         this._validateEdit();
         this.dispatchEvent(dataSourceEvents.BEFORE_EDIT);
-        this.dsState = 'dsEdit';
+        this.dsState = dataSourceConstants.DS_EDIT;
         if (this.cloneOnEdit)
             this.currentRecord = cloneDeep(this.currentRecord);
         this.dispatchEvent(dataSourceEvents.AFTER_EDIT);
     }
 
     append(record) {
-        if (this.getState() == 'dsEdit') {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
         }
-        if (this.getState() == 'dsInsert') {
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
 
@@ -772,6 +775,27 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         }
     }
 
+    append(record) {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
+            throw new AnterosDatasourceError('Registro já está sendo editado.');
+        }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+        }
+
+        if (!this.data) {
+            this.data = [];
+        }
+
+        this.data.push(record);
+        this.totalRecords = this.data.length;
+        this.grandTotalRecords = this.data.length;
+        this.currentRecord = record;
+        this.currentRecno = this.data.length - 1;
+        this.dispatchEvent(dataSourceEvents.AFTER_POST);
+        this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
+    }
+
     post(callback) {
         if (!this.ajaxPostConfigHandler || !this.validatePostResponse) {
             let error = "Para salvar dados remotamente é necessário configurar 'setAjaxPostConfigHandler' e 'setValidatePostResponse' ";
@@ -786,7 +810,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         axios(ajaxPostConfig
         ).then(function (response) {
             if (_this.validatePostResponse(response)) {
-                if (_this.dsState == 'dsEdit') {
+                if (_this.dsState == dataSourceConstants.DS_EDIT) {
                     _this.data[_this.getRecno()] = _this.currentRecord;
                 }
                 if (_this.storePostResultToRecord == true) {
@@ -794,7 +818,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                     _this.data[_this.getRecno()] = newObject;
                     _this.currentRecord = newObject;
                 }
-                _this.dsState = 'dsBrowse';
+                _this.dsState = dataSourceConstants.DS_BROWSE;
                 _this.dispatchEvent(dataSourceEvents.AFTER_POST);
                 if (callback) {
                     callback();
@@ -828,7 +852,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                     _this.currentRecord = _this.data[_this.currentRecno];
                 _this.totalRecords--;
                 _this.grandTotalRecords--;
-                _this.dsState = 'dsBrowse';
+                _this.dsState = dataSourceConstants.DS_BROWSE;
                 _this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
                 _this.dispatchEvent(dataSourceEvents.AFTER_DELETE);
             }

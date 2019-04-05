@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import 'script-loader!./AnterosBootstrapDatetimepicker.js'
+import './AnterosBootstrapDatetimepicker.js'
 import './AnterosBootstrapDatetimepicker.css';
-import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js'
 import lodash from "lodash";
 import { AnterosDateUtils, AnterosUtils } from 'anteros-react-core';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import PropTypes from 'prop-types';
+import AnterosInputText from './AnterosInputMask';
 
 
-export default class AnterosDatePicker extends React.Component {
+export default class AnterosDatePicker1 extends React.Component {
   constructor(props) {
     super(props);
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -50,19 +50,19 @@ export default class AnterosDatePicker extends React.Component {
 
   componentDidMount() {
     let _this = this;
-    $(this.divInput).datetimepicker({
+    window.$(this.divInput).datetimepicker({
       locale: "pt-BR",
       showTodayButton: true,
       showClear: true,
       showClose: true,
       format: this.props.format
     });
-    $(this.divInput).on("dp.hide", function (e) {
+    window.$(this.divInput).on("dp.hide", function (e) {
       _this.open = false;
     });
-    $(this.divInput).on("dp.show", function (e) {
+    window.$(this.divInput).on("dp.show", function (e) {
       _this.open = true;
-      var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last'),
+      var datepicker = window.$('body').find('.bootstrap-datetimepicker-widget:last'),
         position = datepicker.offset(),
         parent = datepicker.parent(),
         parentPos = parent.offset(),
@@ -73,6 +73,7 @@ export default class AnterosDatePicker extends React.Component {
       datepicker.css({
         position: 'absolute',
         top: position.top,
+        zIndex: 999999,
         bottom: 'auto',
         left: position.left,
         right: 'auto'
@@ -84,11 +85,11 @@ export default class AnterosDatePicker extends React.Component {
       }
     });
 
-    $(this.divInput).on("dp.change", function (e) {
-      let date = moment(e.date).format(_this.props.format);
+    window.$(this.divInput).on("dp.change", function (e) {
+      let date = window.moment(e.date).format(_this.props.format);
 
       if (_this.props.dataSource && _this.props.dataSource.getState !== 'dsBrowse') {
-        _this.props.dataSource.setFieldByName(_this.props.dataField,moment(e.date).toDate());
+        _this.props.dataSource.setFieldByName(_this.props.dataField,window.moment(e.date).toDate());
       } else {
         _this.setState({ value: date });
       }
@@ -98,8 +99,8 @@ export default class AnterosDatePicker extends React.Component {
       }
     });
 
-    $(this.input).unbind("focus");
-    $(this.input).mask('00/00/0000', { placeholder: this.props.placeholder });
+    window.$(this.input).unbind("focus");
+    window.$(this.input).mask('00/00/0000', { placeholder: this.props.placeholder });
     if (this.props.dataSource) {
       this.props.dataSource.addEventListener(
         [dataSourceEvents.AFTER_CLOSE,
@@ -137,9 +138,9 @@ export default class AnterosDatePicker extends React.Component {
   onKeyDown(event) {
     if (event.keyCode == 116) {
       if (!this.open)
-        $(this.divInput).datetimepicker("show");
+        window.$(this.divInput).datetimepicker("show");
       else
-        $(this.divInput).datetimepicker("hide");
+        window.$(this.divInput).datetimepicker("hide");
       this.input.focus();
     }
   }
@@ -148,7 +149,7 @@ export default class AnterosDatePicker extends React.Component {
     this.setState({ value: event.target.value });
     if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
       let value = AnterosDateUtils.parseDateWithFormat(event.target.value, this.props.format);
-      this.props.dataSource.setFieldByName(this.props.dataField, value);
+      //this.props.dataSource.setFieldByName(this.props.dataField, value);
     }
     if (this.props.onChange) {
       this.props.onChange(event);
@@ -156,7 +157,7 @@ export default class AnterosDatePicker extends React.Component {
   }
 
   onKeyPress(event) {
-    $(this.divInput).datetimepicker("hide");
+    window.$(this.divInput).datetimepicker("hide");
   }
 
   render() {
@@ -203,11 +204,8 @@ export default class AnterosDatePicker extends React.Component {
 
     return (
       <div className={className} id={this.props.id} style={{ ...this.props.style, width: width }} ref={ref => this.divInput = ref}>
-        <input disabled={(this.props.disabled ? true : false)} id={this.idCalendar} 
-        ref={ref => this.input = ref} type="text"
-        style={{margin: 0}} 
-        value={this.state.value} className={classNameInput} onChange={this.handleChange}
-          onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} readOnly={readOnly} />
+        <AnterosInputText id={this.idCalendar}  readOnly={readOnly} onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} className={classNameInput} maskChar={null} disabled={(this.props.disabled ? true : false)}
+         mask={this.props.mask} value={this.state.value} onChange={this.handleChange}/>  
         <div className={classNameAddOn} style={{margin: 0}}>
           <span><i className={icon} /><img src={this.props.image} /></span></div>
       </div>
@@ -216,7 +214,7 @@ export default class AnterosDatePicker extends React.Component {
 }
 
 
-AnterosDatePicker.propTypes = {
+AnterosDatePicker1.propTypes = {
   dataSource: PropTypes.oneOfType([
     PropTypes.instanceOf(AnterosLocalDatasource),
     PropTypes.instanceOf(AnterosRemoteDatasource)
@@ -224,6 +222,7 @@ AnterosDatePicker.propTypes = {
   dataField: PropTypes.string,
   placeHolder: PropTypes.string,
   format: PropTypes.string,
+  mask: PropTypes.string,
   value: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   extraSmall: columnProps,
@@ -247,9 +246,10 @@ AnterosDatePicker.propTypes = {
   style: PropTypes.object
 };
 
-AnterosDatePicker.defaultProps = {
+AnterosDatePicker1.defaultProps = {
   placeHolder: '',
   format: 'DD/MM/YYYY',
+  mask: '99/99/9999',
   value: '',
   width: "220px",
   primary: true

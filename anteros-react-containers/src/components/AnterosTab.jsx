@@ -26,12 +26,14 @@ AnterosTab.propTypes = {
     custom1 : PropTypes.bool.isRequired,
     custom2 : PropTypes.bool.isRequired,
     pill : PropTypes.bool.isRequired,
-    onPageChange : PropTypes.func
+    onPageChange : PropTypes.func,
+    visible : PropTypes.bool.isRequired
 }
 
 AnterosTab.defaultProps = {
     vertical: false,
     custom1: false,
     custom2: false,
-    pill: false
+    pill: false,
+    visible: true
 }

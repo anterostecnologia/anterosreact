@@ -75,7 +75,7 @@ class AnterosCheckbox extends Component {
             let value = (checked ? this.props.valueChecked : this.props.valueUnchecked);
             this.props.dataSource.setFieldByName(this.props.dataField, value);
         } else {
-            this.setState(({ isChecked }) => ({ isChecked: checked }));
+            this.setState({ isChecked : checked });
         }
         if (this.props.onCheckboxChange)
             this.props.onCheckboxChange(this.props.value, checked, this);

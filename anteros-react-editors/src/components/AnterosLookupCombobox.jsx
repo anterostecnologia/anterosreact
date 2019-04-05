@@ -1,72 +1,117 @@
 import React from 'react'
 import 'script-loader!chosen-js/chosen.jquery.min.js'
 import lodash from 'lodash';
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosError, AnterosUtils } from "anteros-react-core";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import {buildGridClassNames, columnProps} from "anteros-react-layout";
+import {AnterosError, AnterosUtils} from "anteros-react-core";
+import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
 import PropTypes from 'prop-types';
 
 export default class AnterosLookupCombobox extends React.Component {
     constructor(props) {
         super(props);
-        this.onChangeSelect = this.onChangeSelect.bind(this);
-        this.onDroppedDown = this.onDroppedDown.bind(this);
-        this.onCloseUp = this.onCloseUp.bind(this);
-        this.buildChildrensFromDataSource = this.buildChildrensFromDataSource.bind(this);
-        this.rebuildChildrens = this.rebuildChildrens.bind(this);
+        this.onChangeSelect = this
+            .onChangeSelect
+            .bind(this);
+        this.onDroppedDown = this
+            .onDroppedDown
+            .bind(this);
+        this.onCloseUp = this
+            .onCloseUp
+            .bind(this);
+        this.buildChildrensFromDataSource = this
+            .buildChildrensFromDataSource
+            .bind(this);
+        this.rebuildChildrens = this
+            .rebuildChildrens
+            .bind(this);
         this.idSelect = lodash.uniqueId('select');
-        this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
-        this.onLookupDatasourceEvent = this.onLookupDatasourceEvent.bind(this);
-        this.updateSelect = this.updateSelect.bind(this);
+        this.onDatasourceEvent = this
+            .onDatasourceEvent
+            .bind(this);
+        this.onLookupDatasourceEvent = this
+            .onLookupDatasourceEvent
+            .bind(this);
+        this.updateSelect = this
+            .updateSelect
+            .bind(this);
         this.loadData = false;
         let value = this.props.value;
         if (this.props.dataSource) {
-            value = this.props.dataSource.fieldByName(this.props.dataField);
-            value = value[this.props.dataFieldId];
-        }
-        this.state = { value, update: true };
+            value = this
+                .props
+                .dataSource
+                .fieldByName(this.props.dataField);
+            if (value) 
+                value = value[this.props.dataFieldId];
+            }
+        this.state = {
+            value,
+            update: true
+        };
 
-        if (this.props.lookupDataSource && this.props.lookupDataSource.locate({ [`${this.props.lookupDataFieldId}`]: this.state.value })) {
+        if (this.props.lookupDataSource && this.props.lookupDataSource.locate({
+            [`${this.props.lookupDataFieldId}`]: this.state.value
+        })) {
             if (this.props.dataSource) {
-                this.props.dataSource.setFieldByName(this.props.dataField, this.props.lookupDataSource.getCurrentRecord());
+                this
+                    .props
+                    .dataSource
+                    .setFieldByName(this.props.dataField, this.props.lookupDataSource.getCurrentRecord());
             }
             if (this.props.onChangeSelect) {
-                this.props.onChangeSelect(this.state.value, this.props.lookupDataSource.getCurrentRecord());
+                this
+                    .props
+                    .onChangeSelect(this.state.value, this.props.lookupDataSource.getCurrentRecord());
             }
         }
     }
 
     componentDidMount() {
-        $(this.select).chosen({
+        let options = {
             no_results_text: "Oops, texto não encontrado!",
             placeholder_text_single: this.props.placeHolder,
             search_contains: true,
-            width: this.props.width,
             allow_single_deselect: true,
             max_selected_options: this.props.maxSelectedOptions,
             allow_single_deselect: true,
             disable_search: !this.props.searchEnabled
-
-        }).change(this.onChangeSelect);
-
+        };
+        const colClasses = buildGridClassNames(this.props, false, []);
+        if (colClasses && colClasses.length > 0) {
+            options = {
+                ...options,
+                width: '100%'
+            };
+        }
+        $(this.select)
+            .chosen(options)
+            .change(this.onChangeSelect);
 
         if (this.props.lookupDataSource) {
-            this.props.lookupDataSource.addEventListener(
-                [dataSourceEvents.AFTER_CLOSE,
-                dataSourceEvents.AFTER_POST,
-                dataSourceEvents.AFTER_DELETE,
-                dataSourceEvents.AFTER_OPEN], this.onLookupDatasourceEvent);
+            this
+                .props
+                .lookupDataSource
+                .addEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_POST, dataSourceEvents.AFTER_DELETE, dataSourceEvents.AFTER_OPEN
+                ], this.onLookupDatasourceEvent);
         }
 
         if (this.props.dataSource) {
-            this.props.dataSource.addEventListener(
-                [dataSourceEvents.AFTER_CLOSE,
-                dataSourceEvents.AFTER_OPEN,
-                dataSourceEvents.AFTER_GOTO_PAGE,
-                dataSourceEvents.AFTER_POST,
-                dataSourceEvents.AFTER_CANCEL,
-                dataSourceEvents.AFTER_SCROLL], this.onDatasourceEvent);
-            this.props.dataSource.addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+            this
+                .props
+                .dataSource
+                .addEventListener([
+                    dataSourceEvents.AFTER_CLOSE,
+                    dataSourceEvents.AFTER_OPEN,
+                    dataSourceEvents.AFTER_GOTO_PAGE,
+                    dataSourceEvents.AFTER_POST,
+                    dataSourceEvents.AFTER_CANCEL,
+                    dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
         }
     }
 
@@ -77,10 +122,16 @@ export default class AnterosLookupCombobox extends React.Component {
     componentWillReceiveProps(nextProps) {
         let value = nextProps.value;
         if (nextProps.dataSource) {
-            value = nextProps.dataSource.fieldByName(nextProps.dataField);
-            value = value[nextProps.dataFieldText];
-        }
-        this.setState({ ...this.state, value });
+            value = nextProps
+                .dataSource
+                .fieldByName(nextProps.dataField);
+            if (value) 
+                value = value[nextProps.dataFieldText];
+            }
+        this.setState({
+            ...this.state,
+            value
+        });
         this.updateSelect();
     }
 
@@ -94,22 +145,30 @@ export default class AnterosLookupCombobox extends React.Component {
     componentWillUnmount() {
         $(this.select).chosen("destroy");
         if ((this.props.lookupDataSource)) {
-            this.props.lookupDataSource.removeEventListener(
-                [dataSourceEvents.AFTER_CLOSE,
-                dataSourceEvents.AFTER_POST,
-                dataSourceEvents.AFTER_DELETE,
-                dataSourceEvents.AFTER_OPEN], this.onLookupDatasourceEvent);
+            this
+                .props
+                .lookupDataSource
+                .removeEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_POST, dataSourceEvents.AFTER_DELETE, dataSourceEvents.AFTER_OPEN
+                ], this.onLookupDatasourceEvent);
         }
 
         if ((this.props.dataSource)) {
-            this.props.dataSource.removeEventListener(
-                [dataSourceEvents.AFTER_CLOSE,
-                dataSourceEvents.AFTER_OPEN,
-                dataSourceEvents.AFTER_GOTO_PAGE,
-                dataSourceEvents.AFTER_POST,
-                dataSourceEvents.AFTER_CANCEL,
-                dataSourceEvents.AFTER_SCROLL], this.onDatasourceEvent);
-            this.props.dataSource.removeEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+            this
+                .props
+                .dataSource
+                .removeEventListener([
+                    dataSourceEvents.AFTER_CLOSE,
+                    dataSourceEvents.AFTER_OPEN,
+                    dataSourceEvents.AFTER_GOTO_PAGE,
+                    dataSourceEvents.AFTER_POST,
+                    dataSourceEvents.AFTER_CANCEL,
+                    dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .removeEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
         }
     }
 
@@ -117,50 +176,76 @@ export default class AnterosLookupCombobox extends React.Component {
         if (this.props.dataSource) {
             let value = this.props.value;
             if (this.props.dataSource) {
-                value = this.props.dataSource.fieldByName(this.props.dataField);
-                value = value[this.props.dataFieldText];
-            }
-            this.setState({ ...this.state, value });
+                value = this
+                    .props
+                    .dataSource
+                    .fieldByName(this.props.dataField);
+                if (value) 
+                    value = value[this.props.dataFieldText];
+                }
+            this.setState({
+                ...this.state,
+                value
+            });
         }
     }
 
     onLookupDatasourceEvent(event, error) {
         if (event == dataSourceEvents.AFTER_OPEN || event == dataSourceEvents.AFTER_POST || event == dataSourceEvents.AFTER_DELETE) {
             this.loadData = true;
-            this.setState({ ...this.state, update: Math.random() });
+            this.setState({
+                ...this.state,
+                update: Math.random()
+            });
         }
     }
 
     onChangeSelect(event, selectedValue) {
         if (selectedValue != undefined && selectedValue.selected != undefined && selectedValue.selected != '') {
-            if (this.props.lookupDataSource.locate({ [`${this.props.lookupDataFieldId}`]: selectedValue.selected })) {
+            if (this.props.lookupDataSource.locate({
+                [`${this.props.lookupDataFieldId}`]: selectedValue.selected
+            })) {
                 if (this.props.dataSource) {
-                    this.props.dataSource.setFieldByName(this.props.dataField, this.props.lookupDataSource.getCurrentRecord());
+                    this
+                        .props
+                        .dataSource
+                        .setFieldByName(this.props.dataField, this.props.lookupDataSource.getCurrentRecord());
                 }
                 if (this.props.onChangeSelect) {
-                    this.props.onChangeSelect(selectedValue.selected, this.props.lookupDataSource.getCurrentRecord());
+                    this
+                        .props
+                        .onChangeSelect(selectedValue.selected, this.props.lookupDataSource.getCurrentRecord());
                 }
             }
         } else {
             if (this.props.dataSource) {
-                this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+                this
+                    .props
+                    .dataSource
+                    .setFieldByName(this.props.dataField, undefined);
             }
 
             if (this.props.onChangeSelect) {
-                this.props.onChangeSelect();
+                this
+                    .props
+                    .onChangeSelect();
             }
         }
     }
 
     onDroppedDown() {
         if (this.props.onDroppedDown) {
-            this.props.onDroppedDown();
+            this
+                .props
+                .onDroppedDown();
         }
     }
 
     onCloseUp() {
         if (this.props.onCloseUp) {
-            this.props.onCloseUp();
+            this
+                .props
+                .onCloseUp();
         }
     }
 
@@ -182,31 +267,37 @@ export default class AnterosLookupCombobox extends React.Component {
         }, ''));
         index++;
 
-        this.props.lookupDataSource.getData().map(record => {
+        this
+            .props
+            .lookupDataSource
+            .getData()
+            .map(record => {
 
-            if (!record.hasOwnProperty(_this.props.lookupDataFieldId) || (!record[_this.props.lookupDataFieldId])) {
-                throw new AnterosError("Foi encontrado um registro sem ID no dataSource passado para o Select.");
-            }
-            if (!record.hasOwnProperty(_this.props.lookupDataFieldText) || (!record[_this.props.lookupDataFieldText])) {
-                throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para a Select.");
-            }
+                if (!record.hasOwnProperty(_this.props.lookupDataFieldId) || (!record[_this.props.lookupDataFieldId])) {
+                    throw new AnterosError("Foi encontrado um registro sem ID no dataSource passado para o Select.");
+                }
+                if (!record.hasOwnProperty(_this.props.lookupDataFieldText) || (!record[_this.props.lookupDataFieldText])) {
+                    throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para a Select.");
+                }
 
-            children.push(React.createElement(AnterosLookupComboboxOption, {
-                key: record[_this.props.lookupDataFieldId] + "_" + index,
-                label: (record.label ? record.label : record[_this.props.lookupDataFieldText]),
-                text: record[_this.props.lookupDataFieldText],
-                group: record.group,
-                divider: record.divider,
-                disabled: record.disabled,
-                style: record.style,
-                className: record.className,
-                icon: record.icon,
-                content: record.content,
-                index: index,
-                value: record[_this.props.lookupDataFieldId]
-            }, record[_this.props.lookupDataFieldText]));
-            index++;
-        });
+                children.push(React.createElement(AnterosLookupComboboxOption, {
+                    key: record[_this.props.lookupDataFieldId] + "_" + index,
+                    label: (record.label
+                        ? record.label
+                        : record[_this.props.lookupDataFieldText]),
+                    text: record[_this.props.lookupDataFieldText],
+                    group: record.group,
+                    divider: record.divider,
+                    disabled: record.disabled,
+                    style: record.style,
+                    className: record.className,
+                    icon: record.icon,
+                    content: record.content,
+                    index: index,
+                    value: record[_this.props.lookupDataFieldId]
+                }, record[_this.props.lookupDataFieldText]));
+                index++;
+            });
         return children;
     }
 
@@ -229,10 +320,14 @@ export default class AnterosLookupCombobox extends React.Component {
         }, ''));
         index++;
 
-        let arrChildren = React.Children.toArray(this.props.children);
+        let arrChildren = React
+            .Children
+            .toArray(this.props.children);
         arrChildren.forEach(function (child) {
             children.push(React.createElement(AnterosLookupComboboxOption, {
-                key: (_this.props.id ? _this.props.id + "_" + index : _this.idSelect + "_" + index),
+                key: (_this.props.id
+                    ? _this.props.id + "_" + index
+                    : _this.idSelect + "_" + index),
                 label: child.props.label,
                 group: child.props.group,
                 divider: child.props.divider,
@@ -256,9 +351,32 @@ export default class AnterosLookupCombobox extends React.Component {
         }
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        let { onChangeSelect, onDroppedDown, onCloseUp, multiple, searchEnabled, maxSelectedOptions,
-            maxShowOptions, placeHolder, captionHeader, selectedTextFormat, showActionsBox, showTick, dataSource,
-            showMenuArrow, disabled, width, primary, secondary, info, danger, success, warning, container, dropup } = this.props;
+        let {
+            onChangeSelect,
+            onDroppedDown,
+            onCloseUp,
+            multiple,
+            searchEnabled,
+            maxSelectedOptions,
+            maxShowOptions,
+            placeHolder,
+            captionHeader,
+            selectedTextFormat,
+            showActionsBox,
+            showTick,
+            dataSource,
+            showMenuArrow,
+            disabled,
+            width,
+            primary,
+            secondary,
+            info,
+            danger,
+            success,
+            warning,
+            container,
+            dropup
+        } = this.props;
 
         let dataStyle;
         if (primary) {
@@ -273,10 +391,11 @@ export default class AnterosLookupCombobox extends React.Component {
             dataStyle = "btn-warning";
         }
 
-        let className = AnterosUtils.buildClassNames(
-            (colClasses.length > 0 ? "form-control" : ""),
-            (this.props.className ? this.props.className : ""));
-
+        let className = AnterosUtils.buildClassNames((colClasses.length > 0
+            ? "form-control"
+            : ""), (this.props.className
+            ? this.props.className
+            : ""));
 
         let newChildren;
         if (this.props.lookupDataSource) {
@@ -296,15 +415,33 @@ export default class AnterosLookupCombobox extends React.Component {
         }
 
         if (colClasses.length > 0) {
-            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
-                <select disabled={this.isDisabled} onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value}>
+            return (
+                <div className={AnterosUtils.buildClassNames(colClasses)}>
+                    <select
+                        disabled={this.isDisabled}
+                        onChange={this.onChangeSelect}
+                        readOnly={readOnly}
+                        id={this.idSelect}
+                        className={className}
+                        ref={ref => this.select = ref}
+                        value={this.state.value}>
+                        {newChildren}
+                    </select>
+                </div>
+            );
+        } else {
+            return (
+                <select
+                    disabled={this.isDisabled}
+                    onChange={this.onChangeSelect}
+                    readOnly={readOnly}
+                    id={this.idSelect}
+                    className={className}
+                    ref={ref => this.select = ref}
+                    value={this.state.value}>
                     {newChildren}
                 </select>
-            </div>);
-        } else {
-            return (<select disabled={this.isDisabled} onChange={this.onChangeSelect} readOnly={readOnly} id={this.idSelect} className={className} ref={ref => this.select = ref} value={this.state.value} >
-                {newChildren}
-            </select>);
+            );
         }
     }
 
@@ -365,17 +502,25 @@ AnterosLookupCombobox.defaultProps = {
     value: ''
 };
 
-
-
-
 export class AnterosLookupComboboxOption extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const { divider, group, name, children, disabled, style,
-            icon, content, className, label, value } = this.props;
+        const {
+            divider,
+            group,
+            name,
+            children,
+            disabled,
+            style,
+            icon,
+            content,
+            className,
+            label,
+            value
+        } = this.props;
         if (group) {
             return (
                 <optgroup label={label}>
@@ -383,14 +528,13 @@ export class AnterosLookupComboboxOption extends React.Component {
                 </optgroup>
             );
         } else if (divider) {
-            return (<option data-divider={true} />);
+            return (<option data-divider={true}/>);
         } else {
             return (
-                <option
-                    disabled={disabled}
-                    value={value}
-                    style={style} className={className}>
-                    {children && children.length > 0 ? children : label}
+                <option disabled={disabled} value={value} style={style} className={className}>
+                    {children && children.length > 0
+                        ? children
+                        : label}
                 </option>
             );
         }
@@ -419,5 +563,3 @@ AnterosLookupComboboxOption.defaultProps = {
     success: false,
     warning: false
 };
-
-

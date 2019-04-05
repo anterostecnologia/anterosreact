@@ -10,7 +10,7 @@ import AnterosPanel from "./components/AnterosPanel";
 import AnterosSplitter from "./components/AnterosSplitter";
 import AnterosStepWizard from './components/AnterosStepWizard';
 import AnterosFlexBox from './components/AnterosFlexBox';
-import { AnterosFormSteps, AnterosFormStep } from "./components/AnterosFormSteps";
+import { AnterosFormSteps, AnterosFormStep, AnterosStepFooter, AnterosStepHeader } from "./components/AnterosFormSteps";
 import AnterosCarousel, {AnterosCarouselPreviousButton, AnterosCarouselNextButton, AnterosCarouselPagingDots} from './components/AnterosCarousel';
 import AnterosCollapse from './components/AnterosCollapse';
 import AnterosContainer from './components/AnterosContainer';
@@ -30,5 +30,5 @@ export {
     AnterosStepWizard, AnterosFormSteps, AnterosFormStep, AnterosFlexBox,AnterosCollapse,
     AnterosCarousel, AnterosCarouselPreviousButton, AnterosCarouselNextButton, AnterosCarouselPagingDots,
     AnterosLoginFooter, AnterosLoginHeader, AnterosLoginForm, AnterosFullBackground,
-    AnterosToolbar, AnterosToolbarGroup, AnterosSidebarLayout
+    AnterosToolbar, AnterosToolbarGroup, AnterosSidebarLayout, AnterosStepFooter, AnterosStepHeader
 };

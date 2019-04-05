@@ -101,6 +101,8 @@ export default class AnterosTable extends Component {
     renderFone(column, value, record) {
         if (!column) 
             return value;
+        if (!value)
+            return value;    
         let _mask = new AnterosStringMask("(99) 99999-9999");
         return _mask.apply(value);
     }
@@ -108,6 +110,8 @@ export default class AnterosTable extends Component {
     renderPlaca(column, value, record) {
         if (!column) 
             return value;
+        if (!value)
+            return value;  
         let _mask = new AnterosStringMask('SSS-AAAAA');
         return _mask.apply(value);
     }
@@ -115,6 +119,8 @@ export default class AnterosTable extends Component {
     renderCpf(column, value, record) {
         if (!column) 
             return value;
+        if (!value)
+            return value;  
         let _mask = new AnterosStringMask('999.999.999-99');
         return _mask.apply(value);
     }
@@ -122,6 +128,8 @@ export default class AnterosTable extends Component {
     renderCnpj(column, value, record) {
         if (!column) 
             return value;
+        if (!value)
+            return value;  
         let _mask = new AnterosStringMask('99.999.999/9999-99');
         return _mask.apply(value);
     }
@@ -129,6 +137,8 @@ export default class AnterosTable extends Component {
     renderCep(column, value, record) {
         if (!column) 
             return value;
+        if (!value)
+            return value;  
         let _mask = new AnterosStringMask('99999-999');
         return _mask.apply(value);
     }
@@ -144,6 +154,10 @@ export default class AnterosTable extends Component {
             width = column.props.imageWidth;
             height = column.props.imageHeight;
         }
+        if (!value)
+            return value;  
+
+            
 
         return <img className={classNameImage} src={value} height={height} width={width}/>;
     }

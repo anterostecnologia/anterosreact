@@ -58,6 +58,7 @@ export default class AnterosPageControl extends Component {
                     disabled: child.props.disabled,
                     caption: child.props.caption,
                     icon: child.props.icon,
+                    visible: child.props.visible,
                     image: child.props.image,
                     imageCircle: child.props.imageCircle,
                     imageWidth: child.props.imageWidth,
@@ -149,8 +150,12 @@ class AnterosTabLink extends Component {
         if (this.props.imageCircle) {
             classNameImage = "img-circle";
         }
+        let newStyle = {};
+        if (!this.props.visible){
+            newStyle = {display:"none"};
+        }
         return (
-            <li className="nav-item" onClick={this.onTabLinkClick}>
+            <li className="nav-item" style={newStyle} onClick={this.onTabLinkClick}>
                 <a className={className} data-toggle="tab" href={this.props.href} role="tab">{icon} <img style={{ marginLeft: "3px", marginRight: "3px" }} className={classNameImage} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} /> {this.props.caption}</a>
             </li>);
     }

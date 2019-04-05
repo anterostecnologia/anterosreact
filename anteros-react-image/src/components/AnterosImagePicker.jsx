@@ -131,7 +131,7 @@ export default class AnterosImagePicker extends React.Component {
     render() {
 
         const colClasses = buildGridClassNames(this.props, false, []);
-        let className = AnterosUtils.buildClassNames((colClasses.length > 0 || icon ? "form-control" : ""), "fileUpload");
+        let className = AnterosUtils.buildClassNames((colClasses.length > 0 || this.props.icon ? "form-control" : ""), "fileUpload");
 
         if (colClasses.length > 0) {
             return (<div className="input-group" style={{ width: this.props.width }}>
@@ -145,7 +145,7 @@ export default class AnterosImagePicker extends React.Component {
             </div>);
         } else {
             return (<div className={className} style={{ display: "grid", border: 0 }} id={this.idImage}>
-                <img src={'data:image;base64,' + this.state.value} style={{ ...this.props.style, border: "1px solid silver", width: this.props.width, height: this.props.height }} onDoubleClick={this.onDoubleClickImage} />
+                <img src={this.state.value && this.state.value !== ''?'data:image;base64,' + this.state.value:null} style={{ ...this.props.style, border: "1px solid silver", width: this.props.width, height: this.props.height }} onDoubleClick={this.onDoubleClickImage} />
                 <input id={this.idImage + "_input"} type="file"
                     className="imageUpload"
                     onChange={this.onSelect}

@@ -22,7 +22,7 @@ export default class AnterosSelect extends React.Component {
     }
 
     componentDidMount() {
-        updateSelect();
+        this.updateSelect();
         if (this.props.dataSource) {
             this.props.dataSource.addEventListener(
                 [dataSourceEvents.AFTER_CLOSE,

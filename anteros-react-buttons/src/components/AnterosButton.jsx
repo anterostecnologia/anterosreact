@@ -11,7 +11,7 @@ export default class AnterosButton extends Component {
     }
 
     componentDidMount() {
-        $(this.button).tooltip();
+        // $(this.button).tooltip();
     }
 
     onClick(event) {

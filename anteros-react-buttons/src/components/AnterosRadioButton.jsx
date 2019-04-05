@@ -71,7 +71,7 @@ export class AnterosRadioButtonItem extends Component {
     }
 
     componentDidMount() {
-        $(this.button).tooltip();
+        // $(this.button).tooltip();
     }
 
     onClick(event) {

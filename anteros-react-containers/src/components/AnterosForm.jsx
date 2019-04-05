@@ -66,21 +66,21 @@ export class AnterosBaseInputControl extends React.Component {
     }
 
     _componentDidMount() {
-        if (this.context.validationForm) {
-            this
-                .context
-                .validationForm
-                .attachToForm(this);
-        }
+        // if (this.context.validationForm) {
+        //     this
+        //         .context
+        //         .validationForm
+        //         .attachToForm(this);
+        // }
     }
 
     _componentWillUnmount() {
-        if (this.context.validationForm) {
-            this
-                .context
-                .validationForm
-                .detachFromForm(this);
-        }
+        // if (this.context.validationForm) {
+        //     this
+        //         .context
+        //         .validationForm
+        //         .detachFromForm(this);
+        // }
     }
 
     getInputRef() {
@@ -88,10 +88,10 @@ export class AnterosBaseInputControl extends React.Component {
     }
 
     setError(errorMessage) {
-        this
-            .getInputRef()
-            .setCustomValidity(errorMessage);
-        this.setState({errorMessage});
+        // this
+        //     .getInputRef()
+        //     .setCustomValidity(errorMessage);
+        // this.setState({errorMessage});
     }
 
     clearError() {
@@ -161,51 +161,51 @@ export class AnterosBaseInputControl extends React.Component {
     }
 
     displayErrorMessage() {
-        return this.state.errorMessage
-            ? <div className="invalid-feedback">{this.state.errorMessage}</div>
-            : null;
+        // return this.state.errorMessage
+        //     ? <div className="invalid-feedback">{this.state.errorMessage}</div>
+        //     : null;
     }
 
     displaySuccessMessage(displayBlock) {
-        return (!this.state.isPristine && !this.state.errorMessage && this.props.successMessage)
-            ? <div
-                    className={"valid-feedback" + (displayBlock
-                    ? " d-block"
-                    : "")}>{this.props.successMessage}</div>
-            : null;
+        // return (!this.state.isPristine && !this.state.errorMessage && this.props.successMessage)
+        //     ? <div
+        //             className={"valid-feedback" + (displayBlock
+        //             ? " d-block"
+        //             : "")}>{this.props.successMessage}</div>
+        //     : null;
     }
 
     checkError(e) {
-        if (this.context && this.context.validationForm) {
-            if (this.context.validationForm.immediate) {
-                let isPristine = this.state.isPristine;
-                if (isPristine) 
-                    this.setDirty();
-                this.buildErrorMessage();
-                this.changeInputErrorClass();
-            }
-        }
+        // if (this.context && this.context.validationForm) {
+        //     if (this.context.validationForm.immediate) {
+        //         let isPristine = this.state.isPristine;
+        //         if (isPristine) 
+        //             this.setDirty();
+        //         this.buildErrorMessage();
+        //         this.changeInputErrorClass();
+        //     }
+        // }
     }
 
     changeInputErrorClass() {
-        const inputRef = this.getInputRef();
-        if (inputRef.type !== "radio") {
-            if (!inputRef.validity.valid) {
-                inputRef
-                    .classList
-                    .add("is-invalid")
-                inputRef
-                    .classList
-                    .remove("is-valid");
-            } else {
-                inputRef
-                    .classList
-                    .remove("is-invalid")
-                inputRef
-                    .classList
-                    .add("is-valid");
-            }
-        }
+        // const inputRef = this.getInputRef();
+        // if (inputRef.type !== "radio") {
+        //     if (!inputRef.validity.valid) {
+        //         inputRef
+        //             .classList
+        //             .add("is-invalid")
+        //         inputRef
+        //             .classList
+        //             .remove("is-valid");
+        //     } else {
+        //         inputRef
+        //             .classList
+        //             .remove("is-invalid")
+        //         inputRef
+        //             .classList
+        //             .add("is-valid");
+        //     }
+        // }
     }
 
     _handleBlur(e) {
@@ -219,9 +219,9 @@ export class AnterosBaseInputControl extends React.Component {
     }
 
     validateInput() {
-        this.setDirty();
-        this.checkError();
-        this.buildErrorMessage();
+        // this.setDirty();
+        // this.checkError();
+        // this.buildErrorMessage();
     }
 
     setDirty() {

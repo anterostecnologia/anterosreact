@@ -68,7 +68,7 @@ export class AnterosCheckboxButtonItem extends Component {
     }
 
     componentDidMount() {
-        $(this.button).tooltip();
+        // $(this.button).tooltip();
     }
 
     onClick(event) {
