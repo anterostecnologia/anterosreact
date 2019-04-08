@@ -106,6 +106,13 @@ class AnterosCheckbox extends Component {
             className += " collapsed";
         }
 
+        let icon;
+        if (this.props.icon) {
+            icon = (<i data-user={this.props.dataUser} className={this.props.icon} style={{ color: this.props.iconColor }}></i>);
+        }
+
+        
+
         return (
             <div className={AnterosUtils.buildClassNames(colClasses)} style={{ width: this.props.width, height: this.props.height, ...this.props.style }}>
                 <label style={{ margin: "0" }}>
@@ -118,8 +125,8 @@ class AnterosCheckbox extends Component {
                         readOnly={readOnly}
                         onChange={this.toggleCheckboxChange}
                         data-toggle={dataToggle} aria-haspopup={ariaHaspopup} aria-expanded={ariaExpanded} aria-controls={ariaControls} href={href}
-                    />
-                    <span onClick={e => (e)}>{value}</span>
+                    />{icon}
+                    <span style={this.props.valueStyle} onClick={e => (e)}>{value}</span>
                 </label>
             </div>
         );
@@ -157,7 +164,11 @@ AnterosCheckbox.propTypes = {
     secondary: PropTypes.bool,
     default: PropTypes.bool,
     collapseContent : PropTypes.string,
-    style: PropTypes.style
+    style: PropTypes.style,
+    valueStyle: PropTypes.style,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    image: PropTypes.string
 };
 
 AnterosCheckbox.defaultProps = {
