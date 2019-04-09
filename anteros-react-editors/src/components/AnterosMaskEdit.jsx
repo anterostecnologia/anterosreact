@@ -20,6 +20,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
         this.onChangeValue = this
             .onChangeValue
             .bind(this);
+        this.handleBlur = this.handleBlur.bind(this);    
         if (this.props.dataSource) {
             let value = this
                 .props
@@ -175,6 +176,13 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
         }
     }
 
+    handleBlur(event){
+        this._handleBlur(event);
+        if (this.props.onBlur){
+            this.props.onBlur(event);
+        }
+    }
+
     componentWillUnmount() {
         this._componentWillUnmount();
         if ((this.props.dataSource)) {
@@ -277,7 +285,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
             pattern={pattern}
             onFocus={this.props.onFocus}
             onChange={this.handleChange}
-            onBlur={this._handleBlur}
+            onBlur={this.handleBlur}
             value={this.state.value}
             ref={this.inputRef}
             type='text'/>;
@@ -315,6 +323,7 @@ AnterosMaskEdit.propTypes = {
     onChange: PropTypes.func,
     onComplete: PropTypes.func,
     onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

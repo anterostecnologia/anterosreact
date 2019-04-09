@@ -20,6 +20,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         this.onKeyPress = this
             .onKeyPress
             .bind(this);
+        this.setFocus = this.setFocus.bind(this);
         if (this.props.dataSource) {
             let value = this
                 .props
@@ -170,6 +171,14 @@ export default class AnterosEdit extends AnterosBaseInputControl {
             });
         }
         return children;
+    }
+
+    setFocus(value){
+        if (value){
+            this.inputRef.current.focus();
+        } else {
+            this.inputRef.current.blur();
+        }
     }
 
     render() {
