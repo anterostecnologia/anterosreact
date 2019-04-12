@@ -262,7 +262,8 @@ AnterosNumber.propTypes = {
     allowNegative: PropTypes.bool,
     allowEmpty: PropTypes.bool,
     prefix: PropTypes.string,
-    suffix: PropTypes.string
+    suffix: PropTypes.string,
+    integer: PropTypes.bool
 };
 
 
@@ -276,7 +277,8 @@ AnterosNumber.defaultProps = {
     allowNegative: false,
     prefix: '',
     suffix: '',
-    readOnly: false
+    readOnly: false,
+    integer : false
 };
 
 

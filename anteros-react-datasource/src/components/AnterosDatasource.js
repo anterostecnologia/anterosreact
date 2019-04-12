@@ -481,6 +481,9 @@ class AnterosDatasource {
     }
 
     _validateInsert() {
+        if (!this.isOpen()){
+            throw new AnterosDatasourceError('Não é possível realizar INSERT com o dataSource fechado.');
+        }
         if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
         }
@@ -542,6 +545,9 @@ class AnterosDatasource {
     }
 
     _validateEdit() {
+        if (!this.isOpen()){
+            throw new AnterosDatasourceError('Não é possível realizar EDIT com o dataSource fechado.');
+        }
         if (this.isEmpty()) {
             throw new AnterosDatasourceError('Não há registros para editar.');
         }

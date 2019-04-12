@@ -14,21 +14,18 @@ import { AnterosFormSteps, AnterosFormStep, AnterosStepFooter, AnterosStepHeader
 import AnterosCarousel, {AnterosCarouselPreviousButton, AnterosCarouselNextButton, AnterosCarouselPagingDots} from './components/AnterosCarousel';
 import AnterosCollapse from './components/AnterosCollapse';
 import AnterosContainer from './components/AnterosContainer';
-import AnterosLoginFooter from './components/AnterosLoginFooter';
-import AnterosLoginHeader from './components/AnterosLoginHeader';
-import AnterosLoginForm from './components/AnterosLoginForm';
 import AnterosFullBackground from './components/AnterosFullBackground';
 import AnterosToolbar, {AnterosToolbarGroup} from './components/AnterosToolbar';
-import AnterosSidebarLayout from './components/AnterosSidebarLayout';
+import AnterosMainFooter from './components/AnterosMainFooter';
+
 
 export {
     AnterosCard, HeaderActions, FooterActions, AnterosCardDeck, AnterosCardGroup, AnterosCollapseContent,
     AnterosForm, AnterosBaseInputControl, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn,    
     AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
-    AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,AnterosContainer,
+    AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,AnterosContainer,AnterosMainFooter,
     AnterosStepWizard, AnterosFormSteps, AnterosFormStep, AnterosFlexBox,AnterosCollapse,
     AnterosCarousel, AnterosCarouselPreviousButton, AnterosCarouselNextButton, AnterosCarouselPagingDots,
-    AnterosLoginFooter, AnterosLoginHeader, AnterosLoginForm, AnterosFullBackground,
-    AnterosToolbar, AnterosToolbarGroup, AnterosSidebarLayout, AnterosStepFooter, AnterosStepHeader
+    AnterosFullBackground,  AnterosToolbar, AnterosToolbarGroup, AnterosStepFooter, AnterosStepHeader
 };

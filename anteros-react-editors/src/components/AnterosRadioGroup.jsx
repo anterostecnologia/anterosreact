@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {AnterosError, AnterosUtils} from "anteros-react-core";
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import PropTypes from 'prop-types';
+import {dataSourceEvents} from 'anteros-react-datasource';
 
 export default class AnterosRadioGroup extends Component {
     constructor(props) {

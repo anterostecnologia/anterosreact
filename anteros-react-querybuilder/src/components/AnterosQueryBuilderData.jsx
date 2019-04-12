@@ -1,34 +1,41 @@
-import {AnterosJacksonParser} from "anteros-react-core";
+import { AnterosJacksonParser } from 'anteros-react-core';
 
 export class AnterosQueryBuilderData {
+  static getSaveFilterConfig(filter) {
+    let jsonFilter = AnterosJacksonParser.convertObjectToJson(filter);
+    return {
+      url: `v1/filtro/`,
+      method: 'post',
+      data: jsonFilter
+    };
+  }
 
-    constructor() {
-    }
+  static getRemoveFilterConfig(filter) {
+    return {
+      url: `v1/filtro/${filter.idFilter}`,
+      method: 'delete'
+    };
+  }
 
+  static getFilters(form, component) {
+    return {
+      url: `v1/filtro/findFilterByForm?form=${form}&component=${component}`,
+      method: 'get'
+    };
+  }
 
-    static getSaveFilterConfig(filter) {
-        let jsonFilter = AnterosJacksonParser.convertObjectToJson(filter);
-        return {
-            url: `queryFilter/`,
-            method: 'post',
-            withCredentials: true,
-            data: jsonFilter
-        }
-    }
-
-    static getRemoveFilterConfig(filter) {
-        return {
-            url: `queryFilter/${filter.idFilter}`,
-            withCredentials: true,
-            method: 'delete',
-        }
-    }
-
-    static getFilters(form, component) {
-        return {
-            url: `queryFilter/findFilterByForm?form=${form}&component=${component}`,
-            withCredentials: true,
-            method: 'get'
-        }
-    }
+  static configureDatasource(datasource) {
+    datasource.setAjaxPostConfigHandler(filter => {
+      return AnterosQueryBuilderData.getSaveFilterConfig(filter);
+    });
+    datasource.setValidatePostResponse(response => {
+      return response.data !== undefined;
+    });
+    datasource.setAjaxDeleteConfigHandler(filter => {
+      return AnterosQueryBuilderData.getRemoveFilterConfig(filter);
+    });
+    datasource.setValidateDeleteResponse(response => {
+      return response.data !== undefined;
+    });
+  }
 }

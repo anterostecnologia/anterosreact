@@ -252,15 +252,21 @@ export default class AnterosDataTable extends Component {
             height = column.props.imageHeight;
         }
 
-        let isb64 = this.isBase64(data);
+        
+        let img = data;
+        if (!img){
+            img = column.props.placeHolder;
+        }
+
+        let isb64 = this.isBase64(img);
 
         var temp = document.createElement('div');
         ReactDOM.render(
             <img
             className={classNameImage}
             src={isb64
-            ? 'data:image;base64,' + data
-            : data}
+            ? 'data:image;base64,' + img
+            : img}
             height={height}
             width={width}/>, temp);
         return temp.innerHTML;
@@ -946,7 +952,7 @@ export default class AnterosDataTable extends Component {
 
         arrChildren
             .forEach(function (child) {
-                if (child.type && child.type.name == "Columns") {
+                if (child && child.type.name == "Columns") {
                     let arrColumns = React
                         .Children
                         .toArray(child.props.children);
@@ -955,6 +961,7 @@ export default class AnterosDataTable extends Component {
                             result.push(childColumn);
                         }
                     });
+                    
                 } else if (child.type && child.type.name == "AnterosDataTableColumn") {
                     result.push(child);
                 }
