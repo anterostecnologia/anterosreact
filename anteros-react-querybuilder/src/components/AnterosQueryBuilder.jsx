@@ -760,6 +760,21 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   render() {
+    let customFilter;
+    let children = [];
+    let index = 0;
+    let _this = this;
+    let arrChildren = React.Children.toArray(this.props.children);
+    arrChildren.forEach(function (child) {
+        if (child.type && child.type.name === "CustomFilter") {
+          customFilter = child.props.children;
+        } else {
+          children.push(child);
+        }
+      }
+    );
+
+
     const {
       root: { id, rules, condition },
       schema
@@ -778,12 +793,13 @@ export class AnterosQueryBuilder extends React.Component {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
+              className: 'query-builder quick-filter',
               width: this.props.quickFilterWidth
             }}
           >
             <AnterosEdit
               onChange={this.onChangeQuickFilter}
-              width={'100%'}
+              width={'70%'}
               onKeyDown={this.handleQuickFilter}
               value={this.state.quickFilterText}
               placeHolder={this.props.placeHolder}
@@ -809,6 +825,7 @@ export class AnterosQueryBuilder extends React.Component {
               icon="fal fa-filter"
               onClick={this.onFilterClick}
             />
+            {customFilter}
           </div>
           <div
             style={{
@@ -817,7 +834,7 @@ export class AnterosQueryBuilder extends React.Component {
               justifyContent: 'flex-start'
             }}
           >
-            {this.props.children}
+            {children}
           </div>
         </div>
         <div
@@ -1176,6 +1193,13 @@ AnterosQueryBuilder.defaultProps = {
   showDateTimeButton: true,
   quickFilterWidth: '40%'
 };
+
+
+export class CustomFilter extends React.Component {
+  render() {
+    return null;
+  }
+}
 
 export class QueryFields extends React.Component {
   render() {

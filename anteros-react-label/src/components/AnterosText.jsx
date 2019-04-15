@@ -27,7 +27,7 @@ export default class AnterosText extends Component {
     }
     render() {
         let {textAlign, className, style, text,color, fontWeight, fontFamily, 
-            fontSize, h1, h2, h3, h4, h5, h6, display,
+            fontSize, h1, h2, h3, h4, h5, h6, display,backgroundColor,
             muted, center, right, white, truncate, mask, maskPattern} = this.props;
         
         let Tag = 'span';
@@ -86,7 +86,7 @@ export default class AnterosText extends Component {
             var _mask = new AnterosStringMask(mask); 
             newText = _mask.apply(newText);
         }    
-        return (<Tag style={{color, fontFamily, fontWeight, fontSize, textAlign, ...style}} className={_className}>{newText}</Tag>);
+        return (<Tag style={{backgroundColor, color, fontFamily, fontWeight, fontSize, textAlign, ...style}} className={_className}>{newText}</Tag>);
     }
 }
 

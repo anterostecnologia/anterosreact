@@ -70,6 +70,7 @@ export default class AnterosLookupCombobox extends React.Component {
         let options = {
             no_results_text: "Oops, texto não encontrado!",
             placeholder_text_single: this.props.placeHolder,
+            placeholder_text_multiple: this.props.placeHolder,
             search_contains: true,
             allow_single_deselect: true,
             max_selected_options: this.props.maxSelectedOptions,
@@ -81,6 +82,12 @@ export default class AnterosLookupCombobox extends React.Component {
             options = {
                 ...options,
                 width: '100%'
+            };
+        } else if (this.props.width) {
+            options = {
+                ...options,
+                width: this.props.width,
+                'min-width': this.props.width
             };
         }
         $(this.select)
@@ -414,17 +421,30 @@ export default class AnterosLookupCombobox extends React.Component {
             this.isDisabled = false;
         }
 
+        let _multiple = {}
+        if (this.props.multiple) {
+            _multiple = {
+                multiple: true
+            };
+        }
+
+        let newValue = this.state.value;
+        if (multiple && newValue) {
+            newValue = newValue.replace(/'/g, "");
+        }
+
         if (colClasses.length > 0) {
             return (
                 <div className={AnterosUtils.buildClassNames(colClasses)}>
                     <select
+                        {..._multiple}
                         disabled={this.isDisabled}
                         onChange={this.onChangeSelect}
                         readOnly={readOnly}
                         id={this.idSelect}
                         className={className}
                         ref={ref => this.select = ref}
-                        value={this.state.value}>
+                        value={newValue}>
                         {newChildren}
                     </select>
                 </div>
@@ -432,13 +452,14 @@ export default class AnterosLookupCombobox extends React.Component {
         } else {
             return (
                 <select
+                    {..._multiple}
                     disabled={this.isDisabled}
                     onChange={this.onChangeSelect}
                     readOnly={readOnly}
                     id={this.idSelect}
                     className={className}
                     ref={ref => this.select = ref}
-                    value={this.state.value}>
+                    value={newValue}>
                     {newChildren}
                 </select>
             );

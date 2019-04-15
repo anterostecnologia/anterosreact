@@ -13,7 +13,7 @@ import { AnterosTimeout } from "./components/AnterosTimeout";
 import { loadScript } from "./components/AnterosLoadScript";
 import AnterosSweetAlert from './components/AnterosSweetAlert';
 import AnterosStringMask from './components/AnterosStringMask';
-import autoBind from './components/AnterosAutoBind';
+import autoBind, {boundClass, boundMethod} from './components/AnterosAutoBind';
 import {processErrorMessage} from './components/AnterosErrorMessageHelper';
 
 
@@ -22,6 +22,7 @@ export {
     If, Then, Else, Case, Switch, Default, AnterosJacksonParser,
     AnterosObjectUtils, AnterosDateUtils, AnterosStringUtils,
     AnterosUtils, Anteros, AnterosTimeout, loadScript, AnterosSweetAlert, AnterosResizeDetector,
-    withResizeDetector, AnterosStringMask, autoBind, processErrorMessage
+    withResizeDetector, AnterosStringMask, autoBind, processErrorMessage,
+    boundClass, boundMethod
 
 };

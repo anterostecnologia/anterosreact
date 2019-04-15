@@ -262,12 +262,12 @@ export class AnterosRadio extends Component {
     }
 
     render() {
-        const {label, checked, disabled} = this.props;
+        const {label, checked, disabled, name} = this.props;
         return (
             <label onClick={this.onClick}>
                 <input
                     className="radio"
-                    name="radios"
+                    name={name}
                     type="radio"
                     defaultChecked={checked}
                     disabled={disabled}/>

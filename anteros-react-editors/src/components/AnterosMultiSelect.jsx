@@ -158,12 +158,12 @@ export default class AnterosMultiSelect extends React.Component {
         let _this = this;
         this
             .props
-            .dataSource
+            .dataSourceSelect
             .first();
         do {
             let record = this
                 .props
-                .dataSource
+                .dataSourceSelect
                 .getCurrentRecord();
 
             if (!record.hasOwnProperty(_this.props.dataFieldId) || (!record[_this.props.dataFieldId])) {
@@ -191,7 +191,7 @@ export default class AnterosMultiSelect extends React.Component {
                 index: index
             }, record[_this.props.dataFieldText]));
             index++;
-            if (this.props.dataSource.hasNext()) {
+            if (this.props.dataSourceSelect.hasNext()) {
                 this
                     .props
                     .dataSource()
@@ -278,7 +278,7 @@ export default class AnterosMultiSelect extends React.Component {
             : ""));
 
         let newChildren;
-        if (this.props.dataSource) {
+        if (this.props.dataSourceSelect) {
             newChildren = this.buildChildrensFromDataSource();
         } else if (this.props.children) {
             newChildren = this.rebuildChildrens();
@@ -347,6 +347,16 @@ AnterosMultiSelect.propTypes = {
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
+    dataSourceSelect : React
+    .PropTypes
+    .oneOfType([
+        React
+            .PropTypes
+            .instanceOf(AnterosLocalDatasource),
+        React
+            .PropTypes
+            .instanceOf(AnterosRemoteDatasource)
+    ]),
     dataFieldText: PropTypes.string,
     dataFieldId: PropTypes.string,
     value: PropTypes.string
