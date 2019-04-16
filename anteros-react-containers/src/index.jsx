@@ -16,7 +16,7 @@ import AnterosCollapse from './components/AnterosCollapse';
 import AnterosContainer from './components/AnterosContainer';
 import AnterosFullBackground from './components/AnterosFullBackground';
 import AnterosToolbar, {AnterosToolbarGroup} from './components/AnterosToolbar';
-import AnterosMainFooter from './components/AnterosMainFooter';
+// import AnterosMainFooter from './components/AnterosMainFooter';
 
 
 export {
@@ -24,7 +24,7 @@ export {
     AnterosForm, AnterosBaseInputControl, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn,    
     AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
-    AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,AnterosContainer,AnterosMainFooter,
+    AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,AnterosContainer,
     AnterosStepWizard, AnterosFormSteps, AnterosFormStep, AnterosFlexBox,AnterosCollapse,
     AnterosCarousel, AnterosCarouselPreviousButton, AnterosCarouselNextButton, AnterosCarouselPagingDots,
     AnterosFullBackground,  AnterosToolbar, AnterosToolbarGroup, AnterosStepFooter, AnterosStepHeader
