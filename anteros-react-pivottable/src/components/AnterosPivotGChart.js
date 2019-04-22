@@ -15,7 +15,6 @@
     var makeGoogleChart;
     makeGoogleChart = function(chartType, extraOptions) {
       return function(pivotData, opts) {
-        console.log(opts);
         var agg, base, base1, colKey, colKeys, dataArray, dataTable, defaults, fullAggName, groupByTitle, h, hAxisTitle, headers, i, j, len, len1, numCharsInHAxis, options, ref, result, row, rowKey, rowKeys, title, tree2, vAxisTitle, val, wrapper, x, y;
         defaults = {
           localeStrings: {

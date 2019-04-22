@@ -588,7 +588,7 @@ AnterosModal.propTypes = {
     full: PropTypes.bool,
     semifull: PropTypes.bool,
     width : PropTypes.string,
-    style : PropTypes.style
+    style : PropTypes.object
   };
   
   AnterosModal.defaultProps = {

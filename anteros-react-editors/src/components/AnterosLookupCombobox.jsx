@@ -36,6 +36,9 @@ export default class AnterosLookupCombobox extends React.Component {
             .bind(this);
         this.loadData = false;
         let value = this.props.value;
+        if (this.props.multiple && value === ''){
+            value = [];
+        }
         if (this.props.dataSource) {
             value = this
                 .props
@@ -135,6 +138,9 @@ export default class AnterosLookupCombobox extends React.Component {
             if (value) 
                 value = value[nextProps.dataFieldText];
             }
+        if (value === ''){
+            value = [];
+        }    
         this.setState({
             ...this.state,
             value
@@ -429,8 +435,9 @@ export default class AnterosLookupCombobox extends React.Component {
         }
 
         let newValue = this.state.value;
-        if (multiple && newValue) {
+        if (multiple && newValue instanceof String) {
             newValue = newValue.replace(/'/g, "");
+            newValue = newValue.split(',');
         }
 
         if (colClasses.length > 0) {

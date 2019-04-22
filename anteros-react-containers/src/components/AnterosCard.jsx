@@ -114,7 +114,7 @@ AnterosCard.propTypes = {
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     image: PropTypes.string,
-    imageStyle : PropTypes.style,
+    imageStyle : PropTypes.object,
     imageTop: PropTypes.bool,
     imageBottom: PropTypes.bool,
     cardInverse: PropTypes.bool,
@@ -159,7 +159,7 @@ export class HeaderActions extends Component {
 }
 
 HeaderActions.propTypes = {
-    visible: PropTypes.func
+    visible: PropTypes.bool
  };
  
  HeaderActions.defaultProps = {
@@ -173,7 +173,7 @@ export class FooterActions extends Component {
 }
 
 FooterActions.propTypes = {
-   visible: PropTypes.func
+   visible: PropTypes.bool
 };
 
 FooterActions.defaultProps = {

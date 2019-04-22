@@ -13,6 +13,7 @@
     "anteros-react-buttons": "^1.0.9",
     "anteros-react-containers": "^1.0.9",
     "anteros-react-core": "^1.0.7",
+    "anteros-react-datasource": "^1.0.7",
     "anteros-react-editors": "^1.0.7",
     "anteros-react-label": "^1.0.5",
     "anteros-react-layout": "^1.0.9",

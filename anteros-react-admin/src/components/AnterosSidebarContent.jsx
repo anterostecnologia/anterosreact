@@ -109,8 +109,8 @@ AnterosSidebarContent.propTypes = {
   isDarkSidenav: PropTypes.bool.isRequired,
   collapsedSidebar: PropTypes.bool.isRequired,
   location: PropTypes.string,
-  logoNormal: PropTypes.string.isRequired,
-  logoMini: PropTypes.string.isRequired
+  logoNormal: PropTypes.string,
+  logoMini: PropTypes.string
 };
 
 AnterosSidebarContent.defaultProps = {

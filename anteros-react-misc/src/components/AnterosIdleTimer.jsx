@@ -44,8 +44,6 @@ export default class AnterosIdleTimer extends Component {
 
         this.tId = null;
 
-        console.log(+ new Date());
-        console.log(new Date())
     }
 
     componentWillMount() {
@@ -130,7 +128,6 @@ export default class AnterosIdleTimer extends Component {
         if (this.state.remaining !== null) {
             return
         }
-        console.log('pausing');
         clearTimeout(this.tId)
         this.setState({
             remaining: this.getRemainingTime()

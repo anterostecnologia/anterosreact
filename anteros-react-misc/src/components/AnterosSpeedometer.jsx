@@ -391,7 +391,6 @@ export default class AnterosSpeedometer extends React.Component {
     };
 
     renderGauge () {
-        console.log("rendering gauge ");
         // before rendering remove the existing gauge?
         // d3.select( this.gaugeDiv )
         d3Select( this.gaugeDiv )

@@ -293,8 +293,8 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
             container,
             dropup,
             required,
-            minlength,
-            maxlength,
+            minLength,
+            maxLength,
             pattern
         } = this.props;
 
@@ -339,10 +339,10 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
                 <div className={AnterosUtils.buildClassNames(colClasses)}>
                     <select
                         {..._multiple}
-                        required
-                        minlength
-                        maxlength
-                        pattern
+                        required={required}
+                        minLength={minLength}
+                        maxLength={maxLength}
+                        pattern={pattern}
                         disabled={(this.props.disabled
                             ? true
                             : false)}
@@ -364,10 +364,10 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
                     <select
                         {..._multiple}
                         onChange={this.onChangeSelect}
-                        required
-                        minlength
-                        maxlength
-                        pattern
+                        required={required}
+                        minLength={minLength}
+                        maxLength={maxLength}
+                        pattern={pattern}
                         disabled={(this.props.disabled
                             ? true
                             : false)}
@@ -474,7 +474,8 @@ export class AnterosComboboxOption extends React.Component {
             return (<option data-divider={true}/>);
         } else {
             return (
-                <option disabled={disabled} value={value} style={style} className={className}>
+                <option disabled={disabled} value={value} style={style} 
+                className={className}>
                     {children && children.length > 0
                         ? children
                         : label}

@@ -252,7 +252,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
 
     render() {
         let readOnly = this.props.readOnly;
-        let {required, minlength, maxlength, pattern} = this.props;
+        let {required, minLength, maxLength, pattern} = this.props;
         if (this.props.dataSource && !readOnly) {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
         }
@@ -280,8 +280,8 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
         }}
             readOnly={readOnly}
             required={required}
-            minlength={minlength}
-            maxlength={maxlength}
+            minLength={minLength}
+            maxLength={maxLength}
             pattern={pattern}
             onFocus={this.props.onFocus}
             onChange={this.handleChange}

@@ -26,7 +26,7 @@ AnterosLabel.propTypes = {
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    style : PropTypes.style
+    style : PropTypes.object
 }
 
 AnterosLabel.defaultProps = {

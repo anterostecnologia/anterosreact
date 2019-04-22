@@ -800,8 +800,8 @@ export default class AnterosInputMask extends React.Component {
 
 AnterosInputMask.propTypes = {
     disabled: PropTypes.bool,
-    style: PropTypes.style,
-    readOnly: PropTypes.style,
+    style: PropTypes.object,
+    readOnly: PropTypes.bool,
     className: PropTypes.string
 }
 

@@ -68,7 +68,6 @@ export default class AnterosAdvancedDropdownToggle extends React.Component {
       );
     }
 
-    console.log(props);
 
     return (
       <AnterosPopperTarget

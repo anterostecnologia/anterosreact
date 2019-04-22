@@ -42,7 +42,7 @@ export default class AnterosFullBackground extends Component {
 }
 
 AnterosFullBackground.propTypes = {
-    color: PropTypes.color,
+    color: PropTypes.string,
     image: PropTypes.object,
-    custom: PropTypes.background
+    custom: PropTypes.string
 }

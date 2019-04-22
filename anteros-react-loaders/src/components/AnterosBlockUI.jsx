@@ -221,7 +221,7 @@ AnterosBlockUi.propTypes = {
   renderChildren: PropTypes.bool,
   keepInView: PropTypes.bool,
   className: PropTypes.string,
-  styleOverlay: PropTypes.style,
+  styleOverlay: PropTypes.object,
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   loader: PropTypes.oneOfType([
     PropTypes.string,

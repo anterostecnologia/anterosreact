@@ -335,7 +335,7 @@ AnterosPopper.childContextTypes = {
 AnterosPopper.propTypes = {
     component: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     innerRef: PropTypes.func,
-    placement: PropTypes.oneOf(placements),
+    placement: PropTypes.oneOf([...placements]),
     eventsEnabled: PropTypes.bool,
     positionFixed: PropTypes.bool,
     modifiers: PropTypes.object,
@@ -397,5 +397,5 @@ const AnterosPopperTarget = (props, context) => {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   }
 
-export const placements = PopperJS.placements;
+export const placements = [...PopperJS.placements];
 export {AnterosPopperArrow,AnterosPopperManager,AnterosPopper,AnterosPopperTarget}

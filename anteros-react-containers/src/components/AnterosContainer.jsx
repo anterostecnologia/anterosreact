@@ -26,5 +26,5 @@ AnterosContainer.propTypes = {
     width : PropTypes.string,
     height : PropTypes.string,
     className : PropTypes.string,
-    style : PropTypes.style
+    style : PropTypes.object
 }

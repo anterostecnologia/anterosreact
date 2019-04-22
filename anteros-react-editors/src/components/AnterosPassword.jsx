@@ -75,7 +75,7 @@ export default class AnterosPassword extends React.Component {
             this.setState({ ...this.state, value: event.target.value });
         }
         if (this.props.onChange) {
-            this.props.onChange(event);
+            this.props.onChange(event, event.target.value);
         }
     }
 

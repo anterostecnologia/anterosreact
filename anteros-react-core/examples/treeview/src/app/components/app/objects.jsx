@@ -83,28 +83,22 @@ class ObjectList extends Component {
   }
 
   onSelectedNode(data, selectedNodes) {
-    console.log('Selecionado ' + selectedNodes);
     this.setState({ selectedNodes: selectedNodes });
   }
 
   onUnSelectedNode(data, selectedNodes) {
-    console.log('Deselecionado ' + selectedNodes);
   }
 
   onExpandedNode(data, selectedNodes) {
-    console.log('Selecionado ' + selectedNodes);
   }
 
   onCollapsedNode(data, nodes) {
-    console.log('Contraido ' + nodes);
   }
 
   onLoosedFocusNode(node) {
-    console.log('Sai foco ' + node);
   }
 
   onFocusedNode(node) {
-    console.log('Em foco ' + node);
   }
 
   onChangedData(data) {

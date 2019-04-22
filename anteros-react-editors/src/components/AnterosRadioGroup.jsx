@@ -199,6 +199,8 @@ export default class AnterosRadioGroup extends Component {
             large,
             extraLarge,
             onRadioChange,
+            dataField,
+            dataSource,
             ...props
         } = this.props;
         const colClasses = buildGridClassNames(this.props, false, []);
@@ -245,7 +247,7 @@ AnterosRadioGroup.propTypes = {
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    style: PropTypes.style
+    style: PropTypes.object
 };
 
 export class AnterosRadio extends Component {

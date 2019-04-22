@@ -324,7 +324,7 @@ export class AnterosStepHeader extends Component {
 }
 
 AnterosStepFooter.propTypes = {
-    position: PropTypes.oneOf('first', 'last')
+    position: PropTypes.oneOf(['first', 'last'])
 }
 
 AnterosStepFooter.defaultProps = {

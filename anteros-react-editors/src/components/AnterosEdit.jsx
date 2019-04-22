@@ -183,7 +183,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
 
     render() {
         let readOnly = this.props.readOnly;
-        let {required, minlength, maxlength, pattern} = this.props;
+        let {required, minLength, maxLength, pattern} = this.props;
         if (this.props.dataSource && !readOnly) {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
         }
@@ -265,10 +265,9 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                         ? true
                         : false)}
                         id={this.idEdit}
-                        required
-                        minlength
-                        maxlength
-                        pattern
+                        required={required}
+                        minLength={minLength}
+                        pattern={pattern}
                         ref={this.inputRef}
                         type="text"
                         value={this.state.value}
@@ -301,10 +300,9 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                     id={this.idEdit}
                     ref={this.inputRef}
                     type="text"
-                    required
-                    minlength
-                    maxlength
-                    pattern
+                    required={required}
+                    minLength={minLength}
+                    pattern={pattern}
                     value={this.state.value}
                     style={{
                     ...this.props.style,
@@ -345,7 +343,8 @@ AnterosEdit.propTypes = {
     value: PropTypes.string.isRequired,
     placeHolder: PropTypes.string,
     disabled: PropTypes.bool,
-    maxLength: PropTypes.number,
+    maxLength: PropTypes.string,
+    minLength: PropTypes.string,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
@@ -358,7 +357,8 @@ AnterosEdit.propTypes = {
     image: PropTypes.string,
     style: PropTypes.object,
     readOnly: PropTypes.bool.isRequired,
-    classNameInput: PropTypes.string
+    classNameInput: PropTypes.string,
+    pattern: PropTypes.string
 };
 
 AnterosEdit.defaultProps = {

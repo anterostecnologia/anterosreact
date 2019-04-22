@@ -39,7 +39,7 @@ export default class AnterosFeedback extends React.Component {
 }
 
 AnterosFeedback.PropTypes = {
-    style : PropTypes.style,
+    style : PropTypes.object,
     when : PropTypes.object,
     inputValue: PropTypes.any,
     primary : PropTypes.bool,

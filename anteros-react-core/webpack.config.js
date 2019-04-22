@@ -30,7 +30,6 @@ if (env === 'build') {
 plugins.push(new ExtractTextPlugin(outputFileCSS));
 plugins.push(new OptimizeCssAssetsPlugin());
 
-console.log(nodeExternals());
 
 module.exports = {
   entry: __dirname + '/src/index.jsx',

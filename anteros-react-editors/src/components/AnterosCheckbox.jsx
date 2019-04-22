@@ -164,8 +164,8 @@ AnterosCheckbox.propTypes = {
     secondary: PropTypes.bool,
     default: PropTypes.bool,
     collapseContent : PropTypes.string,
-    style: PropTypes.style,
-    valueStyle: PropTypes.style,
+    style: PropTypes.object,
+    valueStyle: PropTypes.object,
     icon: PropTypes.string,
     iconColor: PropTypes.string,
     image: PropTypes.string

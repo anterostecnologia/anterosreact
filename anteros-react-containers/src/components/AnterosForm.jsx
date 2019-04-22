@@ -480,7 +480,7 @@ AnterosForm.propTypes = {
     defaultErrorMessage: PropTypes.object,
     setFocusOnError: PropTypes.bool,
     immediate: PropTypes.bool,
-    onSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     onErrorSubmit: PropTypes.func
 };
 
