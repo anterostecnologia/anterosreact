@@ -113,6 +113,7 @@ class AnterosDatasource {
         this.setSizeOfPageProperty = this.setSizeOfPageProperty.bind(this);
         this.setGrandTotalRecordsProperty = this.setGrandTotalRecordsProperty.bind(this);
         this.fieldByName = this.fieldByName.bind(this);
+        this.isEmptyField = this.isEmptyField.bind(this);
         this.setFieldByName = this.setFieldByName.bind(this);
 
         this._enableListeners = true;
@@ -288,7 +289,11 @@ class AnterosDatasource {
         });
     }
 
-    fieldByName(fieldName) {
+    isEmptyField(fieldName){
+        return this.fieldByName(fieldName)===undefined || this.fieldByName(fieldName)==='';
+    }
+
+    fieldByName(fieldName, defaultValue) {
         if (!fieldName) {
             throw new AnterosDatasourceError('Nome do campo inválido.');
         }
@@ -308,6 +313,9 @@ class AnterosDatasource {
         }
 
         let value = this._fieldByName(record, fieldName);
+        if (value===undefined && defaultValue){
+            value = defaultValue;
+        }
         return value;
     }
 
@@ -629,9 +637,14 @@ class AnterosDatasource {
             this.listeners.forEach(function (listener) {
                 if (listener.event == event) {
                     if (fieldName) {
-                        if (listener.fieldName.startsWith(fieldName)) {
-                            listener.dispatch(event, error, fieldName);
+                        if (listener.fieldName){
+                            if (listener.fieldName.startsWith(fieldName)) {
+                                listener.dispatch(event, error, fieldName);
+                            }
+                        } else {
+                            listener.dispatch(event, error, fieldName); 
                         }
+                        
                     } else {
                         listener.dispatch(event, error);
                     }

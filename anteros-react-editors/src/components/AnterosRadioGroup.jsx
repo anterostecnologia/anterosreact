@@ -67,6 +67,7 @@ export default class AnterosRadioGroup extends Component {
     }
 
     onDatasourceEvent(event, error) {
+        let _this = this;
         if (this.props.dataSource) {
             let value = this
                 .props
@@ -87,8 +88,7 @@ export default class AnterosRadioGroup extends Component {
             this.setState({
                 ...this.state,
                 checkedIndex: this.index,
-                value: this.value,
-                update: Math.random()
+                value: this.value
             });
         }
     }
@@ -258,9 +258,10 @@ export class AnterosRadio extends Component {
             .bind(this);
     }
 
-    onClick() {
+    onClick(event) {
         const {onChange, checked, index} = this.props;
         onChange && onChange(index);
+        event.stopPropagation();
     }
 
     render() {

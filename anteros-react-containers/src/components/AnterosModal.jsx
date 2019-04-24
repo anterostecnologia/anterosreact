@@ -56,6 +56,7 @@ export default class AnterosModal extends React.Component {
     this.handleTab = this.handleTab.bind(this);
     this.onOpened = this.onOpened.bind(this);
     this.onClosed = this.onClosed.bind(this);
+    this.onClickCloseButton = this.onClickCloseButton.bind(this);
 
     this.state = {
       isOpen: props.isOpen,
@@ -63,6 +64,12 @@ export default class AnterosModal extends React.Component {
 
     if (props.isOpen) {
       this.init();
+    }
+  }
+
+  onClickCloseButton(event){
+    if (this.props.onCloseButton){
+      this.props.onCloseButton();
     }
   }
 
@@ -123,7 +130,9 @@ export default class AnterosModal extends React.Component {
   onClosed(node) {
     const { unmountOnClose } = this.props;
     // so all methods get called before it is unmounted
-    this.props.onClosed();
+    if (this.props.onClosed)
+        this.props.onClosed();
+
     (this.props.modalTransition.onExited || noop)(node);
 
     if (unmountOnClose) {
@@ -558,6 +567,7 @@ AnterosModal.propTypes = {
     onExit: PropTypes.func,
     onOpened: PropTypes.func,
     onClosed: PropTypes.func,
+    onCloseButton : PropTypes.func,
     children: PropTypes.node,
     className: PropTypes.string,
     wrapClassName: PropTypes.string,
