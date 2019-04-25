@@ -792,7 +792,7 @@ export class AnterosQueryBuilder extends React.Component {
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'flex-end',
+              justifyContent: 'flex-start',
               className: 'query-builder quick-filter',
               width: this.props.quickFilterWidth
             }}

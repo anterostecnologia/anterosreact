@@ -313,7 +313,7 @@ class AnterosDatasource {
         }
 
         let value = this._fieldByName(record, fieldName);
-        if (value===undefined && defaultValue){
+        if ((value===undefined) && (defaultValue!==undefined)){
             value = defaultValue;
         }
         return value;
@@ -694,8 +694,8 @@ class AnterosLocalDatasource extends AnterosDatasource {
         }
         this.totalRecords = this.data.length;
         this.grandTotalRecords = this.data.length;
-        this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
         this.first();
+        this.dispatchEvent(dataSourceEvents.AFTER_OPEN);        
         this.cloneOnEdit = (cloneOnEdit == undefined ? false : cloneOnEdit);
     }
 
