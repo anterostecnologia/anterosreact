@@ -15,6 +15,7 @@ import AnterosSweetAlert from './components/AnterosSweetAlert';
 import AnterosStringMask from './components/AnterosStringMask';
 import autoBind, {boundClass, boundMethod} from './components/AnterosAutoBind';
 import {processErrorMessage} from './components/AnterosErrorMessageHelper';
+import AnterosFloater from './components/AnterosFloater';
 
 
 export {
@@ -23,6 +24,6 @@ export {
     AnterosObjectUtils, AnterosDateUtils, AnterosStringUtils,
     AnterosUtils, Anteros, AnterosTimeout, loadScript, AnterosSweetAlert, AnterosResizeDetector,
     withResizeDetector, AnterosStringMask, autoBind, processErrorMessage,
-    boundClass, boundMethod
+    boundClass, boundMethod, AnterosFloater
 
 };

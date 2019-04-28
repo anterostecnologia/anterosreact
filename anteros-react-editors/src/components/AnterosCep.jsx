@@ -37,7 +37,18 @@ export default class AnterosCep extends Component {
         .then(data => {
           _this.setState({ ..._this.state, loading: false });
           if (_this.props.onSuccess) {
-            _this.props.onSuccess(data);
+            let tpLogradouro = '';
+            let logradouro = '';
+            let result = data;
+            if (data.logradouro){
+                let arr = data.logradouro.split(' ');
+                if (arr && arr.length >= 2){
+                  tpLogradouro = arr[0];
+                  logradouro = data.logradouro.substring(tpLogradouro.length+1);
+                  result = {...data,tpLogradouro,logradouro};
+                }
+            }
+            _this.props.onSuccess(result);
           }
         })
         .catch(err => {

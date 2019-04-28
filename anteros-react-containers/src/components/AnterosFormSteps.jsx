@@ -127,6 +127,12 @@ export class AnterosFormSteps extends Component {
         })
     }
 
+    componentDidUpdate(){
+        if (this.props.onAfterUpdateFormSteps) {
+            this.props.onAfterUpdateFormSteps();
+        }
+    }
+
     render() {
         let className = "wizard clearfix";
         if (this.props.className) {
@@ -162,7 +168,8 @@ export class AnterosFormSteps extends Component {
                         circle: _this.props.circle,
                         key: "stp" + index,
                         done: index <= _this.state.doneIndex,
-                        disabled: index > _this.state.activeIndex
+                        disabled: index > _this.state.activeIndex,
+                        onAfterUpdateFormStep : item.props.onAfterUpdateFormStep?item.props.onAfterUpdateFormStep:_this.props.onAfterUpdateFormStep
                     }));
                     content.push(
                         <section
@@ -280,8 +287,9 @@ AnterosFormSteps.propTypes = {
     onCancelClick: PropTypes.func,
     onNextClick: PropTypes.func,
     onFormStepChange: PropTypes.func,
-    onError: PropTypes.func
-
+    onError: PropTypes.func,
+    onAfterUpdateFormSteps: PropTypes.func,
+    onAfterUpdateFormStep: PropTypes.func
 };
 
 AnterosFormSteps.defaultProps = {
@@ -338,6 +346,12 @@ export class AnterosFormStep extends Component {
     constructor(props) {
         super(props);
 
+    }
+
+    componentDidUpdate(){
+        if (this.props.onAfterUpdateFormStep){
+            this.props.onAfterUpdateFormStep(this);
+        }
     }
 
     render() {

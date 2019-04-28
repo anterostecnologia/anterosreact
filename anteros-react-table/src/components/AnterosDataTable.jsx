@@ -664,7 +664,7 @@ export default class AnterosDataTable extends Component {
     }
 
     table.on("select", function(e, dt, type, indexes) {
-      if (_this.props.dataSource) {
+      if (_this.props.dataSource && _this.props.dataSource.isOpen()) {
         _this.props.dataSource.gotoRecordByData(dt.data());
       }
     });
@@ -712,7 +712,7 @@ export default class AnterosDataTable extends Component {
 
   onDatasourceEvent(event, error) {
     if (event == dataSourceEvents.AFTER_SCROLL) {
-      if (!this.props.dataSource.isEmpty()) {
+      if (this.props.dataSource && !this.props.dataSource.isEmpty()) {
         var dataTable = $("#" + this.idTable)
           .dataTable()
           .api();
@@ -745,7 +745,7 @@ export default class AnterosDataTable extends Component {
         (this.props.dataSource instanceof AnterosLocalDatasource ||
           this.props.dataSource instanceof AnterosRemoteDatasource)
       ) {
-        if (this.props.dataSource.getState() != "dsBrowse") {
+        if ((!this.props.dataSource.isOpen()) || (this.props.dataSource.getState() != "dsBrowse")) {
           return;
         }
       }

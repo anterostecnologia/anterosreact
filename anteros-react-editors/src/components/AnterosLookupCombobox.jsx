@@ -136,7 +136,7 @@ export default class AnterosLookupCombobox extends React.Component {
                 .dataSource
                 .fieldByName(nextProps.dataField);
             if (value) 
-                value = value[nextProps.dataFieldText];
+                value = value[nextProps.lookupDataFieldText];
             }
         if (value === ''){
             value = [];
@@ -194,12 +194,13 @@ export default class AnterosLookupCombobox extends React.Component {
                     .dataSource
                     .fieldByName(this.props.dataField);
                 if (value) 
-                    value = value[this.props.dataFieldText];
+                    value = value[this.props.lookupDataFieldText];
                 }
             this.setState({
                 ...this.state,
                 value
             });
+            this.updateSelect();
         }
     }
 
@@ -244,6 +245,7 @@ export default class AnterosLookupCombobox extends React.Component {
                     .onChangeSelect();
             }
         }
+        this.updateSelect();
     }
 
     onDroppedDown() {

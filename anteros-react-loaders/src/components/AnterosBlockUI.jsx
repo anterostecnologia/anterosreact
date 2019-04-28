@@ -164,6 +164,7 @@ export default class AnterosBlockUi extends Component {
       loader: Loader,
       renderChildren,
       keepInView,
+      styleBlockMessage,
       ...attributes
     } = this.props;
 
@@ -202,7 +203,7 @@ export default class AnterosBlockUi extends Component {
                 top: keepInView ? this.state.top : undefined
               }}
             >
-              <div className="block-ui-message">
+              <div className="block-ui-message" style={styleBlockMessage}>
                 {message}
                 {React.isValidElement(Loader) ? Loader : <DefaultLoader />}
               </div>
@@ -222,6 +223,7 @@ AnterosBlockUi.propTypes = {
   keepInView: PropTypes.bool,
   className: PropTypes.string,
   styleOverlay: PropTypes.object,
+  styleBlockMessage: PropTypes.object,
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   loader: PropTypes.oneOfType([
     PropTypes.string,
@@ -234,7 +236,8 @@ AnterosBlockUi.defaultProps = {
   tag: 'div',
   renderChildren: true,
   loader: DefaultLoader,
-  styleOverlay: {}
+  styleOverlay: {},
+  styleBlockMessage: {}
 };
 
 function DefaultLoader() {

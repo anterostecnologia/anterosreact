@@ -6,12 +6,12 @@ import {
   AnterosDropdownMenuItem,
   AnterosRadioButton,
   AnterosRadioButtonItem
-} from 'anteros-react-buttons';
+} from "anteros-react-buttons";
 import {
   AnterosForm,
   AnterosModal,
   ModalActions
-} from 'anteros-react-containers';
+} from "anteros-react-containers";
 import {
   AnterosError,
   AnterosObjectUtils,
@@ -20,12 +20,12 @@ import {
   AnterosUtils,
   If,
   Then
-} from 'anteros-react-core';
+} from "anteros-react-core";
 import {
   AnterosLocalDatasource,
   AnterosRemoteDatasource,
   dataSourceEvents
-} from 'anteros-react-datasource';
+} from "anteros-react-datasource";
 import {
   AnterosCheckbox,
   AnterosCombobox,
@@ -37,15 +37,15 @@ import {
   AnterosLookupCombobox,
   AnterosTextArea,
   AnterosTimePicker
-} from 'anteros-react-editors';
-import { AnterosLabel } from 'anteros-react-label';
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
-import { AnterosList } from 'anteros-react-list';
-import lodash from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-import uniqueId from 'uuid/v4';
-import {autoBind} from 'anteros-react-core';
+} from "anteros-react-editors";
+import { AnterosLabel } from "anteros-react-label";
+import { AnterosCol, AnterosRow } from "anteros-react-layout";
+import { AnterosList } from "anteros-react-list";
+import lodash from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import uniqueId from "uuid/v4";
+import { autoBind } from "anteros-react-core";
 
 export class AnterosQueryBuilder extends React.Component {
   constructor(props) {
@@ -60,11 +60,11 @@ export class AnterosQueryBuilder extends React.Component {
     }
     this.state = {
       root: _root,
-      modalOpen: '',
-      filter: '',
+      modalOpen: "",
+      filter: "",
       filterName: this.props.activeFilter
         ? this.props.activeFilter.filterName
-        : '',
+        : "",
       recordFilter: this.props.activeFilter,
       sort: _sort,
       activeSortIndex: this.props.activeSortIndex,
@@ -78,74 +78,74 @@ export class AnterosQueryBuilder extends React.Component {
   static get defaultOperators() {
     return [
       {
-        name: 'null',
-        label: 'Em branco',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "null",
+        label: "Em branco",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: 'notNull',
-        label: 'Preenchido',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "notNull",
+        label: "Preenchido",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: 'contains',
-        label: 'Contém',
-        dataTypes: ['string']
+        name: "contains",
+        label: "Contém",
+        dataTypes: ["string"]
       },
       {
-        name: 'startsWith',
-        label: 'Iniciado com',
-        dataTypes: ['string']
+        name: "startsWith",
+        label: "Iniciado com",
+        dataTypes: ["string"]
       },
       {
-        name: 'endsWith',
-        label: 'Terminado com',
-        dataTypes: ['string']
+        name: "endsWith",
+        label: "Terminado com",
+        dataTypes: ["string"]
       },
       {
-        name: '=',
-        label: 'Igual',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "=",
+        label: "Igual",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: '!=',
-        label: 'Diferente',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "!=",
+        label: "Diferente",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: '<',
-        label: 'Menor',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "<",
+        label: "Menor",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: '>',
-        label: 'Maior',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: ">",
+        label: "Maior",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: '<=',
-        label: 'Menor igual',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "<=",
+        label: "Menor igual",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: '>=',
-        label: 'Maior igual',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: ">=",
+        label: "Maior igual",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: 'between',
-        label: 'Entre',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "between",
+        label: "Entre",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: 'inList',
-        label: 'Na lista',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "inList",
+        label: "Na lista",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       },
       {
-        name: 'notInList',
-        label: 'Fora da lista',
-        dataTypes: ['string', 'number', 'date', 'date_time', 'time']
+        name: "notInList",
+        label: "Fora da lista",
+        dataTypes: ["string", "number", "date", "date_time", "time"]
       }
     ];
   }
@@ -153,12 +153,12 @@ export class AnterosQueryBuilder extends React.Component {
   static get defaultConditions() {
     return [
       {
-        name: 'and',
-        label: 'E'
+        name: "and",
+        label: "E"
       },
       {
-        name: 'or',
-        label: 'Ou'
+        name: "or",
+        label: "Ou"
       }
     ];
   }
@@ -171,12 +171,12 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   getQuickFilterFields() {
-    let result = '';
+    let result = "";
     let appendDelimiter = false;
     this.getFields(this.props).forEach(function(field) {
       if (field.quickFilter === true) {
         if (appendDelimiter) {
-          result = result + ',';
+          result = result + ",";
         }
         result = result + field.name;
       }
@@ -186,7 +186,7 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   getQuickFilterSort() {
-    let result = '';
+    let result = "";
     this.getFields(this.props).forEach(function(field) {
       if (field.quickFilterSort === true) {
         result = field.name;
@@ -199,7 +199,7 @@ export class AnterosQueryBuilder extends React.Component {
     if (
       this.props.onQuickFilter &&
       this.state.quickFilterText &&
-      this.getQuickFilterFields() !== ''
+      this.getQuickFilterFields() !== ""
     ) {
       this.props.onQuickFilter(
         this.state.quickFilterText,
@@ -239,11 +239,11 @@ export class AnterosQueryBuilder extends React.Component {
     const { operators, conditions } = this.props;
     this.setState({
       root: this.getInitialQuery(),
-      modalOpen: '',
-      filter: '',
+      modalOpen: "",
+      filter: "",
       filterName: this.props.activeFilter
         ? this.props.activeFilter.filterName
-        : '',
+        : "",
       recordFilter: this.props.activeFilter,
       sort: this.mergeSortWithFields(this.props.sort),
       activeSortIndex: this.props.activeSortIndex,
@@ -284,7 +284,7 @@ export class AnterosQueryBuilder extends React.Component {
     if (flds) {
       flds.forEach(function(field, index) {
         let selected = false;
-        let asc_desc = 'asc';
+        let asc_desc = "asc";
         let order = index;
         if (sort) {
           sort.forEach(function(item) {
@@ -352,19 +352,19 @@ export class AnterosQueryBuilder extends React.Component {
       if (this.props.onError) {
         this.props.onError(error);
       } else {
-        let msg = '';
+        let msg = "";
         if (error) {
-          if (error.hasOwnProperty('message')) {
+          if (error.hasOwnProperty("message")) {
             msg = error.message;
           }
         } else {
-          msg = error + '';
+          msg = error + "";
         }
-        AnterosSweetAlert('Atenção', msg, 'error');
+        AnterosSweetAlert("Atenção", msg, "error");
       }
     } else {
       if (!this.props.dataSource.isEmpty()) {
-        let b64 = this.props.dataSource.fieldByName('filter');
+        let b64 = this.props.dataSource.fieldByName("filter");
         let value = JSON.parse(atob(b64));
         this.setState({
           ...this.state,
@@ -384,9 +384,9 @@ export class AnterosQueryBuilder extends React.Component {
     const { operators, conditions } = this.props;
     this.setState({
       root: _root,
-      modalOpen: '',
-      filter: '',
-      filterName: '',
+      modalOpen: "",
+      filter: "",
+      filterName: "",
       recordFilter: undefined,
       sort: _sort,
       activeSortIndex: this.props.activeSortIndex,
@@ -418,24 +418,24 @@ export class AnterosQueryBuilder extends React.Component {
 
   onSelectMenuItem(menuItem, event) {
     let _this = this;
-    if (menuItem.props.id === 'mniNewFilter') {
+    if (menuItem.props.id === "mniNewFilter") {
       this.createNewFilter();
     } else if (
-      menuItem.props.id === 'mniSaveFilter' &&
+      menuItem.props.id === "mniSaveFilter" &&
       this.state.recordFilter
     ) {
       if (!this.props.onSaveFilter) {
         new AnterosError(
-          'Para salvar os filtros  é necessário configurar onSaveFilter e retornar uma Prom' +
-            'ise.'
+          "Para salvar os filtros  é necessário configurar onSaveFilter e retornar uma Prom" +
+            "ise."
         );
       }
       AnterosSweetAlert({
-        title: 'Salvar filtro ?',
+        title: "Salvar filtro ?",
         showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Salvar',
-        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Salvar",
+        cancelButtonText: "Cancelar",
         allowOutsideClick: false,
         focusCancel: true
       }).then(function(filterName) {
@@ -447,29 +447,29 @@ export class AnterosQueryBuilder extends React.Component {
         };
         let filterDataJSON = JSON.stringify(filterData);
         let filterBase64 = btoa(filterDataJSON);
-        _this.props.dataSource.setFieldByName('filter', filterBase64);
+        _this.props.dataSource.setFieldByName("filter", filterBase64);
         _this.props.dataSource.post();
       });
     } else if (
-      (menuItem.props.id === 'mniSaveFilter' && !this.state.recordFilter) ||
-      menuItem.props.id === 'mniSaveAsFilter'
+      (menuItem.props.id === "mniSaveFilter" && !this.state.recordFilter) ||
+      menuItem.props.id === "mniSaveAsFilter"
     ) {
       if (!this.props.onSaveFilter) {
         new AnterosError(
-          'Para salvar os filtros é necessário configurar onSaveFilter e retornar uma Promi' +
-            'se.'
+          "Para salvar os filtros é necessário configurar onSaveFilter e retornar uma Promi" +
+            "se."
         );
       }
       AnterosSweetAlert({
-        title: 'Salvar filtro como...',
-        input: 'text',
+        title: "Salvar filtro como...",
+        input: "text",
         inputValue: this.state.recordFilter
           ? this.state.recordFilter.filterName
-          : '',
+          : "",
         showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Salvar',
-        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Salvar",
+        cancelButtonText: "Cancelar",
         allowOutsideClick: false,
         focusCancel: true
       }).then(function(filterName) {
@@ -480,74 +480,74 @@ export class AnterosQueryBuilder extends React.Component {
         };
         let filterDataJSON = JSON.stringify(filterData);
         let filterBase64 = btoa(filterDataJSON);
-        _this.props.dataSource.setFieldByName('filter', filterBase64);
-        _this.props.dataSource.setFieldByName('idFilter', '');
-        _this.props.dataSource.setFieldByName('filterName', filterName);
-        _this.props.dataSource.setFieldByName('boPublic', true);
-        _this.props.dataSource.setFieldByName('formName', _this.props.formName);
+        _this.props.dataSource.setFieldByName("filter", filterBase64);
+        _this.props.dataSource.setFieldByName("idFilter", "");
+        _this.props.dataSource.setFieldByName("filterName", filterName);
+        _this.props.dataSource.setFieldByName("boPublic", true);
+        _this.props.dataSource.setFieldByName("formName", _this.props.formName);
         _this.props.dataSource.setFieldByName(
-          'componentFilter',
+          "componentFilter",
           _this.props.id
         );
         _this.props.dataSource.post(error => {
-          if (_this.props.dataSource.getState() !== 'dsBrowse')
+          if (_this.props.dataSource.getState() !== "dsBrowse")
             _this.props.dataSource.cancel();
         });
       });
     } else if (
-      menuItem.props.id === 'mniRemoveFilter' &&
+      menuItem.props.id === "mniRemoveFilter" &&
       this.state.recordFilter
     ) {
       AnterosSweetAlert({
-        title: 'Confirme',
-        text: 'Deseja remover o filtro selecionado ?',
-        type: 'question',
+        title: "Confirme",
+        text: "Deseja remover o filtro selecionado ?",
+        type: "question",
         showCancelButton: true,
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não',
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
         focusCancel: true
       }).then(function() {
         _this.props.dataSource.gotoRecordByData(_this.state.recordFilter);
         _this.props.dataSource.delete();
       });
     } else if (
-      menuItem.props.id === 'mniRenameFilter' &&
+      menuItem.props.id === "mniRenameFilter" &&
       this.state.recordFilter
     ) {
       AnterosSweetAlert({
-        title: 'Renomear o filtro para...',
-        input: 'text',
+        title: "Renomear o filtro para...",
+        input: "text",
         inputValue: this.state.recordFilter
           ? this.state.recordFilter.filterName
-          : '',
+          : "",
         showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Salvar',
-        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Salvar",
+        cancelButtonText: "Cancelar",
         allowOutsideClick: false,
         focusCancel: true
       }).then(function(filterName) {
         _this.props.dataSource.gotoRecordByData(_this.state.recordFilter);
         _this.props.dataSource.edit();
-        _this.props.dataSource.setFieldByName('filterName', filterName);
+        _this.props.dataSource.setFieldByName("filterName", filterName);
         _this.props.dataSource.post(error => {
-          if (_this.props.dataSource.getState() !== 'dsBrowse')
+          if (_this.props.dataSource.getState() !== "dsBrowse")
             _this.props.dataSource.cancel();
         });
       });
-    } else if (menuItem.props.id === 'mniViewFilter') {
+    } else if (menuItem.props.id === "mniViewFilter") {
       let filter =
-        'Filtro \n---------------------\n' +
+        "Filtro \n---------------------\n" +
         JSON.stringify(this.state.root, null, 2)
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;') +
-        '\n\nOrdenação\n---------------------\n' +
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;") +
+        "\n\nOrdenação\n---------------------\n" +
         JSON.stringify(this.getSelectedSort())
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
       this.setState({
         ...this.state,
-        modalOpen: 'modalFilter',
+        modalOpen: "modalFilter",
         filter: filter
       });
     }
@@ -566,7 +566,7 @@ export class AnterosQueryBuilder extends React.Component {
   onClickOk(event) {
     this.setState({
       ...this.state,
-      modalOpen: ''
+      modalOpen: ""
     });
   }
 
@@ -694,21 +694,21 @@ export class AnterosQueryBuilder extends React.Component {
     if (props.children) {
       let arrChildren = React.Children.toArray(props.children);
       arrChildren.forEach(function(child) {
-        if (child.type && child.type.name === 'QueryFields') {
+        if (child.type && child.type.name === "QueryFields") {
           if (child.props.children) {
             let arrChild = React.Children.toArray(child.props.children);
             arrChild.forEach(function(chd) {
-              if (chd.type && chd.type.name !== 'QueryField') {
+              if (chd.type && chd.type.name !== "QueryField") {
                 throw new AnterosError(
-                  'Somente filhos do tipo QueryField podem ser usados com QueryFields.'
+                  "Somente filhos do tipo QueryField podem ser usados com QueryFields."
                 );
               }
               let values = [];
               let chld = React.Children.toArray(chd.props.children);
               chld.forEach(function(val) {
-                if (val.type && val.type.name !== 'QueryFieldValue') {
+                if (val.type && val.type.name !== "QueryFieldValue") {
                   throw new AnterosError(
-                    'Somente filhos do tipo QueryFieldValue podem ser usados com QueryFields'
+                    "Somente filhos do tipo QueryFieldValue podem ser usados com QueryFields"
                   );
                 }
                 values.push({ label: val.props.label, value: val.props.value });
@@ -759,21 +759,45 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
+  quickFilter(filter) {
+    let _this = this;
+    this.setState({ ...this.state, quickFilterText: filter });
+    if (
+      this.props.onQuickFilter &&
+      filter &&
+      this.getQuickFilterFields() !== ""
+    ) {
+      this.props.onQuickFilter(
+        filter,
+        this.getQuickFilterFields(),
+        this.getQuickFilterSort()
+      );
+
+      if (this.props.onSelectActiveFilter) {
+        this.props.onSelectActiveFilter(
+          this.state.filterName,
+          this.state.recordFilter,
+          this.state.sort,
+          this.state.activeSortIndex,
+          filter
+        );
+      }
+    }
+  }
+
   render() {
     let customFilter;
     let children = [];
     let index = 0;
     let _this = this;
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function (child) {
-        if (child.type && child.type.name === "CustomFilter") {
-          customFilter = child.props.children;
-        } else {
-          children.push(child);
-        }
+    arrChildren.forEach(function(child) {
+      if (child.type && child.type.name === "CustomFilter") {
+        customFilter = child.props.children;
+      } else {
+        children.push(child);
       }
-    );
-
+    });
 
     const {
       root: { id, rules, condition },
@@ -783,28 +807,28 @@ export class AnterosQueryBuilder extends React.Component {
       <div ref={ref => (this.divFilter = ref)}>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
           }}
         >
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              className: 'query-builder quick-filter',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              className: "query-builder quick-filter",
               width: this.props.quickFilterWidth
             }}
           >
             <AnterosEdit
               onChange={this.onChangeQuickFilter}
-              width={'70%'}
+              width={"70%"}
               onKeyDown={this.handleQuickFilter}
               value={this.state.quickFilterText}
               placeHolder={this.props.placeHolder}
               style={{
-                height: '36px'
+                height: "36px"
               }}
             />
             <AnterosButton
@@ -812,7 +836,7 @@ export class AnterosQueryBuilder extends React.Component {
               disabled={!this.state.quickFilterText}
               icon="fal fa-search"
               onClick={this.onSearchClick}
-            />{' '}
+            />{" "}
             {this.props.showDateTimeButton ? (
               <AnterosButton
                 primary
@@ -829,19 +853,19 @@ export class AnterosQueryBuilder extends React.Component {
           </div>
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-start'
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start"
             }}
           >
             {children}
           </div>
         </div>
         <div
-          className={'query-builder'}
+          className={"query-builder"}
           style={{
-            display: this.state.showAdvancedFilter ? 'block' : 'none',
-            pointerEvents: this.props.disabled ? 'none' : 'auto'
+            display: this.state.showAdvancedFilter ? "block" : "none",
+            pointerEvents: this.props.disabled ? "none" : "auto"
           }}
         >
           {this.props.allowSaveFilter ? (
@@ -897,7 +921,7 @@ export class AnterosQueryBuilder extends React.Component {
                 value={
                   this.state.recordFilter
                     ? this.state.recordFilter.idFilter
-                    : ''
+                    : ""
                 }
               />
             </div>
@@ -971,13 +995,13 @@ export class AnterosQueryBuilder extends React.Component {
             large
             showHeaderColor={true}
             showContextIcon={false}
-            isOpen={this.state.modalOpen === 'modalFilter'}
+            isOpen={this.state.modalOpen === "modalFilter"}
             onClose={this.onClose}
           >
             <ModalActions>
               <AnterosButton success onClick={this.onClickOk}>
                 OK
-              </AnterosButton>{' '}
+              </AnterosButton>{" "}
             </ModalActions>
 
             <div>
@@ -1012,8 +1036,8 @@ export class AnterosQueryBuilder extends React.Component {
       field: fields[0].name,
       fieldSql: fields[0].nameSql,
       dataType: fields[0].dataType,
-      value: '',
-      value2: '',
+      value: "",
+      value2: "",
       disabled: false,
       operator: operators[0].name
     };
@@ -1063,16 +1087,16 @@ export class AnterosQueryBuilder extends React.Component {
 
   onPropChange(prop, value, ruleId) {
     const rule = this._findRule(ruleId, this.state.root);
-    if (prop === 'not') {
-      prop = 'condition';
-      if (rule.condition.indexOf('and') >= 0) {
-        value = AnterosStringUtils.ltrim(value + ' and');
+    if (prop === "not") {
+      prop = "condition";
+      if (rule.condition.indexOf("and") >= 0) {
+        value = AnterosStringUtils.ltrim(value + " and");
       } else {
-        value = AnterosStringUtils.ltrim(value + ' or');
+        value = AnterosStringUtils.ltrim(value + " or");
       }
-    } else if (prop === 'condition') {
-      if (rule.condition.indexOf('not') >= 0) {
-        value = 'not ' + value;
+    } else if (prop === "condition") {
+      if (rule.condition.indexOf("not") >= 0) {
+        value = "not " + value;
       }
     }
     Object.assign(rule, { [prop]: value });
@@ -1191,9 +1215,8 @@ AnterosQueryBuilder.defaultProps = {
   disabled: false,
   showAdvancedFilter: false,
   showDateTimeButton: true,
-  quickFilterWidth: '40%'
+  quickFilterWidth: "40%"
 };
-
 
 export class CustomFilter extends React.Component {
   render() {
@@ -1216,7 +1239,7 @@ export class QueryField extends React.Component {
 QueryField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  dataType: PropTypes.oneOf(['string', 'number', 'date', 'date_time', 'time'])
+  dataType: PropTypes.oneOf(["string", "number", "date", "date_time", "time"])
     .isRequired,
   sortable: PropTypes.bool.isRequired,
   quickFilter: PropTypes.bool.isRequired,
@@ -1277,7 +1300,7 @@ class CustomSortItem extends React.Component {
       field,
       checked,
       this.props.recordData.order,
-      this.isAsc() ? 'asc' : 'desc'
+      this.isAsc() ? "asc" : "desc"
     );
   }
 
@@ -1287,7 +1310,7 @@ class CustomSortItem extends React.Component {
       field,
       this.getChecked(),
       this.props.recordData.order,
-      this.isAsc() ? 'desc' : 'asc'
+      this.isAsc() ? "desc" : "asc"
     );
   }
 
@@ -1296,7 +1319,7 @@ class CustomSortItem extends React.Component {
     let asc = true;
     this.props.dataSource.forEach(function(item) {
       if (item.name === field) {
-        asc = item.asc_desc === 'asc';
+        asc = item.asc_desc === "asc";
       }
     });
     return asc;
@@ -1305,19 +1328,19 @@ class CustomSortItem extends React.Component {
   render() {
     let key = this.props.id;
     let className = AnterosUtils.buildClassNames(
-      'list-group-item justify-content-between',
+      "list-group-item justify-content-between",
       this.props.active ||
         this.props.sortFocused === this.props.recordData[this.props.dataFieldId]
-        ? 'active'
-        : '',
-      this.props.disabled ? 'disabled' : ''
+        ? "active"
+        : "",
+      this.props.disabled ? "disabled" : ""
     );
     return (
       <li
         style={{
-          height: '30px',
-          padding: '0px 15px',
-          backgroundColor: this.props.active ? '' : 'inherit'
+          height: "30px",
+          padding: "0px 15px",
+          backgroundColor: this.props.active ? "" : "inherit"
         }}
         className={className}
         onClick={this.onClick}
@@ -1332,15 +1355,15 @@ class CustomSortItem extends React.Component {
         <div>
           <i
             className={
-              this.isAsc() ? 'fa fa-sort-alpha-down' : 'fa fa-arrow-right'
+              this.isAsc() ? "fa fa-sort-alpha-down" : "fa fa-arrow-right"
             }
             onDoubleClick={this.onDoubleClick}
           >
-            {' '}
+            {" "}
           </i>
           <i
             className={
-              this.isAsc() ? 'fa fa-arrow-left' : 'fa fa-sort-alpha-up'
+              this.isAsc() ? "fa fa-arrow-left" : "fa fa-sort-alpha-up"
             }
             onDoubleClick={this.onDoubleClick}
           />
@@ -1372,21 +1395,21 @@ class RuleGroup extends React.Component {
     const level = getLevel(this.props.id);
     return (
       <dl
-        className={'rules-group-container'}
+        className={"rules-group-container"}
         style={{
           height: height,
-          overflowX: height !== undefined ? 'auto' : ''
+          overflowX: height !== undefined ? "auto" : ""
         }}
       >
         <dt className="rules-group-header">
           <div
             style={{
-              display: 'inline-flex'
+              display: "inline-flex"
             }}
           >
             <AnterosCheckbox
               value="Não"
-              checked={condition.indexOf('not') >= 0}
+              checked={condition.indexOf("not") >= 0}
               onCheckboxChange={this.onNotConditionChange}
             />
             <AnterosRadioButton
@@ -1396,11 +1419,11 @@ class RuleGroup extends React.Component {
             >
               <AnterosRadioButtonItem
                 caption="E"
-                checked={condition === 'and'}
+                checked={condition === "and"}
               />
               <AnterosRadioButtonItem
                 caption="Ou"
-                checked={condition === 'or'}
+                checked={condition === "or"}
               />
             </AnterosRadioButton>
           </div>
@@ -1418,7 +1441,7 @@ class RuleGroup extends React.Component {
               handleOnClick={this.addGroup}
               rules={rules}
               level={level}
-            />{' '}
+            />{" "}
             {this.hasParentGroup() ? (
               <ActionElement
                 label="Remover"
@@ -1471,12 +1494,12 @@ class RuleGroup extends React.Component {
 
   onConditionChange(index) {
     const { onPropChange } = this.props.schema;
-    onPropChange('condition', index === 0 ? 'and' : 'or', this.props.id);
+    onPropChange("condition", index === 0 ? "and" : "or", this.props.id);
   }
 
   onNotConditionChange(value, checked) {
     const { onPropChange } = this.props.schema;
-    onPropChange('not', checked === true ? 'not' : '', this.props.id);
+    onPropChange("not", checked === true ? "not" : "", this.props.id);
   }
 
   addRule(event) {
@@ -1506,7 +1529,7 @@ RuleGroup.defaultProps = {
   id: null,
   parentId: null,
   rules: [],
-  condition: 'and',
+  condition: "and",
   schema: {}
 };
 
@@ -1563,7 +1586,7 @@ class Rule extends React.Component {
     let dt = this.getDataType(field, fields);
     let listValues = this.getFieldValues(field, fields);
     return (
-      <li className={'rule-container'}>
+      <li className={"rule-container"}>
         <AnterosCheckbox
           value=""
           width="24px"
@@ -1602,9 +1625,9 @@ class Rule extends React.Component {
           handleOnChange={this.onValueChanged}
           onSearchButtonClick={onSearchButtonClick}
           level={level}
-        />{' '}
-        {operator === 'between' &&
-        (dt !== 'date' && dt !== 'date_time' && dt !== 'time') ? (
+        />{" "}
+        {operator === "between" &&
+        (dt !== "date" && dt !== "date_time" && dt !== "time") ? (
           <ValueEditor
             field={field}
             dataType={dt}
@@ -1618,7 +1641,7 @@ class Rule extends React.Component {
             level={level}
           />
         ) : (
-          ''
+          ""
         )}
         <ActionElement
           label=""
@@ -1631,27 +1654,27 @@ class Rule extends React.Component {
   }
 
   onDisabledChanged(value, checked) {
-    this.onElementChanged('disabled', !checked);
+    this.onElementChanged("disabled", !checked);
   }
 
   onFieldChanged(value) {
-    this.onElementChanged('field', value);
+    this.onElementChanged("field", value);
     this.onElementChanged(
-      'fieldSql',
+      "fieldSql",
       this.getFieldSql(value, this.props.schema.fields)
     );
     this.onElementChanged(
-      'dataType',
+      "dataType",
       this.getDataType(value, this.props.schema.fields)
     );
-    this.onElementChanged('value', '');
-    this.onElementChanged('value2', '');
+    this.onElementChanged("value", "");
+    this.onElementChanged("value2", "");
   }
 
   onOperatorChanged(value) {
-    this.onElementChanged('operator', value);
-    this.onElementChanged('value', '');
-    this.onElementChanged('value2', '');
+    this.onElementChanged("operator", value);
+    this.onElementChanged("value", "");
+    this.onElementChanged("value2", "");
   }
 
   onValueChanged(value) {
@@ -1662,40 +1685,40 @@ class Rule extends React.Component {
     } = this.props;
     let dt = this.getDataType(field, fields);
     if (
-      operator === 'between' &&
-      (dt === 'date' || dt === 'date_time' || dt === 'time')
+      operator === "between" &&
+      (dt === "date" || dt === "date_time" || dt === "time")
     ) {
-      let values = value.split(' - ');
+      let values = value.split(" - ");
       if (values.length > 0) {
-        this.onElementChanged('value', values[0]);
+        this.onElementChanged("value", values[0]);
       }
 
-      if (values.length > 1) this.onElementChanged('value2', values[1]);
-    } else if (operator === 'inList' || operator === 'notInList') {
-      let values = value.split(',');
+      if (values.length > 1) this.onElementChanged("value2", values[1]);
+    } else if (operator === "inList" || operator === "notInList") {
+      let values = value.split(",");
       if (values.length > 0) {
         let appendDelimiter = false;
-        let result = '';
+        let result = "";
         values.forEach(function(v) {
           if (appendDelimiter) {
-            result += ',';
+            result += ",";
           }
-          if (dt === 'number' || dt === 'integer') {
+          if (dt === "number" || dt === "integer") {
             result += v;
           } else {
             result += "'" + v + "'";
           }
           appendDelimiter = true;
         });
-        this.onElementChanged('value', result);
+        this.onElementChanged("value", result);
       }
     } else {
-      this.onElementChanged('value', value);
+      this.onElementChanged("value", value);
     }
   }
 
   onValue2Changed(value) {
-    this.onElementChanged('value2', value);
+    this.onElementChanged("value2", value);
   }
 
   onElementChanged(property, value) {
@@ -1767,23 +1790,23 @@ class ValueEditor extends React.Component {
       listValues,
       handleOnChange
     } = this.props;
-    let newValue = value === null || value === undefined ? '' : value;
-    let newValue2 = value2 === null || value === undefined ? '' : value2;
+    let newValue = value === null || value === undefined ? "" : value;
+    let newValue2 = value2 === null || value === undefined ? "" : value2;
 
-    if (operator === 'null' || operator === 'notNull') {
+    if (operator === "null" || operator === "notNull") {
       return null;
     }
 
     if (dataType) {
-      if (dataType === 'date') {
-        if (operator === 'between') {
-          if (newValue === '' && newValue2 === '') newValue = '';
-          else newValue = newValue + ' - ' + newValue2;
+      if (dataType === "date") {
+        if (operator === "between") {
+          if (newValue === "" && newValue2 === "") newValue = "";
+          else newValue = newValue + " - " + newValue2;
           return (
             <AnterosDateRangePicker
               disabled={disabled}
               style={{
-                minWidth: '200px'
+                minWidth: "200px"
               }}
               value={newValue}
               onChange={(e, value) => handleOnChange(value)}
@@ -1794,22 +1817,22 @@ class ValueEditor extends React.Component {
             <AnterosDatePicker
               disabled={disabled}
               style={{
-                minWidth: '200px'
+                minWidth: "200px"
               }}
               value={newValue}
               onChange={(e, value) => handleOnChange(value)}
             />
           );
         }
-      } else if (dataType === 'date_time') {
-        if (operator === 'between') {
-          if (newValue === '' && newValue2 === '') newValue = '';
-          else newValue = newValue + ' - ' + newValue2;
+      } else if (dataType === "date_time") {
+        if (operator === "between") {
+          if (newValue === "" && newValue2 === "") newValue = "";
+          else newValue = newValue + " - " + newValue2;
           return (
             <AnterosDateRangePicker
               disabled={disabled}
               style={{
-                minWidth: '200px'
+                minWidth: "200px"
               }}
               value={newValue}
               onChange={(e, value) => handleOnChange(value)}
@@ -1820,21 +1843,21 @@ class ValueEditor extends React.Component {
             <AnterosDatetimePicker
               disabled={disabled}
               style={{
-                minWidth: '200px'
+                minWidth: "200px"
               }}
               value={newValue}
               onChange={(e, value) => handleOnChange(value)}
             />
           );
         }
-      } else if (dataType === 'time') {
-        if (newValue === '' && newValue2 === '') newValue = '';
-        else newValue = newValue + ' - ' + newValue2;
+      } else if (dataType === "time") {
+        if (newValue === "" && newValue2 === "") newValue = "";
+        else newValue = newValue + " - " + newValue2;
         return (
           <AnterosTimePicker
             disabled={disabled}
             style={{
-              minWidth: '200px'
+              minWidth: "200px"
             }}
             value={newValue}
             onChange={e => handleOnChange(e.target.value)}
@@ -1843,7 +1866,7 @@ class ValueEditor extends React.Component {
       } else {
         if (
           listValues.length > 0 &&
-          (operator === 'notInList' || operator === 'inList')
+          (operator === "notInList" || operator === "inList")
         ) {
           return (
             <AnterosCombobox
@@ -1904,7 +1927,7 @@ class ValueEditor extends React.Component {
           type="text"
           value={newValue}
           style={{
-            minWidth: '200px'
+            minWidth: "200px"
           }}
           onChange={e => handleOnChange(e.target.value)}
         />
