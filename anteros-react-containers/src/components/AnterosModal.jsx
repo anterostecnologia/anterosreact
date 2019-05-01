@@ -338,7 +338,7 @@ export default class AnterosModal extends React.Component {
             .Children
             .toArray(this.props.children);
         arrChildren.forEach(function (child) {
-            if (child.type && child.type.name == "ModalActions") {
+            if (child.type && child.type.componentName === 'ModalActions') {
                 let className = "";
                 if (_this.props.showFullColor) {
                     if (_this.props.primary) {
@@ -631,6 +631,10 @@ AnterosModal.openCount = 0;
 export class ModalActions extends Component {
     constructor(props) {
         super(props);
+    }
+
+    static get componentName(){
+      return 'ModalActions';
     }
 
     render() {

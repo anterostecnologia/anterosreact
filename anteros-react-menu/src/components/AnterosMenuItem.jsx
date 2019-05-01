@@ -40,13 +40,17 @@ export default class AnterosMenuItem extends Component {
         event.stopPropagation();
     }
 
+    static get componentName(){
+        return 'AnterosMenuItem';
+    }
+
     render() {
         let newChildren = [];
         if (this.props.children) {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if (child.type && child.type.name === "AnterosMenuItem") {
+                if (child.type && child.type.componentName === 'AnterosMenuItem') {
                     if (child.props.visible) {
                         newChildren.push(React.createElement(AnterosMenuItem, {
                             key: child.props.id,

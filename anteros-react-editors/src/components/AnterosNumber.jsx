@@ -23,6 +23,10 @@ class AnterosNumber extends Component {
         this.idNumber = lodash.uniqueId("number");
     }
 
+    get componentName(){
+        return "AnterosNumber";
+    }
+
     getMaskedValue() {
         return this.state.maskedValue;
     }

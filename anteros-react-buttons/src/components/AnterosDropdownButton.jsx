@@ -36,7 +36,7 @@ export default class AnterosDropdownButton extends Component {
         let _this = this;
         let arrChildren = React.Children.toArray(children);
         arrChildren.forEach(function (child) {
-            if (child.type && child.type.name == "AnterosDropdownMenu") {
+            if (child.type && (child.type.componentName === 'AnterosDropdownMenu')) {
                 result.push(React.cloneElement(child, { onClickItem: _this.onClickItem }));
             } else {
                 result.push(child);

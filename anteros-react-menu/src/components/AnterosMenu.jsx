@@ -53,6 +53,10 @@ export default class AnterosMenu extends Component {
     return { horizontal };
   }
 
+  static get componentName(){
+    return 'AnterosMenu';
+  }
+
   render() {
     let children = [];
     if (this.props.children) {

@@ -910,17 +910,17 @@ export default class AnterosDataTable extends Component {
     }
 
     arrChildren.forEach(function(child) {
-      if (child && child.type.name == "Columns") {
+      if (child && child.type.componentName ==='Columns') {
         let arrColumns = React.Children.toArray(child.props.children);
         arrColumns.forEach(function(childColumn) {
           if (
             childColumn.type &&
-            childColumn.type.name == "AnterosDataTableColumn"
+            childColumn.type.componentName === 'AnterosDataTableColumn'
           ) {
             result.push(childColumn);
           }
         });
-      } else if (child.type && child.type.name == "AnterosDataTableColumn") {
+      } else if (child.type && child.type.componentName === 'AnterosDataTableColumn') {
         result.push(child);
       }
     });
@@ -1107,12 +1107,16 @@ export class Columns extends Component {
   validateChildrens() {
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (child.type && child.type.name != "AnterosDataTableColumn") {
+      if (child.type && !(child.type.componentName === 'AnterosDataTableColumn')) {
         throw new AnterosError(
           "Columns de AnterosTable aceita apenas filhos do tipo AnterosTableColumn."
         );
       }
     });
+  }
+
+  static get componentName(){
+    return 'Columns';
   }
 
   render() {
@@ -1124,6 +1128,10 @@ export class AnterosDataTableColumn extends Component {
   constructor(props) {
     super(props);
     this.idTableColumn = lodash.uniqueId("tableColumn");
+  }
+
+  static get componentName(){
+    return 'AnterosDataTableColumn';
   }
 
   render() {

@@ -82,15 +82,12 @@ export class Switch extends Component {
             defaults = [];
 
         Children.forEach(this.props.children, (item) => {
-            switch (item.type.name) {
-            case 'Case':
+            if (item instanceof Case){
                 if (this.props.condition === item.props.value) {
                     cases.push(item);
                 }
-                break;
-            case 'Default':
+            } else {
                 defaults.push(item);
-                break;
             }
         });
 

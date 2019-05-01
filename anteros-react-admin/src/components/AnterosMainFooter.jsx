@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 
-export default class AnterosFooter extends Component {
+export default class AnterosMainFooter extends Component {
   constructor(props) {
-    super(props);
+    super(props);  
+  }
+
+  static get componentName() {
+    return "AnterosMainFooter";
   }
 
   render() {

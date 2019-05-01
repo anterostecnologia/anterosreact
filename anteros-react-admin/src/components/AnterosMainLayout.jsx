@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import  AnterosScrollbars  from './AnterosScrollbars';
-import { AnterosUtils } from 'anteros-react-core';
-import  AnterosSidebarLayout  from './AnterosSidebarLayout';
+import React, { Component } from "react";
+import AnterosScrollbars from "./AnterosScrollbars";
+import { AnterosUtils } from "anteros-react-core";
+import AnterosSidebarLayout from "./AnterosSidebarLayout";
 import {
   AnterosSidebarLoader,
   AnterosHeaderLoader
-} from 'anteros-react-loaders';
+} from "anteros-react-loaders";
 const $ = window.$;
 
 export default class AnterosMainLayout extends Component {
@@ -34,14 +34,14 @@ export default class AnterosMainLayout extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.updateDimensions);
+    window.addEventListener("resize", this.updateDimensions);
     setTimeout(() => {
       this.setState({ loadingHeader: false, loadingSidebar: false });
     }, 114);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
+    window.removeEventListener("resize", this.updateDimensions);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,11 +60,13 @@ export default class AnterosMainLayout extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-   
+  componentDidUpdate(prevProps) {}
+
+  static get componentName() {
+    return "AnterosMainLayout";
   }
 
-  renderPage() {    
+  renderPage() {
     return (
       <AnterosScrollbars
         className="app-scroll"
@@ -104,7 +106,7 @@ export default class AnterosMainLayout extends Component {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (child.type && child.type.name === 'AnterosMainMenu') {
+      if (child.type && child.type.componentName==='AnterosMainMenu') {
         result = child;
       }
     });
@@ -115,12 +117,10 @@ export default class AnterosMainLayout extends Component {
     let result = [];
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (
-        child.type &&
-        child.type.name !== 'AnterosSidebarContent' &&
-        (child.type && child.type.name !== 'AnterosMainHeader') &&
-        (child.type && child.type.name !== 'AnterosMainMenu') &&
-        (child.type && child.type.name !== 'AnterosMainFooter')
+      if ((child.type && child.type.componentName!=='AnterosSidebarContent') &&
+        (child.type && child.type.componentName!=='AnterosMainHeader') &&
+        (child.type && child.type.componentName!== 'AnterosMainMenu') &&
+        (child.type && child.type.componentName!== 'AnterosMainFooter')
       ) {
         result.push(child);
       }
@@ -132,7 +132,7 @@ export default class AnterosMainLayout extends Component {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (child.type && child.type.name === 'AnterosMainFooter') {
+      if (child.type && child.type.componentName==='AnterosMainFooter') {
         result = child;
       }
     });
@@ -143,7 +143,7 @@ export default class AnterosMainLayout extends Component {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (child.type && child.type.name === 'AnterosMainHeader') {
+      if (child.type && child.type.componentName==='AnterosMainHeader') {
         result = child;
       }
     });
@@ -154,7 +154,7 @@ export default class AnterosMainLayout extends Component {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (child.type && child.type.name === 'AnterosSidebarContent') {
+      if (child.type && child.type.componentName==='AnterosSidebarContent') {
         result = child;
       }
     });
@@ -163,7 +163,7 @@ export default class AnterosMainLayout extends Component {
 
   getScrollBarStyle() {
     return {
-      height: 'calc(100vh - 50px)'
+      height: "calc(100vh - 50px)"
     };
   }
 
@@ -190,9 +190,9 @@ export default class AnterosMainLayout extends Component {
             docked={windowWidth > 1199 ? sidebarDocked : false}
             pullRight={rtlLayout}
             onSetOpen={onSetOpenSidebar}
-            styles={{ content: { overflowY: '' } }}
+            styles={{ content: { overflowY: "" } }}
             contentClassName={AnterosUtils.buildClassNames({
-              'app-container-wrapper': miniSidebar
+              "app-container-wrapper": miniSidebar
             })}
           >
             <div className="app-container">

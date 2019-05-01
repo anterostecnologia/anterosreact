@@ -16,6 +16,10 @@ export default class AnterosNavigatorBar extends Compoennt {
           };
     }
 
+    static get componentName() {
+      return "AnterosNavigatorBar";
+    }
+
     getExpandClass(expand){
         if (expand === false) {
           return false;

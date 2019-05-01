@@ -6,6 +6,7 @@ import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
 import PropTypes from 'prop-types';
 import {AnterosBaseInputControl} from 'anteros-react-containers';
+import AnterosFeedback from './AnterosFeedback';
 
 export default class AnterosEdit extends AnterosBaseInputControl {
     constructor(props) {
@@ -40,6 +41,10 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         this.onDatasourceEvent = this
             .onDatasourceEvent
             .bind(this);
+    }
+
+    get componentName(){
+        return "AnterosEdit";
     }
 
     componentWillReceiveProps(nextProps) {
@@ -147,7 +152,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                 .Children
                 .toArray(this.props.children);
             arrChildren.forEach(function (child, index) {
-                if (child.type && child.type.name === "AnterosFeedback") {
+                if (child.type && child.type.componentName === 'AnterosFeedback') {
                     children.push(React.createElement(AnterosFeedback, {
                         key: (_this.props.id
                             ? _this.props.id + "_" + index

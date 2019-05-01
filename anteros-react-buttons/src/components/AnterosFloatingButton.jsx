@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
+import AnterosDropdownMenu from './AnterosDropdownMenu';
+import {AnterosBadge, AnterosStatusMark} from 'anteros-react-label';
 
 export class AnterosFloatingButton extends Component {
     constructor(props) {
@@ -178,11 +180,11 @@ export class AnterosFloatingButtonItem extends Component {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if (child.type && child.type.name == "AnterosDropdownMenu") {
+                if (child.type && (child.type.componentName==='AnterosDropdownMenu')) {
                     menuDropDown = child;
-                } else if (child.type && child.type.name == "AnterosBadge") {
+                } else if (child.type && (child.type.componentName==='AnterosBadge')) {
                     badge = child;
-                } else if (child.type && child.type.name == "AnterosStatusMark") {
+                } else if (child.type && (child.type.componentName === 'AnterosStatusMark')) {
                     mark = child;
                 }
             });

@@ -33,6 +33,10 @@ export default class AnterosSidebarContent extends Component {
     }
   }
 
+  static get componentName() {
+    return "AnterosSidebarContent";
+  }
+
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions);
   }

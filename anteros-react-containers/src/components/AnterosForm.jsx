@@ -3,6 +3,7 @@ import {If, Then, AnterosError} from "anteros-react-core";
 import PropTypes from 'prop-types';
 import {AnterosUtils} from 'anteros-react-core';
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
+import {AnterosButton, AnterosDropdownButton} from 'anteros-react-buttons';
 
 export class AnterosBaseInputControl extends React.Component {
     constructor(props) {
@@ -624,7 +625,7 @@ export class AnterosInputGroup extends Component {
                 .Children
                 .toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if ((child.type && child.type.name === "AnterosEdit") || (child.type && child.type.name === "AnterosNumber") || (child.type && child.type.name === "AnterosTextArea")) {
+                if ((child.type && child.componentName === "AnterosEdit") || (child.type && child.componentName === "AnterosNumber") || (child.type && child.componentName === "AnterosTextArea")) {
                     newChildren.push(React.cloneElement(child, {
                         className: AnterosUtils.buildClassNames(child.className, "form-control")
                     }));
@@ -700,7 +701,7 @@ export class AnterosInputGroupAddOn extends Component {
                 .Children
                 .toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if ((child.type && child.type.name === "AnterosButton") || (child.type && child.type.name === "AnterosDropdownButton")) {
+                if ((child.type && child.type.componentName === 'AnterosButton') || (child.type && child.type.componentName==='AnterosDropdownButton')) {
                     found = true;
                 }
             });

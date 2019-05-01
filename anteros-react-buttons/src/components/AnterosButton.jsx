@@ -23,6 +23,10 @@ export default class AnterosButton extends Component {
     }
   }
 
+  static get componentName(){
+    return 'AnterosButton';
+}
+
   render() {
     let className = "btn";
     if (this.props.className) {

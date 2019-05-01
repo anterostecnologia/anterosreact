@@ -78,6 +78,10 @@ export class AnterosFormSteps extends Component {
 
     }
 
+    static get componentName(){
+        return 'AnterosFormSteps';
+    }
+
     onNextClick(event) {
         if (this.props.onNextClick) {
             let result = this
@@ -155,12 +159,16 @@ export class AnterosFormSteps extends Component {
             .props
             .children
             .forEach(function (item, idx) {
-                if ((item.type) && (item.type.name.includes('Step') === 0)) {
-                    throw new AnterosError("Apenas componentes do tipo AnterosFormStep, AnterosStepFooter, AnterosStepHeader" +
-                            " e AnterosFormsSteps.StepFooter podem ser usados como filhos de AnterosFormSteps" +
+                if (item.type){
+                    if (!(item.type.componentName === 'AnterosFormStep') &&
+                        !(item.type.componentName === 'AnterosStepFooter') &&
+                        !(item.type.componentName === 'AnterosStepHeader')){
+                            throw new AnterosError("Apenas componentes do tipo AnterosFormStep, AnterosStepFooter, AnterosStepHeader" +
+                            " e podem ser usados como filhos de AnterosFormSteps" +
                             ".");
+                        }
                 }
-                if (item.type.name === "AnterosFormStep") {
+                if (item.type.componentName === 'AnterosFormStep') {
                     let active = index == _this.state.activeIndex;
                     steps.push(React.cloneElement(item, {
                         index: index + 1,
@@ -183,9 +191,9 @@ export class AnterosFormSteps extends Component {
                     );
                     _this.numberOfSteps++;
                     index++;
-                } else if (item.type.name === "AnterosStepHeader") {
+                } else if (item.type.componentName === 'AnterosStepHeader') {
                     headerContent = item;
-                } else if (item.type.name === "AnterosStepFooter") {
+                } else if (item.type.componentName === 'AnterosStepFooter') {
                     position = item.props.position;
                     footerContent.push(item.props.children);
                 }
@@ -304,7 +312,10 @@ AnterosFormSteps.defaultProps = {
 export class AnterosStepFooter extends Component {
     constructor(props) {
         super(props);
+    }
 
+    static get componentName(){
+        return 'AnterosStepFooter';
     }
 
     render() {
@@ -320,6 +331,10 @@ export class AnterosStepHeader extends Component {
     constructor(props) {
         super(props);
 
+    }
+
+    static get componentName(){
+        return 'AnterosStepHeader';
     }
 
     render() {
@@ -339,13 +354,14 @@ AnterosStepFooter.defaultProps = {
     position: 'last'
 }
 
-AnterosFormSteps.StepFooter = AnterosStepFooter;
-AnterosFormSteps.StepHeader = AnterosStepHeader;
 
 export class AnterosFormStep extends Component {
     constructor(props) {
         super(props);
+    }
 
+    static get componentName(){
+        return 'AnterosFormStep';
     }
 
     componentDidUpdate(){

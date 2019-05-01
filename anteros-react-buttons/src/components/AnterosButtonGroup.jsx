@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { AnterosUtils } from "anteros-react-core";
 import AnterosButton from "./AnterosButton";
 import lodash from "lodash";
@@ -17,7 +16,7 @@ export default class AnterosButtonGroup extends Component {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if (child.type && child.type.name != "AnterosButton") {
+                if (child.type && (!(child.type.componentName === 'AnterosButton'))) {
                     children.push(child);
                 } else {
                     children.push(React.createElement(AnterosButton, {

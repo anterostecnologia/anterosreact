@@ -37,6 +37,10 @@ export default class AnterosTextArea extends React.Component {
         this.insertText = this.insertText.bind(this);
     }
 
+    get componentName(){
+        return "AnterosTextArea";
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.dataSource) {
             let value = nextProps.dataSource.fieldByName(nextProps.dataField);

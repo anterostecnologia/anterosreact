@@ -17,6 +17,7 @@ class AnterosLogin extends Component {
             redirectToReferrer: false
         }
     }
+    
 
     login(event) {
         event.preventDefault();

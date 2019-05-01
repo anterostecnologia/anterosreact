@@ -56,7 +56,7 @@ export default class AnterosTable extends Component {
 
         arrChildren
             .forEach(function (child) {
-                if (child.type && child.type.name != "AnterosTableColumn") {
+                if (child.type && !(child.type.componentName ==='AnterosTableColumn')) {
                     throw new AnterosError("Somente AnterosTableColumn podem ser informados como filhos de AnterosTable.");
                 }
             });

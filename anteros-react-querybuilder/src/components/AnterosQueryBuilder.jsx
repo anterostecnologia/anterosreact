@@ -694,11 +694,11 @@ export class AnterosQueryBuilder extends React.Component {
     if (props.children) {
       let arrChildren = React.Children.toArray(props.children);
       arrChildren.forEach(function(child) {
-        if (child.type && child.type.name === "QueryFields") {
+        if (child.type && child.type.componentName ==='QueryFields') {
           if (child.props.children) {
             let arrChild = React.Children.toArray(child.props.children);
             arrChild.forEach(function(chd) {
-              if (chd.type && chd.type.name !== "QueryField") {
+              if (chd.type && !(chd.type.componentName ==='QueryField')) {
                 throw new AnterosError(
                   "Somente filhos do tipo QueryField podem ser usados com QueryFields."
                 );
@@ -706,7 +706,7 @@ export class AnterosQueryBuilder extends React.Component {
               let values = [];
               let chld = React.Children.toArray(chd.props.children);
               chld.forEach(function(val) {
-                if (val.type && val.type.name !== "QueryFieldValue") {
+                if (val.type && !(val.type.componentName ==='QueryFieldValue')) {
                   throw new AnterosError(
                     "Somente filhos do tipo QueryFieldValue podem ser usados com QueryFields"
                   );
@@ -792,7 +792,7 @@ export class AnterosQueryBuilder extends React.Component {
     let _this = this;
     let arrChildren = React.Children.toArray(this.props.children);
     arrChildren.forEach(function(child) {
-      if (child.type && child.type.name === "CustomFilter") {
+      if (child.type && child.type.componentName ==='CustomFilter') {
         customFilter = child.props.children;
       } else {
         children.push(child);
@@ -1219,18 +1219,29 @@ AnterosQueryBuilder.defaultProps = {
 };
 
 export class CustomFilter extends React.Component {
+  static get componentName(){
+    return 'CustomFilter';
+  }
+
   render() {
     return null;
   }
 }
 
 export class QueryFields extends React.Component {
+  static get componentName(){
+    return 'QueryFields';
+  }
+
   render() {
     return <div>{this.props.children}</div>;
   }
 }
 
 export class QueryField extends React.Component {
+  static get componentName(){
+    return 'QueryField';
+  }
   render() {
     return null;
   }
@@ -1253,6 +1264,9 @@ QueryField.defaultProps = {
 };
 
 export class QueryFieldValue extends React.Component {
+  static get componentName(){
+    return 'QueryFieldValue';
+  }
   render() {
     return null;
   }
@@ -1269,6 +1283,10 @@ class CustomSortItem extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.onCheckboxChange = this.onCheckboxChange.bind(this);
     this.onDoubleClick = this.onDoubleClick.bind(this);
+  }
+
+  static get componentName(){
+    return 'CustomSortItem';
   }
 
   onClick(event) {
@@ -1382,6 +1400,10 @@ class RuleGroup extends React.Component {
     this.addRule = this.addRule.bind(this);
     this.addGroup = this.addGroup.bind(this);
     this.removeGroup = this.removeGroup.bind(this);
+  }
+
+  static get componentName(){
+    return 'RuleGroup';
   }
 
   render() {
@@ -1546,6 +1568,10 @@ class Rule extends React.Component {
     this.getDataType = this.getDataType.bind(this);
     this.getFieldSql = this.getFieldSql.bind(this);
     this.getFieldValues = this.getFieldValues.bind(this);
+  }
+
+  static get componentName(){
+    return 'Rule';
   }
 
   getDataType(field, fields) {
@@ -1747,6 +1773,11 @@ Rule.defaultProps = {
 };
 
 class ActionElement extends React.Component {
+  static get componentName(){
+    return 'ActionElement';
+  }
+
+
   render() {
     const { label, className, handleOnClick } = this.props;
 
@@ -1768,6 +1799,10 @@ class ValueEditor extends React.Component {
   constructor(props) {
     super(props);
     this.onButtonClick = this.onButtonClick.bind(this);
+  }
+
+  static get componentName(){
+    return 'ValueEditor';
   }
 
   onButtonClick(event) {
@@ -1944,6 +1979,10 @@ ValueEditor.propTypes = {
 };
 
 class ValueSelector extends React.Component {
+  static get componentName(){
+    return 'ValueSelector';
+  }
+
   render() {
     const {
       value,

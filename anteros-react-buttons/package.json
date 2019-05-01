@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "anteros-react-core": "^1.0.7",
+    "anteros-react-label": "^1.0.5",
     "anteros-react-notification": "^1.0.6",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",

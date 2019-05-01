@@ -66,6 +66,10 @@ export default class AnterosMainHeader extends Component {
     });
   }
 
+  static get componentName(){
+    return "AnterosMainHeader";
+  }
+
   render() {
     let userActions;
     let toolbarEnd;
@@ -73,11 +77,11 @@ export default class AnterosMainHeader extends Component {
     if (this.props.children) {
       let arrChildren = React.Children.toArray(this.props.children);
       arrChildren.forEach(function(child) {
-        if (child.type && child.type.name == "UserActions") {
+        if (child.type && (child.type.componentName === 'UserActions')) {
           userActions = child.props.children;
-        } else if (child.type && child.type.name == "ToolbarEnd") {
+        } else if (child.type && (child.type.componentName === 'ToolbarEnd')) {
           toolbarEnd = child.props.children;
-        } else if (child.type && child.type.name == "ToolbarCenter") {
+        } else if (child.type && (child.type.componentName === 'ToolbarCenter')) {
           toolbarCenter = child.props.children;
         }
       });
@@ -163,6 +167,10 @@ export class UserActions extends Component {
     autobind(this);
   }
 
+  static get componentName() {
+    return "UserActions";
+  }
+
   render() {
     return null;
   }
@@ -174,6 +182,10 @@ export class ToolbarEnd extends Component {
     autobind(this);
   }
 
+  static get componentName() {
+    return "ToolbarEnd";
+  }
+
   render() {
     return null;
   }
@@ -183,6 +195,10 @@ export class ToolbarCenter extends Component {
   constructor(props) {
     super(props);
     autobind(this);
+  }
+
+  static get componentName() {
+    return "ToolbarCenter";
   }
 
   render() {

@@ -56,7 +56,7 @@ export class AnterosTour extends Component {
         let _this = this;
         let arrChildren = React.Children.toArray(this.props.children);
         arrChildren.forEach(function (child) {
-            if (child.type && child.type.name == "AnterosTourStep") {
+            if (child.type && child.type.componentName === 'AnterosTourStep') {
                 let step = {
                     content : child.content,
                     disableBeacon : child.content || false,
@@ -117,6 +117,10 @@ AnterosTour.defaultProps = {
 export class AnterosTourStep extends Component {
     constructor(props){
         super(props);
+    }
+
+    static get componentName(){
+      return 'AnterosTourStep';
     }
 
     render(){

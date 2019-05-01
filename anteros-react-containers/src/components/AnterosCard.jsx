@@ -33,10 +33,10 @@ class AnterosCard extends Component {
             let _this = this;
             let arrChildren = React.Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if (child.type && child.type.name == "HeaderActions") {
+                if (child.type && (child.type.componentName === 'HeaderActions')) {
                     headerActions = child.props.children;
                     headerActionsVisible = child.props.visible;
-                } else if (child.type && child.type.name == "FooterActions") {
+                } else if (child.type && (child.type.componentName === 'FooterActions')) {
                     footerActionsVisible = child.props.visible;
                     footerActions = child.props.children;
                     childFooterActions = child;
@@ -153,6 +153,9 @@ AnterosCard.defaultProps = {
 }
 
 export class HeaderActions extends Component {
+    static get componentName(){
+        return 'HeaderActions';
+    }
     render() {
         return (<div>{this.props.children}</div>);
     }
@@ -167,6 +170,9 @@ HeaderActions.propTypes = {
  }
 
 export class FooterActions extends Component {
+    static get componentName(){
+        return 'FooterActions';
+    }
     render() {
         return (<div>{this.props.children}</div>);
     }
@@ -181,12 +187,18 @@ FooterActions.defaultProps = {
 }
 
 export class AnterosCardGroup extends Component {
+    static get componentName(){
+        return 'AnterosCardGroup';
+    }
     render() {
         return (<div className="card-group">{this.props.children}</div>);
     }
 }
 
 export class AnterosCardDeck extends Component {
+    static get componentName(){
+        return 'AnterosCardDeck';
+    }
     render() {
         return (<div className="card-deck">{this.props.children}</div>);
     }

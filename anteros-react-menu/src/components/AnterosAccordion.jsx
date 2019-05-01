@@ -16,7 +16,7 @@ export default class AnterosAccordion extends Component {
         let _this = this;
         let arrChildren = React.Children.toArray(this.props.children);
         arrChildren.forEach(function (child) {
-            if (child.type && child.type.name != "AnterosAccordionItem") {
+            if (!(child.type && child.type.componentName==='AnterosAccordionItem')) {
                 throw new AnterosError("Apenas componentes do tipo AnterosAccordionItem podem ser usados como filhos de AnterosAccordion.");
             }
             if (!child.props.id) {
@@ -55,6 +55,10 @@ export class AnterosAccordionItem extends Component {
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
+    }
+
+    static get componentName(){
+        return 'AnterosAccordionItem';
     }
 
     onClick(event) {

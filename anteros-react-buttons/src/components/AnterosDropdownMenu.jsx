@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 
 export default class AnterosDropdownMenu extends Component {
     constructor(props)
@@ -17,13 +15,17 @@ export default class AnterosDropdownMenu extends Component {
         let _this = this;
         let arrChildren = React.Children.toArray(children);
         arrChildren.forEach(function (child) {
-            if (child.type && child.type.name == "AnterosDropdownMenuItem") {
+            if (child.type && (child.type.componentName === 'AnterosDropdownMenuItem')) {
                 result.push(React.cloneElement(child, {onClickItem: _this.props.onClickItem}));
             } else {
                 result.push(child);
             }
         });
         return result;
+    }
+
+    static get componentName(){
+        return 'AnterosDropdownMenu';
     }
 
     render() {

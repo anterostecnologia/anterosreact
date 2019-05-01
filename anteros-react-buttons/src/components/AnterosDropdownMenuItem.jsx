@@ -25,6 +25,10 @@ export default class AnterosDropdownMenuItem extends Component {
 
     }
 
+    static get componentName(){
+        return 'AnterosDropdownMenuItem';
+    }
+
     onClick(event) {
         event.preventDefault();
         if (!this.props.disabled && this.props.onSelectMenuItem) {

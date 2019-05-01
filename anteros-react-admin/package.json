@@ -17,6 +17,7 @@
     "anteros-react-label": "^1.0.5",
     "anteros-react-layout": "^1.0.9",
     "anteros-react-loaders": "^1.0.1",
+    "anteros-react-menu": "^1.0.6",
     "anteros-react-querybuilder": "^1.0.8",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.23.1",
