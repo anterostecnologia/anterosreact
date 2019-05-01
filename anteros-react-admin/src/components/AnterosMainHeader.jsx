@@ -14,6 +14,14 @@ import { AnterosImage } from "anteros-react-image";
 import AnterosUserMenu from "./AnterosUserMenu";
 import { autoBind } from "anteros-react-core";
 
+function isBase64(str) {
+  try {
+      return btoa(atob(str)) == str;
+  } catch (err) {
+      return false;
+  }
+}
+
 export default class AnterosMainHeader extends Component {
   constructor(props) {
     super(props);
@@ -88,6 +96,8 @@ export default class AnterosMainHeader extends Component {
     }
 
     const { horizontalMenu, logoNormal, sidebarOpen } = this.props;
+    let imgUser = this.props.avatar;
+    let isB64 = isBase64(imgUser);
     return (
       <AnterosToolbar>
         <AnterosToolbarGroup justifyContent="start">
@@ -138,7 +148,11 @@ export default class AnterosMainHeader extends Component {
             >
               <AnterosAdvancedDropdownToggle caret>
                 <AnterosImage
-                  src={this.props.avatar}
+                  src={
+                    imgUser && isB64
+                      ? 'data:image;base64,' + imgUser
+                      : imgUser
+                  }
                   circle
                   width="32px"
                   height="32px"
