@@ -70,6 +70,7 @@ export default class AnterosLookupCombobox extends React.Component {
     }
 
     componentDidMount() {
+        let _this = this;
         let options = {
             no_results_text: "Oops, texto não encontrado!",
             placeholder_text_single: this.props.placeHolder,
@@ -95,7 +96,13 @@ export default class AnterosLookupCombobox extends React.Component {
         }
         $(this.select)
             .chosen(options)
-            .change(this.onChangeSelect);
+            .on('change', function (e) {
+                let value = event.target.value;
+                if (value===''){
+                    value = undefined;
+                }
+                _this.onChangeSelect(e, value);
+            });
 
         if (this.props.lookupDataSource) {
             this
@@ -215,9 +222,9 @@ export default class AnterosLookupCombobox extends React.Component {
     }
 
     onChangeSelect(event, selectedValue) {
-        if (selectedValue != undefined && selectedValue.selected != undefined && selectedValue.selected != '') {
+        if (selectedValue != undefined) {
             if (this.props.lookupDataSource.locate({
-                [`${this.props.lookupDataFieldId}`]: selectedValue.selected
+                [`${this.props.lookupDataFieldId}`]: selectedValue
             })) {
                 if (this.props.dataSource) {
                     this
