@@ -83,7 +83,6 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
             disable_search: !props.searchEnabled
 
         })
-            .change(this.onChangeSelect)
             .on('change', function (e) {
                 if (props.multiple) {
                     let result = '';
@@ -106,6 +105,8 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
                     if (props.onChangeSelect) {
                         props.onChangeSelect(result);
                     }
+                } else {
+                    _this.onChangeSelect(e,e.target.value);
                 }
             });
 
@@ -178,18 +179,21 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
     }
 
     onChangeSelect(event, selectedValue) {
-        if (selectedValue != undefined && selectedValue.selected != undefined && selectedValue.selected != '') {
+        if (selectedValue != undefined) {
+            if (selectedValue===''){
+                selectedValue = undefined;
+            }
             if (this.props.dataSource) {
                 this
                     .props
                     .dataSource
-                    .setFieldByName(this.props.dataField, selectedValue.selected);
+                    .setFieldByName(this.props.dataField, selectedValue);
             }
 
             if (this.props.onChangeSelect) {
                 this
                     .props
-                    .onChangeSelect(selectedValue.selected);
+                    .onChangeSelect(selectedValue);
             }
         }
 
