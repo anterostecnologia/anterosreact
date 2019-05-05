@@ -1,12 +1,12 @@
+/*********
+***  Items list
+*********/
 $item-list-padding-x: 10px !default;
 $item-list-padding-y: 10px !default;
 $item-list-line-height: 1.4rem !default;
 $item-list-col-grow: 3 !default;
 $item-list-col-shrink: 3 !default;
 
-/* *******************************************
-*		  Item List general styles
-********************************************** */
 
 .item-list {
 	list-style: none;

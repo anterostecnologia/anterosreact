@@ -6,7 +6,7 @@
 /* global define */
 
 (function () {
-	'use strict';
+	"use strict";
 
 	var hasOwn = {}.hasOwnProperty;
 
@@ -19,14 +19,14 @@
 
 			var argType = typeof arg;
 
-			if (argType === 'string' || argType === 'number') {
+			if (argType === "string" || argType === "number") {
 				classes.push(arg);
 			} else if (Array.isArray(arg) && arg.length) {
 				var inner = classNames.apply(null, arg);
 				if (inner) {
 					classes.push(inner);
 				}
-			} else if (argType === 'object') {
+			} else if (argType === "object") {
 				for (var key in arg) {
 					if (hasOwn.call(arg, key) && arg[key]) {
 						classes.push(key);
@@ -35,15 +35,15 @@
 			}
 		}
 
-		return classes.join(' ');
+		return classes.join(" ");
 	}
 
-	if (typeof module !== 'undefined' && module.exports) {
+	if (typeof module !== "undefined" && module.exports) {
 		classNames.default = classNames;
 		module.exports = classNames;
-	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-		// register as 'classnames', consistent with npm package name
-		define('classnames', [], function () {
+	} else if (typeof define === "function" && typeof define.amd === "object" && define.amd) {
+		// register as "classnames", consistent with npm package name
+		define("classnames", [], function () {
 			return classNames;
 		});
 	} else {

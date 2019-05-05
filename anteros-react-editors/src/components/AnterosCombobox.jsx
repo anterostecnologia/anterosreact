@@ -257,7 +257,7 @@ export default class AnterosCombobox extends AnterosBaseInputControl {
                     icon: child.props.icon,
                     content: child.props.content,
                     index: index,
-                    value: child.props.value
+                    value: child.props.value,
                 }, child.props.children));
             index++;
         });

@@ -15,7 +15,7 @@ const defaultButtonStyles = disabled => ({
   cursor: disabled ? 'not-allowed' : 'pointer'
 });
 
-export class PreviousButton extends React.Component {
+export class AnterosCarouselPreviousButton extends React.Component {
   constructor() {
     super(...arguments);
     this.handleClick = this.handleClick.bind(this);
@@ -40,7 +40,7 @@ export class PreviousButton extends React.Component {
   }
 }
 
-export class NextButton extends React.Component {
+export class AnterosCarouselNextButton extends React.Component {
   constructor() {
     super(...arguments);
     this.handleClick = this.handleClick.bind(this);
@@ -65,7 +65,7 @@ export class NextButton extends React.Component {
   }
 }
 
-export class PagingDots extends React.Component {
+export class AnterosCarouselPagingDots extends React.Component {
   getIndexes(count, inc) {
     const arr = [];
     for (let i = 0; i < count; i += inc) {
@@ -128,7 +128,7 @@ export class PagingDots extends React.Component {
 }
 
 
-export class FadeTransition extends React.Component {
+export class AnterosCarouselFadeTransition extends React.Component {
   constructor(props) {
     super(props);
     this.fadeFromSlide = props.currentSlide;
@@ -254,7 +254,7 @@ export class FadeTransition extends React.Component {
   }
 }
 
-FadeTransition.propTypes = {
+AnterosCarouselFadeTransition.propTypes = {
   deltaX: PropTypes.number,
   deltaY: PropTypes.number,
   slideWidth: PropTypes.number,
@@ -271,7 +271,7 @@ FadeTransition.propTypes = {
   slidesToShow: PropTypes.number
 };
 
-FadeTransition.defaultProps = {
+AnterosCarouselFadeTransition.defaultProps = {
   deltaX: 0,
   deltaY: 0,
   slideWidth: 0,
@@ -288,7 +288,7 @@ FadeTransition.defaultProps = {
   slidesToShow: 1
 };
 
-export class ScrollTransition extends React.Component {
+export class AnterosCarouselScrollTransition extends React.Component {
   constructor(props) {
     super(props);
 
@@ -431,7 +431,7 @@ export class ScrollTransition extends React.Component {
   }
 }
 
-ScrollTransition.propTypes = {
+AnterosCarouselScrollTransition.propTypes = {
   deltaX: PropTypes.number,
   deltaY: PropTypes.number,
   slideWidth: PropTypes.number,
@@ -447,7 +447,7 @@ ScrollTransition.propTypes = {
   wrapAround: PropTypes.bool
 };
 
-ScrollTransition.defaultProps = {
+AnterosCarouselScrollTransition.defaultProps = {
   deltaX: 0,
   deltaY: 0,
   slideWidth: 0,
@@ -465,8 +465,8 @@ ScrollTransition.defaultProps = {
 
 
 const Transitions = {
-  fade: FadeTransition,
-  scroll: ScrollTransition
+  fade: AnterosCarouselFadeTransition,
+  scroll: AnterosCarouselScrollTransition
 };
 
 const addEvent = function(elem, type, eventHandle) {
@@ -1617,9 +1617,9 @@ AnterosCarousel.defaultProps = {
   slidesToScroll: 1,
   slidesToShow: 1,
   style: {},
-  renderCenterLeftControls: props => <PreviousButton {...props} />,
-  renderCenterRightControls: props => <NextButton {...props} />,
-  renderBottomCenterControls: props => <PagingDots {...props} />,
+  renderCenterLeftControls: props => <AnterosCarouselPreviousButton {...props} />,
+  renderCenterRightControls: props => <AnterosCarouselNextButton {...props} />,
+  renderBottomCenterControls: props => <AnterosCarouselPagingDots {...props} />,
   slideWidth: 1,
   speed: 500,
   swiping: true,

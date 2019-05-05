@@ -1,3 +1,6 @@
+/*********
+***  Buttons
+*********/
 .btn {
 	background-image: none;
 	cursor: pointer;
@@ -6,31 +9,31 @@
 	background-color: rgba(255,255,255,0.2); 
 
 	&.btn-primary {
-		@include button-variant( $btn-primary-color-text, $color-primary, $color-primary);
+		@include button-variant($color-primary, $color-primary);
 	}
 
 	&.btn-secondary {
-		@include button-variant( $color-text-inverse, $color-secondary, $color-divider );	
+		@include button-variant( $color-secondary, $color-secondary );	
 	}
 
 	&.btn-success {
-		@include button-variant( $color-text-inverse, $color-success, $color-success);
+		@include button-variant( $color-success, $color-success);
 	}
 
 	&.btn-info {
-		@include button-variant( $color-text-inverse, $color-info, $color-info);
+		@include button-variant( $color-info, $color-info);
 	}
 
 	&.btn-warning {
-		@include button-variant( $color-text-inverse, $color-warning, $color-warning);
+		@include button-variant( $color-warning, $color-warning);
 	}
 
 	&.btn-danger {
-		@include button-variant( $color-text-inverse, $color-danger, $color-danger);
+		@include button-variant(  $color-danger, $color-danger);
 	}
 
 	&.btn-default {
-		@include button-variant( $color-text, $color-default, $color-default);
+		@include button-variant( $color-default, $color-default);
 	}
 
 	// Remove all backgrounds

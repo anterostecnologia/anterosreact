@@ -202,7 +202,6 @@ export default class AnterosMainLayout extends Component {
                 <div className="app-page">{this.renderPage()}</div>
               </div>
             </div>
-            <div>TESTANDO</div>
           </AnterosSidebarLayout>
         </div>
       </div>

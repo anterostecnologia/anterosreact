@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import lodash from 'lodash';
 
-const BreadcrumbsItem = ({ ...rest, match }) => {
+export const BreadcrumbsItem = ({ match, ...rest }) => {
   var pieces = match.url.split('/');
   const routeName = pieces[pieces.length - 1];
   if (routeName) {
@@ -18,7 +18,7 @@ const BreadcrumbsItem = ({ ...rest, match }) => {
   return null
 }
 
-const Breadcrumbs = ({ ...rest, location: { pathname }, match }) => {
+export const Breadcrumbs = ({ location: { pathname }, match, ...rest }) => {
   const paths = []
   pathname.split('/').reduce((prev, curr, index) => {
     paths[index] = `${prev}/${curr}`

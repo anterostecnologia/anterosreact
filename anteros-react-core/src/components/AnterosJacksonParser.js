@@ -1,153 +1,162 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
 
 class AnterosJacksonParser {
-    constructor() {
+	constructor() {}
+	/**
+	 * Converte um objeto Json serializado com Anteros e Jackson
+	 * @param {*} json Json a ser convertido para objeto
+	 */
+	convertJsonToObject(json) {
+		// Verifica se o objeto é um array
+		var isObject = function(value) {
+			return typeof value === "object";
+		};
 
-    }
-    /**
-     * Converte um objeto Json serializado com Anteros e Jackson
-     * @param {*} json Json a ser convertido para objeto
-     */
-    convertJsonToObject(json) {
+		// Busca e armazena todas as chaves e referências
+		var getKeys = function(obj, key) {
+			var keys = [];
+			for (var i in obj) {
+				// Pula métodos
+				if (!obj.hasOwnProperty(i)) {
+					continue;
+				}
 
-        // Verifica se o objeto é um array
-        var isObject = function (value) {
-            return (typeof value === 'object');
-        }
+				if (isObject(obj[i])) {
+					keys = keys.concat(getKeys(obj[i], key));
+				} else if (i === key) {
+					keys.push({ key: obj[key], obj: obj });
+				}
+			}
 
-        // Busca e armazena todas as chaves e referências
-        var getKeys = function (obj, key) {
-            var keys = [];
-            for (var i in obj) {
-                // Pula métodos
-                if (!obj.hasOwnProperty(i)) {
-                    continue;
-                }
+			return keys;
+		};
 
-                if (isObject(obj[i])) {
-                    keys = keys.concat(getKeys(obj[i], key));
-                } else if (i === key) {
-                    keys.push({ key: obj[key], obj: obj });
-                }
-            }
+		var convertToObjectHelper = function(json, key, keys) {
+			// Armazena todas as referêncuas e chaves num mapa
+			if (!keys) {
+				keys = getKeys(json, key);
 
-            return keys;
-        };
+				var convertedKeys = {};
 
-        var convertToObjectHelper = function (json, key, keys) {
-            // Armazena todas as referêncuas e chaves num mapa
-            if (!keys) {
-                keys = getKeys(json, key);
+				for (var i = 0; i < keys.length; i++) {
+					convertedKeys[keys[i].key] = keys[i].obj;
+				}
 
-                var convertedKeys = {};
+				keys = convertedKeys;
+			}
 
-                for (var i = 0; i < keys.length; i++) {
-                    convertedKeys[keys[i].key] = keys[i].obj;
-                }
+			var obj = json;
 
-                keys = convertedKeys;
-            }
+			// Troca recursivamente todas as referências para as chaves pelos objetos reais
+			for (var j in obj) {
+				// Pula métodos
+				if (!obj.hasOwnProperty(j)) {
+					continue;
+				}
 
-            var obj = json;
+				if (isObject(obj[j])) {
+					// Propriedade é um objeto, processa os filhos recursivamente
+					convertToObjectHelper(obj[j], key, keys);
+				} else if (j === key) {
+					// Remove a referência @id do objeto
+					delete obj[j];
+				} else if (keys[obj[j]]) {
+					// Troca a referência pelo objeto real
+					obj[j] = keys[obj[j]];
+				}
+			}
 
-            // Troca recursivamente todas as referências para as chaves pelos objetos reais
-            for (var j in obj) {
-                // Pula métodos
-                if (!obj.hasOwnProperty(j)) {
-                    continue;
-                }
+			return obj;
+		};
 
-                if (isObject(obj[j])) {
-                    // Propriedade é um objeto, processa os filhos recursivamente
-                    convertToObjectHelper(obj[j], key, keys);
-                } else if (j === key) {
-                    // Remove a referência @id do objeto
-                    delete obj[j];
-                } else if (keys[obj[j]]) {
-                    // Troca a referência pelo objeto real
-                    obj[j] = keys[obj[j]];
-                }
-            }
+		return convertToObjectHelper(json, "@id");
+	}
 
-            return obj;
-        };
+	/**
+	 * Converte um objeto para Json serializando com @id no formato Anteros e Jackson
+	 * @param {*} obj Objeto a ser serializado para json
+	 */
+	convertObjectToJson(obj) {
+		var newObj = cloneDeep(obj);
 
+		// Gera um id global randômico - GUID
+		var guid = function() {
+			function s4() {
+				return Math.floor((1 + Math.random()) * 0x10000)
+					.toString(16)
+					.substring(1);
+			}
 
-        return convertToObjectHelper(json, "@id");
-    }
+			return (
+				s4() +
+				s4() +
+				"-" +
+				s4() +
+				"-" +
+				s4() +
+				"-" +
+				s4() +
+				"-" +
+				s4() +
+				s4() +
+				s4()
+			);
+		};
 
-    /**
-     * Converte um objeto para Json serializando com @id no formato Anteros e Jackson
-     * @param {*} obj Objeto a ser serializado para json
-     */
-    convertObjectToJson(obj) {
+		// Verifica se o valor é um objeto
+		var isObject = function(value) {
+			return typeof value === "object";
+		};
 
-        var newObj = cloneDeep(obj);
+		// Verifica se o objeto é um array
+		var isArray = function(obj) {
+			return Object.prototype.toString.call(obj) === "[object Array]";
+		};
 
-        // Gera um id global randômico - GUID
-        var guid = function () {
-            function s4() {
-                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
+		var convertToJsonHelper = function(obj, key, objects) {
+			// Inicializa um array de objetos e guarda o root dentro se existir
+			if (!objects) {
+				objects = [];
 
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        };
+				if (isObject(obj) && !isArray(obj)) {
+					obj[key] = guid();
+					objects.push(obj);
+				}
+			}
 
-        // Verifica se o valor é um objeto
-        var isObject = function (value) {
-            return (typeof value === 'object');
-        }
+			for (var i in obj) {
+				// Pula métodos
+				if (!obj.hasOwnProperty(i)) {
+					continue;
+				}
 
-        // Verifica se o objeto é um array
-        var isArray = function (obj) {
-            return (Object.prototype.toString.call(obj) === '[object Array]');
-        }
+				if (isObject(obj[i])) {
+					var objIndex = objects.indexOf(obj[i]);
 
-        var convertToJsonHelper = function (obj, key, objects) {
-            // Inicializa um array de objetos e guarda o root dentro se existir
-            if (!objects) {
-                objects = [];
+					if (objIndex === -1) {
+						// Objeto não foi processado; gera uma chave(GUID) e continua
+						// (não gera chaves para arrays)
+						if (!isArray(obj[i]) && obj[i] != null && obj[i] != undefined) {
+							obj[i][key] = guid();
+							objects.push(obj[i]);
+						}
 
-                if (isObject(obj) && (!isArray(obj))) {
-                    obj[key] = guid();
-                    objects.push(obj);
-                }
-            }
+						// Processa as propriedades dos filhos
+						// recursivamente
+						convertToJsonHelper(obj[i], key, objects);
+					} else {
+						// Objeto foi processado;
+						// Troca a referência existente pela chave gerada GUID
+						obj[i] = objects[objIndex][key];
+					}
+				}
+			}
 
-            for (var i in obj) {
-                // Pula métodos
-                if (!obj.hasOwnProperty(i)) {
-                    continue;
-                }
+			return obj;
+		};
 
-                if (isObject(obj[i])) {
-                    var objIndex = objects.indexOf(obj[i]);
-
-                    if (objIndex === -1) {
-                        // Objeto não foi processado; gera uma chave(GUID) e continua
-                        // (não gera chaves para arrays)
-                        if (!isArray(obj[i]) && obj[i] != null && obj[i] != undefined) {
-                            obj[i][key] = guid();
-                            objects.push(obj[i]);
-                        }
-
-                        // Processa as propriedades dos filhos
-                        // recursivamente
-                        convertToJsonHelper(obj[i], key, objects);
-                    } else {
-                        // Objeto foi processado;
-                        // Troca a referência existente pela chave gerada GUID
-                        obj[i] = objects[objIndex][key];
-                    }
-                }
-            }
-
-            return obj;
-        }
-
-        return convertToJsonHelper(newObj, "@id");
-    }
-
+		return convertToJsonHelper(newObj, "@id");
+	}
 }
 
 const instance = new AnterosJacksonParser();

@@ -1,75 +1,71 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
+import React from "react";
+import PropTypes from "prop-types";
 
 export class AnterosTimeout extends React.Component {
+	constructor(props) {
+		super(props);
+		this.callback = this.callback.bind(this);
+		this.start = this.start.bind(this);
+		this.stop = this.stop.bind(this);
+	}
 
-    constructor(props) {
-        super(props);
-        this.callback = this.callback.bind(this);
-        this.start = this.start.bind(this);
-        this.stop = this.stop.bind(this);
-    }
+	componentDidMount() {
+		if (this.props.enabled) {
+			this.start();
+		}
+	}
 
+	shouldComponentUpdate({ timeout, callback, enabled }) {
+		return (
+			this.props.timeout !== timeout ||
+			this.props.callback !== callback ||
+			this.props.enabled !== enabled
+		);
+	}
 
-    componentDidMount() {
-        if (this.props.enabled) {
-            this.start();
-        }
-    }
+	componentDidUpdate({ enabled }) {
+		if (this.props.enabled !== enabled) {
+			if (this.props.enabled) {
+				this.start();
+			} else {
+				this.stop();
+			}
+		}
+	}
 
-    shouldComponentUpdate({ timeout, callback, enabled }) {
-        return (
-            this.props.timeout !== timeout ||
-            this.props.callback !== callback ||
-            this.props.enabled !== enabled
-        );
-    }
+	componentWillUnmount() {
+		this.stop();
+	}
 
-    componentDidUpdate({ enabled }) {
-        if (this.props.enabled !== enabled) {
-            if (this.props.enabled) {
-                this.start();
-            } else {
-                this.stop();
-            }
-        }
-    }
+	callback() {
+		if (this.timer) {
+			this.props.callback();
+			this.start();
+		}
+	}
 
-    componentWillUnmount() {
-        this.stop();
-    }
+	start() {
+		this.stop();
+		this.timer = setTimeout(this.callback, this.props.timeout);
+	}
 
-    callback() {
-        if (this.timer) {
-            this.props.callback();
-            this.start();
-        }
-    };
+	stop() {
+		clearTimeout(this.timer);
+		this.timer = null;
+	}
 
-    start() {
-        this.stop();
-        this.timer = setTimeout(this.callback, this.props.timeout);
-    };
-
-    stop() {
-        clearTimeout(this.timer);
-        this.timer = null;
-    };
-
-    render() {
-        return false;
-    }
+	render() {
+		return false;
+	}
 }
 
-
 AnterosTimeout.defaultProps = {
-    enabled: false,
-    timeout: 1000
+	enabled: false,
+	timeout: 1000
 };
 
 AnterosTimeout.propTypes = {
-    callback: PropTypes.func.isRequired,
-    enabled: PropTypes.bool,
-    timeout: PropTypes.number
+	callback: PropTypes.func.isRequired,
+	enabled: PropTypes.bool,
+	timeout: PropTypes.number
 };

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Payment from 'payment';
 
 
-export class AnterosCreditCard extends React.Component {
+export default class AnterosCreditCard extends React.Component {
   constructor(props) {
     super(props);
 

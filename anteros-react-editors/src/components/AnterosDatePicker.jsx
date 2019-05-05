@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './AnterosBootstrapDatetimepicker.js'
-import './AnterosBootstrapDatetimepicker.css';
 import lodash from "lodash";
 import { AnterosDateUtils, AnterosUtils } from 'anteros-react-core';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";

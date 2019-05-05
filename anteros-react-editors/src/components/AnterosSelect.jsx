@@ -1,6 +1,5 @@
 import React from 'react'
 import 'script-loader!bootstrap-select/dist/js/bootstrap-select.min.js'
-import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import lodash from 'lodash';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosError, AnterosUtils } from "anteros-react-core";

@@ -1,84 +1,69 @@
-"use strict";
-
 const webpack = require('webpack');
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
-const env = require('yargs').argv.env; 
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const ChunksPlugin = require('webpack-split-chunks');
+const env = require('yargs').argv.env; // use --env with webpack 2
+const pkg = require('./package.json');
 var nodeExternals = require('webpack-node-externals');
 
+let libraryName = pkg.name;
 
-let libraryName = 'anteros-react-label';
+let outputFile, mode;
 
-let outputFileJs, outputFileCSS;
-let uglifyPlugin;
-let minimizeCSS = false;
-let plugins = [];
 
 if (env === 'build') {
-  plugins.push(new UglifyJsPlugin({ minimize: true, comments: false }));
-  minimizeCSS = true;
-  outputFileJs = libraryName + '.min.js';
-  outputFileCSS = libraryName + '.min.css';
+  mode = 'production';
+  outputFile = libraryName + '.min.js';
 } else {
-  outputFileJs = libraryName + '.js';
-  outputFileCSS = libraryName + '.css';
+  mode = 'development';
+  outputFile = libraryName + '.js';
 }
 
-plugins.push(new ExtractTextPlugin(outputFileCSS));
-plugins.push(new OptimizeCssAssetsPlugin());
-
-module.exports = {
+const config = {
+  mode: mode,
   entry: __dirname + '/src/index.jsx',
   devtool: 'source-map',
+  target: 'node', // in order to ignore built-in modules like path, fs, etc.
+  externals: [nodeExternals()],
   output: {
     path: __dirname + '/lib',
-    filename: outputFileJs,
+    filename: outputFile,
     library: libraryName,
     libraryTarget: 'umd',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+    globalObject: "typeof self !== 'undefined' ? self : this"
   },
-  plugins: plugins,
-  externals: nodeExternals(),
   module: {
-    loaders: [{
-      test: /.js[x]?$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/,
-      query: {
-        presets: ['es2015', 'es2017', 'react'],
-        plugins: ['transform-object-rest-spread']
+    rules: [
+      {
+        // this is so that we can compile any React,
+        // ES6 and above into normal ES5 syntax
+        test: /\.(js|jsx)$/,
+        // we do not want anything from node_modules to be compiled
+        exclude: /node_modules/,
+        use: ['babel-loader']
+      },
+      {
+        test: /\.(css|scss)$/,
+        use: [
+          "style-loader", // creates style nodes from JS strings
+          "css-loader", // translates CSS into CommonJS
+          "sass-loader" // compiles Sass to CSS, using Node Sass by default
+        ]
+      },
+      {
+        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+        loaders: ['file-loader']
       }
-    }, {
-      test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)|\.png($|\?)|\.jpg($|\?)|\.gif($|\?)/,
-      loader: 'url-loader',
-    },
-    {
-      test: /\.s[ac]ss$/,
-      use: ExtractTextPlugin.extract({
-        use: ['css-loader', 'sass-loader'],
-        fallback: 'style-loader'
-      })
-    },
-    {
-      test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        use: {
-					loader: "css-loader",
-					options: {
-						sourceMap: true,
-            minimize: minimizeCSS
-					}
-				},
-        fallback: 'style-loader'
-      })
-    }]
+      // {
+      //   test: /(\.jsx|\.js)$/,
+      //   loader: 'eslint-loader',
+      //   exclude: /node_modules/
+      // }
+    ]
   },
   resolve: {
-    modules: ["node_modules"],
-    extensions: ['.js', '.jsx']
+    modules: [path.resolve('./node_modules'), path.resolve('./src')],
+    extensions: ['.json', '.js','.jsx']
   }
 };
 
+module.exports = config;

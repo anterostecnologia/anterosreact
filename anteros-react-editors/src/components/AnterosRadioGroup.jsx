@@ -272,7 +272,7 @@ export class AnterosRadio extends Component {
                     className="radio"
                     name={name}
                     type="radio"
-                    defaultChecked={checked}
+                    checked={checked}
                     disabled={disabled}/>
                 <span>{this.props.label}</span>
             </label>

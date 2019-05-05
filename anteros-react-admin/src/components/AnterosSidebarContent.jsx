@@ -114,7 +114,8 @@ AnterosSidebarContent.propTypes = {
   collapsedSidebar: PropTypes.bool.isRequired,
   location: PropTypes.string,
   logoNormal: PropTypes.string,
-  logoMini: PropTypes.string
+  logoMini: PropTypes.string,
+  
 };
 
 AnterosSidebarContent.defaultProps = {

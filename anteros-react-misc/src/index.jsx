@@ -11,7 +11,7 @@ import AnterosIdleTimer from './components/AnterosIdleTimer';
 import AnterosTimeAgo from './components/AnterosTimeAgo';
 import AnterosQRCode from './components/AnterosQRCode';
 import AnterosRecaptcha from './components/AnterosRecaptcha';
-import AnterosTour,{AnterosTourStep} from './components/AnterosTour';
+import {AnterosTour,AnterosTourStep} from './components/AnterosTour';
 import AnterosFloater from './components/AnterosFloater';
 import AnterosLinearProgressBar from './components/AnterosLinearProgressBar'
 import AnterosSpeedometer from './components/AnterosSpeedometer';
