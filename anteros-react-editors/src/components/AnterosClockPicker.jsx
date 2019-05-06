@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'script-loader!clockpicker/dist/bootstrap-clockpicker.min.js';
-import 'script-loader!clockpicker/dist/bootstrap-clockpicker.min.css';
 import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js';
 import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";

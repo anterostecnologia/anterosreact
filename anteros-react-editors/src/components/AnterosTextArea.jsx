@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/bootstrap-maxlength.min.js'
-import 'bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css';
 import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
