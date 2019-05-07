@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'script-loader!emojionearea/dist/emojionearea.min.js'
-import 'emojionearea/dist/emojionearea.min.css';
 import lodash from "lodash";
 import {If, Then, AnterosUtils} from "anteros-react-core";
 import PropTypes from 'prop-types';

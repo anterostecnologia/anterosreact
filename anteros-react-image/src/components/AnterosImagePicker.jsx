@@ -135,7 +135,7 @@ export default class AnterosImagePicker extends React.Component {
 
         if (colClasses.length > 0) {
             return (<div className="input-group" style={{ width: this.props.width }}>
-                <div className={className} style={{ border: 0 }} id={this.idImage}>
+                <div className={className} style={{ border: 0, height:'auto' }} id={this.idImage}>
                     <img src={this.state.value && this.state.value !== ''?'data:image;base64,' + this.state.value:null} style={{ ...this.props.style, border: "1px solid silver", width: this.props.width, height: this.props.height }} onDoubleClick={this.onDoubleClickImage} />
                     <input id={this.idImage + "_input"} type="file"
                         className="imageUpload"
@@ -144,7 +144,7 @@ export default class AnterosImagePicker extends React.Component {
                 </div>
             </div>);
         } else {
-            return (<div className={className} style={{ display: "grid", border: 0 }} id={this.idImage}>
+            return (<div className={className} style={{ display: "grid", border: 0, height:'auto' }} id={this.idImage}>
                 <img src={this.state.value && this.state.value !== ''?'data:image;base64,' + this.state.value:null} style={{ ...this.props.style, border: "1px solid silver", width: this.props.width, height: this.props.height }} onDoubleClick={this.onDoubleClickImage} />
                 <input id={this.idImage + "_input"} type="file"
                     className="imageUpload"

@@ -132,7 +132,7 @@ AnterosPageControl.defaultProps = {
 }
 
 
-class AnterosTabLink extends Component {
+export class AnterosTabLink extends Component {
     constructor(props) {
         super(props);
     }
@@ -177,7 +177,7 @@ AnterosTabLink.defaultProps = {
     imageCircle: false
 }
 
-class AnterosTabContent extends Component {
+export class AnterosTabContent extends Component {
     constructor(props) {
         super(props);
     }

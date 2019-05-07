@@ -237,14 +237,14 @@ export class AnterosFormSteps extends Component {
                     <AnterosButton
                         id={this.idFormStep + "_btnBack"}
                         secondary
-                        visible={this.state.activeIndex > 0}
+                        disabled={!(this.state.activeIndex > 0)}
                         outline={this.props.buttonOutline}
                         caption={this.props.backCaption}
                         onClick={this.onBackClick}/>
                     <AnterosButton
                         id={this.idFormStep + "_btnNext"}
                         primary
-                        visible={this.state.activeIndex < this.numberOfSteps - 1}
+                        disabled={!(this.state.activeIndex < this.numberOfSteps - 1)}
                         outline={this.props.buttonOutline}
                         pullRight
                         caption={this.props.nextCaption}
@@ -252,7 +252,7 @@ export class AnterosFormSteps extends Component {
                     <AnterosButton
                         id={this.idFormStep + "_btnSuccess"}
                         success
-                        visible={this.state.activeIndex == this.numberOfSteps - 1}
+                        disabled={!(this.state.activeIndex == this.numberOfSteps - 1)}
                         outline={this.props.buttonOutline}
                         pullRight
                         caption={this.props.finishCaption}

@@ -1,3 +1,6 @@
+/*********
+***  Cards
+*********/
 .card {
 	box-shadow: 1px 1px 5px fade-out($color-text-light, 0.9);
 	
@@ -27,7 +30,7 @@
             flex-direction: row;
         padding: 5px;
         border-radius: 0;
-        min-height: 40px;
+        min-height: 50px;
         border-bottom: 1px solid rgba(0,0,0,.125);
 
         &::after {
@@ -41,7 +44,7 @@
 		}
 
 		&.card-header-sm {
-			min-height: 40px;
+			min-height: 50px;
 		}
 
 		&>span {

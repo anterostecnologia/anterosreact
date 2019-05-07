@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import lodash from 'lodash'
-import "./multi.css";
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import {AnterosError, AnterosUtils} from "anteros-react-core";
 import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";

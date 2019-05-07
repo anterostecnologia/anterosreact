@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'script-loader!./AnterosBootstrapDatetimepicker.js'
-import './AnterosBootstrapDatetimepicker.css';
 import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js'
 import lodash from "lodash";
 import {AnterosUtils} from "anteros-react-core";

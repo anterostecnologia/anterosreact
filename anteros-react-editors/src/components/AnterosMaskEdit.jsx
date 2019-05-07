@@ -109,7 +109,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                 }
             });
         } else if (this.props.maskPattern == 'placa') {
-            $(this.inputRef.current).inputmask('AAA-*****', {
+            $(this.inputRef.current).inputmask('AAA-****', {
                 "alias": this.props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
