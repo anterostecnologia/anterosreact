@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import AnterosMenuItem from './AnterosMenuItem';
 import PropTypes from 'prop-types';
  
@@ -101,20 +101,32 @@ export default class AnterosMenu extends Component {
               </nav>);
     } else {
       return (
-        <aside className="sidebar" style={this.props.style}>
-          <div className="sidebar-container">
-            <div className="sidebar-header">
-              <div className="brand hidden-md-up">
-                <img src={this.props.logo} alt=""/>
+        <Fragment>
+          <aside className="sidebar" style={this.props.style}>
+            <div className="sidebar-container">
+              <div className="sidebar-header">
+                <div className="brand hidden-md-up">
+                  <img src={this.props.logo} alt=""/>
+                </div>
               </div>
-            </div>
-            <nav className="menu">
-              <ul className="nav flex-column" id="sidebar-menu">
-                {children}
-              </ul>
-            </nav>
-          </div>          
-        </aside>
+              <nav className="menu">
+                <ul className="nav flex-column" id="sidebar-menu">
+                  {children}
+                </ul>
+              </nav>
+            </div>          
+          </aside>
+          <div
+            style = {{
+              position: "absolute",
+              bottom: "1vh",
+              left: "15vw",
+              color:this.props.versionColor
+            }}
+          >
+            <span>{this.props.version}</span>
+          </div>
+        </Fragment>
       );
     }
   }
@@ -130,10 +142,14 @@ AnterosMenu.childContextTypes = {
 }
 
 AnterosMenu.propTypes = {
-  horizontal: PropTypes.bool
+  horizontal: PropTypes.bool,
+  version: PropTypes.string,
+  versionColor: PropTypes.string
 }
 
 AnterosMenu.defaultProps = {
-  horizontal: false
+  horizontal: false,
+  version: '',
+  versionColor: 'white'
 }
 
