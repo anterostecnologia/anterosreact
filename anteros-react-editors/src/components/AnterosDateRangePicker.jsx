@@ -262,7 +262,7 @@ export default class AnterosDateRangePicker extends React.Component {
                 }}
                     onKeyPress={this.onKeyPress}
                     onKeyDown={this.onKeyDown}/>
-                <div className={classNameAddOn} style={{margin: 0}} >
+                <div className={classNameAddOn} style={{margin: 0, height: '38px', width:'38px'}} >
                     <span><i className={icon}/><img src={this.props.image}/></span>
                 </div>
             </div>

@@ -50,6 +50,7 @@
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "react": "^16.8.6",
+    "react-async-script": "^1.0.1",
     "react-dom": "^16.8.6",
     "react-joyride": "^2.0.0-11",
     "react-pdf-js": "^3.0.0",

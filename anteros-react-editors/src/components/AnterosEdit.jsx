@@ -285,7 +285,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                         readOnly={readOnly}
                         maxLength={this.props.maxLength}
                         placeholder={this.props.placeHolder}/>
-                    <div className={classNameAddOn} onClick={this.props.onButtonClick}>
+                    <div className={classNameAddOn} style={{height: '38px', width:'38px'}} onClick={this.props.onButtonClick}>
                         <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick}/></span>
                     </div>
                     {this.displayErrorMessage()}

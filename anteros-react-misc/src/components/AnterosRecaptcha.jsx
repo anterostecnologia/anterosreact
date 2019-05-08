@@ -1,152 +1,179 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { loadScript } from 'anteros-react-core';
-
-let readyCheck;
+import React from "react";
+import PropTypes from "prop-types";
+import makeAsyncScriptLoader from "react-async-script";
 
 
-const loadGoogleRecaptcha = function (url, success, error) {
-  if (window.grecaptcha) {
-    success();
-  } else {
-    loadScript(url, err => {
-      const callback = err ? error : success;
-      callback(err);
-    });
+function getOptions() {
+  return (typeof window !== "undefined" && window.recaptchaOptions) || {};
+}
+function getURL() {
+  const dynamicOptions = getOptions();
+  const lang = dynamicOptions.lang ? `&hl=${dynamicOptions.lang}` : "";
+  const hostname = dynamicOptions.useRecaptchaNet ? "recaptcha.net" : "www.google.com";
+  return `https://${hostname}/recaptcha/api.js?onload=${callbackName}&render=explicit${lang}`;
+}
+
+const callbackName = "onloadcallback";
+const globalName = "grecaptcha";
+const initialOptions = getOptions();
+
+class AnterosRecaptcha extends React.Component {
+  constructor() {
+    super();
+    this.handleExpired = this.handleExpired.bind(this);
+    this.handleErrored = this.handleErrored.bind(this);
+    this.handleRecaptchaRef = this.handleRecaptchaRef.bind(this);
   }
-};
 
-const isReady = () => typeof window !== 'undefined' && typeof window.grecaptcha !== 'undefined';
-
-
-export default class AnterosRecaptcha extends Component {
-
-  constructor(props) {
-    super(props);
-    this._renderGrecaptcha = this._renderGrecaptcha.bind(this);
-    this._updateReadyState = this._updateReadyState.bind(this);
-
-    this.reset = this.reset.bind(this);
-    this.state = {
-      ready: isReady(),
-      widget: null,
-    };
-
-    if (!this.state.ready) {
-      readyCheck = setInterval(this._updateReadyState, 1000);
+  getValue() {
+    if (this.props.grecaptcha && this._widgetId !== undefined) {
+      return this.props.grecaptcha.getResponse(this._widgetId);
     }
-
+    return null;
   }
 
-  _updateReadyState() {
-    if (isReady()) {
-      this.setState({
-        ready: true,
+  getWidgetId() {
+    if (this.props.grecaptcha && this._widgetId !== undefined) {
+      return this._widgetId;
+    }
+    return null;
+  }
+
+  execute() {
+    const { grecaptcha } = this.props;
+
+    if (grecaptcha && this._widgetId !== undefined) {
+      return grecaptcha.execute(this._widgetId);
+    } else {
+      this._executeRequested = true;
+    }
+  }
+
+  reset() {
+    if (this.props.grecaptcha && this._widgetId !== undefined) {
+      this.props.grecaptcha.reset(this._widgetId);
+    }
+  }
+
+  handleExpired() {
+    if (this.props.onExpired) {
+      this.props.onExpired();
+    } else if (this.props.onChange) {
+      this.props.onChange(null);
+    }
+  }
+
+  handleErrored() {
+    if (this.props.onErrored) this.props.onErrored();
+  }
+
+  explicitRender() {
+    if (this.props.grecaptcha && this.props.grecaptcha.render && this._widgetId === undefined) {
+      const wrapper = document.createElement("div");
+      this._widgetId = this.props.grecaptcha.render(wrapper, {
+        sitekey: this.props.sitekey,
+        callback: this.props.onChange,
+        theme: this.props.theme,
+        type: this.props.type,
+        tabindex: this.props.tabindex,
+        "expired-callback": this.handleExpired,
+        "error-callback": this.handleErrored,
+        size: this.props.size,
+        stoken: this.props.stoken,
+        badge: this.props.badge,
       });
-      this._renderGrecaptcha();
-      clearInterval(readyCheck);
+      this.captcha.appendChild(wrapper);
+    }
+    if (this._executeRequested && this.props.grecaptcha && this._widgetId !== undefined) {
+      this._executeRequested = false;
+      this.execute();
     }
   }
 
   componentDidMount() {
-    loadGoogleRecaptcha(`https://www.google.com/recaptcha/api.js?hl=${this.props.locale}`, () => {
-    });
+    this.explicitRender();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { render, onloadCallback } = this.props;
-
-    if (render === 'explicit' && onloadCallback && this.state.ready && !prevState.ready) {
-      this._renderGrecaptcha();
-    }
+  componentDidUpdate() {
+    this.explicitRender();
   }
 
   componentWillUnmount() {
-    clearInterval(readyCheck);
-  }
-
-  reset() {
-    const { ready, widget } = this.state;
-    if (ready && widget !== null) {
-      grecaptcha.reset(widget);
+    if (this._widgetId !== undefined) {
+      this.delayOfCaptchaIframeRemoving();
+      this.reset();
     }
   }
 
+  delayOfCaptchaIframeRemoving() {
+    const temporaryNode = document.createElement("div");
+    document.body.appendChild(temporaryNode);
+    temporaryNode.style.display = "none";
 
-  _renderGrecaptcha() {
-    this.state.widget = grecaptcha.render(this.props.elementID, {
-      sitekey: this.props.sitekey,
-      callback: (this.props.verifyCallback) ? this.props.verifyCallback : undefined,
-      theme: this.props.theme,
-      type: this.props.type,
-      size: this.props.size,
-      tabindex: this.props.tabindex,
-      hl: this.props.language,
-      badge: this.props.badge,
-      'expired-callback': (this.props.expiredCallback) ? this.props.expiredCallback : undefined,
-    });
-
-    if (this.props.onloadCallback) {
-      this.props.onloadCallback();
+    // move of the recaptcha to a temporary node
+    while (this.captcha.firstChild) {
+      temporaryNode.appendChild(this.captcha.firstChild);
     }
+
+    // delete the temporary node after reset will be done
+    setTimeout(() => {
+      document.body.removeChild(temporaryNode);
+    }, 5000);
+  }
+
+  handleRecaptchaRef(elem) {
+    this.captcha = elem;
   }
 
   render() {
-    if (this.props.render === 'explicit' && this.props.onloadCallback) {
-      return (
-        <div id={this.props.elementID}
-          data-onloadcallbackname={this.props.onloadCallbackName}
-          data-verifycallbackname={this.props.verifyCallbackName}>
-        </div>
-      );
-    }
-
-    return (
-      <div id={this.props.elementID}
-        className="g-recaptcha"
-        data-sitekey={this.props.sitekey}
-        data-theme={this.props.theme}
-        data-type={this.props.type}
-        data-size={this.props.size}
-        data-badge={this.props.badge}
-        data-tabindex={this.props.tabindex}
-      />
-    );
+    /* eslint-disable no-unused-vars */
+    const {
+      sitekey,
+      onChange,
+      theme,
+      type,
+      tabindex,
+      onExpired,
+      onErrored,
+      size,
+      stoken,
+      grecaptcha,
+      badge,
+      ...childProps
+    } = this.props;
+    /* eslint-enable no-unused-vars */
+    return <div {...childProps} ref={this.handleRecaptchaRef} />;
   }
 }
 
+AnterosRecaptcha.displayName = "AnterosRecaptch";
+
 AnterosRecaptcha.propTypes = {
-  className: PropTypes.string,
-  onloadCallbackName: PropTypes.string,
-  elementID: PropTypes.string,
-  onloadCallback: PropTypes.func,
-  verifyCallback: PropTypes.func,
-  expiredCallback: PropTypes.func,
-  render: PropTypes.string,
-  sitekey: PropTypes.string,
-  theme: PropTypes.string,
-  type: PropTypes.string,
-  verifyCallbackName: PropTypes.string,
-  expiredCallbackName: PropTypes.string,
-  size: PropTypes.string,
-  tabindex: PropTypes.string,
-  badge: PropTypes.string,
-  locale: PropTypes.string
+  sitekey: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
+  grecaptcha: PropTypes.object,
+  theme: PropTypes.oneOf(["dark", "light"]),
+  type: PropTypes.oneOf(["image", "audio"]),
+  tabindex: PropTypes.number,
+  onExpired: PropTypes.func,
+  onErrored: PropTypes.func,
+  size: PropTypes.oneOf(["compact", "normal", "invisible"]),
+  stoken: PropTypes.string,
+  badge: PropTypes.oneOf(["bottomright", "bottomleft", "inline"]),
 };
 
 AnterosRecaptcha.defaultProps = {
-  elementID: 'g-recaptcha',
-  onloadCallback: undefined,
-  onloadCallbackName: 'onloadCallback',
-  verifyCallback: undefined,
-  verifyCallbackName: 'verifyCallback',
-  expiredCallback: undefined,
-  expiredCallbackName: 'expiredCallback',
-  render: 'onload',
-  theme: 'light',
-  type: 'image',
-  size: 'normal',
-  tabindex: '0',
-  badge: 'bottomright',
-  locale: 'pt-br'
+  onChange: () => {},
+  theme: "light",
+  type: "image",
+  tabindex: 0,
+  size: "normal",
+  badge: "bottomright",
 };
+
+
+export default makeAsyncScriptLoader(getURL, {
+  callbackName,
+  globalName,
+  removeOnUnmount: initialOptions.removeOnUnmount || false,
+})(AnterosRecaptcha);

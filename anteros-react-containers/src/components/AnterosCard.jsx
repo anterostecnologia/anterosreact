@@ -85,7 +85,7 @@ class AnterosCard extends Component {
                         </div>
 
                         <div className="actions">
-                            {headerActions}
+                            {headerActionsVisible?headerActions:null}
                         </div>
                     </div>
                 </div>) : null}
