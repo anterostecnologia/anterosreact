@@ -3,7 +3,7 @@ import AnterosCollapseContent from './components/AnterosCollapseContent';
 import AnterosForm, { AnterosBaseInputControl, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn } from './components/AnterosForm';
 import AnterosMainContainer, { Breadcrumbs, BreadcrumbsItem } from './components/AnterosMainContainer';
 import AnterosModal, { ModalActions } from './components/AnterosModal';
-import AnterosPageControl, { AnterosTabLink, AnterosTabContent } from './components/AnterosPageControl';
+import AnterosPageControl, { AnterosTabLink, AnterosTabContent, PageHeaderActions } from './components/AnterosPageControl';
 import AnterosTab from './components/AnterosTab';
 import AnterosDivider from "./components/AnterosDivider";
 import AnterosPanel from "./components/AnterosPanel";
@@ -22,7 +22,7 @@ import AnterosToolbar, {AnterosToolbarGroup} from './components/AnterosToolbar';
 export {
     AnterosCard, HeaderActions, FooterActions, AnterosCardDeck, AnterosCardGroup, AnterosCollapseContent,
     AnterosForm, AnterosBaseInputControl, AnterosFormGroup, AnterosFormSection, AnterosInputGroup, AnterosInputGroupAddOn,    
-    AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem,
+    AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem, PageHeaderActions,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
     AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,AnterosContainer,
     AnterosStepWizard, AnterosFormSteps, AnterosFormStep, AnterosFlexBox,AnterosCollapse,
