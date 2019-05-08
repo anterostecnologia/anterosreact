@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {AnterosButton} from "anteros-react-buttons";
+import {AnterosButton, AnterosScrollButton} from "anteros-react-buttons";
 import lodash from 'lodash';
 import {AnterosError, AnterosUtils} from "anteros-react-core";
 import PropTypes from 'prop-types';
@@ -222,6 +222,13 @@ export class AnterosFormSteps extends Component {
                     height: this.props.contentHeight,
                     overflow: "auto"
                 }}>
+                    {this.props.withScrollButton ? (
+                        <AnterosScrollButton
+                            caption={this.props.scrollButtonCaption}
+                            captionStyle={this.props.scrollButtonStyle}
+                            color={this.props.scrollButtonColor}
+                        />
+                    ): null}
                     {content}
                 </div>
 
@@ -297,7 +304,11 @@ AnterosFormSteps.propTypes = {
     onFormStepChange: PropTypes.func,
     onError: PropTypes.func,
     onAfterUpdateFormSteps: PropTypes.func,
-    onAfterUpdateFormStep: PropTypes.func
+    onAfterUpdateFormStep: PropTypes.func,
+    withScrollButton: PropTypes.bool.isRequired,
+    scrollButtonCaption: PropTypes.string,
+    scrollButtonStyle: PropTypes.object,
+    scrollButtonColor: PropTypes.string
 };
 
 AnterosFormSteps.defaultProps = {
@@ -306,7 +317,11 @@ AnterosFormSteps.defaultProps = {
     nextCaption: "Próximo",
     finishCaption: "Finalizar",
     cancelCaption: "Cancelar",
-    buttonOutline: false
+    buttonOutline: false,
+    withScrollButton: false,
+    scrollButtonCaption: '',
+    scrollButtonStyle: {},
+    scrollButtonColor: undefined
 }
 
 export class AnterosStepFooter extends Component {

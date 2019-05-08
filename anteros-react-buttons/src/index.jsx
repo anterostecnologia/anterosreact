@@ -10,10 +10,11 @@ import { AnterosRadioButton, AnterosRadioButtonItem } from "./components/Anteros
 import  AnterosAdvancedDropdown,{AnterosAdvancedDropdownItem} from './components/AnterosAdvancedDropdown';
 import AnterosAdvancedDropdownMenu from './components/AnterosAdvancedDropdownMenu';
 import AnterosAdvancedDropdownToggle from './components/AnterosAdvancedDropdownToggle';
+import AnterosScrollButton from './components/AnterosScrollButton';
 
 export {
     AnterosButton,AnterosButtonGroup,AnterosContainerButton,AnterosDropdownButton,AnterosDropdownDivider,
     AnterosDropdownMenu,AnterosDropdownMenuItem,AnterosFloatingButton, AnterosRadioButton, AnterosRadioButtonItem,
     AnterosFloatingButtonItem, AnterosAdvancedDropdown, AnterosAdvancedDropdownItem,AnterosAdvancedDropdownMenu,
-    AnterosAdvancedDropdownToggle
+    AnterosAdvancedDropdownToggle, AnterosScrollButton
 };

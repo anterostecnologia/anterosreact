@@ -219,3 +219,63 @@
 .container-button > .btn {
 	 margin-right: 4px;
 }
+
+.anteros-scrollButton a {
+	position: absolute;
+	bottom: 10vh;
+	left: 40%;
+	z-index: 50;
+	display: inline-block;
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+	color: $color-primary;
+	text-decoration: none;
+	transition: opacity 0.3s;
+}
+.anteros-scrollButton a:hover {
+	opacity: 0.5;
+	text-decoration: none;
+}
+
+#scrollDown a {
+	padding-top: 70px;
+}
+#scrollDown a .arrow {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 24px;
+	height: 24px;
+	margin-left: -12px;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	-webkit-animation: scrollDown 1.5s infinite;
+	animation: scrollDown 1.5s infinite;
+	box-sizing: border-box;
+}
+@-webkit-keyframes scrollDown {
+	0% {
+	-webkit-transform: rotate(-45deg) translate(0, 0);
+	opacity: 0;
+	}
+	50% {
+	opacity: 1;
+	}
+	100% {
+	-webkit-transform: rotate(-45deg) translate(-20px, 20px);
+	opacity: 0;
+	}
+}
+@keyframes scrollDown {
+	0% {
+	transform: rotate(-45deg) translate(0, 0);
+	opacity: 0;
+	}
+	50% {
+	opacity: 1;
+	}
+	100% {
+	transform: rotate(-45deg) translate(-20px, 20px);
+	opacity: 0;
+	}
+}
