@@ -15,11 +15,11 @@ export default class AnterosScrollButton extends Component {
   onClick(event) {
     event.stopPropagation();
     event.preventDefault();
-    
-    if (!(this.state.element.scrollHeight - this.state.element.scrollTop === this.state.element.clientHeight) && this.state.element.overflowY !== 'hidden') {
+    let element = this.scrollRef.parentElement
+    if (!(element.scrollHeight - element.scrollTop === element.clientHeight) && element.overflowY !== 'hidden') {
       window.$(this.scrollRef.parentElement).animate(
         {
-          scrollTop: this.state.element.clientHeight
+          scrollTop: element.clientHeight
         },
         200
       );
@@ -33,29 +33,6 @@ export default class AnterosScrollButton extends Component {
     }
   }
 
-  componentDidMount() {
-    if(this.scrollRef.parentElement){
-        this.scrollRef.parentElement.addEventListener("scroll", onScroll);
-    }
-  }
-
-  onScroll(event){
-      let element = this.scrollRef.parentElement
-    if ((element.scrollHeight - element.scrollTop === element.clientHeight)
-         && element.overflowY !== 'hidden'
-         && !visible) {
-        this.setState({
-            ...this.state,
-            visible: true
-        })
-      }
-  }
-
-  componentWillUnmount() {
-    if(this.scrollRef.parentElement){
-        this.scrollRef.parentElement.removeEventListener("scroll", onScroll);
-    }
-  }
 
   static get componentName() {
     return 'AnterosScrollButton';
