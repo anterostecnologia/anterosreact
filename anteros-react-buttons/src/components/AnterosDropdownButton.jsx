@@ -28,10 +28,6 @@ export default class AnterosDropdownButton extends Component {
 			.removeClass("show");
 	}
 
-	onButtonClick(event) {
-		
-	}
-
 	buildChildren(children) {
 		let result = [];
 		let _this = this;
@@ -67,7 +63,7 @@ export default class AnterosDropdownButton extends Component {
 		return (
 			<AnterosClickOutside onClickOutside={this.onClickOutside}>
 				<div className="btn-group" id={this.idButton}>
-					<AnterosButton {...rest} dropdown onButtonClick={this.onButtonClick} />
+					<AnterosButton {...rest} dropdown onButtonClick={this.props.onButtonClick} />
 					{children}
 				</div>
 			</AnterosClickOutside>
@@ -95,7 +91,8 @@ AnterosDropdownButton.propTypes = {
 	onClickButton: PropTypes.func,
 	hint: PropTypes.string,
 	hintPosition: PropTypes.string,
-	hintSize: PropTypes.string
+	hintSize: PropTypes.string,
+	onButtonClick: PropTypes.func
 };
 
 AnterosDropdownButton.defaultProps = {
