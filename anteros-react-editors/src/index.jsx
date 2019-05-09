@@ -27,6 +27,7 @@ import AnterosFeedback from './components/AnterosFeedback';
 import AnterosIpAddressEdit from './components/AnterosIpAddressEdit';
 import AnterosInputMask from './components/AnterosInputMask';
 import AnterosCep from './components/AnterosCep';
+import AnterosCheckboxList from './components/AnterosCheckboxList';
 
 
 export {
@@ -39,5 +40,5 @@ export {
     AnterosLookupNumber, AnterosLookupCombobox, AnterosLookupComboboxOption,
     AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,
     AnterosMultiSelect,AnterosFeedback, AnterosIpAddressEdit, AnterosInputMask,
-    AnterosCep
+    AnterosCep,AnterosCheckboxList
 };

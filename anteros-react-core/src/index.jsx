@@ -31,6 +31,7 @@ import autoBind, {
 } from "./components/AnterosAutoBind";
 import { processErrorMessage } from "./components/AnterosErrorMessageHelper";
 import AnterosFloater from "./components/AnterosFloater";
+import AnterosClickOutside from './components/AnterosClickOutside';
 
 export {
 	AnterosError,
@@ -59,5 +60,6 @@ export {
 	processErrorMessage,
 	boundClass,
 	boundMethod,
-	AnterosFloater
+	AnterosFloater,
+	AnterosClickOutside
 };
