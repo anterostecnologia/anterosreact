@@ -24,7 +24,7 @@ const DATASOURCE_EVENTS = [
 export default class AnterosCheckboxList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { activeIndex: this.props.activeIndex, itemsChecked: [] };
+		this.state = { activeIndex: this.props.activeIndex, itemsChecked: this.props.itemsChecked };
 		this.handleSelectItem = this.handleSelectItem.bind(this);
 		this.numberOfItens = 0;
 		this.idList = lodash.uniqueId("list");
@@ -51,7 +51,7 @@ export default class AnterosCheckboxList extends Component {
 	componentDidMount() {}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({ activeIndex: nextProps.activeIndex });
+		this.setState({ activeIndex: nextProps.activeIndex, itemsChecked: nextProps.itemsChecked });
 	}
 
 	componentWillUnmount() {
@@ -723,14 +723,16 @@ AnterosCheckboxList.propTypes = {
 	dataFieldId: PropTypes.string,
 	activeIndex: PropTypes.number,
 	onMouseOver: PropTypes.func,
-	onMouseOut: PropTypes.func
+	onMouseOut: PropTypes.func,
+	itemsChecked: PropTypes.array
 };
 
 AnterosCheckboxList.defaultProps = {
 	showBorder: false,
 	dataFieldText: "text",
 	dataFieldId: "id",
-	activeIndex: 0
+	activeIndex: 0,
+	itemsChecked: []
 };
 
 AnterosCheckboxListItem.propTypes = {

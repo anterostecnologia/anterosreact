@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import {AnterosButton, AnterosScrollButton} from "anteros-react-buttons";
 import lodash from 'lodash';
-import {AnterosError, AnterosUtils} from "anteros-react-core";
-import { AnterosScrollbars } from "anteros-react-admin";
+import {AnterosError} from "anteros-react-core";
+import AnterosScrollbars from './AnterosScrollbars';
 import PropTypes from 'prop-types';
 
 export class AnterosFormSteps extends Component {

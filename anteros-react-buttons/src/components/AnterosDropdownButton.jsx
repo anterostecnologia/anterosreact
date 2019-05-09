@@ -11,7 +11,6 @@ export default class AnterosDropdownButton extends Component {
 		this.buildChildren = this.buildChildren.bind(this);
 		this.onClickItem = this.onClickItem.bind(this);
 		this.onClickOutside = this.onClickOutside.bind(this);
-		this.onButtonClick = this.onButtonClick.bind(this);
 	}
 
 	componentDidMount() {
