@@ -228,7 +228,7 @@ export class AnterosFormSteps extends Component {
                 {headerContent}
                 <AnterosScrollbars
                     className="wizard-content"
-                    autoHeightMax="100vh"
+                    autoHeightMax={500}
                     style={{
                         ...this.props.contentStyle,
                         height: this.props.contentHeight,
