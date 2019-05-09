@@ -23,7 +23,10 @@ export default class AnterosLookupEdit extends React.Component {
             }
             this.setState({ value: value });
         } else {
-            this.setState({ value: this.props.value });
+            let value = '';
+            if (this.props.value)
+               value = this.props.value;
+            this.setState({ value: value });
         }
         this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
     }
@@ -36,6 +39,9 @@ export default class AnterosLookupEdit extends React.Component {
             }
             this.state = { value: value };
         } else {
+            let value = '';
+            if (nextProps.value)
+               value = this.props.value;
             this.state = { value: nextProps.value };
         }
     }
@@ -94,7 +100,7 @@ export default class AnterosLookupEdit extends React.Component {
     }
 
     onBlur(event){
-        const value = this.state.value;
+        const value = this.state?this.state.value:'';
         let _this = this;
         if (_this.props.dataSource && this.props.dataSource.getState() != 'dsBrowse') {
             if (value != _this.props.dataSource.fieldByName(this.props.lookupField)) {
@@ -220,7 +226,7 @@ export default class AnterosLookupEdit extends React.Component {
                 <input
                     disabled={(this.props.disabled ? true : false)}
                     id={this.idEdit} ref={ref => this.input = ref}
-                    type="text" value={this.state.value}
+                    type="text" value={this.state?this.state.value:''}
                     style={{margin: 0}} 
                     className={classNameInput}
                     onChange={this.handleChange}
@@ -236,7 +242,7 @@ export default class AnterosLookupEdit extends React.Component {
             const edit = <input
                 disabled={(this.props.disabled ? true : false)}
                 id={this.idEdit} ref={ref => this.input = ref}
-                type="text" value={this.state.value}
+                type="text" value={this.state?this.state.value:''}
                 style={{ ...this.props.style, width: this.props.width }}
                 className={classNameInput}
                 readOnly={readOnly}

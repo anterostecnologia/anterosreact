@@ -52,7 +52,7 @@ export default class AnterosDropdownMenuItem extends Component {
 
         return (<div id={this.idItem1}><a href={this.props.href}
             className={_className} id={this.idItem2}>
-            {icon}<img src={this.props.image} id={this.idItem4}/> {this.props.caption}
+            {icon}{icon?<span> </span>:null}<img src={this.props.image} id={this.idItem4}/> {this.props.caption}
         </a></div>);
     }
 }
