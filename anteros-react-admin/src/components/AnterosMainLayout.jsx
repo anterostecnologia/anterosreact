@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AnterosScrollbars from "./AnterosScrollbars";
+import {AnterosScrollbars} from "anteros-react-containers";
 import { AnterosUtils } from "anteros-react-core";
 import AnterosSidebarLayout from "./AnterosSidebarLayout";
 import {
