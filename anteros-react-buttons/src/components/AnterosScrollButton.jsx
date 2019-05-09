@@ -5,27 +5,42 @@ export default class AnterosScrollButton extends Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
-    this.onScroll = this.onScroll.bind(this);
     this.state = {
-        element: null,
-        visible: true
+        isUp: this.props.isUp
     }
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      isUp: nextProps.isUp
+    })
   }
 
   onClick(event) {
     event.stopPropagation();
     event.preventDefault();
-    let element = this.scrollRef.parentElement
-    if (!(element.scrollHeight - element.scrollTop === element.clientHeight) && element.overflowY !== 'hidden') {
-      window.$(this.scrollRef.parentElement).animate(
+    let parent = this.scrollRef.parentElement
+    if (!isUp && parent.overflowY !== 'hidden') {
+      window.$(parent).animate(
         {
-          scrollTop: element.clientHeight
+          scrollTop: parent.clientHeight
         },
         200
       );
       this.setState({
           ...this.state,
-          visible: false
+          isUp: true
+      })
+    } else if (isUp && parent.overflowY !== 'hidden') {
+      window.$(parent).animate(
+        {
+          scrollTop: 0
+        },
+        200
+      );
+      this.setState({
+          ...this.state,
+          isUp: false
       })
     }
     if (!this.props.disabled && this.props.onClick) {
@@ -51,25 +66,31 @@ export default class AnterosScrollButton extends Component {
             <div
                 id="scrollDown"
                 className={className}
-                style={{...style, display: this.state.visible ? 'block' : 'none' }}
+                style={{...style, display: this.props.visible ? 'block' : 'none' }}
                 ref={ref => (this.scrollRef = ref)}
                 >
                 <a
                     href="#down"
+                    className={this.state.isUp ? "down":"up"}
                     onClick={this.onClick}
                     style={{
                         font:"inherit"
                     }}
                 >
-                <span
-                    className="arrow"
-                    style={{
-                        borderLeft: "1px solid " + this.props.color,
-                        borderBottom: "1px solid " + this.props.color,
-                    }}
-                />
-                <div style={{ ...this.props.captionStyle, padding: ".6vh 2.2vw .6vh 2.2vw" }}>
-                    <span className="caption">{this.props.caption}</span>
+                <div style={{ ...this.props.captionStyle, color: this.props.color, padding: ".6vh 2.2vw .6vh 2.2vw" }}>
+                  {this.state.isUp ? this.props.captionUp : this.props.captionDown}
+                  <span>
+                    <i
+                      className={this.state.isUp ? "arrow-down":"arrow-up"}
+                      style={{
+                        border: "solid " + this.props.color,
+                        borderWidth: "0 0 1.5px 1.5px",
+                        display: "inline-block",
+                        padding: "4px",
+                      }}
+                    >
+                    </i>
+                  </span>
                 </div>
                 </a>
             </div>
@@ -80,9 +101,12 @@ export default class AnterosScrollButton extends Component {
 
 AnterosScrollButton.propTypes = {
   disabled: PropTypes.bool,
+  visible: PropTypes.bool,
+  isUp: PropTypes.bool,
   borderColor: PropTypes.string,
   color: PropTypes.string,
-  caption: PropTypes.string,
+  captionUp: PropTypes.string,
+  captionDown: PropTypes.string,
   captionStyle: PropTypes.object,
   style: PropTypes.object,
   onClick: PropTypes.func,
@@ -90,7 +114,10 @@ AnterosScrollButton.propTypes = {
 
 AnterosScrollButton.defaultProps = {
   disabled: false,
+  visible: true,
+  isUp: false,
   borderColor: undefined,
   color: undefined,
-  caption: undefined
+  captionUp: undefined,
+  captionDown: undefined
 };

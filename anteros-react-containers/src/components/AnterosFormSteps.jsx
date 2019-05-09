@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {AnterosButton, AnterosScrollButton} from "anteros-react-buttons";
 import lodash from 'lodash';
 import {AnterosError, AnterosUtils} from "anteros-react-core";
+import { AnterosScrollbars } from "anteros-react-admin";
 import PropTypes from 'prop-types';
 
 export class AnterosFormSteps extends Component {
@@ -27,6 +28,9 @@ export class AnterosFormSteps extends Component {
             doneIndex: -1
         };
         this.numberOfSteps = -1;
+        this.state = {
+            isUp: false
+        }
     }
 
     onBackClick(event) {
@@ -137,6 +141,13 @@ export class AnterosFormSteps extends Component {
         }
     }
 
+    handleScroll(event){
+        this.setState({
+          ...this.state,
+          isUp: (event.target.scrollHeight-event.target.clientHeight-event.target.scrollTop) < event.target.clientHeight
+      })
+    }
+
     render() {
         let className = "wizard clearfix";
         if (this.props.className) {
@@ -215,22 +226,27 @@ export class AnterosFormSteps extends Component {
             }}>
                 {stepsDiv}
                 {headerContent}
-                <div
+                <AnterosScrollbars
                     className="wizard-content"
+                    autoHeightMax="100vh"
                     style={{
-                    ...this.props.contentStyle,
-                    height: this.props.contentHeight,
-                    overflow: "auto"
-                }}>
+                        ...this.props.contentStyle,
+                        height: this.props.contentHeight,
+                        overflow: "auto"
+                    }}
+                    onScroll = {this.handleScroll}
+                >
                     {this.props.withScrollButton ? (
                         <AnterosScrollButton
-                            caption={this.props.scrollButtonCaption}
+                            isUp={this.state.isUp}
+                            captionUp={this.props.scrollButtonCaptionUp}
+                            captionDown={this.props.scrollButtonCaptionDown}
                             captionStyle={this.props.scrollButtonStyle}
                             color={this.props.scrollButtonColor}
                         />
                     ): null}
                     {content}
-                </div>
+                </AnterosScrollbars>
 
                 <div className="wizard-buttons step-footer">
                     {position === 'first'
@@ -306,7 +322,8 @@ AnterosFormSteps.propTypes = {
     onAfterUpdateFormSteps: PropTypes.func,
     onAfterUpdateFormStep: PropTypes.func,
     withScrollButton: PropTypes.bool.isRequired,
-    scrollButtonCaption: PropTypes.string,
+    scrollButtonCaptionUp: PropTypes.string,
+    scrollButtonCaptionDown: PropTypes.string,
     scrollButtonStyle: PropTypes.object,
     scrollButtonColor: PropTypes.string
 };
@@ -319,7 +336,6 @@ AnterosFormSteps.defaultProps = {
     cancelCaption: "Cancelar",
     buttonOutline: false,
     withScrollButton: false,
-    scrollButtonCaption: '',
     scrollButtonStyle: {},
     scrollButtonColor: undefined
 }
