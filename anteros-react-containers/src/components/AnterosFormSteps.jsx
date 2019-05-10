@@ -135,17 +135,27 @@ export class AnterosFormSteps extends Component {
         })
     }
 
+    componentDidMount(){
+        let wrapper = document.getElementById('wizard-content')
+        wrapper.addEventListener('scroll', this.handleScroll)
+    }
+    
     componentDidUpdate(){
         if (this.props.onAfterUpdateFormSteps) {
             this.props.onAfterUpdateFormSteps();
         }
     }
+    
+    componentWillUnmount(){
+        let wrapper = document.getElementById('wizard-content')
+        wrapper.removeEventListener('scroll', this.handleScroll)
+    }
 
     handleScroll(event){
-        this.setState({
-          ...this.state,
-          isUp: (event.target.scrollHeight-event.target.clientHeight-event.target.scrollTop) < event.target.clientHeight
-      })
+    //     this.setState({
+    //       ...this.state,
+    //       isUp: (event.target.scrollHeight-event.target.clientHeight-event.target.scrollTop) < event.target.clientHeight
+    //   })
     }
 
     render() {
@@ -173,7 +183,8 @@ export class AnterosFormSteps extends Component {
                 if (item.type){
                     if (!(item.type.componentName === 'AnterosFormStep') &&
                         !(item.type.componentName === 'AnterosStepFooter') &&
-                        !(item.type.componentName === 'AnterosStepHeader')){
+                        !(item.type.componentName === 'AnterosStepHeader') &&
+                        !(item.type.componentName === 'AnterosScrollbars')){
                             throw new AnterosError("Apenas componentes do tipo AnterosFormStep, AnterosStepFooter, AnterosStepHeader" +
                             " e podem ser usados como filhos de AnterosFormSteps" +
                             ".");
@@ -226,9 +237,9 @@ export class AnterosFormSteps extends Component {
             }}>
                 {stepsDiv}
                 {headerContent}
-                <AnterosScrollbars
+                <div
+                    id="wizard-content"
                     className="wizard-content"
-                    autoHeightMax={500}
                     style={{
                         ...this.props.contentStyle,
                         height: this.props.contentHeight,
@@ -246,7 +257,7 @@ export class AnterosFormSteps extends Component {
                         />
                     ): null}
                     {content}
-                </AnterosScrollbars>
+                </div>
 
                 <div className="wizard-buttons step-footer">
                     {position === 'first'
@@ -336,8 +347,10 @@ AnterosFormSteps.defaultProps = {
     cancelCaption: "Cancelar",
     buttonOutline: false,
     withScrollButton: false,
+    scrollButtonCaptionUp: 'Voltar para o topo',
+    scrollButtonCaptionDown: 'Ir para o final',
     scrollButtonStyle: {},
-    scrollButtonColor: undefined
+    scrollButtonColor: 'white'
 }
 
 export class AnterosStepFooter extends Component {
