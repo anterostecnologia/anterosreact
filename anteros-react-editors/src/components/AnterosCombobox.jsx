@@ -1,5 +1,5 @@
 import React from 'react'
-import 'script-loader!chosen-js/chosen.jquery.min.js';
+import 'chosen-js/chosen.jquery.js';
 import lodash from 'lodash';
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import {AnterosError, AnterosUtils} from "anteros-react-core";
