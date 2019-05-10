@@ -132,21 +132,11 @@ export class AnterosFormSteps extends Component {
         })
     }
 
-    componentDidMount(){
-        let wrapper = document.getElementById('wizard-content')
-        // wrapper.addEventListener('scroll', this.handleScroll)
-    }
-    
     componentDidUpdate(){
         if (this.props.onAfterUpdateFormSteps) {
             this.props.onAfterUpdateFormSteps();
         }
     }
-    
-    // componentWillUnmount(){
-    //     let wrapper = document.getElementById('wizard-content')
-    //     wrapper.removeEventListener('scroll', this.handleScroll)
-    // }
 
     // handleScroll(event){
     // //     this.setState({
@@ -242,7 +232,7 @@ export class AnterosFormSteps extends Component {
                         height: this.props.contentHeight,
                         overflow: "auto"
                     }}
-                    onScroll = {this.handleScroll}
+                    // onScroll = {this.handleScroll}
                 >
                     {content}
                     {this.props.withScrollButton ? (
