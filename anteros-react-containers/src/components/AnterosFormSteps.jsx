@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react';
 import {AnterosButton, AnterosScrollButton} from "anteros-react-buttons";
 import lodash from 'lodash';
 import {AnterosError} from "anteros-react-core";
-import AnterosScrollbars from './AnterosScrollbars';
 import PropTypes from 'prop-types';
 
 export class AnterosFormSteps extends Component {
@@ -135,10 +134,10 @@ export class AnterosFormSteps extends Component {
         })
     }
 
-    componentDidMount(){
-        let wrapper = document.getElementById('wizard-content')
-        wrapper.addEventListener('scroll', this.handleScroll)
-    }
+    // componentDidMount(){
+    //     let wrapper = document.getElementById('wizard-content')
+    //     wrapper.addEventListener('scroll', this.handleScroll)
+    // }
     
     componentDidUpdate(){
         if (this.props.onAfterUpdateFormSteps) {
@@ -146,17 +145,17 @@ export class AnterosFormSteps extends Component {
         }
     }
     
-    componentWillUnmount(){
-        let wrapper = document.getElementById('wizard-content')
-        wrapper.removeEventListener('scroll', this.handleScroll)
-    }
+    // componentWillUnmount(){
+    //     let wrapper = document.getElementById('wizard-content')
+    //     wrapper.removeEventListener('scroll', this.handleScroll)
+    // }
 
-    handleScroll(event){
-    //     this.setState({
-    //       ...this.state,
-    //       isUp: (event.target.scrollHeight-event.target.clientHeight-event.target.scrollTop) < event.target.clientHeight
-    //   })
-    }
+    // handleScroll(event){
+    // //     this.setState({
+    // //       ...this.state,
+    // //       isUp: (event.target.scrollHeight-event.target.clientHeight-event.target.scrollTop) < event.target.clientHeight
+    // //   })
+    // }
 
     render() {
         let className = "wizard clearfix";
@@ -184,7 +183,7 @@ export class AnterosFormSteps extends Component {
                     if (!(item.type.componentName === 'AnterosFormStep') &&
                         !(item.type.componentName === 'AnterosStepFooter') &&
                         !(item.type.componentName === 'AnterosStepHeader') &&
-                        !(item.type.componentName === 'AnterosScrollbars')){
+                        !(item.type.componentName === 'AnterosScrollButton')){
                             throw new AnterosError("Apenas componentes do tipo AnterosFormStep, AnterosStepFooter, AnterosStepHeader" +
                             " e podem ser usados como filhos de AnterosFormSteps" +
                             ".");
@@ -247,6 +246,7 @@ export class AnterosFormSteps extends Component {
                     }}
                     onScroll = {this.handleScroll}
                 >
+                    {content}
                     {this.props.withScrollButton ? (
                         <AnterosScrollButton
                             isUp={this.state.isUp}
@@ -256,7 +256,6 @@ export class AnterosFormSteps extends Component {
                             color={this.props.scrollButtonColor}
                         />
                     ): null}
-                    {content}
                 </div>
 
                 <div className="wizard-buttons step-footer">
