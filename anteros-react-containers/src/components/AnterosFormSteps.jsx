@@ -24,12 +24,10 @@ export class AnterosFormSteps extends Component {
             : lodash.uniqueId("formStep"));
         this.state = {
             activeIndex: 0,
-            doneIndex: -1
+            doneIndex: -1,
+            isUp: false
         };
         this.numberOfSteps = -1;
-        this.state = {
-            isUp: false
-        }
     }
 
     onBackClick(event) {
@@ -134,10 +132,10 @@ export class AnterosFormSteps extends Component {
         })
     }
 
-    // componentDidMount(){
-    //     let wrapper = document.getElementById('wizard-content')
-    //     wrapper.addEventListener('scroll', this.handleScroll)
-    // }
+    componentDidMount(){
+        let wrapper = document.getElementById('wizard-content')
+        // wrapper.addEventListener('scroll', this.handleScroll)
+    }
     
     componentDidUpdate(){
         if (this.props.onAfterUpdateFormSteps) {
