@@ -224,6 +224,10 @@ export default class AnterosScrollbars extends Component {
         clearInterval(this.detectScrollingInterval);
     }
 
+    static get componentName() {
+        return 'AnterosScrollbars';
+    }
+
     getScrollLeft() {
         if (!this.view) return 0;
         return this.view.scrollLeft;
