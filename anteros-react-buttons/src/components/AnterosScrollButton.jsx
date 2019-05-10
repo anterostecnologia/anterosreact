@@ -20,7 +20,7 @@ export default class AnterosScrollButton extends Component {
     event.stopPropagation();
     event.preventDefault();
     let parent = this.scrollRef.parentElement
-    if (!isUp && parent.overflowY !== 'hidden') {
+    if (!this.state.isUp && parent.overflowY !== 'hidden') {
       window.$(parent).animate(
         {
           scrollTop: parent.clientHeight
@@ -31,7 +31,7 @@ export default class AnterosScrollButton extends Component {
           ...this.state,
           isUp: true
       })
-    } else if (isUp && parent.overflowY !== 'hidden') {
+    } else if (this.state.isUp && parent.overflowY !== 'hidden') {
       window.$(parent).animate(
         {
           scrollTop: 0
@@ -71,7 +71,7 @@ export default class AnterosScrollButton extends Component {
                 >
                 <a
                     href="#down"
-                    className={this.state.isUp ? "down":"up"}
+                    className={this.state.isUp ? "up":"down"}
                     onClick={this.onClick}
                     style={{
                         font:"inherit"
@@ -81,7 +81,7 @@ export default class AnterosScrollButton extends Component {
                   {this.state.isUp ? this.props.captionUp : this.props.captionDown}
                   <span>
                     <i
-                      className={this.state.isUp ? "arrow-down":"arrow-up"}
+                      className={this.state.isUp ? "arrow-up":"arrow-down"}
                       style={{
                         border: "solid " + this.props.color,
                         borderWidth: "0 0 1.5px 1.5px",
