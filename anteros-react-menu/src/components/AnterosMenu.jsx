@@ -120,7 +120,7 @@ export default class AnterosMenu extends Component {
             style = {{
               position: "absolute",
               bottom: "1vh",
-              left: "15vw",
+              left: "80%",
               color:this.props.versionColor
             }}
           >
