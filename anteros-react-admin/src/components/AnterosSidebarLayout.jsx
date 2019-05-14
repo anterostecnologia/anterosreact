@@ -13,7 +13,7 @@ const defaultStyles = {
     overflow: 'hidden',
   },
   sidebar: {
-    zIndex: 2,
+    zIndex: 10,
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -33,7 +33,7 @@ const defaultStyles = {
     transition: 'left .3s ease-out, right .3s ease-out',
   },
   overlay: {
-    zIndex: 1,
+    zIndex: 9,
     position: 'fixed',
     top: 0,
     left: 0,

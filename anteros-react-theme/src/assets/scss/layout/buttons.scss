@@ -224,7 +224,7 @@
 	position: absolute;
 	bottom: 15vh;
 	left: 40%;
-	z-index: 50;
+	z-index: 5;
 	display: inline-block;
 	-webkit-transform: translate(0, -50%);
 	transform: translate(0, -50%);
@@ -237,7 +237,7 @@
 	position: absolute;
 	top: 15vh;
 	left: 40%;
-	z-index: 50;
+	z-index: 5;
 	display: inline-block;
 	-webkit-transform: translate(0, -50%);
 	transform: translate(0, -50%);
@@ -254,7 +254,7 @@
 #scrollDown > a .arrow-down {
 	position: fixed;
 	top: 20%;
-	right: 10px;
+	margin-left: 5px;
 	-webkit-transform: rotate(-45deg);
 	transform: rotate(-45deg);
 	-webkit-animation: scrollDown 1.5s infinite;
@@ -291,7 +291,7 @@
 #scrollDown > a .arrow-up {
 	position: fixed;
 	top: 50%;
-	right: 10px;
+	margin-left: 5px;
 	-webkit-transform: rotate(-135deg);
 	transform: rotate(135deg);
 	-webkit-animation: scrollUp 1.5s infinite;
