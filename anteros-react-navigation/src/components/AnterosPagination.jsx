@@ -163,6 +163,9 @@ export class AnterosPagination extends Component {
     }
 
     handlePageChanged(num) {
+        if (this.props.onBeforePageChanged){
+            this.props.onBeforePageChanged(this.state.currentPage, num);
+        }
         if (this.props.dataSource) {
             this.props.dataSource.goToPage(num);
         }
@@ -313,6 +316,7 @@ AnterosPagination.propTypes = {
     images: PropTypes.object,
     icons: PropTypes.object,
     onPageChanged: PropTypes.func,
+    onBeforePageChanged: PropTypes.func,
     large: PropTypes.bool,
     small: PropTypes.bool,
     horizontalAlign: PropTypes.oneOf(['start', 'center', 'end']),

@@ -95,7 +95,7 @@ export default class AnterosLookupCombobox extends React.Component {
         if (nextProps.dataSource) {
             value = nextProps.dataSource.fieldByName(nextProps.dataField);
             if (value)
-            value = value[nextProps.dataFieldText];
+            value = value[nextProps.lookupDataFieldText];
         }
         this.setState({ ...this.state, value });
         this.updateSelect();
@@ -136,7 +136,7 @@ export default class AnterosLookupCombobox extends React.Component {
             if (this.props.dataSource) {
                 value = this.props.dataSource.fieldByName(this.props.dataField);
                 if (value)
-                value = value[this.props.dataFieldText];
+                value = value[this.props.lookupDataFieldText];
             }
             this.setState({ ...this.state, value });
         }

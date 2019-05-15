@@ -187,9 +187,13 @@ export class AnterosQueryBuilder extends React.Component {
 
   getQuickFilterSort() {
     let result = "";
+    let appendDelimiter = false;
     this.getFields(this.props).forEach(function(field) {
       if (field.quickFilterSort === true) {
-        result = field.name;
+        if (appendDelimiter)
+            result += ","; 
+        result += field.name;
+        appendDelimiter = true;
       }
     }, this);
     return result;
