@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 export class AnterosFormSteps extends Component {
     constructor(props) {
         super(props);
+        this.divScroll = React.createRef();
         this.onBackClick = this
             .onBackClick
             .bind(this);
@@ -19,13 +20,17 @@ export class AnterosFormSteps extends Component {
         this.onNextClick = this
             .onNextClick
             .bind(this);
+        this.handleScroll = this
+            .handleScroll
+            .bind(this);
         this.idFormStep = (this.props.id
             ? this.props.id
             : lodash.uniqueId("formStep"));
         this.state = {
             activeIndex: 0,
             doneIndex: -1,
-            isUp: false
+            isUp: false,
+            visible: false
         };
         this.numberOfSteps = -1;
     }
@@ -51,7 +56,8 @@ export class AnterosFormSteps extends Component {
         this.setState({
             ...this.state,
             activeIndex: index,
-            doneIndex: this.state.doneIndex - 1
+            doneIndex: this.state.doneIndex - 1,
+            visible: this.divScroll.current.scrollHeight > this.divScroll.current.clientHeight
         })
     }
 
@@ -102,7 +108,8 @@ export class AnterosFormSteps extends Component {
                         _this.setState({
                             ..._this.state,
                             activeIndex: index,
-                            doneIndex: _this.state.doneIndex + 1
+                            doneIndex: _this.state.doneIndex + 1,
+                            visible: _this.divScroll.current.scrollHeight > _this.divScroll.current.clientHeight
                         })
                     }, function (err) {
                         if (_this.props.onError) {
@@ -128,22 +135,41 @@ export class AnterosFormSteps extends Component {
         this.setState({
             ...this.state,
             activeIndex: index,
-            doneIndex: this.state.doneIndex + 1
+            doneIndex: this.state.doneIndex + 1,
+            visible: this.divScroll.current.scrollHeight > this.divScroll.current.clientHeight
         })
+    }
+
+    componentDidMount(){
+        let _visible = this.divScroll.current.scrollHeight > this.divScroll.current.clientHeight
+        if (this.state.visible !== _visible) {
+            this.setState({
+                ...this.state,
+                visible: _visible
+            })
+        }
     }
 
     componentDidUpdate(){
         if (this.props.onAfterUpdateFormSteps) {
             this.props.onAfterUpdateFormSteps();
         }
+        let _visible = this.divScroll.current.scrollHeight > this.divScroll.current.clientHeight
+        if (this.state.visible !== _visible) {
+            this.setState({
+                ...this.state,
+                visible: _visible
+            })
+        }
     }
 
-    // handleScroll(event){
-    // //     this.setState({
-    // //       ...this.state,
-    // //       isUp: (event.target.scrollHeight-event.target.clientHeight-event.target.scrollTop) < event.target.clientHeight
-    // //   })
-    // }
+    handleScroll(event){
+        this.setState({
+          ...this.state,
+          isUp: (event.target.scrollHeight-event.target.clientHeight) < (event.target.scrollTop/2),
+          visible: event.target.scrollHeight > event.target.clientHeight
+      })
+    }
 
     render() {
         let className = "wizard clearfix";
@@ -232,10 +258,11 @@ export class AnterosFormSteps extends Component {
                         height: this.props.contentHeight,
                         overflow: "auto"
                     }}
-                    // onScroll = {this.handleScroll}
+                    ref = {this.divScroll}
+                    onScroll = {this.handleScroll}
                 >
                     {content}
-                    {this.props.withScrollButton ? (
+                    {(this.props.withScrollButton && this.state.visible) ? (
                         <AnterosScrollButton
                             isUp={this.state.isUp}
                             captionUp={this.props.scrollButtonCaptionUp}

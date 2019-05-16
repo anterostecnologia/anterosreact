@@ -77,7 +77,7 @@ export default class AnterosScrollButton extends Component {
                         font:"inherit"
                     }}
                 >
-                <div style={{ ...this.props.captionStyle, color: this.props.color, padding: ".6vh 2.2vw .6vh 2.2vw" }}>
+                <div style={{ ...this.props.captionStyle, color: this.props.color, padding: ".6vh 2.2vw .8vh 2.2vw" }}>
                   {this.state.isUp ? this.props.captionUp : this.props.captionDown}
                   <span>
                     <i
