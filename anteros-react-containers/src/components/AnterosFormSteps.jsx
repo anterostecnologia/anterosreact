@@ -164,9 +164,10 @@ export class AnterosFormSteps extends Component {
     }
 
     handleScroll(event){
+        
         this.setState({
           ...this.state,
-          isUp: (event.target.scrollHeight-event.target.clientHeight) < (event.target.scrollTop/2),
+          isUp: event.target.scrollTop > ((event.target.scrollHeight-event.target.clientHeight)/2),
           visible: event.target.scrollHeight > event.target.clientHeight
       })
     }
@@ -262,13 +263,14 @@ export class AnterosFormSteps extends Component {
                     onScroll = {this.handleScroll}
                 >
                     {content}
-                    {(this.props.withScrollButton && this.state.visible) ? (
+                    {(this.props.withScrollButton) ? (
                         <AnterosScrollButton
                             isUp={this.state.isUp}
                             captionUp={this.props.scrollButtonCaptionUp}
                             captionDown={this.props.scrollButtonCaptionDown}
                             captionStyle={this.props.scrollButtonStyle}
                             color={this.props.scrollButtonColor}
+                            visible={this.state.visible}
                         />
                     ): null}
                 </div>
