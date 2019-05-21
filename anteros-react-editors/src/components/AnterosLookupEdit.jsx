@@ -21,12 +21,12 @@ export default class AnterosLookupEdit extends React.Component {
             if (!value) {
                 value = '';
             }
-            this.setState({ value: value });
+            this.state = { value: value };
         } else {
             let value = '';
             if (this.props.value)
                value = this.props.value;
-            this.setState({ value: value });
+            this.state = { value: value };
         }
         this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
     }

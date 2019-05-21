@@ -3,6 +3,10 @@ import PropTypes from "prop-types";
 import lodash from "lodash";
 import { AnterosFloater } from "anteros-react-core";
 
+
+/**
+ * Componente Botão
+ */
 export default class AnterosButton extends Component {
   constructor(props) {
     super(props);
@@ -255,42 +259,76 @@ export default class AnterosButton extends Component {
   }
 }
 
-AnterosButton.propTypes = {
-  disabled: PropTypes.bool,
-  oval: PropTypes.bool,
-  success: PropTypes.bool,
+AnterosButton.propTypes = { 
+  /** Permite desabilitar o uso do componente */  
+  disabled: PropTypes.bool, 
+  /** Transforma o botão no formato oval */
+  oval: PropTypes.bool, 
+  /** Troca a cor do componente para o definido no tema em sucess */
+  success: PropTypes.bool, 
+  /** Troca a cor do componente para o definido no tema em info */
   info: PropTypes.bool,
+  /** Transforma o botão num link */
   link: PropTypes.bool,
+  /** Troca a cor do componente para o definido no tema em warning */
   warning: PropTypes.bool,
+  /** Muda o tamanho do botão para o maior */
   large: PropTypes.bool,
+  /** Muda o tamanho do botão para o menor */
   small: PropTypes.bool,
+  /** Troca a cor do componente para o definido no tema em primary */
   primary: PropTypes.bool,
+  /** Troca a cor do componente para o definido no tema em danger */
   danger: PropTypes.bool,
+  /** Troca a cor do componente para o definido no tema em secondary */
   secondary: PropTypes.bool,
+  /** Troca a cor do componente para o definido no tema em default */
   default: PropTypes.bool,
+  /** Troca o lado esquerdo do botão para o formato de pilula */
   pillLeft: PropTypes.bool,
+  /** Troca o lado direito do botão para o formato de pilula */
   pillRight: PropTypes.bool,
   pullRight: PropTypes.bool,
   block: PropTypes.bool,
+  /** Cor de fundo do botão */
   backgroundColor: PropTypes.string,
+  /** Cor da borda do botão */
   borderColor: PropTypes.string,
+  /** Cor do botão */
   color: PropTypes.string,
+  /** Indica se o botão vai ser dropdown */
   dropdown: PropTypes.bool,
+  /** Ícone do botão */
   icon: PropTypes.string,
+  /** Cor do Ícone do botão */
   iconColor: PropTypes.string,
+  /** Tamanho do ícone */
   iconSize: PropTypes.string,
+  /** Imagem a ser usada no botão */
   image: PropTypes.string,
+  /** Título do botão */
   caption: PropTypes.string,
+  /** Evento onclick no botão */
   onButtonClick: PropTypes.func,
+  /** Dica do botão */
   hint: PropTypes.string,
+  /** Posição da dica(hint) no botão */
   hintPosition: PropTypes.oneOf(["top", "right", "left", "bottom"]),
+  /** Transforma o botão no estilo Facebook */
   facebook: PropTypes.bool,
+  /** Transforma o botão no estilo Twitter */
   twitter: PropTypes.bool,
+  /** Transforma o botão no estilo Google Plus */
   googlePlus: PropTypes.bool,
+  /** Transforma o botão no estiloe Linkedin */
   linkedin: PropTypes.bool,
+   /** Transforma o botão no estiloe Instagram */
   instagram: PropTypes.bool,
+   /** Transforma o botão no estiloe Pinterest */
   pinterest: PropTypes.bool,
+   /** Transforma o botão no estiloe Dribbble */
   dribbble: PropTypes.bool,
+  /** Transforma o botão no estiloe youtube */
   youtube: PropTypes.bool,
   inline: PropTypes.bool,
   dataUser: PropTypes.string,
