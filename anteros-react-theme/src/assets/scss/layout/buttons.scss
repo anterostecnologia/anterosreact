@@ -220,10 +220,21 @@
 	 margin-right: 4px;
 }
 
+.anteros-scrollButton .center {
+	left: 40%;
+}
+
+.anteros-scrollButton .right {
+	right: 1vw;
+}
+
+.anteros-scrollButton .left {
+	left: 1vw;
+}
+
 .anteros-scrollButton .down {
 	position: absolute;
 	bottom: 15vh;
-	left: 40%;
 	z-index: 5;
 	display: inline-block;
 	-webkit-transform: translate(0, -50%);
@@ -236,7 +247,6 @@
 .anteros-scrollButton .up {
 	position: absolute;
 	top: 15vh;
-	left: 40%;
 	z-index: 5;
 	display: inline-block;
 	-webkit-transform: translate(0, -50%);

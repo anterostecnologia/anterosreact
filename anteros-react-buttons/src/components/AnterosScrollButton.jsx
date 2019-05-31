@@ -71,7 +71,7 @@ export default class AnterosScrollButton extends Component {
                 >
                 <a
                     href="#down"
-                    className={this.state.isUp ? "up":"down"}
+                    className={(this.state.isUp ? "up":"down") + " " + this.props.position}
                     onClick={this.onClick}
                     style={{
                         font:"inherit"
@@ -110,6 +110,7 @@ AnterosScrollButton.propTypes = {
   captionStyle: PropTypes.object,
   style: PropTypes.object,
   onClick: PropTypes.func,
+  position: PropTypes.oneOf(['left', 'center', 'right'])
 };
 
 AnterosScrollButton.defaultProps = {
@@ -119,5 +120,6 @@ AnterosScrollButton.defaultProps = {
   borderColor: undefined,
   color: undefined,
   captionUp: undefined,
-  captionDown: undefined
+  captionDown: undefined,
+  position: 'center'
 };

@@ -271,6 +271,7 @@ export class AnterosFormSteps extends Component {
                             captionStyle={this.props.scrollButtonStyle}
                             color={this.props.scrollButtonColor}
                             visible={this.state.visible}
+                            position={this.props.scrollButtonPosition}
                         />
                     ): null}
                 </div>
@@ -352,7 +353,8 @@ AnterosFormSteps.propTypes = {
     scrollButtonCaptionUp: PropTypes.string,
     scrollButtonCaptionDown: PropTypes.string,
     scrollButtonStyle: PropTypes.object,
-    scrollButtonColor: PropTypes.string
+    scrollButtonColor: PropTypes.string,
+    scrollButtonPosition: PropTypes.oneOf(['left', 'center', 'right'])
 };
 
 AnterosFormSteps.defaultProps = {
