@@ -12810,7 +12810,9 @@ body.swal2-iosfix {
 }
 
 .modal .modal-content {
-  border-radius: 0;
+    border-radius: 0;
+    border-top-left-radius: 0.5rem; 
+    border-top-right-radius: 0.5rem; 
 }
 .modal .modal-header {
   background-color: #eceff1;

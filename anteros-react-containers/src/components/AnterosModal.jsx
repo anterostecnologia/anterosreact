@@ -428,7 +428,7 @@ export default class AnterosModal extends React.Component {
               }}>
             <div
                 className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-content', this.props.contentClassName), this.props.cssModule)}
-                style={this.props.style}>
+                style={{...this.props.style}}>
                 <If condition={this.props.showHeader}>
                     <Then>
                         <div className={classNameHeader}>
@@ -447,11 +447,10 @@ export default class AnterosModal extends React.Component {
                 </If>
                 <div
                     className={classNameBody}
-                    style={{
+                    style={{ overflowY: "auto",
                     width: this.props.width,
-                    maxWidth: this.props.width,
-                    height: this.props.height,
-                    overflowY: "auto"
+                  maxWidth: this.props.width,
+                  height: this.props.height
                 }}>
                     {tagIcon}{image}
                     <h6>{this.props.text}</h6>

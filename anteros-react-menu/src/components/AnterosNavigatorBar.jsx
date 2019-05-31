@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import {AnterosUtils} from 'anteros-react-core';
 
-export default class AnterosNavigatorBar extends Compoennt {
+export default class AnterosNavigatorBar extends Component {
     
     constructor(props){
         super(props);
@@ -90,14 +90,14 @@ AnterosNavigatorBar.propTypes = {
     expand: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   };
   
-  AnterosNavigatorBar.applydefaultProps = {
+  AnterosNavigatorBar.defaultProps = {
     tag: 'nav',
     expand: false,
   };
 
 
 
-  export class AnterosNavigatorBarItem extends component {
+  export class AnterosNavigatorBarItem extends Component {
   
     constructor(props){
         super(props);
@@ -138,7 +138,7 @@ AnterosNavigatorBar.propTypes = {
 
 
 
-export class AnterosNavigatorBarLink extends React.Component {
+export class AnterosNavigatorBarLink extends Component {
   constructor(props) {
     super(props);
 
