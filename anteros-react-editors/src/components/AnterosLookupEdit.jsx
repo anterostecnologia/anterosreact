@@ -123,7 +123,11 @@ export default class AnterosLookupEdit extends React.Component {
                             _this.props.onLookupResult(newData);
                         }
 
+                        if ((newData == "") || (newData == undefined)){
+                            newData = null
+                        }
                         _this.props.dataSource.setFieldByName(_this.props.dataField, newData);
+
                     }, function (err) {
                         _this.props.onLookupDataError(err.message);
                         _this.input.focus();
