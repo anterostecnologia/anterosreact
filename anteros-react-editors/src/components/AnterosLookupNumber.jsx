@@ -123,7 +123,11 @@ export default class AnterosLookupNumber extends React.Component {
                             _this.props.onLookupResult(newData);
                         }
 
+                        if ((newData == "") || (newData == undefined)) {
+                            newData = null;
+                        }
                         _this.props.dataSource.setFieldByName(_this.props.dataField, newData);
+
                     }, function (err) {
                         if (_this.props.onFinishedLookupData){
                             _this.props.onFinishedLookupData(_this);

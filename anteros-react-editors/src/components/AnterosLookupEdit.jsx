@@ -124,7 +124,7 @@ export default class AnterosLookupEdit extends React.Component {
                         }
 
                         if ((newData == "") || (newData == undefined)){
-                            newData = null
+                            newData = null;
                         }
                         _this.props.dataSource.setFieldByName(_this.props.dataField, newData);
 
