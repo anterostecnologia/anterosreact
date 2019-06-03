@@ -45,10 +45,10 @@ export class AnterosDropzone extends React.Component {
         Dropzone = Dropzone || require('dropzone')
         Dropzone.autoDiscover = false
         if (this.props.language == 'pt-BR') {
-            Dropzone.prototype.defaultOptions.dictDefaultMessage = "Arraste os arquivos aqui";
+            Dropzone.prototype.defaultOptions.dictDefaultMessage = "Arraste o(s) arquivo(s) aqui";
             Dropzone.prototype.defaultOptions.dictFallbackMessage = "Seu navegador não suporta arrastar arquivos.";
             Dropzone.prototype.defaultOptions.dictFallbackText = "Use o formulário de retorno abaixo para fazer o upload de seus arquivos como nos dias anteriores.";
-            Dropzone.prototype.defaultOptions.dictFileTooBig = "Arquivos é muito grande ({{filesize}}MiB). Máximo permitido: {{maxFilesize}}MiB.";
+            Dropzone.prototype.defaultOptions.dictFileTooBig = "Arquivo é muito grande ({{filesize}}MiB). Máximo permitido: {{maxFilesize}}MiB.";
             Dropzone.prototype.defaultOptions.dictInvalidFileType = "Você não pode fazer envio deste tipo de arquivo.";
             Dropzone.prototype.defaultOptions.dictResponseError = "Servidor respondeu com o seguinte código {{statusCode}}.";
             Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancelar envio";
