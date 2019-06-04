@@ -12,6 +12,9 @@ export default class AnterosNavigator extends Component {
 
   handleSelectLink(item) {
     this.setState({ active: item });
+    if (this.props.handleSelectLink) {
+      this.props.handleSelectLink(item)
+    }
   }
 
   static get componentName() {
@@ -80,6 +83,7 @@ export default class AnterosNavigator extends Component {
 }
 
 AnterosNavigator.propTypes = {
+  handleSelectLink: PropTypes.func,
   align: PropTypes.string,
   stack: PropTypes.string,
   pillFormat: PropTypes.bool,
