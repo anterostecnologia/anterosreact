@@ -1,6 +1,24 @@
-import AnterosDropzone from "./components/AnterosDropzone";
-
+import AnterosDropzone, {
+	Layout,
+	Input,
+	Preview,
+	SubmitButton,
+	formatBytes,
+	formatDuration,
+	accepts,
+	defaultClassNames,
+	getFilesFromEvent
+} from "./components/AnterosDropzone";
 
 export {
-    AnterosDropzone
+	AnterosDropzone,
+	Layout,
+	Input,
+	Preview,
+	SubmitButton,
+	formatBytes,
+	formatDuration,
+	accepts,
+	defaultClassNames,
+	getFilesFromEvent
 };
