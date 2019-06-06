@@ -1056,9 +1056,10 @@ AnterosDropzone.defaultProps = {
 	submitButtonDisabled: false,
 	submitButtonContent: "Enviar",
 	classNames: {},
-  styles: {},
-  width: "300px",
-  height: "200px",
+  	styles: {},
+  	width: "300px",
+	height: "200px",
+	textAlign: "center",  
 	addClassNames: {}
 };
 
