@@ -433,7 +433,6 @@ const Input = props => {
 				onChange={async e => {
 					const chosenFiles = await getFilesFromEvent(e);
 					onFiles(chosenFiles);
-					e.target.value = null;
 				}}
 			/>
 		</label>
