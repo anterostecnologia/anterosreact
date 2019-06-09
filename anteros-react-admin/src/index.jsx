@@ -2,7 +2,7 @@ import AnterosFooter from './components/AnterosFooter';
 import AnterosFullScreen from './components/AnterosFullScreen';
 import AnterosHeader from './components/AnterosHeader';
 import AnterosMainLayout from "./components/AnterosMainLayout";
-import AnterosMediaQuery from './components/AnterosMediaQuery';
+import AnterosMediaQuery, {AnterosMediaQueryProvider, AnterosMatchMediaHOC} from './components/AnterosMediaQuery';
 import AnterosLoginFooter from './components/AnterosLoginFooter';
 import AnterosLoginHeader from './components/AnterosLoginHeader';
 import AnterosLoginForm from './components/AnterosLoginForm';
@@ -17,9 +17,11 @@ import AnterosMainHeader,{ToolbarCenter, UserActions, ToolbarEnd} from './compon
 
 
 export {
-    AnterosFooter, AnterosFullScreen, AnterosHeader, AnterosMainLayout, 
-    AnterosMediaQuery, AnterosLoginFooter, AnterosLoginHeader, AnterosLoginForm,AnterosSidebarLayout,
+    AnterosFooter, AnterosFullScreen, AnterosHeader, AnterosMainLayout,     
+    AnterosMediaQuery, 
+    AnterosLoginFooter, AnterosLoginHeader, AnterosLoginForm,AnterosSidebarLayout,
     AnterosSidebarContent, AnterosMainContent, AnterosUserMenu,AnterosUserAction,
     AnterosMainMenu, AnterosMainHeader, ToolbarCenter, UserActions, ToolbarEnd,
-    AnterosUserBlock, AnterosMainFooter
+    AnterosUserBlock, AnterosMainFooter, 
+    AnterosMediaQueryProvider, AnterosMatchMediaHOC
 };
