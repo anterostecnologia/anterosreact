@@ -957,12 +957,16 @@ class AnterosDropzone extends React.Component {
     }
     
     if (this.props.width){
-      style = {...style, width: this.props.width};
+		style = {...style, width: this.props.width};
     }
 
     if (this.props.height){
-      style = {...style, height: this.props.height};
-    }
+		style = {...style, height: this.props.height};
+	}
+	
+	if (this.props.contentPosition){
+		style = {...style, textAlign: this.props.contentPosition}
+	}
 
 		return (
 			<Layout_
@@ -1036,7 +1040,8 @@ AnterosDropzone.propTypes = {
   LayoutComponent: PropTypes.func,
   
   width: PropTypes.string,
-  height: PropTypes.string
+  height: PropTypes.string,
+  contentPosition: PropTypes.oneOf(['left', 'center', 'right', 'end','start', 'justify'])
 };
 
 AnterosDropzone.defaultProps = {
@@ -1058,7 +1063,7 @@ AnterosDropzone.defaultProps = {
   	styles: {},
   	width: "300px",
 	height: "200px",
-	textAlign: "center",  
+	contentPosition: "center",  
 	addClassNames: {}
 };
 
