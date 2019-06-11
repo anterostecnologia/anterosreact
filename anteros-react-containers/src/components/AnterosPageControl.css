@@ -177,6 +177,16 @@
   border: 1px solid rgba(0, 0, 0, .125);
 }
 
+@media (max-width:991px){
+  .page-control {
+    height: auto !important; 
+    position: relative;
+    display: block;
+    background-color: #fbfbfb;
+    border: 1px solid rgba(0, 0, 0, .125);
+  }
+}
+
 .page-control-vertical {
   display: table;
   background-color: #fbfbfb;

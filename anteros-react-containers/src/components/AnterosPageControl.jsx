@@ -93,7 +93,7 @@ export default class AnterosPageControl extends Component {
 		if (this.props.vertical) {
 			let classNameTab = "nav nav-tabs tabs-vertical";
 			return (
-				<div className="page-control" style={style}>
+				<div className={this.props.className ? ("page-control " + this.props.className) : "page-control"} style={style}>
 					<div className={this.props.custom1 ? "vtabs customvtab" : "vtabs"}>
 						<ul className={classNameTab} role="tablist">
 							{tabs}
@@ -123,7 +123,7 @@ export default class AnterosPageControl extends Component {
 				classNameTab += " nav-pills";
 			}
 			return (
-				<div className="page-control" style={style}>
+				<div className={this.props.className ? ("page-control " + this.props.className) : "page-control"} style={style}>
 					<div
 						className={
 							this.props.custom1
