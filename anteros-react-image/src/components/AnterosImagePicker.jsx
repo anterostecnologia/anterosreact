@@ -537,7 +537,7 @@ class AnterosImagePickerEdicao extends Component {
             style={{
               textAlign: 'end'
             }}
-            small={3}
+            small={12}
           >
             <AnterosButton
               id="btnSave"
