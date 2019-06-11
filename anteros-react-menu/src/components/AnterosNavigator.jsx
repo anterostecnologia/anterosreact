@@ -25,7 +25,8 @@ export default class AnterosNavigator extends Component {
     let children = [];
     if (this.props.children) {
       let _this = this;
-      this.props.children.forEach(function(child) {
+      let arrChildren = React.Children.toArray(this.props.children);
+      arrChildren.forEach(function(child) {
         let active = child.props.active;
         if (_this.state.active) {
           active = false;

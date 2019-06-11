@@ -842,9 +842,9 @@ class ImageContent extends Component {
                     : this.state.currentImage
                 }
               />
-            ) : ( 
+            ) : !this.state.cropping ? (
               <h5>Capture, carregue ou cole uma imagem</h5>
-            )}
+            ) : null}
             {this.state.currentImage && this.state.cropping ? (
               <Fragment>
                 <AnterosImageCropper
