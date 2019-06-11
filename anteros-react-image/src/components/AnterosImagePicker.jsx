@@ -821,9 +821,9 @@ class ImageContent extends Component {
           </AnterosCol>
           <AnterosCol small={12} medium={12} large={6}>
             <AnterosNavigator handleSelectLink={this.onMenuLinkClick}>
-              <AnterosNavigatorLink href="#cut" caption="Recortar" />
+              {/* <AnterosNavigatorLink href="#cut" caption="Recortar" />
               <AnterosNavigatorLink href="#copy" caption="Copiar" />
-              <AnterosNavigatorLink href="#paste" caption="Colar" />
+              <AnterosNavigatorLink href="#paste" caption="Colar" /> */}
               <AnterosNavigatorLink href="#crop" caption="Crop" />
             </AnterosNavigator>
             {this.state.currentImage && !this.state.cropping ? (
@@ -833,7 +833,7 @@ class ImageContent extends Component {
                 alt={this.props.alt ? this.props.alt : ''}
                 style={{
                   maxWidth: '-webkit-fill-available',
-                  height: 'auto',
+                  height: '270px',
                   minWidth: '480px'
                 }}
                 src={
