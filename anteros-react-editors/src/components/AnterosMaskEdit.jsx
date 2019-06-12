@@ -21,6 +21,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
             .onChangeValue
             .bind(this);
         this.handleBlur = this.handleBlur.bind(this);    
+        this.handleChange = this.handleChange.bind(this);
         if (this.props.dataSource) {
             let value = this
                 .props
@@ -214,7 +215,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
     }
 
     handleChange(event) {
-        onComplete(event.target.value);
+        this.onChangeValue(event.target.value);
     }
 
     onChangeValue(value) {

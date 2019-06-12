@@ -450,7 +450,8 @@ export default class AnterosModal extends React.Component {
                     style={{ overflowY: "auto",
                     width: this.props.width,
                   maxWidth: this.props.width,
-                  height: this.props.height
+                  height: this.props.height,
+                  overflowY: this.props.withScroll?true:false
                 }}>
                     {tagIcon}{image}
                     <h6>{this.props.text}</h6>
@@ -597,7 +598,8 @@ AnterosModal.propTypes = {
     full: PropTypes.bool,
     semifull: PropTypes.bool,
     width : PropTypes.string,
-    style : PropTypes.object
+    style : PropTypes.object,
+    withScroll : PropTypes.bool
   };
   
   AnterosModal.defaultProps = {
@@ -619,7 +621,8 @@ AnterosModal.propTypes = {
       timeout: TransitionTimeouts.Fade, 
     },
     unmountOnClose: true,
-    showHeader: true
+    showHeader: true,
+    withScroll: true
   };
 
 

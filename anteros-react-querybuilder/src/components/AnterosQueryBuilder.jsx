@@ -170,6 +170,10 @@ export class AnterosQueryBuilder extends React.Component {
     });
   }
 
+  getQuickFilterText(){
+    return this.state.quickFilterText;
+  }
+
   getQuickFilterFields() {
     let result = "";
     let appendDelimiter = false;
@@ -350,6 +354,12 @@ export class AnterosQueryBuilder extends React.Component {
       });
     }
   }
+
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({...this.state, quickFilterText: nextProps.quickFilterText});
+  }
+  
 
   onDatasourceEvent(event, error) {
     if (event === dataSourceEvents.ON_ERROR) {

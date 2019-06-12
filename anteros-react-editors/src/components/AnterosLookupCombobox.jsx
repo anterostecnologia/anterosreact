@@ -190,7 +190,7 @@ export default class AnterosLookupCombobox extends React.Component {
 							this.props.dataSource.getCurrentRecord()
 						);
 					} else {
-						value = value[this.props.lookupDataFieldText];
+						value = value[this.props.lookupDataFieldId];
 					}
 				}
 			}
@@ -205,7 +205,22 @@ export default class AnterosLookupCombobox extends React.Component {
 			event == dataSourceEvents.AFTER_DELETE
 		) {
 			this.loadData = true;
-			this.setState({ ...this.state, update: Math.random() });
+			if (this.props.dataSource) {
+				let value = this.props.value;
+				if (this.props.dataSource) {
+					value = this.props.dataSource.fieldByName(this.props.dataField);
+					if (value) {
+						if (typeof this.props.lookupDataFieldText === "function") {
+							value = this.props.lookupDataFieldText(
+								this.props.dataSource.getCurrentRecord()
+							);
+						} else {
+							value = value[this.props.lookupDataFieldId];
+						}
+					}
+				}
+				this.setState({ ...this.state, value });
+			}
 		}
 	}
 
