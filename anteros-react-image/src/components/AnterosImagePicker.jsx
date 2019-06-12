@@ -895,6 +895,7 @@ class ImageContent extends Component {
                   style={{
                     width: '100%',
                     height: 'auto',
+                    maxHeight: '45vh'
                   }}
                   guides={true}
                   modal={true}
