@@ -844,6 +844,9 @@ class ImageContent extends Component {
                   // Tamanho do preview
                   width="100%"
                   height="auto"
+                  style={{
+                    maxHeight: "45vh"
+                  }}
                   ref={ref => (this.webcamRef = ref)}
                 />
                 <AnterosButton
@@ -869,6 +872,7 @@ class ImageContent extends Component {
                 style={{
                   width: '100%',
                   height: 'auto',
+                  maxHeight: '45vh'
                 }}
                 src={
                   isBase64(this.state.currentImage)
