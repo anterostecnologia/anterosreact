@@ -55,6 +55,7 @@ function isBase64(str) {
 export default class AnterosImagePicker extends React.Component {
   constructor(props) {
     super(props);
+    this.AnterosImagePickerEdicaoRef = React.createRef();
     this.onSelect = this.onSelect.bind(this);
     this.onRemove = this.onRemove.bind(this);
     this.onDoubleClickImage = this.onDoubleClickImage.bind(this);
@@ -312,6 +313,9 @@ export default class AnterosImagePicker extends React.Component {
               dataSource={this.dsImage}
               dataField={'editedImg'}
               minSize={this.props.minSize}
+              captureWidth={this.props.captureWidth}
+              captureHeight={this.props.captureHeight}
+              ref={this.AnterosImagePickerEdicaoRef}
             />
           </div>
           <AnterosButton
@@ -370,6 +374,9 @@ export default class AnterosImagePicker extends React.Component {
               dataSource={this.dsImage}
               dataField={'editedImg'}
               minSize={this.props.minSize}
+              captureWidth={this.props.captureWidth}
+              captureHeight={this.props.captureHeight}
+              ref={this.AnterosImagePickerEdicaoRef}
             />
           </div>
           <AnterosButton
@@ -461,14 +468,18 @@ AnterosImagePicker.propTypes = {
   small: columnProps,
   medium: columnProps,
   large: columnProps,
-  extraLarge: columnProps
+  extraLarge: columnProps,
+  captureWidth: PropTypes.number.isRequired,
+  captureHeight: PropTypes.number.isRequired
 };
 
 AnterosImagePicker.defaultProps = {
   width: '150px',
   height: '200px',
   readOnly: false,
-  value: ''
+  value: '',
+  captureWidth: 480,
+  captureHeight: 270
 };
 
 class AnterosImagePickerEdicao extends Component {
@@ -478,6 +489,11 @@ class AnterosImagePickerEdicao extends Component {
     this.state = { activePage: 'tabArquivo' };
     this.onDetailPageChange = this.onDetailPageChange.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
+    this.clear = this.clear.bind(this);
+  }
+
+  clear(){
+    this.imageContentRef.current.clear()
   }
 
   onDetailPageChange(id) {
@@ -530,6 +546,8 @@ class AnterosImagePickerEdicao extends Component {
           dataSource={this.props.dataSource}
           dataField={this.props.dataField}
           minSize={this.props.minSize}
+          width={this.props.captureWidth}
+          height={this.props.captureHeight}
           ref={this.imageContentRef}
         />
         <AnterosRow horizontalEnd>
@@ -576,6 +594,7 @@ class ImageContent extends Component {
     this.handlePaste = this.handlePaste.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
     this.getStatus = this.getStatus.bind(this);
+    this.clear = this.clear.bind(this);
 
     let imgToEdit = this.props.dataSource.fieldByName(this.props.dataField);
 
@@ -600,6 +619,24 @@ class ImageContent extends Component {
       return 'ReadyToSave';
     }
     return 'WaitingImage';
+  }
+
+  clear() {
+
+    let imgToEdit = this.props.dataSource.fieldByName(this.props.dataField);
+
+    if (!imgToEdit) {
+      imgToEdit = null;
+    }
+
+    this.setState({
+      ...this.state,
+      activePage: 'tabArquivo',
+      cropping: false,
+      files: null,
+      filesLoaded: [],
+      currentImage: imgToEdit
+    })
   }
 
   componentDidMount() {
@@ -654,8 +691,9 @@ class ImageContent extends Component {
         image.split(',')[1]
       );
     } else if (button.props.id === 'btnCut') {
+
       let image = this.cropperRef
-        ? this.cropperRef.getCroppedCanvas({ width: 480, height: 270 })
+        ? this.cropperRef.getCroppedCanvas({ width: this.props.width, height: this.props.height })
         : null;
 
       let cutedImg = image.toDataURL();
@@ -679,6 +717,7 @@ class ImageContent extends Component {
       if (this.state.currentImage) {
         this.setState({
           ...this.state,
+          activePage: this.state.activePage,
           cropping: true
         });
       }
@@ -770,11 +809,10 @@ class ImageContent extends Component {
     return (
       <Fragment>
         <AnterosRow>
-          <AnterosCol small={12} medium={12} large={6}>
+          <AnterosCol small={12} medium={6} large={6}>
             <AnterosPageControl
               onPageChange={this.onDetailPageChange}
-              height="540px"
-              vertical={true}
+              height={'540px'}
             >
               <PageHeaderActions />
               <AnterosTab
@@ -805,7 +843,7 @@ class ImageContent extends Component {
                   screenshotFormat="image/png"
                   // Tamanho do preview
                   width="100%"
-                  height="270px"
+                  height="auto"
                   ref={ref => (this.webcamRef = ref)}
                 />
                 <AnterosButton
@@ -819,11 +857,8 @@ class ImageContent extends Component {
               </AnterosTab>
             </AnterosPageControl>
           </AnterosCol>
-          <AnterosCol small={12} medium={12} large={6}>
+          <AnterosCol small={12} medium={6} large={6}>
             <AnterosNavigator handleSelectLink={this.onMenuLinkClick}>
-              {/* <AnterosNavigatorLink href="#cut" caption="Recortar" />
-              <AnterosNavigatorLink href="#copy" caption="Copiar" />
-              <AnterosNavigatorLink href="#paste" caption="Colar" /> */}
               <AnterosNavigatorLink href="#crop" caption="Crop" />
             </AnterosNavigator>
             {this.state.currentImage && !this.state.cropping ? (
@@ -832,9 +867,8 @@ class ImageContent extends Component {
                 ref={this.currentImageRef}
                 alt={this.props.alt ? this.props.alt : ''}
                 style={{
-                  maxWidth: '-webkit-fill-available',
-                  height: '270px',
-                  minWidth: '480px'
+                  width: '100%',
+                  height: 'auto',
                 }}
                 src={
                   isBase64(this.state.currentImage)
@@ -854,11 +888,14 @@ class ImageContent extends Component {
                       ? 'data:image;base64,' + this.state.currentImage
                       : this.state.currentImage
                   }
-                  style={{ height: 270, width: 480 }}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                  }}
                   guides={true}
                   modal={true}
                   rotatable={true}
-                  aspectRatio={480 / 270}
+                  aspectRatio={this.props.width / this.props.height}
                   imageName="Imagem cortada"
                   responseType="blob/base64"
                   ref={ref => (this.cropperRef = ref)}

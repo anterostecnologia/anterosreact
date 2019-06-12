@@ -963,6 +963,10 @@ class AnterosDropzone extends React.Component {
     if (this.props.height){
 		style = {...style, height: this.props.height};
 	}
+
+	if (this.props.minHeight) {
+		style = {...style, height: this.props.minHeight};
+	}
 	
 	if (this.props.contentPosition){
 		style = {...style, textAlign: this.props.contentPosition}
@@ -1037,11 +1041,12 @@ AnterosDropzone.propTypes = {
 	InputComponent: PropTypes.func,
 	PreviewComponent: PropTypes.func,
 	SubmitButtonComponent: PropTypes.func,
-  LayoutComponent: PropTypes.func,
-  
-  width: PropTypes.string,
-  height: PropTypes.string,
-  contentPosition: PropTypes.oneOf(['left', 'center', 'right', 'end','start', 'justify'])
+	LayoutComponent: PropTypes.func,
+	
+	width: PropTypes.string,
+	height: PropTypes.string,
+	minHeight: PropTypes.string,
+	contentPosition: PropTypes.oneOf(['left', 'center', 'right', 'end','start', 'justify'])
 };
 
 AnterosDropzone.defaultProps = {
@@ -1061,8 +1066,9 @@ AnterosDropzone.defaultProps = {
 	submitButtonContent: "Enviar",
 	classNames: {},
   	styles: {},
-  	width: "300px",
-	height: "200px",
+  	width: "75%",
+	height: "auto",
+	minHeight: "150px",
 	contentPosition: "center",  
 	addClassNames: {}
 };
