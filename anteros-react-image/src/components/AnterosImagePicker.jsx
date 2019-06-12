@@ -870,8 +870,9 @@ class ImageContent extends Component {
                 ref={this.currentImageRef}
                 alt={this.props.alt ? this.props.alt : ''}
                 style={{
-                  width: '100%',
+                  width: 'auto',
                   height: 'auto',
+                  maxWidth: '100%',
                   maxHeight: '45vh'
                 }}
                 src={
@@ -893,8 +894,9 @@ class ImageContent extends Component {
                       : this.state.currentImage
                   }
                   style={{
-                    width: '100%',
+                    width: 'auto',
                     height: 'auto',
+                    maxWidth: '100%',
                     maxHeight: '45vh'
                   }}
                   guides={true}
