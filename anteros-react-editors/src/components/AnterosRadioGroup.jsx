@@ -128,10 +128,17 @@ export default class AnterosRadioGroup extends Component {
         this.index = -1;
         let _this = this;
         if (nextProps.children) {
+            let value = nextProps.value;
+            if (this.props.dataSource) {
+                value = this
+                    .props
+                    .dataSource
+                    .fieldByName(this.props.dataField);
+            }
             nextProps
                 .children
                 .forEach(function findIndex(element, index) {
-                    if (element.props.value == nextProps.value) {
+                    if (element.props.value === value) {
                         _this.value = element.props.value;
                         _this.index = index;
                     }
@@ -259,9 +266,9 @@ export class AnterosRadio extends Component {
     }
 
     onClick(event) {
-        const {onChange, checked, index} = this.props;
-        onChange && onChange(index);
         event.stopPropagation();
+        const {onChange, checked, index} = this.props;
+        onChange && onChange(index);        
     }
 
     render() {
@@ -272,7 +279,6 @@ export class AnterosRadio extends Component {
                     className="radio"
                     name={name}
                     type="radio"
-                    defaultChecked={checked}
                     checked={checked}
                     disabled={disabled}/>
                 <span>{this.props.label}</span>
