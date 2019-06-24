@@ -162,11 +162,11 @@ export default class AnterosCheckboxList extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		let target = window.$(this.list).find(".active")[0];
-		if (target) {
-			this.scrollToItem(target);
-			target.focus();
-		}
+		// let target = window.$(this.list).find(".active")[0];
+		// if (target) {
+		// 	this.scrollToItem(target);
+		// 	target.focus();
+		// }
 	}
 
 	scrollToItem(element) {

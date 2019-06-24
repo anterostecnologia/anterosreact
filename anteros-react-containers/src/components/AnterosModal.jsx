@@ -447,11 +447,10 @@ export default class AnterosModal extends React.Component {
                 </If>
                 <div
                     className={classNameBody}
-                    style={{ overflowY: "auto",
-                    width: this.props.width,
+                    style={{ width: this.props.width,
                   maxWidth: this.props.width,
                   height: this.props.height,
-                  overflowY: this.props.withScroll?true:false
+                  overflowY: this.props.withScroll?'auto':'unset'
                 }}>
                     {tagIcon}{image}
                     <h6>{this.props.text}</h6>

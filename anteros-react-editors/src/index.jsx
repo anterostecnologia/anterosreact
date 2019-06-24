@@ -18,7 +18,7 @@ import AnterosTextArea from './components/AnterosTextArea';
 import AnterosTimePicker from './components/AnterosTimePicker';
 import AnterosLookupEdit from './components/AnterosLookupEdit';
 import AnterosLookupNumber from './components/AnterosLookupNumber';
-import AnterosLookupCombobox, { AnterosLookupComboboxOption } from "./components/AnterosLookupCombobox";
+import AnterosLookupCombobox from "./components/AnterosLookupCombobox";
 import AnterosCombobox, { AnterosComboboxOption } from "./components/AnterosCombobox";
 import AnterosHtmlEditor from "./components/AnterosHtmlEditor";
 import AnterosCreditCard from './components/AnterosCreditCard';
@@ -37,7 +37,7 @@ export {
     AnterosEmojiArea, AnterosMaskEdit, AnterosNumber,AnterosPassword,
     AnterosRadioGroup, AnterosRadio, AnterosSelect, AnterosSelectOption,
     AnterosTagsInput, AnterosTextArea, AnterosTimePicker, AnterosLookupEdit,
-    AnterosLookupNumber, AnterosLookupCombobox, AnterosLookupComboboxOption,
+    AnterosLookupNumber, AnterosLookupCombobox, 
     AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,
     AnterosMultiSelect,AnterosFeedback, AnterosIpAddressEdit, AnterosInputMask,
     AnterosCep,AnterosCheckboxList
