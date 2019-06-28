@@ -131,7 +131,6 @@ const defaultFilterOptions = (options, filterValue, excludeOptions, props) => {
 	}
 
 	if (props.ignoreCase) {
-		console.log("aqui "+filterValue);
 		filterValue = filterValue.toLowerCase();
 	}
 
@@ -140,6 +139,9 @@ const defaultFilterOptions = (options, filterValue, excludeOptions, props) => {
 	}
 
 	if (excludeOptions) excludeOptions = excludeOptions.map(i => i[props.valueKey]);
+
+	if (!options)
+		return [];
 
 	return options.filter(option => {
 		if (excludeOptions && excludeOptions.indexOf(option[props.valueKey]) > -1) return false;

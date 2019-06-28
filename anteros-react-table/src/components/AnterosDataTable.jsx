@@ -487,7 +487,7 @@ export default class AnterosDataTable extends Component {
 		if (this.props.enableCheckboxSelect) {
 			$("#" + this.idCheckBoxSelect).on("click", function() {
 				var rows = table.rows({ search: "applied" }).nodes();
-				$('input[type="checkbox"]', rows).prop("checked", this.checked);
+				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);
 				if (this.checked) {
 					if (_this.props.onSelectAllRecords) {
 						let result = [table.rows()[0].length];
@@ -507,7 +507,7 @@ export default class AnterosDataTable extends Component {
 
 			$("#" + this.idTable + " tbody").on(
 				"change",
-				'input[type="checkbox"]',
+				'input[type="checkbox"][name="id[]"]',
 				function(event) {
 					_this.currentRow = event.target.parentElement._DT_CellIndex.row;
 					_this.currentCol = event.target.parentElement._DT_CellIndex.column;

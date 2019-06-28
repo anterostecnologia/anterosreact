@@ -135,6 +135,8 @@ export default class AnterosLookupNumber extends React.Component {
                         _this.props.onLookupDataError(err.message);
                         _this.input.focus();
                     });
+                } else {
+                    _this.props.dataSource.setFieldByName(_this.props.dataField, undefined);
                 }
             }
         } else {

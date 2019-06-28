@@ -88,6 +88,8 @@ export default class AnterosImagePicker extends React.Component {
       this.props.dataSource.fieldByName(this.props.dataField)
     );
     this.dsImage.post();
+
+    this.state = {...this.state, cropping: true};
   }
 
   componentWillReceiveProps(nextProps) {
