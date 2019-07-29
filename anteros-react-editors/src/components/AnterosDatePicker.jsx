@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import AnterosInputText from './AnterosInputMask';
 
 
-export default class AnterosDatePicker1 extends React.Component {
+export default class AnterosDatePicker extends React.Component {
   constructor(props) {
     super(props);
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -213,7 +213,7 @@ export default class AnterosDatePicker1 extends React.Component {
 }
 
 
-AnterosDatePicker1.propTypes = {
+AnterosDatePicker.propTypes = {
   dataSource: PropTypes.oneOfType([
     PropTypes.instanceOf(AnterosLocalDatasource),
     PropTypes.instanceOf(AnterosRemoteDatasource)
@@ -245,7 +245,7 @@ AnterosDatePicker1.propTypes = {
   style: PropTypes.object
 };
 
-AnterosDatePicker1.defaultProps = {
+AnterosDatePicker.defaultProps = {
   placeHolder: '',
   format: 'DD/MM/YYYY',
   mask: '99/99/9999',

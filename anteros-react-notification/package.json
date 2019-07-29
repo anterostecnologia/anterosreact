@@ -52,7 +52,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.8.6",
     "react-lifecycles-compat": "^3.0.4",
-    "react-transition-group": "^1.2.1",
+    "react-transition-group": "^2.9.0",
     "sass-loader": "^6.0.6",
     "script-loader": "^0.7.0",
     "scroll-to": "0.0.2",

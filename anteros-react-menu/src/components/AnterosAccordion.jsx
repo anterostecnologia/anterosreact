@@ -43,10 +43,18 @@ export default class AnterosAccordion extends Component {
                 child.props.children
             ));
         });
-        return (<div id={this.props.id} className="accordion" role="tablist" aria-multiselectable="true">
+        return (<div style={this.props.style} id={this.props.id} className="accordion" role="tablist" aria-multiselectable="true">
             {children}
         </div>);
     }
+}
+
+AnterosAccordion.propTypes = {
+    style : PropTypes.object
+}
+
+AnterosAccordion.defaultProps = {
+    style : {}
 }
 
 
