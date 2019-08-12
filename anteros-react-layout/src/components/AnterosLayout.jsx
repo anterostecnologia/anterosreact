@@ -349,7 +349,7 @@ export class AnterosRow extends Component {
             
 
         return (<Tag {...attributes} className={classes} style={{
-            width
+            width, ...this.props.style
         }}/>);
     };
 }
@@ -367,7 +367,8 @@ AnterosRow.propTypes = {
     horizontalCenter: PropTypes.bool,
     horizontalEnd: PropTypes.bool,
     horizontalAround: PropTypes.bool,
-    horizontalBetween: PropTypes.bool
+    horizontalBetween: PropTypes.bool,
+    style : PropTypes.object
 
 };
 
