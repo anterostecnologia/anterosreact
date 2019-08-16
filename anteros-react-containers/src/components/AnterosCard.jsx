@@ -76,12 +76,17 @@ class AnterosCard extends Component {
             style = { ...style, display: "none" };
         }
 
+        let icon;
+        if (this.props.icon) {
+            icon = (<i style={{ color: this.props.iconColor, fontSize: this.props.iconSize }} className={this.props.icon}></i>);
+        }
+
         return (
             <div id={this.props.id} className={className} style={style} onClick={this.props.onCardClick}>
                 {this.props.showHeader == true ? (<div className="card-header" style={this.props.styleHeader}>
                     <div className="header-block">
                         <div className="caption">
-                            <p className="title"> {this.props.caption} </p>
+                            {icon}<p className="title"> {this.props.caption} </p>
                         </div>
 
                         <div className="actions">
@@ -140,7 +145,10 @@ AnterosCard.propTypes = {
     large: columnProps,
     extraLarge: columnProps,
     visible: PropTypes.bool,
-    onCardClick: PropTypes.func
+    onCardClick: PropTypes.func,
+    icon : PropTypes.string,
+    iconColor: PropTypes.string,
+    iconSize: PropTypes.string,
 };
 
 AnterosCard.defaultProps = {
