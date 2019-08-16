@@ -78,7 +78,7 @@ class AnterosCard extends Component {
 
         let icon;
         if (this.props.icon) {
-            icon = (<i style={{ color: this.props.iconColor, fontSize: this.props.iconSize }} className={this.props.icon}></i>);
+            icon = (<i style={{ color: this.props.iconColor, fontSize: this.props.iconSize, verticalAlign:"top" }} className={this.props.icon}></i>);
         }
 
         return (
@@ -86,7 +86,7 @@ class AnterosCard extends Component {
                 {this.props.showHeader == true ? (<div className="card-header" style={this.props.styleHeader}>
                     <div className="header-block">
                         <div className="caption">
-                            {icon}<p className="title"> {this.props.caption} </p>
+                            {icon}<p className="title" style={{ color: this.props.captionColor, fontSize: this.props.captionSize }}> {this.props.caption} </p>
                         </div>
 
                         <div className="actions">
@@ -149,6 +149,8 @@ AnterosCard.propTypes = {
     icon : PropTypes.string,
     iconColor: PropTypes.string,
     iconSize: PropTypes.string,
+    captionColor: PropTypes.string,
+    captionSize: PropTypes.string
 };
 
 AnterosCard.defaultProps = {
@@ -157,7 +159,9 @@ AnterosCard.defaultProps = {
     outline: false,
     cardInverse: false,
     withScroll: true,
-    visible: true
+    visible: true,
+    captionColor:"#4f5f6f",
+    captionSize:"inherit"
 }
 
 export class HeaderActions extends Component {
