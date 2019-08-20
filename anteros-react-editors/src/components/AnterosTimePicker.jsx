@@ -149,8 +149,8 @@ export default class AnterosTimePicker extends React.Component {
     }
     const colClasses = buildGridClassNames(this.props, false, []);
 
-    let icon = "fa fa-clock-o";
-    if (this.icon) {
+    let icon = "fa fa-clock";
+    if (this.props.icon) {
       icon = this.props.icon;
     }
 
@@ -190,7 +190,7 @@ export default class AnterosTimePicker extends React.Component {
         <div className={className} id={this.props.id} style={{ ...this.props.style, width: width }} ref={ref => this.divInput = ref}>
           <input id={this.idCalendar} ref={ref => this.input = ref} type="text" value={this.state.value} className={classNameInput} onChange={this.handleChange}
             onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} placeholder={this.props.placeHolder} readOnly={readOnly} />
-          <div className={classNameAddOn}>
+          <div className={classNameAddOn} style={{margin: 0, height: '38px', width:'38px'}}>
             <span><i className={icon} /><img src={this.props.image} /></span></div>
         </div>
       </div>

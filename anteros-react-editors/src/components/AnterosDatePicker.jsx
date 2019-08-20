@@ -167,7 +167,7 @@ export default class AnterosDatePicker extends React.Component {
 
     const colClasses = buildGridClassNames(this.props, false, []);
     let icon = "fa fa-calendar";
-    if (this.icon) {
+    if (this.props.icon) {
       icon = this.props.icon;
     }
 

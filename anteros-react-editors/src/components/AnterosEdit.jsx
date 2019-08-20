@@ -12,6 +12,9 @@ export default class AnterosEdit extends AnterosBaseInputControl {
     constructor(props) {
         super(props);
         this.idEdit = lodash.uniqueId("edit");
+        this.handleBlur = this
+            .handleBlur
+            .bind(this);
         this.handleChange = this
             .handleChange
             .bind(this);
@@ -126,6 +129,14 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         }
 
         this.checkError();
+    }
+
+    handleBlur(event) {
+        if (this.props.onBlur) {
+            this
+                .props
+                .onBlur(event, event.target.value);
+        }
     }
 
     onKeyPress(event) {
@@ -278,7 +289,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                         value={this.state.value}
                         className={classNameInput}
                         onChange={this.handleChange}
-                        onBlur={this._handleBlur}
+                        onBlur={this.handleBlur}
                         onFocus={this.props.onFocus}
                         onKeyDown={this.onKeyDown}
                         onKeyPress={this.onKeyPress}
@@ -321,7 +332,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                     onKeyDown={this.onKeyDown}
                     onKeyPress={this.onKeyPress}
                     onChange={this.handleChange}
-                    onBlur={this._handleBlur}
+                    onBlur={this.handleBlur}
                     maxLength={this.props.maxLength}
                     placeholder={this.props.placeHolder}/> {this.displayErrorMessage()}
                 {this.displaySuccessMessage()}
@@ -357,6 +368,7 @@ AnterosEdit.propTypes = {
     extraLarge: columnProps,
     onButtonClick: PropTypes.func,
     onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
     icon: PropTypes.string,
     iconColor: PropTypes.string,
     image: PropTypes.string,
