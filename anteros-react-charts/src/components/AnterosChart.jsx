@@ -1,23 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Chart from 'chart.js';
-import {isEqual} from 'lodash';
-import {find} from 'lodash';
+/* eslint-disable no-console */
+//http://jerairrest.github.io/react-chartjs-2/
+import React from "react";
+import PropTypes from "prop-types";
+import Chart from "chart.js";
+import { isEqual } from "lodash";
+import keyBy from "lodash/keyBy";
 
+// eslint-disable-next-line no-undef
+const NODE_ENV = (typeof process !== "undefined") && process.env && process.env.NODE_ENV;
 
 export class AnterosChart extends React.Component {
-  constructor(props) {
+
+  constructor(props){
     super(props);
-    this.handleOnClick = this.handleOnClick.bind(this);
+    this.transformDataProp = this.transformDataProp.bind(this);
+    this.destroyChart =this.destroyChart.bind(this);
     this.renderChart = this.renderChart.bind(this);
+    this.updateChart = this.updateChart.bind(this);
+    this.memoizeDataProps = this.memoizeDataProps.bind(this);
+    this.saveCurrentDatasets = this.saveCurrentDatasets.bind(this);
+    this.getCurrentDatasets = this.getCurrentDatasets.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
     this.ref = this.ref.bind(this);
   }
 
-
-
   componentWillMount() {
-    this.chart_instance = undefined;
-  }
+    this.chartInstance = undefined;
+  } 
 
   componentDidMount() {
     this.renderChart();
@@ -25,7 +34,7 @@ export class AnterosChart extends React.Component {
 
   componentDidUpdate() {
     if (this.props.redraw) {
-      this.chart_instance.destroy();
+      this.destroyChart();
       this.renderChart();
       return;
     }
@@ -35,7 +44,6 @@ export class AnterosChart extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     const {
-      redraw,
       type,
       options,
       plugins,
@@ -76,19 +84,18 @@ export class AnterosChart extends React.Component {
   }
 
   componentWillUnmount() {
-    this.chart_instance.destroy();
+    this.destroyChart();
   }
 
   transformDataProp(props) {
     const { data } = props;
-    if (typeof (data) == 'function') {
+    if (typeof (data) == "function") {
       const node = this.element;
       return data(node);
     } else {
       return data;
     }
   }
-
 
   memoizeDataProps() {
     if (!this.props.data) {
@@ -106,7 +113,39 @@ export class AnterosChart extends React.Component {
       })
     };
 
+    this.saveCurrentDatasets();
     return data;
+  }
+
+  checkDatasets(datasets) {
+    const isDev = NODE_ENV !== "production" && NODE_ENV !== "prod";
+    const usingCustomKeyProvider = this.props.datasetKeyProvider !== AnterosChart.getLabelAsKey;
+    const multipleDatasets = datasets.length > 1;
+
+    if (isDev && multipleDatasets && !usingCustomKeyProvider) {
+      let shouldWarn = false;
+      datasets.forEach((dataset) => {
+        if (!dataset.label) {
+          shouldWarn = true;
+        }
+      });
+
+      if (shouldWarn) {
+        console.error("Warning: Each dataset needs a unique key. By default, the 'label' property on each dataset is used. Alternatively, you may provide a 'datasetKeyProvider' as a prop that returns a unique key.");
+      }
+    }
+  }
+
+  getCurrentDatasets() {
+    return (this.chartInstance && this.chartInstance.config.data && this.chartInstance.config.data.datasets) || [];
+  }
+
+  saveCurrentDatasets() {
+    this.datasets = this.datasets || {};
+    var currentDatasets = this.getCurrentDatasets();
+    currentDatasets.forEach(d => {
+      this.datasets[this.props.datasetKeyProvider(d)] = d;
+    });
   }
 
   updateChart() {
@@ -114,60 +153,67 @@ export class AnterosChart extends React.Component {
 
     const data = this.memoizeDataProps(this.props);
 
-    if (!this.chart_instance) return;
+    if (!this.chartInstance) return;
 
     if (options) {
-      this.chart_instance.options = Chart.helpers.configMerge(this.chart_instance.options, options);
+      this.chartInstance.options = Chart.helpers.configMerge(this.chartInstance.options, options);
     }
 
-    let currentDatasets = (this.chart_instance.config.data && this.chart_instance.config.data.datasets) || [];
+    let currentDatasets = this.getCurrentDatasets();
     const nextDatasets = data.datasets || [];
+    this.checkDatasets(currentDatasets);
 
-    const currentDatasetKeys = currentDatasets.map(this.props.datasetKeyProvider);
-    const nextDatasetKeys = nextDatasets.map(this.props.datasetKeyProvider);
-    const newDatasets = nextDatasets.filter(d => currentDatasetKeys.indexOf(this.props.datasetKeyProvider(d)) === -1);
+    const currentDatasetsIndexed = keyBy(
+      currentDatasets,
+      this.props.datasetKeyProvider
+    );
 
-    for (let idx = currentDatasets.length - 1; idx >= 0; idx -= 1) {
-      const currentDatasetKey = this.props.datasetKeyProvider(currentDatasets[idx]);
-      if (nextDatasetKeys.indexOf(currentDatasetKey) === -1) {
-        currentDatasets.splice(idx, 1);
+
+    this.chartInstance.config.data.datasets = nextDatasets.map(next => {
+      const current =
+        currentDatasetsIndexed[this.props.datasetKeyProvider(next)];
+
+      if (current && current.type === next.type) {
+        // The data array must be edited in place. As chart.js adds listeners to it.
+        current.data.splice(next.data.length);
+        next.data.forEach((point, pid) => {
+          current.data[pid] = next.data[pid];
+        });
+        // eslint-disable-next-line no-unused-vars
+        const { data, ...otherProps } = next;
+        // Merge properties. Notice a weakness here. If a property is removed
+        // from next, it will be retained by current and never disappears.
+        // Workaround is to set value to null or undefined in next.
+        return {
+          ...current,
+          ...otherProps
+        };
       } else {
-        const retainedDataset = find(nextDatasets, d => this.props.datasetKeyProvider(d) === currentDatasetKey);
-        if (retainedDataset) {
-          currentDatasets[idx].data.splice(retainedDataset.data.length);
-          retainedDataset.data.forEach((point, pid) => {
-            currentDatasets[idx].data[pid] = retainedDataset.data[pid];
-          });
-          const { data, ...otherProps } = retainedDataset;
-          currentDatasets[idx] = {
-            data: currentDatasets[idx].data,
-            ...currentDatasets[idx],
-            ...otherProps
-          };
-        }
+        return next;
       }
-    }
-    newDatasets.forEach(d => currentDatasets.push(d));
+    });
+
+    // eslint-disable-next-line no-unused-vars
     const { datasets, ...rest } = data;
 
-    this.chart_instance.config.data = {
-      ...this.chart_instance.config.data,
+    this.chartInstance.config.data = {
+      ...this.chartInstance.config.data,
       ...rest
     };
 
-    this.chart_instance.update();
+    this.chartInstance.update();
   }
 
   renderChart() {
-    const { options, legend, type, redraw, plugins } = this.props;
+    const { options, legend, type, plugins } = this.props;
     const node = this.element;
     const data = this.memoizeDataProps();
 
-    if (typeof legend !== 'undefined' && !isEqual(AnterosChart.defaultProps.legend, legend)) {
+    if (typeof legend !== "undefined" && !isEqual(AnterosChart.defaultProps.legend, legend)) {
       options.legend = legend;
     }
 
-    this.chart_instance = new Chart(node, {
+    this.chartInstance = new Chart(node, {
       type,
       data,
       options,
@@ -175,8 +221,21 @@ export class AnterosChart extends React.Component {
     });
   }
 
+  destroyChart() {
+    // Put all of the datasets that have existed in the chart back on the chart
+    // so that the metadata associated with this chart get destroyed.
+    // This allows the datasets to be used in another chart. This can happen,
+    // for example, in a tabbed UI where the chart gets created each time the
+    // tab gets switched to the chart and uses the same data).
+    this.saveCurrentDatasets();
+    const datasets = Object.values(this.datasets);
+    this.chartInstance.config.data.datasets = datasets;
+
+    this.chartInstance.destroy();
+  }
+
   handleOnClick(event) {
-    const instance = this.chart_instance;
+    const instance = this.chartInstance;
 
     const {
       getDatasetAtEvent,
@@ -188,26 +247,29 @@ export class AnterosChart extends React.Component {
     getDatasetAtEvent && getDatasetAtEvent(instance.getDatasetAtEvent(event), event);
     getElementAtEvent && getElementAtEvent(instance.getElementAtEvent(event), event);
     getElementsAtEvent && getElementsAtEvent(instance.getElementsAtEvent(event), event);
-    onElementsClick && onElementsClick(instance.getElementsAtEvent(event), event);
+    onElementsClick && onElementsClick(instance.getElementsAtEvent(event), event); // Backward compatibility
   }
 
   ref(element) {
-    this.element = element
+    this.element = element;
   }
 
   render() {
-    const { height, width, onElementsClick } = this.props;
+    const { height, width, id } = this.props;
 
     return (
       <canvas
         ref={this.ref}
         height={height}
         width={width}
+        id={id}
         onClick={this.handleOnClick}
       />
     );
   }
 }
+
+AnterosChart.getLabelAsKey = d => d.label;
 
 AnterosChart.propTypes = {
   data: PropTypes.oneOfType([
@@ -217,7 +279,7 @@ AnterosChart.propTypes = {
   getDatasetAtEvent: PropTypes.func,
   getElementAtEvent: PropTypes.func,
   getElementsAtEvent: PropTypes.func,
-  height: PropTypes.string,
+  height: PropTypes.number,
   legend: PropTypes.object,
   onElementsClick: PropTypes.func,
   options: PropTypes.object,
@@ -226,26 +288,28 @@ AnterosChart.propTypes = {
   type: function (props, propName, componentName) {
     if (!Chart.controllers[props[propName]]) {
       return new Error(
-        'Invalid chart type `' + props[propName] + '` supplied to' +
-        ' `' + componentName + '`.'
+        "Invalid chart type `" + props[propName] + "` supplied to" +
+        " `" + componentName + "`."
       );
     }
   },
-  width: PropTypes.string,
+  width: PropTypes.number,
   datasetKeyProvider: PropTypes.func
-}
+};
 
 AnterosChart.defaultProps = {
   legend: {
     display: true,
-    position: 'bottom'
+    position: "bottom"
   },
-  type: 'bar',
-  height: "400px",
-  width: "400px",
+  type: "doughnut",
+  height: 150,
+  width: 300,
   redraw: false,
-  options: {}
-}
+  options: {},
+  datasetKeyProvider: AnterosChart.getLabelAsKey
+};
+
 
 export class Doughnut extends React.Component {
   render() {
@@ -253,7 +317,7 @@ export class Doughnut extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='doughnut'
+        type="doughnut"
       />
     );
   }
@@ -265,7 +329,7 @@ export class Pie extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='pie'
+        type="pie"
       />
     );
   }
@@ -277,7 +341,7 @@ export class Line extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='line'
+        type="line"
       />
     );
   }
@@ -289,7 +353,7 @@ export class Bar extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='bar'
+        type="bar"
       />
     );
   }
@@ -301,7 +365,7 @@ export class HorizontalBar extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='horizontalBar'
+        type="horizontalBar"
       />
     );
   }
@@ -313,7 +377,7 @@ export class Radar extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='radar'
+        type="radar"
       />
     );
   }
@@ -325,7 +389,7 @@ export class Polar extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='polarArea'
+        type="polarArea"
       />
     );
   }
@@ -334,10 +398,10 @@ export class Polar extends React.Component {
 export class Bubble extends React.Component {
   render() {
     return (
-      <ChartComponent
+      <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='bubble'
+        type="bubble"
       />
     );
   }
@@ -349,11 +413,12 @@ export class Scatter extends React.Component {
       <AnterosChart
         {...this.props}
         ref={ref => this.chart_instance = ref && ref.chart_instance}
-        type='scatter'
+        type="scatter"
       />
     );
   }
 }
+
 
 export const defaults = Chart.defaults;
 

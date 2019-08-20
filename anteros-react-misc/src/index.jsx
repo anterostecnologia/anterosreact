@@ -16,6 +16,7 @@ import AnterosFloater from './components/AnterosFloater';
 import AnterosLinearProgressBar from './components/AnterosLinearProgressBar'
 import AnterosSpeedometer from './components/AnterosSpeedometer';
 import AnterosRadialGauge from './components/AnterosRadialGauge';
+import AnterosThermometer from './components/AnterosThermometer';
 
 export {
     AnterosKnob, AnterosObjectInspector,InspectorItem ,
@@ -23,5 +24,5 @@ export {
     AnterosSlider, AnterosSpinner, AnterosStarRating, AnterosBarcode,
     AnterosIdleTimer,AnterosTimeAgo, AnterosQRCode, AnterosRecaptcha, AnterosTour, 
     AnterosTourStep,AnterosLinearProgressBar,AnterosFloater,AnterosSpeedometer,
-    AnterosRadialGauge
+    AnterosRadialGauge, AnterosThermometer
 };
