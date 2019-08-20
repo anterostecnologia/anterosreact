@@ -16,7 +16,7 @@ class AnterosThermometer extends Component {
     var tooltip = this.options.tooltipValue ? <div className="thermometer__percent-current">{valstr}</div> : <div></div>;
 
     return (
-      <div style={height} className={`thermometer ${size} ${theme}`}>
+      <div style={{...this.props.style,height}}  className={`thermometer ${size} ${theme}`}>
         <div className="thermometer__draw-a"></div>
         <div className="thermometer__draw-b"></div>
         <div className="thermometer__meter">
