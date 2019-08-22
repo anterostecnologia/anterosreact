@@ -8,7 +8,7 @@ class AnterosThermometer extends Component {
     const size = `thermometer--${this.options.size()}`
     const height = { height: `${this.options.height}px` }
     const heightPercent = { height: `${this.options.percent()}%` }
-    const heightBgColor = { height: `calc(${this.options.height}px - 57px)` }
+    const heightBgColor = { height: 'inherit' }
     const valstr = this.options.valstr()
     this._createIntervals()
     const stepIntervals = this._createIntervalsUI(this.options.intervals)
