@@ -101,7 +101,7 @@ export class AnterosFloatingButton extends Component {
         }
 
        
-        return (<ul id={this.props.id ? this.props.id : this.idFButton} className={className} data-fab-toggle={this.props.openMode} data-fab-state={this.state.open ? "open" : "close"}>
+        return(<ul id={this.props.id ? this.props.id : this.idFButton} className={className} data-fab-toggle={this.props.openMode} data-fab-state={this.state.open ? "open" : "close"}>
             <li>
                 <a href="#" id={this.idLink} className={classNameRef}
                     style={{ backgroundColor: this.props.backgroundColor }}
