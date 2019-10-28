@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
-import '../components/AnterosVerticalTimeline.css'
+import './AnterosVerticalTimeline.css'
 
 
 
 
 
 
-/* Classe AnterosVerticalTimeLine **/
+/** Componente AnterosVerticalTimeline */
 const AnterosVerticalTimeline = ({ animate, children, className, layout }) => (
   <div
     className={classNames(className, 'vertical-timeline', {
@@ -23,16 +23,41 @@ const AnterosVerticalTimeline = ({ animate, children, className, layout }) => (
 );
 
 AnterosVerticalTimeline.propTypes = {
-  /* Esta propriedade requer um conjunto de elementos do componente 'AnterosVerticalTimelineElement' **/
+  /** Esta propriedade requer um conjunto de elementos do componente 'AnterosVerticalTimelineElement' */
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
   className: PropTypes.string,
-  /* Esta propriedade indica se a lista de elementos será animada, o padrao é true **/
+  /** Esta propriedade indica se a lista de elementos será animada, o padrao é true */
   animate: PropTypes.bool,
-  /* Esta propriedade indica se o a timeline será dividida em duas colunas ou uma coluna, o padrão é 2 colunas **/
+  /** Esta propriedade indica se a timeline será dividida em duas colunas ou uma coluna, o padrão é 2 colunas */
   layout: PropTypes.oneOf(['1-column', '2-columns']),
+  /** Identificador do item */
+  id: PropTypes.string,
+  /**  Propriedade que contém os elementos que preenchem o container do item */
+   children: PropTypes.oneOfType([
+     PropTypes.arrayOf(PropTypes.node),
+     PropTypes.node,
+   ]),
+  className: PropTypes.string,
+  /** Altera as propriedades da 'seta' do componente 'AnterosVerticalTimelineElement'*/
+  contentArrowStyle: PropTypes.shape({}),
+  /**  Altera as propriedades de estilo do container do componente 'AnterosVerticalTimelineElement' */
+  contentStyle: PropTypes.shape({}),
+  /**  Recebe um elemento com um icone que fica dentro do círculo **/
+  icon: PropTypes.element,
+  /**  Altera as propriedades de estilo do icone no centro do círculo */
+  iconStyle: PropTypes.shape({}),
+  /**  Recebe uma função que será acionada ao clicar no circulo */
+  iconOnClick: PropTypes.func,
+  /**  Altera as propriedaes de estilo do container do componente 'AnterosVerticalTimelineElement'*/
+  style: PropTypes.shape({}),
+  /*   **/
+  date: PropTypes.node,
+  /**  Esta propriedade altera a posição (left ou right) do item do componente 'AnterosVerticalTimelineElement', se não for indicado os itens irão alternar automaticamente*/
+  position: PropTypes.string,
+  //visibilitySensorProps: PropTypes.shape({}),
 };
 
 AnterosVerticalTimeline.defaultProps = {
@@ -119,29 +144,29 @@ class AnterosVerticalTimelineElement extends React.Component {
 }
 
 AnterosVerticalTimelineElement.propTypes = {
-  /* identificador do item **/
+  /** identificador do item */
   id: PropTypes.string,
-  /*  propriedade que contém os elementos que preenchem o container do item **/
+  /**  propriedade que contém os elementos que preenchem o container do item **/
    children: PropTypes.oneOfType([
      PropTypes.arrayOf(PropTypes.node),
      PropTypes.node,
    ]),
   className: PropTypes.string,
-  /* altera as propriedades da 'seta' **/
+  /** altera as propriedades da 'seta' **/
   contentArrowStyle: PropTypes.shape({}),
-  /*  altera as propriedades de estilo do conteudo do item **/
+  /**  altera as propriedades de estilo do conteudo do item **/
   contentStyle: PropTypes.shape({}),
-  /*  recebe um elemento com um icone que fica dentro do círculo **/
+  /**  recebe um elemento com um icone que fica dentro do círculo **/
   icon: PropTypes.element,
-  /*  altera as propriedades de estilo do icone no centro do círculo **/
+  /**  altera as propriedades de estilo do icone no centro do círculo **/
   iconStyle: PropTypes.shape({}),
-  /*  recebe uma função que será acionada ao clicar no circulo **/
+  /**  recebe uma função que será acionada ao clicar no circulo **/
   iconOnClick: PropTypes.func,
-  /*  altera as propriedaes de estilo do container **/
+  /**  altera as propriedaes de estilo do container **/
   style: PropTypes.shape({}),
   /*   **/
   date: PropTypes.node,
-  /*  esta propriedade altera a posição (left ou right) do item, se não for indicado os itens irão alternar automaticamente**/
+  /**  esta propriedade altera a posição (left ou right) do item, se não for indicado os itens irão alternar automaticamente**/
   position: PropTypes.string,
   visibilitySensorProps: PropTypes.shape({}),
   
@@ -163,7 +188,7 @@ AnterosVerticalTimelineElement.defaultProps = {
   
 };
 
-export {AnterosVerticalTimeline,AnterosVerticalTimelineElement}
+export { AnterosVerticalTimeline,AnterosVerticalTimelineElement }
 
 
 //https://github.com/stephane-monnot/react-vertical-timeline

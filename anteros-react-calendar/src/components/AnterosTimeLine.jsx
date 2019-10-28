@@ -1,15 +1,17 @@
 import moment from "moment";
 import React from "react";
 import PropTypes from "prop-types";
-import '../timeline.scss'
+import './style.scss'
 
 /**
- * Esta classe é uma timeline
+ * 
  * 
  *
  * @param {Array} items Array of events in the form of ts and text
  * @returns {Object} return object with key as date and values array in events for that date
  */
+
+ 
 function getFormattedData(items) {
   const activities = {};
   items.forEach(({ date, text }, index) => {
@@ -34,7 +36,7 @@ const timeline = {
     background: 'black',
   }
 }
-
+/** Componente AnterosTimeLine */
 const AnterosTimeLine = ({ items,labelColor,labelTextColor,itemColor,itemTextColor,timeTextColor,circleColor,circleBorderColor}) => {
   const activities = getFormattedData(items);
   const dates = Object.keys(activities);
@@ -56,7 +58,7 @@ const AnterosTimeLine = ({ items,labelColor,labelTextColor,itemColor,itemTextCol
 }
 
 AnterosTimeLine.propTypes = {
-  /**  Esta propriedade é o array de itens que tem como propriedades o campo date e text*/
+  /**  Esta propriedade é o array de itens que tem como propriedades 'date' e 'text'*/
   items: PropTypes.arrayOf(
     PropTypes.shape({
       date: PropTypes.string.isRequired,
@@ -75,7 +77,7 @@ AnterosTimeLine.propTypes = {
   timeTextColor:PropTypes.string,
   /**  Esta propriedade altera a cor da hora do item*/
   circleColor:PropTypes.string,
-  /**  Esta propriedade altera a cor da hora do item*/
+  /** Esta propriedade altera a cor do circulo*/
   circleBorderColor:PropTypes.string,
 };
 
