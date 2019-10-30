@@ -1,5 +1,7 @@
 import AnterosTimeSlider from './components/AnterosTimeSlider';
+import AnterosTimeLine from './components/AnterosTimeLine'
+import AnterosBigScheduler from './components/AnterosBigScheduler'
 
 export {
-    AnterosTimeSlider
+    AnterosTimeSlider,AnterosBigScheduler,AnterosTimeLine
 };
