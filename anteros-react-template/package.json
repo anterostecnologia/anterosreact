@@ -1,8 +1,8 @@
 {
-  "name": "anteros-react-table",
+  "name": "anteros-react-template",
   "version": "1.0.5",
   "description": "Anteros components for React - Table",
-  "main": "lib/anteros-react-table.js",
+  "main": "lib/anteros-react-template.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",
@@ -29,6 +29,8 @@
     "anteros-react-navigation": "^1.0.6",
     "anteros-react-notification": "^1.0.6",
     "anteros-react-querybuilder": "^1.0.8",
+    "anteros-react-admin": "^1.0.0",
+    "anteros-react-table": "^1.0.5",
     "axios": "^0.18.0",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",

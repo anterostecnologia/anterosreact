@@ -5,9 +5,10 @@ import WithMasonryContainerTemplate from './components/WithMasonryContainerTempl
 import WithModalTemplate from './components/WithModalTemplate';
 import WithSearchModalTemplate from './components/WithSearchModalTemplate';
 import WithTableContainerTemplate from './components/WithTableContainerTemplate';
+import WithMainLayoutTemplate from './components/WithMainLayoutTemplate';
 
 export {
     WithCardListContainerTemplate, WithFormTemplate, WithListContainerTemplate, WithMasonryContainerTemplate,
-    WithModalTemplate, WithSearchModalTemplate, WithTableContainerTemplate
+    WithModalTemplate, WithSearchModalTemplate, WithTableContainerTemplate, WithMainLayoutTemplate
 
 };

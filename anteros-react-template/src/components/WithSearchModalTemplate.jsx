@@ -66,11 +66,10 @@ export default function WithSearchModalTemplate(_loadingProps) {
   };
 
   return WrappedComponent => {
-    @boundClass
     class SearchModal extends WrappedComponent {
       constructor(props, context) {
         super(props);
-
+        autoBind(this);
         this.filterRef = React.createRef();
 
         if (!loadingProps.endPoints) {
