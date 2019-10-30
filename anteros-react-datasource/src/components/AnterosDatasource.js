@@ -4,13 +4,13 @@ import axios from 'axios';
 import { cloneDeep, clone } from 'lodash';
 import React from 'react';
 
-export const dataSourceConstants = {
+const dataSourceConstants = {
     DS_BROWSE : 'dsBrowse',
     DS_INSERT : 'dsInsert',
     DS_EDIT : 'dsEdit'
 };
 
-export const dataSourceEvents = {
+const dataSourceEvents = {
     BEFORE_OPEN: 'beforeOpen',
     AFTER_OPEN: 'afterOpen',
     BEFORE_CLOSE: 'beforeClose',
@@ -33,6 +33,21 @@ export const dataSourceEvents = {
     DATA_FIELD_CHANGED: 'dataFieldChanged',
     ON_ERROR: 'onError'
 }
+
+
+const DATASOURCE_EVENTS = [
+    dataSourceEvents.AFTER_DELETE,
+    dataSourceEvents.BEFORE_OPEN,
+    dataSourceEvents.AFTER_OPEN,
+    dataSourceEvents.BEFORE_CLOSE,
+    dataSourceEvents.AFTER_CLOSE,
+    dataSourceEvents.AFTER_EDIT,
+    dataSourceEvents.AFTER_INSERT,
+    dataSourceEvents.AFTER_CANCEL,
+    dataSourceEvents.ON_ERROR,
+    dataSourceEvents.BEFORE_GOTO_PAGE,
+    dataSourceEvents.AFTER_GOTO_PAGE
+  ];
 
 class AnterosDatasource {
 
@@ -969,4 +984,4 @@ class AnterosRemoteDatasource extends AnterosDatasource {
 }
 
 
-export { AnterosLocalDatasource, AnterosRemoteDatasource };
+export { AnterosDatasource, AnterosLocalDatasource, AnterosRemoteDatasource, DATASOURCE_EVENTS, dataSourceConstants, dataSourceEvents };
