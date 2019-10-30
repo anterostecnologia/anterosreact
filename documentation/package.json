@@ -1,0 +1,59 @@
+{
+  "name": "documentation",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/preset-react": "^7.6.3",
+    "css-loader": "^3.2.0",
+    "react": "^16.11.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.11.0",
+    "react-scripts": "3.2.0",
+    "style-loader": "^1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "sgd": "npx styleguidist server",
+    "sgd-build": "npx styleguidist build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-runtime": "^6.26.0",
+    "eslint": "^3.19.0",
+    "eslint-config": "^0.3.0",
+    "eslint-config-rallycoding": "^3.2.0",
+    "eslint-plugin-react": "^6.10.3",
+    "react-styleguidist": "^9.2.0"
+  }
+}
