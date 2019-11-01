@@ -6,14 +6,13 @@ import {
   AnterosMainMenu,
   AnterosUserBlock,
   AnterosMainHeader,
+  UserActions,
 } from 'anteros-react-admin';
 import { AnterosNotificationContainer } from 'anteros-react-notification';
 import { connect } from 'react-redux';
-import { autoBind } from 'anteros-react-core';
+import { autoBind, AnterosError } from 'anteros-react-core';
 
-const defaultProps = {
-    defaultAvatar: '../assets/img/user.png'
-};
+const defaultProps = {};
 
 export default function WithMainLayoutTemplate(_loadingProps) {
     let loadingProps = {...defaultProps, ..._loadingProps}
@@ -104,7 +103,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
           
             render() {
               const horizontal = false;
-              const UserActions = this.getUserActions();
+              const Actions = this.getUserActions();
               const Toolbar = this.getToolbar();
               const MainMenu = this.getMainMenu();
               const Switch = this.getSwitch();
@@ -115,28 +114,30 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   horizontalMenu={horizontal}
                 >
                   <AnterosNotificationContainer />
-                  <AnterosMainHeader
-                    horizontalMenu={horizontal}
-                    logoNormal={require(loadingProps.logopath)}
-                    onSetOpenSidebar={this.onSetOpen}
-                    sidebarOpen={this.state.sidebarOpen}
-                    userName={
-                      this.props.authenticated ? this.props.user.profile.name : ''
-                    }
-                    email={this.props.authenticated ? this.props.user.profile.email : ''}
-                    avatar={
-                      this.props.authenticated
-                        ? this.props.user.profile.avatar
-                          ? this.props.user.profile.avatar
-                          : require(loadingProps.defaultAvatar)
-                        : require(loadingProps.defaultAvatar)
-                    }
-                  >
-                    { UserActions ? (
-                            <UserActions />
+                    <AnterosMainHeader
+                        horizontalMenu={horizontal}
+                        logoNormal={loadingProps.logo}
+                        onSetOpenSidebar={this.onSetOpen}
+                        sidebarOpen={this.state.sidebarOpen}
+                        userName={
+                            this.props.authenticated ? this.props.user.profile.name : ''
+                        }
+                        email={this.props.authenticated ? this.props.user.profile.email : ''}
+                        avatar={
+                            this.props.authenticated
+                            ? this.props.user.profile.avatar
+                                ? this.props.user.profile.avatar
+                                : loadingProps.defaultAvatar
+                            : loadingProps.defaultAvatar
+                        }
+                    >
+                    { Actions ? (
+                            <UserActions>
+                                Actions
+                            </UserActions>
                     ) : null }
                     { Toolbar ? (
-                        <Toolbar />
+                        Toolbar
                     ) : null }
                   </AnterosMainHeader>
           
@@ -149,8 +150,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   ) : (
                     <AnterosSidebarContent
                       enableSidebarBackgroundImage={loadingProps.enableSidebarBackgroundImage}
-                      logoNormal={require(loadingProps.logoPath)}
-                      selectedSidebarImage={require(loadingProps.selectedSidebarImage)}
+                      logoNormal={loadingProps.logo}
+                      selectedSidebarImage={loadingProps.selectedSidebarImage}
                     >
                       <AnterosUserBlock
                         userName={
@@ -167,18 +168,18 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                             : require(loadingProps.defaultAvatar)
                         }
                       >
-                        { UserActions ? (
-                            <UserActions />
+                        { Actions ? (
+                            Actions
                         ) : null }
                       </AnterosUserBlock>
                       { MainMenu ? (
-                          <MainMenu horizontal={true} />
+                          <MainMenu onSelectMenuItem={this.onSelectMenuItem} />
                       ) : null }
                     </AnterosSidebarContent>
                   )}
           
                   <AnterosMainContent>
-                    <Switch />
+                      {Switch}
                   </AnterosMainContent>
                   {this.props.children}
                 </AnterosMainLayout>
