@@ -10,7 +10,7 @@ const styleBackground = {
     position: 'fixed',
     right: '0',
     height: '100%',
-    overflowY: 'auto',
+    overflowY: 'hidden',
     overflowX: 'hidden'
 }
 
