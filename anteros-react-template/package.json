@@ -1,7 +1,7 @@
 {
   "name": "anteros-react-template",
   "version": "1.0.5",
-  "description": "Anteros components for React - Table",
+  "description": "Anteros components for React - Template",
   "main": "lib/anteros-react-template.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",

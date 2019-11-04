@@ -589,7 +589,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   }
                   onSearchButtonClick={this.onSearchButtonClick}
                 >
-                  <CustomFilter>{this.getCustomFilter()}</CustomFilter>
+                  <CustomFilter>{this.getCustomFilter?this.getCustomFilter():null}</CustomFilter>
                   <UserActions
                     dataSource={this.dataSource}
                     onButtonClick={this.onButtonClick}

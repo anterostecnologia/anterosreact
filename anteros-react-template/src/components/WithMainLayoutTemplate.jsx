@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { autoBind } from 'anteros-react-core';
 
 const defaultProps = {
-    defaultAvatar: '../assets/img/user.png'
+    defaultAvatar: ''
 };
 
 export default function WithMainLayoutTemplate(_loadingProps) {
@@ -117,7 +117,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   <AnterosNotificationContainer />
                   <AnterosMainHeader
                     horizontalMenu={horizontal}
-                    logoNormal={require(loadingProps.logopath)}
+                    logoNormal={loadingProps.logopath}
                     onSetOpenSidebar={this.onSetOpen}
                     sidebarOpen={this.state.sidebarOpen}
                     userName={
@@ -128,8 +128,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                       this.props.authenticated
                         ? this.props.user.profile.avatar
                           ? this.props.user.profile.avatar
-                          : require(loadingProps.defaultAvatar)
-                        : require(loadingProps.defaultAvatar)
+                          : loadingProps.defaultAvatar
+                        : loadingProps.defaultAvatar
                     }
                   >
                     { UserActions ? (
@@ -149,8 +149,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   ) : (
                     <AnterosSidebarContent
                       enableSidebarBackgroundImage={loadingProps.enableSidebarBackgroundImage}
-                      logoNormal={require(loadingProps.logoPath)}
-                      selectedSidebarImage={require(loadingProps.selectedSidebarImage)}
+                      logoNormal={loadingProps.logoPath}
+                      selectedSidebarImage={loadingProps.selectedSidebarImage}
                     >
                       <AnterosUserBlock
                         userName={
@@ -163,8 +163,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                           this.props.authenticated
                             ? this.props.user.profile.avatar
                               ? this.props.user.profile.avatar
-                              : require(loadingProps.defaultAvatar)
-                            : require(loadingProps.defaultAvatar)
+                              : loadingProps.defaultAvatar
+                            : loadingProps.defaultAvatar
                         }
                       >
                         { UserActions ? (

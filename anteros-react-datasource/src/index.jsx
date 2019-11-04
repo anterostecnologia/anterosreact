@@ -1,5 +1,5 @@
-import { AnterosDatasource, AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants } from './components/AnterosDatasource';
+import { AnterosDatasource, DATASOURCE_EVENTS, AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants } from './components/AnterosDatasource';
 
 export {
-   AnterosDatasource, AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants
+   AnterosDatasource, AnterosLocalDatasource, DATASOURCE_EVENTS, AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants
 };
