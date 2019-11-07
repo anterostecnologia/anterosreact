@@ -66,6 +66,10 @@ export default function WithFormTemplate(_loadingProps) {
           throw new AnterosError('Informe as rotas das ações. ');
         }
 
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
+
         this.state = {
           alertIsOpen: false,
           alertMessage: '',

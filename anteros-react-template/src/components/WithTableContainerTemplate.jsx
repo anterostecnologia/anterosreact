@@ -133,10 +133,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
           throw new AnterosError('Implemente o método getColumns na classe.');
         }
 
-        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') === false) {
-          throw new AnterosError('Implemente o método getRoutes na classe.');
-        }
-
         if (
           WrappedComponent.prototype.hasOwnProperty('getFieldsFilter') === false
         ) {
@@ -161,7 +157,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         this.createDataSourceFilter();
         this.createMainDataSource();
 
-        if (this.getRoutes()) {
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
           loadingProps.routes = this.getRoutes();
         }
 
