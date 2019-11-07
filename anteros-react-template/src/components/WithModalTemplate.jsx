@@ -55,19 +55,27 @@ export default function WithModalTemplate(_loadingProps) {
           selectedRecords: []
         };
       }
+
+      getOwnerId(){
+        if (this.props.user.owner){
+          return this.props.user.owner.id;
+        }
+        return undefined;
+      }
+
       createMainDataSource() {
         if (this.props.dataSource) {
           this.dataSource = this.props.dataSource;
         } else {
           this.dataSource = new AnterosRemoteDatasource();
           this.dataSource.setAjaxPostConfigHandler(entity => {
-            return loadingProps.endPoints.POST(loadingProps.resource, entity);
+            return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getOwnerId());
           });
           this.dataSource.setValidatePostResponse(response => {
             return response.data !== undefined;
           });
           this.dataSource.setAjaxDeleteConfigHandler(entity => {
-            return loadingProps.endPoints.DELETE(loadingProps.resource, entity);
+            return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getOwnerId());
           });
           this.dataSource.setValidateDeleteResponse(response => {
             return response.data !== undefined;
@@ -88,7 +96,7 @@ export default function WithModalTemplate(_loadingProps) {
               loadingProps.endPoints.FIND_ALL(
                 loadingProps.resource,
                 0,
-                loadingProps.pageSize
+                loadingProps.pageSize, this.getOwnerId()
               )
             );
           }
