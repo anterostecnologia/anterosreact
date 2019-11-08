@@ -146,6 +146,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         this.hasUserActions = WrappedComponent.prototype.hasOwnProperty(
           'getUserActions'
         );
+
         this.positionUserActions =
           WrappedComponent.prototype.hasOwnProperty(
             'getPositionUserActions'
@@ -155,6 +156,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
         this.createDataSourceFilter();
         this.createMainDataSource();
+
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
 
         this.state = {
           dataSource: [],

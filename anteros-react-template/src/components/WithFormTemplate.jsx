@@ -20,7 +20,12 @@ export default function WithFormTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
 
   const mapStateToProps = state => {
-    return { dataSource: state[loadingProps.reducerName].dataSource };
+    let user;
+    user = state[loadingProps.userReducerName].user
+    return {
+      dataSource: state[loadingProps.reducerName].dataSource,
+      user: user
+    };
   };
 
   const mapDispatchToProps = dispatch => {
@@ -64,6 +69,10 @@ export default function WithFormTemplate(_loadingProps) {
         }
         if (!loadingProps.routes) {
           throw new AnterosError('Informe as rotas das ações. ');
+        }
+
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
         }
 
         this.state = {
