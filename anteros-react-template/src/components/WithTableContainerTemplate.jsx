@@ -170,6 +170,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
+      getDispatch(){
+        return this.props.dispatch;
+      }
+
       getOwnerId(){
         if (this.props.user.owner){
           return this.props.user.owner.id;

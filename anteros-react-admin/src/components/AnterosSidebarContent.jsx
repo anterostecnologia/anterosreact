@@ -67,11 +67,15 @@ export default class AnterosSidebarContent extends Component {
       selectedSidebarImage,
       isDarkSidenav,
       logoNormal,
-      children
+      children,
+      visible
     } = this.props;
     let newStyle = {};
     if (enableSidebarBackgroundImage) {
       newStyle = { ...newStyle, background: `url(${selectedSidebarImage})` };
+    }
+    if (!visible){
+      return null;
     }
     return (
       <Fragment>
@@ -115,11 +119,13 @@ AnterosSidebarContent.propTypes = {
   location: PropTypes.string,
   logoNormal: PropTypes.string,
   logoMini: PropTypes.string,
+  visible: PropTypes.bool.isRequired
   
 };
 
 AnterosSidebarContent.defaultProps = {
   enableSidebarBackgroundImage: false,
   isDarkSidenav: false,
-  collapsedSidebar: false
+  collapsedSidebar: false,
+  visible: true
 };

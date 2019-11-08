@@ -52,6 +52,22 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   'Implemente o método getMainMenu na classe ' + WrappedComponent.type
                 );
               }
+
+              if (
+                WrappedComponent.prototype.hasOwnProperty('isSideBarVisible') === false
+              ) {
+                throw new AnterosError(
+                  'Implemente o método isSideBarVisible na classe ' + WrappedComponent.type
+                );
+              }
+
+              if (
+                WrappedComponent.prototype.hasOwnProperty('isMainMenuVisible') === false
+              ) {
+                throw new AnterosError(
+                  'Implemente o método isMainMenuVisible na classe ' + WrappedComponent.type
+                );
+              }
               
               if (
                 WrappedComponent.prototype.hasOwnProperty('getToolbar') === false
@@ -144,11 +160,12 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   {horizontal ? (
                     <AnterosMainMenu>
                      { MainMenu ? (
-                        <MainMenu horizontal={true} />
+                        <MainMenu horizontal={true} visible={this.isMainMenuVisible()}/>
                      ) : null }
                     </AnterosMainMenu>
                   ) : (
                     <AnterosSidebarContent
+                      visible ={this.isSideBarVisible()}
                       enableSidebarBackgroundImage={loadingProps.enableSidebarBackgroundImage}
                       logoNormal={loadingProps.logo}
                       selectedSidebarImage={loadingProps.selectedSidebarImage}
@@ -173,7 +190,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                         ) : null }
                       </AnterosUserBlock>
                       { MainMenu ? (
-                          <MainMenu onSelectMenuItem={this.onSelectMenuItem} />
+                          <MainMenu onSelectMenuItem={this.onSelectMenuItem} visible={this.isMainMenuVisible()}/>
                       ) : null }
                     </AnterosSidebarContent>
                   )}
