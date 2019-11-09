@@ -160,9 +160,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
-      getOwnerId(){
-        if (this.props.user.owner){
-          return this.props.user.owner.id;
+      getUser(){
+        if (this.props.user){
+          return this.props.user;
         }
         return undefined;
       }
@@ -176,13 +176,13 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         } else {
           this.dataSource = new AnterosRemoteDatasource();
           this.dataSource.setAjaxPostConfigHandler(entity => {
-            return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getOwnerId());
+            return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getUser());
           });
           this.dataSource.setValidatePostResponse(response => {
             return response.data !== undefined;
           });
           this.dataSource.setAjaxDeleteConfigHandler(entity => {
-            return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getOwnerId());
+            return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getUser());
           });
           this.dataSource.setValidateDeleteResponse(response => {
             return response.data !== undefined;
@@ -216,7 +216,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 0,
                 loadingProps.pageSize,
                 this.filter.getQuickFilterSort(),
-                this.getOwnerId()
+                this.getUser()
               )
             );
           }
@@ -288,7 +288,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             0,
             loadingProps.pageSize,
             sort,
-            this.getOwnerId()
+            this.getUser()
           )
         );
       }
@@ -427,7 +427,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.resource,
             filter.toJSON(),
             page,
-            loadingProps.pageSize, this.getOwnerId()
+            loadingProps.pageSize, this.getUser()
           );
         } else {
           if (
@@ -440,14 +440,14 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               this.filter.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filter.getQuickFilterSort(), this.getOwnerId()
+              this.filter.getQuickFilterSort(), this.getUser()
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filter.getQuickFilterSort(), this.getOwnerId()
+              this.filter.getQuickFilterSort(), this.getUser()
             );
           }
         }
@@ -467,7 +467,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               filter.toJSON(),
               loadingProps.pageSize,
               0,
-              this.getOwnerId()
+              this.getUser()
             )
           );
         } else {
@@ -482,7 +482,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize, this.getOwnerId()
+              loadingProps.pageSize, this.getUser()
             )
           );
         }

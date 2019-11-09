@@ -134,9 +134,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
-      getOwnerId(){
-        if (this.props.user.owner){
-          return this.props.user.owner.id;
+      getUser(){
+        if (this.props.user){
+          return this.props.user;
         }
         return undefined;
       }
@@ -147,13 +147,13 @@ export default function WithSearchModalTemplate(_loadingProps) {
         } else {
           this.dataSource = new AnterosRemoteDatasource();
           this.dataSource.setAjaxPostConfigHandler(entity => {
-            return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getOwnerId());
+            return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getUser());
           });
           this.dataSource.setValidatePostResponse(response => {
             return response.data !== undefined;
           });
           this.dataSource.setAjaxDeleteConfigHandler(entity => {
-            return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getOwnerId());
+            return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getUser());
           });
           this.dataSource.setValidateDeleteResponse(response => {
             return response.data !== undefined;
@@ -180,7 +180,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             filter.toJSON(),
             page,
             loadingProps.pageSize,
-            this.filterRef.current.getQuickFilterSort(), this.getOwnerId()
+            this.filterRef.current.getQuickFilterSort(), this.getUser()
           );
         } else {
           if (
@@ -193,14 +193,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
               this.filterRef.current.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getOwnerId()
+              this.filterRef.current.getQuickFilterSort(), this.getUser()
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getOwnerId()
+              this.filterRef.current.getQuickFilterSort(), this.getUser()
             );
           }
         }
@@ -229,7 +229,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                   loadingProps.resource,
                   0,
                   loadingProps.pageSize,
-                  loadingProps.defaultSort, this.getOwnerId()
+                  loadingProps.defaultSort, this.getUser()
                 )
               );
               this.handlePageChanged(0);
@@ -306,7 +306,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             fields,
             0,
             loadingProps.pageSize,
-            sort, this.getOwnerId()
+            sort, this.getUser()
           )
         );
       }
@@ -397,7 +397,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               filter.toJSON(),
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getOwnerId()
+              this.filterRef.current.getQuickFilterSort(), this.getUser()
             )
           );
         } else {
@@ -406,7 +406,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               loadingProps.resource,
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getOwnerId()
+              this.filterRef.current.getQuickFilterSort(), this.getUser()
             )
           );
         }
