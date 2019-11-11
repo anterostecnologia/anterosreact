@@ -8,7 +8,7 @@ import {
 import { AnterosAlert } from 'anteros-react-notification';
 import { AnterosButton } from 'anteros-react-buttons';
 import { connect } from 'react-redux';
-import { processErrorMessage } from 'anteros-react-core';
+import { processErrorMessage, processDetailErrorMessage } from 'anteros-react-core';
 import { dataSourceConstants } from 'anteros-react-datasource';
 import { autoBind } from 'anteros-react-core';
 import { AnterosBlockUi } from 'anteros-react-loaders';
@@ -124,10 +124,12 @@ export default function WithFormTemplate(_loadingProps) {
               _this.props.dataSource.post(error => {
                 if (error) {
                   var result = processErrorMessage(error);
+                  var debugMessage = processDetailErrorMessage(error);
                   _this.setState({
                     ..._this.state,
                     alertIsOpen: true,
                     alertMessage: result,
+                    debugMessage: (debugMessage===""?undefined:debugMessage),
                     saving: false
                   });
                 } else {
@@ -211,6 +213,16 @@ export default function WithFormTemplate(_loadingProps) {
         });
       }
 
+      onDetailClick(event, button){
+          if (this.state.debugMessage){
+            AnterosSweetAlert({
+              title: 'Detalhes do erro',
+              html: '<b>'+this.state.debugMessage+'</b>'
+            });
+          }      
+      }
+
+
       render() {
         return (
           <AnterosCard
@@ -237,7 +249,10 @@ export default function WithFormTemplate(_loadingProps) {
               autoCloseInterval={25000}
               onClose={this.onCloseAlert}
             >
-              {this.state.alertMessage}
+              <div>
+                {this.state.debugMessage?<AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick}/>:null}
+                {this.state.alertMessage}
+              </div>
             </AnterosAlert>
             <AnterosBlockUi
               styleBlockMessage={{
@@ -249,7 +264,7 @@ export default function WithFormTemplate(_loadingProps) {
               }}
               styleOverlay={{
                 opacity: 0.1,
-                backgroundColor: 'black'
+                backgroundColor: 'black' 
               }}
               tag="div"
               blocking={this.state.saving}

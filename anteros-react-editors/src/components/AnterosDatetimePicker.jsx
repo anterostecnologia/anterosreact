@@ -206,7 +206,7 @@ export default class AnterosDatetimePicker extends React.Component {
       <div className={className} id={this.props.id} style={{ ...this.props.style, width: width }} ref={ref => this.divInput = ref}>
         <input disabled={(this.props.disabled ? true : false)} id={this.idCalendar} ref={ref => this.input = ref} type="text" value={this.state.value} className={classNameInput} onChange={this.handleChange}
           onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} placeholder={this.props.placeHolder} readOnly={readOnly} />
-        <div className={classNameAddOn} style={{height: '38px', width:'38px'}}>
+        <div className={classNameAddOn} style={{height: '38px', width:'38px', marginLeft:'0px', marginTop:'0px'}}>
           <span><i className={icon} /><img src={this.props.image} /></span></div>
       </div>
     );

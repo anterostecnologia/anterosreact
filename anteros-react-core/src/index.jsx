@@ -29,7 +29,7 @@ import autoBind, {
 	boundClass,
 	boundMethod
 } from "./components/AnterosAutoBind";
-import { processErrorMessage } from "./components/AnterosErrorMessageHelper";
+import { processErrorMessage, processDetailErrorMessage } from "./components/AnterosErrorMessageHelper";
 import AnterosFloater from "./components/AnterosFloater";
 import AnterosClickOutside from './components/AnterosClickOutside';
 import AnterosLazyLoad from './components/AnterosLazyLoad';
@@ -59,6 +59,7 @@ export {
 	AnterosStringMask,
 	autoBind,
 	processErrorMessage,
+	processDetailErrorMessage,
 	boundClass,
 	boundMethod,
 	AnterosFloater,

@@ -31,7 +31,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
 
   const mapStateToProps = state => {
-    let query, sort, activeSortIndex, activeFilter;
+    let query, sort, activeSortIndex, activeFilter, user;
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
       query = reducer.query;
@@ -39,11 +39,13 @@ export default function WithSearchModalTemplate(_loadingProps) {
       activeSortIndex = reducer.activeSortIndex;
       activeFilter = reducer.activeFilter;
     }
+    user = state[loadingProps.userReducerName].user;
     return {
       query: query,
       sort: sort,
       activeSortIndex: activeSortIndex,
-      activeFilter: activeFilter
+      activeFilter: activeFilter,
+      user: user
     };
   };
 

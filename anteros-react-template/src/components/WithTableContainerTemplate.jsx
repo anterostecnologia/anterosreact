@@ -354,6 +354,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
           loading = true;
         }
 
+        if (event === dataSourceEvents.BEFORE_POST){
+          if (WrappedComponent.prototype.hasOwnProperty('onBeforePost') === true) {
+            this.onBeforePost();
+          }
+        }
+
         if (
           event === dataSourceEvents.AFTER_OPEN ||
           event === dataSourceEvents.AFTER_GOTO_PAGE ||
@@ -364,6 +370,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
 
         if (event === dataSourceEvents.AFTER_INSERT) {
+          if (WrappedComponent.prototype.hasOwnProperty('onAfterInsert') === true) {
+            this.onAfterInsert();
+          }
         }
 
         if (event === dataSourceEvents.ON_ERROR) {

@@ -30,3 +30,11 @@ export function processErrorMessage(error) {
 	}
 	return msgErro;
 }
+
+export function processDetailErrorMessage(error) {
+	var msgErro = "";
+	if (error.response && error.response.data && error.response.data.apierror) {
+		msgErro = error.response.data.apierror.debugMessage;
+	}
+	return msgErro;
+}

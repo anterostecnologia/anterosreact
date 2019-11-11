@@ -5,10 +5,8 @@ import { AnterosButton } from 'anteros-react-buttons';
 import {
   AnterosRemoteDatasource,
   dataSourceEvents,
-  DATASOURCE_EVENTS,
-  dataSourceConstants
+  dataSourceConstants, DATASOURCE_EVENTS
 } from 'anteros-react-datasource';
-import { connect } from 'react-redux';
 import { autoBind } from 'anteros-react-core';
 import { processErrorMessage } from 'anteros-react-core';
 
@@ -22,6 +20,7 @@ const defaultValues = {
 export default function WithModalTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
 
+
   return WrappedComponent => {
     class Modal extends WrappedComponent {
       constructor(props) {
@@ -32,10 +31,7 @@ export default function WithModalTemplate(_loadingProps) {
           throw new AnterosError(
             'Informe o objeto com os endPoints de consulta. '
           );
-        }
-        if (!loadingProps.resource) {
-          throw new AnterosError('Informe o nome do RESOURCE de consulta. ');
-        }
+        }        
         if (!loadingProps.viewName) {
           throw new AnterosError('Informe o nome da View. ');
         }
@@ -44,6 +40,9 @@ export default function WithModalTemplate(_loadingProps) {
         }
 
         if (loadingProps.withDatasource) {
+          if (!loadingProps.resource) {
+            throw new AnterosError('Informe o nome do RESOURCE de consulta. ');
+          }
           this.createMainDataSource();
         }
 
@@ -55,27 +54,19 @@ export default function WithModalTemplate(_loadingProps) {
           selectedRecords: []
         };
       }
-
-      getUser(){
-        if (this.props.user){
-          return this.props.user;
-        }
-        return undefined;
-      }
-
       createMainDataSource() {
         if (this.props.dataSource) {
           this.dataSource = this.props.dataSource;
         } else {
           this.dataSource = new AnterosRemoteDatasource();
           this.dataSource.setAjaxPostConfigHandler(entity => {
-            return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getUser());
+            return loadingProps.endPoints.POST(loadingProps.resource, entity);
           });
           this.dataSource.setValidatePostResponse(response => {
             return response.data !== undefined;
           });
           this.dataSource.setAjaxDeleteConfigHandler(entity => {
-            return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getUser());
+            return loadingProps.endPoints.DELETE(loadingProps.resource, entity);
           });
           this.dataSource.setValidateDeleteResponse(response => {
             return response.data !== undefined;
@@ -96,7 +87,7 @@ export default function WithModalTemplate(_loadingProps) {
               loadingProps.endPoints.FIND_ALL(
                 loadingProps.resource,
                 0,
-                loadingProps.pageSize, this.getUser()
+                loadingProps.pageSize
               )
             );
           }
@@ -218,16 +209,13 @@ export default function WithModalTemplate(_loadingProps) {
             </ModalActions>
 
             <div>
-              <WrappedComponent dataSource={this.dataSource} />
+              <WrappedComponent dataSource={this.dataSource} {...this.props} />
             </div>
           </AnterosModal>
         );
       }
     }
 
-    return connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(Modal);
+    return Modal;
   };
 }
