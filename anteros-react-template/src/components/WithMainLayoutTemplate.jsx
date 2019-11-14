@@ -7,6 +7,8 @@ import {
   AnterosUserBlock,
   AnterosMainHeader,
   UserActions,
+  ToolbarEnd,
+  ToolbarCenter
 } from 'anteros-react-admin';
 import { AnterosNotificationContainer } from 'anteros-react-notification';
 import { connect } from 'react-redux';
@@ -68,20 +70,13 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                   'Implemente o método isMainMenuVisible na classe ' + WrappedComponent.type
                 );
               }
-              
-              if (
-                WrappedComponent.prototype.hasOwnProperty('getToolbar') === false
-              ) {
-                throw new AnterosError(
-                  'Implemente o método getToolbar na classe ' + WrappedComponent.type
-                );
-              }
 
               this.state = {
                 sidebarOpen: false
               };
               autoBind(this);
             }
+
             onSelectMenuItem(menuItem) {
               this.props.history.push(menuItem.props.route);
             }
@@ -120,7 +115,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             render() {
               const horizontal = false;
               const Actions = this.getUserActions();
-              const Toolbar = this.getToolbar();
+              const ToolbarCenterContent = this.getToolbarCenterContent();
+              const ToolbarEndContent = this.getToolbarEndContent();
               const MainMenu = this.getMainMenu();
               const Switch = this.getSwitch();
               return (
@@ -148,13 +144,18 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                         }
                     >
                     { Actions ? (
-                            <UserActions>
-                                Actions
-                            </UserActions>
+                      <UserActions>
+                          {Actions}
+                      </UserActions>
                     ) : null }
-                    { Toolbar ? (
-                        Toolbar
-                    ) : null }
+
+                    <ToolbarCenter>
+                      {ToolbarCenterContent}
+                    </ToolbarCenter>
+                    <ToolbarEnd>
+                      {ToolbarEndContent}
+                    </ToolbarEnd>
+
                   </AnterosMainHeader>
           
                   {horizontal ? (
