@@ -557,6 +557,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 id="btnClose"
                 onButtonClick={this.onButtonClick}
                 route={loadingProps.routes.close}
+                visible={loadingProps.routes.close !== undefined}
                 icon="fa fa-times"
                 small
                 circle

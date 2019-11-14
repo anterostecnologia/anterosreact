@@ -137,7 +137,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                             ...this.state,
                             alertIsOpen: true,
                             loading: false,
-                            debugMessage: (debugMessage===""?undefined:debugMessage),
+                            debugMessage: (debugMessage === "" ? undefined : debugMessage),
                             alertMessage: result
                         });
                     }
@@ -168,12 +168,14 @@ export default function WithFormModalTemplate(_loadingProps) {
                 }
             }
 
-            if (this.state.debugMessage){
-                AnterosSweetAlert({
-                  title: 'Detalhes do erro',
-                  html: '<b>'+this.state.debugMessage+'</b>'
-                });
-              }    
+            onDetailClick(event, button){
+                if (this.state.debugMessage){
+                  AnterosSweetAlert({
+                    title: 'Detalhes do erro',
+                    html: '<b>'+this.state.debugMessage+'</b>'
+                  });
+                }      
+            }
 
             render() {
                 return (
@@ -192,12 +194,11 @@ export default function WithFormModalTemplate(_loadingProps) {
                             fill
                             isOpen={this.state.alertIsOpen}
                             autoCloseInterval={15000}
-                        >
-                            <div>
-                                <AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick}/>
-                                {this.state.alertMessage}
-                            </div>
-                        </AnterosAlert>
+                        >{this.state.debugMessage ?
+                                <div>
+                                    {this.state.debugMessage ? <AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick} /> : null}
+                                    {this.state.alertMessage}
+                                </div>:this.state.alertMessage}</AnterosAlert>
                         <ModalActions>
                             <AnterosButton success id="btnOK" onClick={this.onClick}>
                                 OK

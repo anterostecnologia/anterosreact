@@ -5,7 +5,7 @@ import {
 	dataSourceEvents
 } from "anteros-react-datasource";
 import PropTypes from "prop-types";
-import {AnterosError} from "anteros-react-core";
+import { AnterosError } from "anteros-react-core";
 
 export default class AnterosLookupCombobox extends AnterosCombobox {
 	constructor(props) {
@@ -68,48 +68,50 @@ export default class AnterosLookupCombobox extends AnterosCombobox {
 				this.props.dataSource.setFieldByName(this.props.dataField, undefined);
 			}
 		}
-    }
-    
-    buildOptions(props){
-		if (props.options){
+	}
+
+	buildOptions(props) {
+		if (props.options) {
 			this._flatOptions = this.flattenOptions(props.options);
-		} else if (props.children){
+		} else if (props.children) {
 			this._flatOptions = this.flattenOptions(this.rebuildOptions(props.children));
-		} else if (props.lookupDataSource){
-            this._flatOptions = this.flattenOptions(this.rebuildOptions());
-        }
+		} else if (props.lookupDataSource) {
+			this._flatOptions = this.flattenOptions(this.rebuildOptions());
+		}
 	}
 
 	rebuildOptions(children) {
 		let options = [];
 		let _this = this;
 
-		this.props.lookupDataSource.getData().map(record => {
-			if (
-				!record.hasOwnProperty(_this.props.lookupDataFieldId) ||
-				!record[_this.props.lookupDataFieldId]
-			) {
-				throw new AnterosError(
-					"Foi encontrado um registro sem ID no dataSource passado para o Select."
-				);
-			}
-			if (typeof _this.props.lookupDataFieldText !== "function") {
+		if (this.props.lookupDataSource && this.props.lookupDataSource.getTotalRecords() > 0) {
+			this.props.lookupDataSource.getData().map(record => {
 				if (
-					!record.hasOwnProperty(_this.props.lookupDataFieldText) ||
-					!record[_this.props.lookupDataFieldText]
+					!record.hasOwnProperty(_this.props.lookupDataFieldId) ||
+					!record[_this.props.lookupDataFieldId]
 				) {
 					throw new AnterosError(
-						"Foi encontrado um registro sem o texto no dataSource passado para a Select."
+						"Foi encontrado um registro sem ID no dataSource passado para o Select."
 					);
 				}
-			}
+				if (typeof _this.props.lookupDataFieldText !== "function") {
+					if (
+						!record.hasOwnProperty(_this.props.lookupDataFieldText) ||
+						!record[_this.props.lookupDataFieldText]
+					) {
+						throw new AnterosError(
+							"Foi encontrado um registro sem o texto no dataSource passado para a Select."
+						);
+					}
+				}
 
-			options.push({
-				label: record.label ? record.label : _this.getTextValue(record),
-				disabled: record.disabled,
-				value: record[_this.props.lookupDataFieldId]
+				options.push({
+					label: record.label ? record.label : _this.getTextValue(record),
+					disabled: record.disabled,
+					value: record[_this.props.lookupDataFieldId]
+				});
 			});
-		});
+		}
 		return options;
 	}
 

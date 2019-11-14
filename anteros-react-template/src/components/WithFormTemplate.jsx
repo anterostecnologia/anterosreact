@@ -248,11 +248,12 @@ export default function WithFormTemplate(_loadingProps) {
               isOpen={this.state.alertIsOpen}
               autoCloseInterval={25000}
               onClose={this.onCloseAlert}
-            >
+            >{this.state.debugMessage?
               <div>
                 {this.state.debugMessage?<AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick}/>:null}
                 {this.state.alertMessage}
               </div>
+              :this.state.alertMessage}
             </AnterosAlert>
             <AnterosBlockUi
               styleBlockMessage={{

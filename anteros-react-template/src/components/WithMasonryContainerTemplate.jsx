@@ -523,6 +523,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 id="btnClose"
                 onButtonClick={this.onButtonClick}
                 route={loadingProps.routes.close}
+                visible={loadingProps.routes.close !== undefined}
                 icon="fa fa-times"
                 small
                 circle
@@ -638,6 +639,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                             onSelectedItem={this.onSelectedItem}
                             key={r.id}
                             record={r}
+                            dispatch={this.props.dispatch}
+                            history={this.props.history}
                             onButtonClick={this.onButtonClick}
                           />
                         );
