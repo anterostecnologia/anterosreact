@@ -71,6 +71,22 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                 );
               }
 
+              if (
+                WrappedComponent.prototype.hasOwnProperty('getToolbarCenterContent') === false
+              ) {
+                throw new AnterosError(
+                  'Implemente o método getToolbarCenterContent na classe ' + WrappedComponent.type
+                );
+              }
+
+              if (
+                WrappedComponent.prototype.hasOwnProperty('getToolbarEndContent') === false
+              ) {
+                throw new AnterosError(
+                  'Implemente o método getToolbarEndContent na classe ' + WrappedComponent.type
+                );
+              }
+
               this.state = {
                 sidebarOpen: false
               };
