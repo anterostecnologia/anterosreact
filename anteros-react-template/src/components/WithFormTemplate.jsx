@@ -36,6 +36,8 @@ export default function WithFormTemplate(_loadingProps) {
     };
   };
 
+  
+
   return WrappedComponent => {
     class FormView extends WrappedComponent {
       constructor(props, context) {
@@ -81,6 +83,7 @@ export default function WithFormTemplate(_loadingProps) {
           saving: false
         };
       }
+
 
       onButtonClick(event, button) {
         let _this = this;
@@ -222,6 +225,18 @@ export default function WithFormTemplate(_loadingProps) {
           }      
       }
 
+      componentDidMount(){
+        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+          this.onDidMount();
+        }
+      }
+
+      componentWillUnMount(){
+        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+          this.onWillUnmount();
+        }
+      }
+
 
       render() {
         return (
@@ -279,6 +294,7 @@ export default function WithFormTemplate(_loadingProps) {
                   dataSource={this.props.dataSource}
                   loadingProps={loadingProps}
                   onButtonClick={this.onButtonClick}
+                  user={this.props.user}
                 />
               </AnterosForm>
             </AnterosBlockUi>

@@ -243,6 +243,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
           }
         }
         this.table.refreshData();
+
+        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+          this.onDidMount();
+        }
       }
 
       componentWillUnmount() {
@@ -253,8 +257,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
           );
           this.dataSource.setAjaxPageConfigHandler(null);
         }
+        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+          this.onWillUnmount();
+        }
       }
-
       componentWillReceiveProps(nextProps) {
         if (this.dataSource) {
           if (this.table) {

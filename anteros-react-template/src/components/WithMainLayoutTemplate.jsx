@@ -14,7 +14,7 @@ import { AnterosNotificationContainer } from 'anteros-react-notification';
 import { connect } from 'react-redux';
 import { autoBind, AnterosError } from 'anteros-react-core';
 
-const defaultProps = {};
+const defaultProps = {menuHorizontal:false};
 
 export default function WithMainLayoutTemplate(_loadingProps) {
     let loadingProps = {...defaultProps, ..._loadingProps}
@@ -129,7 +129,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             }
           
             render() {
-              const horizontal = false;
+              const horizontal = loadingProps.menuHorizontal;
               const Actions = this.getUserActions();
               const ToolbarCenterContent = this.getToolbarCenterContent();
               const ToolbarEndContent = this.getToolbarEndContent();
@@ -198,8 +198,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                           this.props.authenticated
                             ? this.props.user.profile.avatar
                               ? this.props.user.profile.avatar
-                              : require(loadingProps.defaultAvatar)
-                            : require(loadingProps.defaultAvatar)
+                              : loadingProps.defaultAvatar
+                            : loadingProps.defaultAvatar
                         }
                       >
                         { Actions ? (

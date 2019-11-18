@@ -210,6 +210,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
 
       componentDidMount() {
         this.openData();
+        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+          this.onDidMount();
+        }
       }
 
       openData() {
@@ -250,6 +253,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
             this.onDatasourceEvent
           );
           this.dataSource.setAjaxPageConfigHandler(null);
+        }
+        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+          this.onWillUnmount();
         }
       }
 

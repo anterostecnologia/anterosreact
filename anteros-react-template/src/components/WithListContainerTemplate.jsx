@@ -156,6 +156,10 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
             this.dataSource.cancel();
           }
         }
+
+        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+          this.onDidMount();
+        }
       }
 
       componentWillUnmount() {
@@ -166,7 +170,12 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
           );
           this.dataSource.setAjaxPageConfigHandler(null);
         }
+
+        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+          this.onWillUnmount();
+        }
       }
+
 
       onQueryChange(query) {
         this.props.setFilter(

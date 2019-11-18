@@ -14,7 +14,7 @@ const defaultValues = {
     withDatasource: false,
     openMainDataSource: false,
     pageSize: 30,
-    requireSelectRecord: false
+    requireSelectRecord: false 
 };
 
 export default function WithFormModalTemplate(_loadingProps) {
@@ -96,6 +96,10 @@ export default function WithFormModalTemplate(_loadingProps) {
                         this.dataSource.cancel();
                     }
                 }
+
+                if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+                    this.onDidMount();
+                }
             }
 
             componentWillUnmount() {
@@ -106,7 +110,11 @@ export default function WithFormModalTemplate(_loadingProps) {
                     );
                     this.dataSource.setAjaxPageConfigHandler(null);
                 }
+                if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+                    this.onWillUnmount();
+                }
             }
+
 
             onDatasourceEvent(event, error) {
                 let loading = this.state.loading;
@@ -168,13 +176,13 @@ export default function WithFormModalTemplate(_loadingProps) {
                 }
             }
 
-            onDetailClick(event, button){
-                if (this.state.debugMessage){
-                  AnterosSweetAlert({
-                    title: 'Detalhes do erro',
-                    html: '<b>'+this.state.debugMessage+'</b>'
-                  });
-                }      
+            onDetailClick(event, button) {
+                if (this.state.debugMessage) {
+                    AnterosSweetAlert({
+                        title: 'Detalhes do erro',
+                        html: '<b>' + this.state.debugMessage + '</b>'
+                    });
+                }
             }
 
             render() {
@@ -195,10 +203,10 @@ export default function WithFormModalTemplate(_loadingProps) {
                             isOpen={this.state.alertIsOpen}
                             autoCloseInterval={15000}
                         >{this.state.debugMessage ?
-                                <div>
-                                    {this.state.debugMessage ? <AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick} /> : null}
-                                    {this.state.alertMessage}
-                                </div>:this.state.alertMessage}</AnterosAlert>
+                            <div>
+                                {this.state.debugMessage ? <AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick} /> : null}
+                                {this.state.alertMessage}
+                            </div> : this.state.alertMessage}</AnterosAlert>
                         <ModalActions>
                             <AnterosButton success id="btnOK" onClick={this.onClick}>
                                 OK
