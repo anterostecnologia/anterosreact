@@ -68,8 +68,8 @@ export default class AnterosDataTable extends Component {
 		this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
 		this.refreshData = this.refreshData.bind(this);
 		this.refresh = this.refresh.bind(this);
-    this.isBase64 = this.isBase64.bind(this);
-    this.onTableClick = this.onTableClick.bind(this);
+    	this.isBase64 = this.isBase64.bind(this);
+    	this.onTableClick = this.onTableClick.bind(this);
 		this.currentRow = undefined;
 		this.currentCol = undefined;
 		this.dataTable;
@@ -494,11 +494,11 @@ export default class AnterosDataTable extends Component {
 						for (let i = 0; i < table.rows()[0].length; i++) {
 							result[i] = table.rows(i).data()[0];
 						}
-						_this.props.onSelectAllRecords(result);
+						_this.props.onSelectAllRecords(result, _this.props.id);
 					}
 				} else {
 					if (_this.props.onUnSelectAllRecords) {
-						_this.props.onUnSelectAllRecords();
+						_this.props.onUnSelectAllRecords(_this.props.id);
 					}
 				}
 			});
@@ -518,14 +518,14 @@ export default class AnterosDataTable extends Component {
 						if (_this.props.onSelectRecord) {
 							_this.props.onSelectRecord(
 								table.rows(this.getAttribute("row")),
-								table.rows(this.getAttribute("row")).data()[0]
+								table.rows(this.getAttribute("row")).data()[0],_this.props.id
 							);
 						}
 					} else {
 						if (_this.props.onUnSelectRecord) {
 							_this.props.onUnSelectRecord(
 								table.rows(this.getAttribute("row")),
-								table.rows(this.getAttribute("row")).data()[0]
+								table.rows(this.getAttribute("row")).data()[0], _this.props.id
 							);
 						}
 					}
@@ -580,14 +580,14 @@ export default class AnterosDataTable extends Component {
 								if (_this.props.onSelectRecord) {
 									_this.props.onSelectRecord(
 										table.row(_this.currentRow),
-										table.row(_this.currentRow).data()[0]
+										table.row(_this.currentRow).data()[0], _this.props.id
 									);
 								}
 							} else {
 								if (_this.props.onUnSelectRecord) {
 									_this.props.onUnSelectRecord(
 										table.row(_this.currentRow),
-										table.row(_this.currentRow).data()[0]
+										table.row(_this.currentRow).data()[0], _this.props.id
 									);
 								}
 							}

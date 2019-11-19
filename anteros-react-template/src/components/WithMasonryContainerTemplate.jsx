@@ -482,7 +482,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize, this.getUser()
+              loadingProps.pageSize, this.filter.getQuickFilterSort(), this.getUser()
             )
           );
         }

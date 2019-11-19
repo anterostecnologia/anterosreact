@@ -365,11 +365,11 @@ export default function WithSearchModalTemplate(_loadingProps) {
         }
       }
 
-      onSelectRecord(event) {
+      onSelectRecord(row, data, tableId) {
         this.props.selectedRecords.push(this.dataSource.getCurrentRecord());
       }
 
-      onUnSelectRecord(event) {
+      onUnSelectRecord(row, data, tableId) {
         for (var i = 0; i < this.props.selectedRecords.length; i++) {
           if (
             this.props.selectedRecords[i] === this.dataSource.getCurrentRecord()
@@ -379,7 +379,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
         }
       }
 
-      onSelectAllRecords(records) {
+      onSelectAllRecords(records, tableId) {
         let _this = this;
         this.props.selectedRecords.splice(0, this.props.selectedRecords.length);
         records.forEach(function buscaObjetos(element) {
@@ -387,7 +387,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
         });
       }
 
-      onUnSelectAllRecords(event) {
+      onUnSelectAllRecords(tableId) {
         this.props.selectedRecords.splice(0, this.props.selectedRecords.length);
       }
 
