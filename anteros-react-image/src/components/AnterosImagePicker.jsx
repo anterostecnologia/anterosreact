@@ -292,6 +292,7 @@ export default class AnterosImagePicker extends React.Component {
                 }
                 style={{
                   ...this.props.style,
+                  width: this.props.width,
                   height: this.props.height,
                   border: '1px solid silver'
                 }}
