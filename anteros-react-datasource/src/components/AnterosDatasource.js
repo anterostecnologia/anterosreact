@@ -288,10 +288,10 @@ class AnterosDatasource {
         }
 
         if (this.isEmpty()) {
-            throw new AnterosDatasourceError('Não há registros para posicionar.');
+            return false;
         }
         if (this.currentRecord == record) {
-            return;
+            return true;
         }
 
         this.data.forEach(function (r, index) {
@@ -299,9 +299,10 @@ class AnterosDatasource {
                 _this.currentRecno = index;
                 _this.currentRecord = r;
                 _this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
-                return;
+                return true;
             }
         });
+        return false;
     }
 
     isEmptyField(fieldName){

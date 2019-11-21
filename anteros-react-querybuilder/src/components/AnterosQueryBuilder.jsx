@@ -799,6 +799,10 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
+  onClickCalendar(event){
+    $('#filterDateTime').click();
+  }
+
   render() {
     let customFilter;
     let children = [];
@@ -851,11 +855,13 @@ export class AnterosQueryBuilder extends React.Component {
               icon="fal fa-search"
               onClick={this.onSearchClick}
             />{" "}
-            {this.props.showDateTimeButton ? (
+            
+            {this.props.showDateTimeButton ? (  
+              // <AnterosDateRangePicker id="filterDateTime" style={{width:"30px"}}/>            
               <AnterosButton
                 primary
                 icon="fal fa-calendar"
-                onClick={this.props.onSearchClick}
+                onClick={this.onClickCalendar}
               />
             ) : null}
             <AnterosButton

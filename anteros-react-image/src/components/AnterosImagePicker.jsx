@@ -432,7 +432,7 @@ export default class AnterosImagePicker extends React.Component {
 
         if (
           _this.props.dataSource &&
-          _this.props.dataSource.getState !== 'dsBrowse'
+          _this.props.dataSource.getState() !== 'dsBrowse'
         ) {
           _this.props.dataSource.setFieldByName(
             _this.props.dataField,
@@ -753,7 +753,7 @@ class ImageContent extends Component {
 
         if (
           _this.props.dataSource &&
-          _this.props.dataSource.getState !== 'dsBrowse'
+          _this.props.dataSource.getState() !== 'dsBrowse'
         ) {
           _this.props.dataSource.setFieldByName(
             _this.props.dataField,

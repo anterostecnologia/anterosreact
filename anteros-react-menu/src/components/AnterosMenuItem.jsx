@@ -15,17 +15,28 @@ export default class AnterosMenuItem extends Component {
     }
 
     toggleExpanded(event) {
-        let expanded = false;
-        if (this.props.isExpanded){
-            expanded = !this.props.isExpanded(this.props.id);
-            if (expanded) {
-                this.props.onExpandId(this.props.id)
-            } else {
-                this.props.onCollapseId(this.props.id);
+        if (!this.props.disabled) {
+            let expanded = false;
+            if (this.props.isExpanded) {
+                expanded = !this.props.isExpanded(this.props.id);
+                if (expanded) {
+                    this.props.onExpandId(this.props.id)
+                } else {
+                    this.props.onCollapseId(this.props.id);
+                }
+
+                this.props.setActiveId(this.props.id);
+
+                if (this.props.onSelectMenuItem) {
+                    this.props.onSelectMenuItem(this);
+                }
             }
+        }
+        event.stopPropagation();
+    }
 
-            this.props.setActiveId(this.props.id);
-
+    onSelectMenuItem(event) {
+        if (!this.props.disabled) {
             if (this.props.onSelectMenuItem) {
                 this.props.onSelectMenuItem(this);
             }
@@ -33,14 +44,7 @@ export default class AnterosMenuItem extends Component {
         event.stopPropagation();
     }
 
-    onSelectMenuItem(event){
-        if (this.props.onSelectMenuItem) {
-            this.props.onSelectMenuItem(this);
-        }
-        event.stopPropagation();
-    }
-
-    static get componentName(){
+    static get componentName() {
         return 'AnterosMenuItem';
     }
 
@@ -60,6 +64,8 @@ export default class AnterosMenuItem extends Component {
                             image: child.props.image,
                             imageWidth: child.props.imageWidth,
                             imageHeight: child.props.imageHeight,
+                            disabled: child.props.disabled,
+                            disabledColor: child.props.disabledColor,
                             id: child.props.id,
                             caption: child.props.caption,
                             onSelectMenuItem: child.props.onSelectMenuItem,
@@ -91,11 +97,15 @@ export default class AnterosMenuItem extends Component {
 
         let arrowIcon;
         let children;
+        let styleItem = {};
+        if (this.props.disabled) {
+            styleItem = { color: this.props.disabledColor, pointerEvents: 'none' };
+        }
 
         if (this.context.horizontal) {
             if (newChildren && newChildren.length > 0) {
                 return (<li onClick={this.onSelectMenuItem}>
-                    <span>
+                    <span style={styleItem}>
                         {/* eslint-disable-next-line */}
                         {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
                         {this.props.caption}
@@ -103,10 +113,10 @@ export default class AnterosMenuItem extends Component {
                     <ul className={"submenu"}>
                         {newChildren}
                     </ul>
-                </li>);                
+                </li>);
             } else {
                 return (<li onClick={this.onSelectMenuItem}>
-                    <span>
+                    <span style={styleItem}>
                         {/* eslint-disable-next-line */}
                         {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} />
                         {this.props.caption}
@@ -122,8 +132,8 @@ export default class AnterosMenuItem extends Component {
                 }
             }
             return (
-                <li className={classItem} onClick={this.toggleExpanded} id={this.props.id}>
-                    <a href={this.props.href} style={{ paddingLeft: (((this.props.level - 1) * 10) + 10) + "px" }}>
+                <li className={classItem} onClick={this.toggleExpanded} id={this.props.id} >
+                    <a href={this.props.href} style={{ ...styleItem, paddingLeft: (((this.props.level - 1) * 10) + 10) + "px" }}>
                         {/* eslint-disable-next-line */}
                         {icon}<img style={{ marginLeft: "2px", marginRight: "2px" }} src={this.props.image} height={this.props.imageHeight} width={this.props.imageWidth} /> {this.props.caption} {arrowIcon}
                     </a>
@@ -141,6 +151,8 @@ AnterosMenuItem.propTypes = {
     active: PropTypes.bool,
     icon: PropTypes.string,
     iconColor: PropTypes.string,
+    disabledColor: PropTypes.string,
+    disabled: PropTypes.bool,
     image: PropTypes.string,
     imageWidth: PropTypes.string,
     imageHeight: PropTypes.string,
@@ -158,7 +170,9 @@ AnterosMenuItem.defaultProps = {
     caption: undefined,
     href: undefined,
     visible: true,
-    divider: false
+    disabled: false,
+    divider: false,
+    disabledColor: 'silver'
 };
 
 AnterosMenuItem.contextTypes = {
