@@ -107,7 +107,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         ) {
           throw new AnterosError(
             'Implemente o método getFieldsFilter na classe ' +
-              WrappedComponent.type
+            WrappedComponent.type
           );
         }
 
@@ -124,7 +124,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         ) {
           throw new AnterosError(
             'Implemente o método getUserActions na classe ' +
-              WrappedComponent.type
+            WrappedComponent.type
           );
         }
 
@@ -135,13 +135,28 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         ) {
           throw new AnterosError(
             'Implemente o método getPositionUserActions na classe ' +
-              WrappedComponent.type
+            WrappedComponent.type
           );
         }
 
         autoBind(this);
-        this.createDataSourceFilter();
-        this.createMainDataSource();
+        if (loadingProps.withFilter) {
+          this.createDataSourceFilter();
+        }
+
+        if (
+          WrappedComponent.prototype.hasOwnProperty(
+            'customCreateDatasource'
+          ) === true
+        ) {
+          this.dataSource = this.customCreateDatasource();
+          this.dataSource.addEventListener(
+            DATASOURCE_EVENTS,
+            this.onDatasourceEvent
+          );
+        } else {
+          this.createMainDataSource();
+        }
 
         this.state = {
           alertIsOpen: false,
@@ -160,8 +175,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
-      getUser(){
-        if (this.props.user){
+      getUser() {
+        if (this.props.user) {
           return this.props.user;
         }
         return undefined;
@@ -197,7 +212,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       componentDidMount() {
-        if (loadingProps.openDataSourceFilter) {
+        if (loadingProps.openDataSourceFilter && loadingProps.withFilter === true) {
           if (!this.dsFilter.isOpen()) {
             this.dsFilter.open(
               AnterosQueryBuilderData.getFilters(
@@ -208,7 +223,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           }
         }
 
-        if (loadingProps.openMainDataSource) {
+        if (loadingProps.openMainDataSource &&
+          WrappedComponent.prototype.hasOwnProperty(
+            'customCreateDatasource'
+          ) === false) {
           if (!this.dataSource.isOpen()) {
             this.dataSource.open(
               loadingProps.endPoints.FIND_ALL(
@@ -232,7 +250,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             DATASOURCE_EVENTS,
             this.onDatasourceEvent
           );
-          this.dataSource.setAjaxPageConfigHandler(null);
+          if (this.dataSource instanceof AnterosRemoteDatasource) {
+            this.dataSource.setAjaxPageConfigHandler(null);
+          }
         }
       }
 
@@ -384,7 +404,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             cancelButtonText: 'Não',
             focusCancel: true
           })
-            .then(function() {
+            .then(function () {
               _this.dataSource.delete(error => {
                 if (error) {
                   _this.setState({
@@ -395,7 +415,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 }
               });
             })
-            .catch(error => {});
+            .catch(error => { });
         } else if (button.props.id === 'btnClose') {
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.setState({
@@ -409,7 +429,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         this.props.history.push(button.props.route);
       }
 
-      onSearchButtonClick(field, event) {}
+      onSearchButtonClick(field, event) { }
 
       onDoubleClickTable(data) {
         this.props.history.push(loadingProps.routes.edit);
@@ -496,8 +516,32 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         });
       }
 
-      render() {
+      createItems(){
         let ViewItem = this.getViewItem();
+        let result = [];
+        for (var i = 0; i < this.dataSource.getData().length; i++) {
+          let r = this.dataSource.getData()[i];
+          result.push(
+            <ViewItem
+              selected={
+                this.state.selectedItem
+                  ? this.state.selectedItem.id === r.id
+                  : false
+              }
+              onSelectedItem={this.onSelectedItem}
+              key={r.id}
+              record={r}
+              dispatch={this.props.dispatch}
+              history={this.props.history}
+              onButtonClick={this.onButtonClick}
+            />
+          );
+        }
+        return result;
+      }
+
+      render() {
+        
         return (
           <AnterosCard
             caption={loadingProps.caption}
@@ -628,23 +672,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                   updateOnEachImageLoad={false}
                 >
                   {!this.dataSource.isEmpty()
-                    ? this.dataSource.getData().map(r => {
-                        return (
-                          <ViewItem
-                            selected={
-                              this.state.selectedItem
-                                ? this.state.selectedItem.id === r.id
-                                : false
-                            }
-                            onSelectedItem={this.onSelectedItem}
-                            key={r.id}
-                            record={r}
-                            dispatch={this.props.dispatch}
-                            history={this.props.history}
-                            onButtonClick={this.onButtonClick}
-                          />
-                        );
-                      })
+                    ? this.createItems()
                     : null}
                 </AnterosMasonry>
               </div>
@@ -659,7 +687,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                   <AnterosLabel
                     caption={`Total ${
                       loadingProps.caption
-                    } ${this.dataSource.getGrandTotalRecords()}`}
+                      } ${this.dataSource.getGrandTotalRecords()}`}
                   />
                 </AnterosCol>
                 <AnterosCol medium={8}>

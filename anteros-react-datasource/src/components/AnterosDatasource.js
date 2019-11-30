@@ -706,7 +706,7 @@ class AnterosDatasource {
 class AnterosLocalDatasource extends AnterosDatasource {
     constructor(data) {
         super();
-        this.data = data;
+        this.open(data);
         this.cloneOnEdit = true;
     }
 
