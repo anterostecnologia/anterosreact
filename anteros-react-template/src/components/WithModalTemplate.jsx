@@ -14,7 +14,8 @@ const defaultValues = {
   withDatasource: false,
   openMainDataSource: false,
   pageSize: 30,
-  requireSelectRecord: false
+  requireSelectRecord: false,
+  fieldsToForceLazy: ''
 };
 
 export default function WithModalTemplate(_loadingProps) {
@@ -87,7 +88,7 @@ export default function WithModalTemplate(_loadingProps) {
               loadingProps.endPoints.FIND_ALL(
                 loadingProps.resource,
                 0,
-                loadingProps.pageSize
+                loadingProps.pageSize, loadingProps.fieldsToForceLazy
               )
             );
           }

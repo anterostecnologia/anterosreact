@@ -35,7 +35,8 @@ const defaultValues = {
   openMainDataSource: true,
   defaultView: 'cards',
   messageLoading: 'Carregando, por favor aguarde...',
-  withFilter: true
+  withFilter: true,
+  fieldsToForceLazy: ''
 };
 
 export default function WithCardListContainerTemplate(_loadingProps) {
@@ -331,7 +332,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                 loadingProps.resource,
                 0,
                 loadingProps.pageSize,
-                this.filterRef.current.getQuickFilterSort()
+                this.filterRef.current.getQuickFilterSort(), loadingProps.fieldsToForceLazy
               )
             );
           }
@@ -418,7 +419,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             fields,
             0,
             loadingProps.pageSize,
-            sort
+            sort, loadingProps.fieldsToForceLazy
           )
         );
       }
@@ -631,7 +632,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
               loadingProps.resource,
               filter.toJSON(),
               loadingProps.pageSize,
-              0
+              0, loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -646,7 +647,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize
+              loadingProps.pageSize, loadingProps.fieldsToForceLazy
             )
           );
         }
