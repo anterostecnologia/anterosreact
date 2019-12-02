@@ -201,7 +201,26 @@ class Example extends Component {
                 />
           </AnterosCol>
       </AnterosRow>
-      
+      <AnterosRow style={{margin:30,padding:20}}>
+          <AnterosCol medium={4}>
+                <AnterosWidgetMultipleProgressBar secondaryText="Vendas" primaryText="R$29.000,00" bigPercent
+                data={[
+                    {label:'Representante A', value:20, color: '#2196f3'},
+                    {label:'Representante B', value:80, color: '#ffa726'},
+                    {label:'Representante C', value:60, color: '#e57373'},
+                    {label:'Representante D', value:40, color: '#ce93d8'},
+                ]}/>
+          </AnterosCol>
+          <AnterosCol medium={4}>
+                <AnterosWidgetMultipleProgressBar secondaryText="Vendas" primaryText="R$29.000,00"
+                data={[
+                    {label:'Representante A', value:20, color: '#2196f3'},
+                    {label:'Representante B', value:80, color: '#ffa726'},
+                    {label:'Representante C', value:60, color: '#e57373'},
+                    {label:'Representante D', value:40, color: '#ce93d8'},
+                ]}/>
+          </AnterosCol>
+      </AnterosRow>
       </div>
     );
   }
