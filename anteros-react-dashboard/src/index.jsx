@@ -9,5 +9,6 @@ import AnterosWidgetDoughnutChart from './components/AnterosWidgetDoughnutChart'
 
 export {
     AnterosBoxInfo,AnterosWidgetInfo,AnterosWidgetProgress,AnterosWidgetChartBar,
-    AnterosWidgetLineChart,AnterosWidgetPieChart,AnterosWidgetDoughnutChart, AnterosDashboard,AnterosDashboardWidget
+    AnterosWidgetLineChart,AnterosWidgetPieChart,AnterosWidgetDoughnutChart, 
+    AnterosDashboard,AnterosDashboardWidget
 };
