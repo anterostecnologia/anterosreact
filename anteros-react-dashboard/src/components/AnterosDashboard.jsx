@@ -1,18 +1,17 @@
-import React from "react"
-import ReactDOM from "react-dom";
-import { lodash } from 'lodash'
-import { CSSTransitionGroup } from "react-transition-group";
-import { DragDropContext, DropTarget, DragSource } from "react-dnd";
+import React, { Component, Fragment } from "react"
+import PropTypes from 'prop-types';
+import lodash from 'lodash'
+import {CSSTransitionGroup} from "react-transition-group";
+import { DndProvider, DropTarget, DragSource } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import windowSize from "react-window-size";
+import {autoBind} from 'anteros-react-core';
 
 
-
-@DragDropContext(HTML5Backend)
-@windowSize()
-class AnterosDashboard extends React.Component {
+class AnterosDashboard extends Component {
     constructor(props) {
         super(props)
+        autoBind(this);
         this.state = {
             editMode: false,
             moveMode: false
@@ -86,7 +85,7 @@ class AnterosDashboard extends React.Component {
     configChange(instanceId, newConfig) {
         let allConfigs = [].concat(this.props.config)
 
-        const index = loadsh.findIndex(allConfigs, (config) => config.instanceId === instanceId)
+        const index = lodash.findIndex(allConfigs, (config) => config.instanceId === instanceId)
 
         allConfigs[index] = {
             widgetId: allConfigs[index].widgetId,
@@ -120,17 +119,19 @@ class AnterosDashboard extends React.Component {
     }
 
     renderAddWidgets() {
+        let _this = this;
         if (this.state.editMode && !this.state.moveMode) {
-            const addPanelChildren = this.props.children.map((child) => {
-                const preview = child.getPreviewComp() ? (
-                    React.createElement(child.getPreviewComp())
+            let arrChildren = React.Children.toArray(this.props.children);
+            const addPanelChildren = arrChildren.map((child) => {
+                const preview = child.props.previewComp ? (
+                    React.createElement(child.props.previewComp)
                 ) : (
                         <div className="default-preview" key={child.props.id}>
                             No Preview
                     </div>
                     )
                 return (
-                    <div className="widget-preview" key={child.props.id} onClick={() => this.addWidget(child.props.id)}>
+                    <div className="widget-preview" key={child.props.id} onClick={() => _this.addWidget(child.props.id)}>
                         <div className="no-click">{preview}</div>
                     </div>
                 )
@@ -159,9 +160,9 @@ class AnterosDashboard extends React.Component {
             title,
             className,
             config,
-            widgetHeight = defaults.widgetHeight,
-            widgetWidth = defaults.widgetWidth,
-            widgetMargin = defaults.margin,
+            widgetHeight,
+            widgetWidth,
+            widgetMargin,
             titleHeight = 50,
             maxColumns = 5,
             doneButtonClass = ""
@@ -194,34 +195,38 @@ class AnterosDashboard extends React.Component {
         }
 
         return (
-            <div className={`dashboard ${className} ${editMode && !moveMode ? "editing" : ""}`}>
-                <DashboardTitle height={titleHeight}>
-                    {title}
-                </DashboardTitle>
-                <div className={`edit-button ${editMode ? "editing" : ""}`} onClick={this.toggleEditMode}>
-                    <i className="fa fa-cogs" />
-                </div>
-                {editMode ? (
-                    <div className={`move-button ${moveMode ? "moving" : ""}`} onClick={this.toggleMoveMode}>
-                        <i className="fa fa-arrows" />
+            <DndProvider backend={HTML5Backend}>
+                <Fragment>
+                <div className={`dashboard ${className} ${editMode && !moveMode ? "editing" : ""}`}>
+                    <DashboardTitle height={titleHeight}>
+                        {title}
+                    </DashboardTitle>
+                    <div className={`edit-button ${editMode ? "editing" : ""}`} onClick={this.toggleEditMode}>
+                        <i className="fa fa-cogs" />
                     </div>
-                ) : null}
-                <div className="dashboard-container">
-                    <div
-                        className={`dashboard-content columns-${this.layout.columnCount()}`}
-                        style={{ width: contentWidth }}>
-                        {childrenForCurrentConfig}
+                    {editMode ? (
+                        <div className={`move-button ${moveMode ? "moving" : ""}`} onClick={this.toggleMoveMode}>
+                            <i className="fa fa-arrows" />
+                        </div>
+                    ) : null}
+                    <div className="dashboard-container">
+                        <div
+                            className={`dashboard-content columns-${this.layout.columnCount()}`}
+                            style={{ width: contentWidth }}>
+                            {childrenForCurrentConfig}
+                        </div>
                     </div>
+                    <CSSTransitionGroup
+                        transitionName="widget-panel"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={500}
+                        transitionEnter={true}
+                        transitionLeave={true}>
+                        {this.renderAddWidgets()}
+                    </CSSTransitionGroup>
                 </div>
-                <CSSTransitionGroup
-                    transitionName="widget-panel"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={500}
-                    transitionEnter={true}
-                    transitionLeave={true}>
-                    {this.renderAddWidgets()}
-                </CSSTransitionGroup>
-            </div>
+                </Fragment>
+           </DndProvider>
         )
     }
 }
@@ -230,7 +235,7 @@ AnterosDashboard.propTypes = {
     /* if provided, a title bar will be rendered at the top with the given text */
     title: PropTypes.string,
     /* (required) contains the widget instances and the configuration for the instances. For the sake of usability, a reasonable initial value should be provided. If not, the user will not have any widgets in the dashboard until they add them. This data structure is what you would save in the user's preferences. */
-    config: PropTypes.object.isRequired,
+    config: PropTypes.any.isRequired,
     /* fires when the user updates the widgets on the screen (by adding/removing them or by configuring one) */
     onConfigChange: PropTypes.func,
     /* 250	height of a single row in pixels */
@@ -270,6 +275,7 @@ const DashboardTitle = ({ children, height }) => (
 )
 
 DashboardTitle.displayName = "Title";
+let Positioner;
 
 const AnterosDashboardLayout = (Positioner = (function () {
     Positioner = class Positioner {
@@ -346,7 +352,7 @@ const AnterosDashboardLayout = (Positioner = (function () {
             let row = 0;
             while (!updatedWidget) {
                 if (!this._currentGrid[row]) {
-                    !(this._currentGrid[row] = []);
+                    this._currentGrid[row] = [];
                 }
                 updatedWidget = this.setWidgetPositionInRow(widget, row, config);
                 row++;
@@ -408,55 +414,19 @@ const Dnd = {
 }
 
 
-export class WidgetContent extends Component {
-
-    static get componentName() {
-        return 'WidgetContent';
-    }
-    render() {
-        return (<div>{this.props.children}</div>);
-    }
-}
-
-WidgetContent.propTypes = {
-    visible: PropTypes.bool
-};
-
-WidgetContent.defaultProps = {
-    visible: true
-}
-
-export class WidgetPreview extends Component {
-
-    static get componentName() {
-        return 'WidgetPreview';
-    }
-    render() {
-        return (<div>{this.props.children}</div>);
-    }
-}
-
-WidgetPreview.propTypes = {
-    visible: PropTypes.bool
-};
-
-WidgetPreview.defaultProps = {
-    visible: true
-}
-
-
 @DragSource(Dnd.ItemTypes.WIDGET, Dnd.widgetSource, Dnd.collectDragable)
 @DropTarget(Dnd.ItemTypes.WIDGET, Dnd.target, Dnd.collectDropTarget)
-export class AnterosDashboardWidget extends React.Component {
+class AnterosDashboardWidget extends React.Component {
     constructor(props) {
         super(props)
+        autoBind(this);
         this.state = {
             editMode: false
         }
     }
 
     displayName() {
-        return "Widget"
+        return "AnterosDashboardWidget"
     }
 
 
@@ -473,11 +443,16 @@ export class AnterosDashboardWidget extends React.Component {
     hide() { }
 
     renderEditButton() {
-        const { dashEditable, draggable, configComp, onHide, doneButtonClass } = this.props
+        const { dashEditable, draggable, onHide, doneButtonClass, configComp } = this.props
+        let className= "edit-widget-button close-button ";
+        let hrefLink = '#';
+        if (doneButtonClass){
+            className+= doneButtonClass;
+        }
         if (dashEditable && !draggable) {
             if (this.state.editMode) {
                 return (
-                    <a className={`edit-widget-button close-button ${doneButtonClass}`} onClick={this.toggleEditMode}>
+                    <a href={hrefLink} className={className} onClick={this.toggleEditMode}>
                         done
                     </a>
                 )
@@ -491,27 +466,8 @@ export class AnterosDashboardWidget extends React.Component {
         }
     }
 
-    getContentComp() {
-        let arrChildren = React.Children.toArray(this.props.children);
-        arrChildren.forEach(function (child) {
-            if (child.type && (child.type.componentName === 'WidgetContent')) {
-                return child.props.children;
-            }
-        });
-    }
-
-    getPreviewComp() {
-        let arrChildren = React.Children.toArray(this.props.children);
-        arrChildren.forEach(function (child) {
-            if (child.type && (child.type.componentName === 'WidgetPreview')) {
-                return child.props.children;
-            }
-        });
-    }
-
     renderComponent() {
-        const contentComp = this.getContentComp();
-        const { config, instanceId, onConfigChange, dashEditable, configComp } = this.props
+        const { config, instanceId, onConfigChange, dashEditable, configComp, contentComp } = this.props
         if (dashEditable && this.state.editMode) {
             if (configComp) {
                 return (
@@ -525,7 +481,7 @@ export class AnterosDashboardWidget extends React.Component {
                         </div>
                         <i className="fa fa-lg fa-cog background-watermark" />
                     </div>
-                )
+                ) 
             } else {
                 return <div />
             }
@@ -550,10 +506,9 @@ export class AnterosDashboardWidget extends React.Component {
             connectDragSource,
             connectDropTarget,
             isOver,
-            doneButtonClass
         } = this.props
-        width = _.get(config, "width", width) || 1
-        height = _.get(config, "height", height) || 1
+        width = lodash.get(config, "width", width) || 1
+        height = lodash.get(config, "height", height) || 1
         const { widgetHeight, widgetWidth, widgetMargin } = sizeConfig
 
         const styles = {
@@ -578,7 +533,6 @@ export class AnterosDashboardWidget extends React.Component {
                 </div>
             </div>
         )
-
         return draggable ? connectDragSource(connectDropTarget(rendered)) : rendered
     }
 }
@@ -586,11 +540,17 @@ export class AnterosDashboardWidget extends React.Component {
 
 AnterosDashboardWidget.propTypes = {
     /* Unique identifier for this widget. Used to in the Dashboard state (referred to as widgetId). */
-    id: PropTypes,
-    /*( (optional) The widget as displayed in the 'add widget' panel (usually a simplified version which doesn't depend on external data). While optional, the default is simply a 'No Preview' message. A previewComp is recommended for all Widgets.*/
-    configComp: React.PropTypes.func,
+    id: PropTypes.string.isRequired,
+    /* The widget as normally displayed on the dashboard */
+    contentComp: PropTypes.any.isRequired,
+    /* (optional) The widget as displayed in the 'add widget' panel (usually a simplified version which doesn't depend on external data). While optional, the default is simply a 'No Preview' message. A previewComp is recommended for all Widgets. */
+    previewComp: PropTypes.any,
+    /* (optional) The configuration screen */
+    configComp: PropTypes.any,
 }
 
-export default AnterosDashboard;
+export default windowSize(AnterosDashboard);
+
+export {AnterosDashboardWidget}
 
 

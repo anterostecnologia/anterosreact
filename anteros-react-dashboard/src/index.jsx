@@ -1,5 +1,5 @@
 import AnterosBoxInfo from "./components/AnterosBoxInfo";
-import AnterosDashboard, {AnterosDashboardWidget, WidgetContent, WidgetPreview} from './components/AnterosDashboard';
+import AnterosDashboard, {AnterosDashboardWidget} from './components/AnterosDashboard';
 import AnterosWidgetInfo from './components/AnterosWidgetInfo';
 import AnterosWidgetProgress from './components/AnterosWidgetProgress';
 import AnterosWidgetChartBar from './components/AnterosWidgetChartBar';
@@ -9,5 +9,5 @@ import AnterosWidgetDoughnutChart from './components/AnterosWidgetDoughnutChart'
 
 export {
     AnterosBoxInfo,AnterosWidgetInfo,AnterosWidgetProgress,AnterosWidgetChartBar,
-    AnterosWidgetLineChart,AnterosWidgetPieChart,AnterosWidgetDoughnutChart
+    AnterosWidgetLineChart,AnterosWidgetPieChart,AnterosWidgetDoughnutChart, AnterosDashboard,AnterosDashboardWidget
 };

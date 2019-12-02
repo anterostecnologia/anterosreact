@@ -32,7 +32,8 @@ const defaultValues = {
   openDataSourceFilter: true,
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
-  withFilter: true
+  withFilter: true,
+  fieldsToForceLazy: ''
 };
 
 export default function WithTableContainerTemplate(_loadingProps) {
@@ -234,7 +235,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 loadingProps.resource,
                 0,
                 loadingProps.pageSize,
-                this.filterRef.current.getQuickFilterSort(), this.getUser()
+                this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
               )
             );
           }
@@ -327,7 +328,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             fields,
             0,
             loadingProps.pageSize,
-            sort, this.getUser()
+            sort, this.getUser(), loadingProps.fieldsToForceLazy
           )
         );
       }
@@ -506,7 +507,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               loadingProps.resource,
               filter.toJSON(),
               loadingProps.pageSize,
-              0, this.getUser()
+              0, this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -523,7 +524,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               loadingProps.resource,
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }

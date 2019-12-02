@@ -24,7 +24,8 @@ const defaultValues = {
   openDataSourceFilter: true,
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
-  withFilter: true
+  withFilter: true,
+  fieldsToForceLazy: ''
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
@@ -234,7 +235,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                   loadingProps.resource,
                   0,
                   loadingProps.pageSize,
-                  loadingProps.defaultSort, this.getUser()
+                  loadingProps.defaultSort, this.getUser(), loadingProps.fieldsToForceLazy
                 )
               );
               this.handlePageChanged(0);
@@ -314,7 +315,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             fields,
             0,
             loadingProps.pageSize,
-            sort, this.getUser()
+            sort, this.getUser(), loadingProps.fieldsToForceLazy
           )
         );
       }
@@ -405,7 +406,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               filter.toJSON(),
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -414,7 +415,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               loadingProps.resource,
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }

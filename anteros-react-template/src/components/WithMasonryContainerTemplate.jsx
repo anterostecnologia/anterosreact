@@ -33,7 +33,8 @@ const defaultValues = {
   openDataSourceFilter: true,
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
-  withFilter: true
+  withFilter: true,
+  fieldsToForceLazy: ''
 };
 
 export default function WithMasonryContainerTemplate(_loadingProps) {
@@ -234,7 +235,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 0,
                 loadingProps.pageSize,
                 this.filter.getQuickFilterSort(),
-                this.getUser()
+                this.getUser(), loadingProps.fieldsToForceLazy
               )
             );
           }
@@ -308,7 +309,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             0,
             loadingProps.pageSize,
             sort,
-            this.getUser()
+            this.getUser(),loadingProps.fieldsToForceLazy
           )
         );
       }
@@ -487,7 +488,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               filter.toJSON(),
               loadingProps.pageSize,
               0,
-              this.getUser()
+              this.getUser(),loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -502,7 +503,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize, this.filter.getQuickFilterSort(), this.getUser()
+              loadingProps.pageSize, this.filter.getQuickFilterSort(), this.getUser(),loadingProps.fieldsToForceLazy
             )
           );
         }
