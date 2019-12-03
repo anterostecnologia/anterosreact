@@ -1,7 +1,7 @@
 import AnterosTimeSlider from './components/AnterosTimeSlider';
 import AnterosTimeLine from './components/AnterosTimeLine'
-import AnterosBigScheduler from './components/AnterosBigScheduler'
+import {AnterosVerticalTimeline,AnterosVerticalTimelineElement} from './components/AnterosVerticalTimeline';
 
 export {
-    AnterosTimeSlider,AnterosBigScheduler,AnterosTimeLine
+    AnterosTimeSlider,AnterosTimeLine,AnterosVerticalTimeline,AnterosVerticalTimelineElement
 };

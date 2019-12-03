@@ -11,7 +11,7 @@ import { autoBind } from 'anteros-react-core';
 import { processErrorMessage, processDetailErrorMessage } from 'anteros-react-core';
 
 const defaultValues = {
-    withDatasource: false,
+    withInternalDatasource: false,
     openMainDataSource: false,
     pageSize: 30,
     requireSelectRecord: false,
@@ -40,11 +40,15 @@ export default function WithFormModalTemplate(_loadingProps) {
                     throw new AnterosError('Informe o caption(titulo) da View. ');
                 }
 
-                if (loadingProps.withDatasource) {
+                if (loadingProps.withInternalDatasource) {
                     if (!loadingProps.resource) {
                         throw new AnterosError('Informe o nome do RESOURCE de consulta. ');
                     }
                     this.createMainDataSource();
+                } else {
+                    if (this.props.dataSource) {
+                        this.dataSource = this.props.dataSource;
+                    }
                 }
 
                 this.state = {
@@ -57,23 +61,20 @@ export default function WithFormModalTemplate(_loadingProps) {
                 };
             }
             createMainDataSource() {
-                if (this.props.dataSource) {
-                    this.dataSource = this.props.dataSource;
-                } else {
-                    this.dataSource = new AnterosRemoteDatasource();
-                    this.dataSource.setAjaxPostConfigHandler(entity => {
-                        return loadingProps.endPoints.POST(loadingProps.resource, entity);
-                    });
-                    this.dataSource.setValidatePostResponse(response => {
-                        return response.data !== undefined;
-                    });
-                    this.dataSource.setAjaxDeleteConfigHandler(entity => {
-                        return loadingProps.endPoints.DELETE(loadingProps.resource, entity);
-                    });
-                    this.dataSource.setValidateDeleteResponse(response => {
-                        return response.data !== undefined;
-                    });
-                }
+                this.dataSource = new AnterosRemoteDatasource();
+                this.dataSource.setAjaxPostConfigHandler(entity => {
+                    return loadingProps.endPoints.POST(loadingProps.resource, entity);
+                });
+                this.dataSource.setValidatePostResponse(response => {
+                    return response.data !== undefined;
+                });
+                this.dataSource.setAjaxDeleteConfigHandler(entity => {
+                    return loadingProps.endPoints.DELETE(loadingProps.resource, entity);
+                });
+                this.dataSource.setValidateDeleteResponse(response => {
+                    return response.data !== undefined;
+                });
+
 
                 this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
                 this.dataSource.addEventListener(
@@ -109,7 +110,9 @@ export default function WithFormModalTemplate(_loadingProps) {
                         DATASOURCE_EVENTS,
                         this.onDatasourceEvent
                     );
-                    this.dataSource.setAjaxPageConfigHandler(null);
+                    if (this.dataSource instanceof AnterosRemoteDatasource){
+                        this.dataSource.setAjaxPageConfigHandler(null);
+                    }
                 }
                 if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
                     this.onWillUnmount();
@@ -169,10 +172,14 @@ export default function WithFormModalTemplate(_loadingProps) {
 
             onClick(event, button) {
                 if (button.props.id === "btnOK") {
-                    this.props.dataSource.post();
+                    if (this.dataSource) {
+                        this.dataSource.post();
+                    }
                     this.props.onClickOk(event, this.props.selectedRecords);
                 } else if (button.props.id == "btnCancel") {
-                    this.props.dataSource.cancel();
+                    if (this.dataSource) {
+                        this.dataSource.cancel();
+                    }
                     this.props.onClickCancel(event);
                 }
             }
