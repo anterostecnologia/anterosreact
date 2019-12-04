@@ -1100,9 +1100,13 @@ AnterosResourceTimeline.TIMELINE_MODES = Object.freeze({
 });
 
 AnterosResourceTimeline.propTypes = {
+    /** Recebe um array de objetos com as propriedades dos items */
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    /** Recebe um array de objetos com as propriedades do grupo (id e title) */
     groups: PropTypes.arrayOf(PropTypes.object).isRequired,
+    /** Altera a largura do container do grupo */
     groupOffset: PropTypes.number.isRequired,
+    /** Recebe um array de objetos com as propriedades das linhas */
     rowLayers: PropTypes.arrayOf(
         PropTypes.shape({
             start: PropTypes.object.isRequired,
@@ -1111,27 +1115,40 @@ AnterosResourceTimeline.propTypes = {
             style: PropTypes.object.isRequired
         })
     ),
+    /** Recebe um array de numeros com o identificador de cada item selecionado */
     selectedItems: PropTypes.arrayOf(PropTypes.number),
+    /** Data inicial da linha do tempo */
     startDate: PropTypes.object.isRequired,
+    /** Data final da linha do tempo */
     endDate: PropTypes.object.isRequired,
+    /** Indica a variação em minutos do tamanho do item no momento de redimensionar */
     snapMinutes: PropTypes.number,
+    /** Indica se a linha vermelha estará visivel */
     showCursorTime: PropTypes.bool,
     cursorTimeFormat: PropTypes.string,
     componentId: PropTypes.string, // A unique key to identify the component. Only needed when 2 grids are mounted
+    /** Altura ocupada por cada item */
     itemHeight: PropTypes.number,
     timelineMode: PropTypes.number,
     timebarFormat: PropTypes.object,
+    /** Funçao acionada quando um item é clicado */
     onItemClick: PropTypes.func,
+    /** Funçao acionada quando um item recebe um duplo clique */
     onItemDoubleClick: PropTypes.func,
     onItemContext: PropTypes.func,
     onInteraction: PropTypes.func.isRequired,
+    /** Funçao acionada quando uma linha é clicada */
     onRowClick: PropTypes.func,
     onRowContext: PropTypes.func,
+    /** Funçao acionada quando uma linha recebe um duplo clique */
     onRowDoubleClick: PropTypes.func,
     onItemHover: PropTypes.func,
     onItemLeave: PropTypes.func,
+    /** Recebe uma função que retorna um objeto com as propriedades do item */
     itemRenderer: PropTypes.func,
+    /** Recebe uma função que retorna um objeto com as propriedades do container do grupo */
     groupRenderer: PropTypes.func,
+    /** Recebe uma função que retorna um objeto que preenche o título da tabela */
     groupTitleRenderer: PropTypes.func,
     shallowUpdateCheck: PropTypes.bool,
     forceRedrawFunc: PropTypes.func
