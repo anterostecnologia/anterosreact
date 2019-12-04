@@ -459,6 +459,10 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       render() {
+        let modalOpen = this.props.modalOpen;
+        if (modalOpen && modalOpen.includes('#')){
+          modalOpen = modalOpen.split('#')[0];
+        }
         return (
           <AnterosModal
             id={loadingProps.viewName}
@@ -467,7 +471,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             semifull
             showHeaderColor={true}
             showContextIcon={false}
-            isOpen={this.props.modalOpen === loadingProps.viewName}
+            isOpen={modalOpen === loadingProps.viewName}
             onCloseButton={this.onCloseButton}
           >
             <AnterosAlert
