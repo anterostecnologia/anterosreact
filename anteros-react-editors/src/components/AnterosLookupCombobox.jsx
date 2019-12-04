@@ -14,6 +14,20 @@ export default class AnterosLookupCombobox extends AnterosCombobox {
 		this.onLookupDatasourceEvent = this.onLookupDatasourceEvent.bind(this);
 	}
 
+	componentDidMount() {
+		if (this.props.lookupDataSource) { 
+			this.props.lookupDataSource.addEventListener([dataSourceEvents.AFTER_OPEN,
+			dataSourceEvents.AFTER_POST, dataSourceEvents.AFTER_DELETE], this.onLookupDatasourceEvent);
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.props.lookupDataSource) {
+			this.props.lookupDataSource.removeEventListener([dataSourceEvents.AFTER_OPEN,
+			dataSourceEvents.AFTER_POST, dataSourceEvents.AFTER_DELETE], this.onLookupDatasourceEvent);
+		}
+	}
+
 	onLookupDatasourceEvent(event, error) {
 		if (
 			event == dataSourceEvents.AFTER_OPEN ||
@@ -129,9 +143,9 @@ AnterosLookupCombobox.propTypes = {
 	lookupDataSource: PropTypes.oneOfType([
 		PropTypes.instanceOf(AnterosLocalDatasource),
 		PropTypes.instanceOf(AnterosRemoteDatasource)
-	]),
-	lookupDataFieldText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-	lookupDataFieldId: PropTypes.string
+	]).isRequired,
+	lookupDataFieldText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
+	lookupDataFieldId: PropTypes.string.isRequired
 };
 
 AnterosLookupCombobox.defaultProps = {

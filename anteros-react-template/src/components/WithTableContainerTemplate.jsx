@@ -176,12 +176,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
-      getDispatch(){
+      getDispatch() {
         return this.props.dispatch;
       }
 
-      getUser(){
-        if (this.props.user){
+      getUser() {
+        if (this.props.user) {
           return this.props.user;
         }
         return undefined;
@@ -245,7 +245,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
         this.table.refreshData();
 
-        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+        if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
           this.onDidMount();
         }
       }
@@ -258,7 +258,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
           );
           this.dataSource.setAjaxPageConfigHandler(null);
         }
-        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+        if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
         }
       }
@@ -361,7 +361,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
           loading = true;
         }
 
-        if (event === dataSourceEvents.BEFORE_POST){
+        if (event === dataSourceEvents.BEFORE_POST) {
           if (WrappedComponent.prototype.hasOwnProperty('onBeforePost') === true) {
             this.onBeforePost();
           }
@@ -402,10 +402,21 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       onButtonClick(event, button) {
         if (button.props.id === 'btnAdd') {
-          if (!this.dataSource.isOpen()) this.dataSource.open();
-          this.dataSource.insert();
+          if (WrappedComponent.prototype.hasOwnProperty('onCustomAdd') === true) {
+            this.onCustomAdd(button.props.route);
+            return;
+          } else {
+            if (!this.dataSource.isOpen()) 
+                 this.dataSource.open();
+              this.dataSource.insert();
+          }
         } else if (button.props.id === 'btnEdit') {
-          this.dataSource.edit();
+          if (WrappedComponent.prototype.hasOwnProperty('onCustomEdit') === true) {
+            this.onCustomEdit(button.props.route);
+            return;
+          } else {
+            this.dataSource.edit();
+          }
         } else if (button.props.id === 'btnRemove') {
           let _this = this;
           AnterosSweetAlert({
@@ -417,7 +428,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             cancelButtonText: 'Não',
             focusCancel: true
           })
-            .then(function() {
+            .then(function () {
               _this.dataSource.delete(error => {
                 if (error) {
                   _this.setState({
@@ -428,7 +439,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 }
               });
             })
-            .catch(error => {});
+            .catch(error => { });
         } else if (button.props.id === 'btnClose') {
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.setState({
@@ -439,6 +450,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             return;
           }
         }
+
         if (this.props.onButtonClick) {
           this.props.onButtonClick(event, button);
         }
@@ -447,7 +459,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
       }
 
-      onSearchButtonClick(field, event) {}
+      onSearchButtonClick(field, event) { }
 
       onDoubleClickTable(data) {
         if (loadingProps.routes.edit) {
@@ -488,7 +500,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(),this.getUser()
+              this.filterRef.current.getQuickFilterSort(), this.getUser()
             );
           }
         }
@@ -536,6 +548,14 @@ export default function WithTableContainerTemplate(_loadingProps) {
           alertIsOpen: false,
           alertMessage: ''
         });
+      }
+
+      onShowHideLoad(show){
+        this.setState({
+          ...this.state, 
+          loading: show,
+          update: Math.random()
+        })
       }
 
       render() {
@@ -622,7 +642,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   }
                   onSearchButtonClick={this.onSearchButtonClick}
                 >
-                  <CustomFilter>{this.getCustomFilter?this.getCustomFilter():null}</CustomFilter>
+                  <CustomFilter>{this.getCustomFilter ? this.getCustomFilter() : null}</CustomFilter>
                   <UserActions
                     dataSource={this.dataSource}
                     onButtonClick={this.onButtonClick}
@@ -641,30 +661,30 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   {this.getFieldsFilter()}
                 </AnterosQueryBuilder>
               ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end'
-                  }}
-                >
-                  <UserActions
-                    dataSource={this.dataSource}
-                    onButtonClick={this.onButtonClick}
-                    onButtonSearch={this.onButtonSearch}
-                    routes={loadingProps.routes}
-                    allowRemove={loadingProps.disableRemove ? false : true}
-                    labelButtonAdd={loadingProps.labelButtonAdd}
-                    labelButtonEdit={loadingProps.labelButtonEdit}
-                    labelButtonRemove={loadingProps.labelButtonRemove}
-                    labelButtonSelect={loadingProps.labelButtonSelect}
-                    positionUserActions={this.positionUserActions}
-                    userActions={
-                      this.hasUserActions ? this.getUserActions() : null
-                    }
-                  />
-                </div>
-              )}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end'
+                    }}
+                  >
+                    <UserActions
+                      dataSource={this.dataSource}
+                      onButtonClick={this.onButtonClick}
+                      onButtonSearch={this.onButtonSearch}
+                      routes={loadingProps.routes}
+                      allowRemove={loadingProps.disableRemove ? false : true}
+                      labelButtonAdd={loadingProps.labelButtonAdd}
+                      labelButtonEdit={loadingProps.labelButtonEdit}
+                      labelButtonRemove={loadingProps.labelButtonRemove}
+                      labelButtonSelect={loadingProps.labelButtonSelect}
+                      positionUserActions={this.positionUserActions}
+                      userActions={
+                        this.hasUserActions ? this.getUserActions() : null
+                      }
+                    />
+                  </div>
+                )}
 
               <AnterosDataTable
                 id={'table' + loadingProps.viewName}
@@ -682,6 +702,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               <WrappedComponent
                 ref={ref => (this.wrappedRef = ref)}
                 user={this.props.user}
+                history={this.props.history}
                 dataSource={this.dataSource}
               />
             </AnterosBlockUi>
@@ -691,7 +712,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   <AnterosLabel
                     caption={`Total ${
                       loadingProps.caption
-                    } ${this.dataSource.getGrandTotalRecords()}`}
+                      } ${this.dataSource.getGrandTotalRecords()}`}
                   />
                 </AnterosCol>
                 <AnterosCol medium={8}>

@@ -309,7 +309,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             0,
             loadingProps.pageSize,
             sort,
-            this.getUser(),loadingProps.fieldsToForceLazy
+            this.getUser(), loadingProps.fieldsToForceLazy
           )
         );
       }
@@ -388,11 +388,22 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
 
       onButtonClick(event, button) {
         if (button.props.id === 'btnAdd') {
-          if (!this.dataSource.isOpen()) this.dataSource.open();
-          this.dataSource.insert();
+          if (WrappedComponent.prototype.hasOwnProperty('onCustomAdd') === true) {
+            this.onCustomAdd(button.props.route);
+            return;
+          } else {
+            if (!this.dataSource.isOpen()) this.dataSource.open();
+            this.dataSource.insert();
+          }
         } else if (button.props.id === 'btnEdit') {
-          this.dataSource.locate({ id: button.props.idRecord });
-          this.dataSource.edit();
+          if (WrappedComponent.prototype.hasOwnProperty('onCustomEdit') === true) {
+            this.dataSource.locate({ id: button.props.idRecord });
+            this.onCustomEdit(button.props.route);
+            return;
+          } else {
+            this.dataSource.locate({ id: button.props.idRecord });
+            this.dataSource.edit();
+          }
         } else if (button.props.id === 'btnRemove') {
           this.dataSource.locate({ id: button.props.idRecord });
           let _this = this;
@@ -488,7 +499,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               filter.toJSON(),
               loadingProps.pageSize,
               0,
-              this.getUser(),loadingProps.fieldsToForceLazy
+              this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -503,7 +514,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize, this.filter.getQuickFilterSort(), this.getUser(),loadingProps.fieldsToForceLazy
+              loadingProps.pageSize, this.filter.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }
@@ -517,7 +528,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         });
       }
 
-      createItems(){
+      createItems() {
         let ViewItem = this.getViewItem();
         let result = [];
         for (var i = 0; i < this.dataSource.getData().length; i++) {
@@ -542,7 +553,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       render() {
-        
+
         return (
           <AnterosCard
             caption={loadingProps.caption}
@@ -680,6 +691,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               <WrappedComponent
                 user={this.props.user}
                 dataSource={this.dataSource}
+                history={this.props.history}
               />
             </AnterosBlockUi>
             <FooterActions className="versatil-card-footer">

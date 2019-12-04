@@ -649,6 +649,7 @@ class AnterosDatasource {
 
 
     dispatchEvent(event, error, fieldName) {
+        let _this = this;
         if (this._enableListeners) {
             let listToRemove = [];
             this.listeners.forEach(function (listener) {
@@ -672,7 +673,7 @@ class AnterosDatasource {
                 }
             });
             listToRemove.forEach(function(item){
-                this.removeEventListener(item.dispatch, item.event, item.fieldName);
+                _this.removeEventListener(item.dispatch, item.event, item.fieldName);
             });
         }
     }
