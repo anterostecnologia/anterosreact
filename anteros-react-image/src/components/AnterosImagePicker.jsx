@@ -325,6 +325,7 @@ export default class AnterosImagePicker extends React.Component {
             secondary
             id="btnEditImg"
             icon="fal fa-image"
+            visible={!this.props.disabled}
             onButtonClick={this.onButtonClick}
             caption="Editar a imagem"
           />
@@ -385,6 +386,7 @@ export default class AnterosImagePicker extends React.Component {
           <AnterosButton
             secondary
             icon="fal fa-image"
+            visible={!this.props.disabled}
             onButtonClick={this.onButtonClick}
             caption="Editar a imagem"
           />
@@ -481,6 +483,7 @@ AnterosImagePicker.defaultProps = {
   height: '200px',
   readOnly: false,
   value: '',
+  disabled:false,
   captureWidth: 480,
   captureHeight: 270
 };
