@@ -25,7 +25,8 @@ const defaultValues = {
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  modalSize: 'semifull'
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
@@ -137,8 +138,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
-      getUser(){
-        if (this.props.user){
+      getUser() {
+        if (this.props.user) {
           return this.props.user;
         }
         return undefined;
@@ -211,7 +212,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
 
       componentDidMount() {
         this.openData();
-        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+        if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
           this.onDidMount();
         }
       }
@@ -255,7 +256,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
           );
           this.dataSource.setAjaxPageConfigHandler(null);
         }
-        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+        if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
         }
       }
@@ -460,15 +461,29 @@ export default function WithSearchModalTemplate(_loadingProps) {
 
       render() {
         let modalOpen = this.props.modalOpen;
-        if (modalOpen && modalOpen.includes('#')){
+        if (modalOpen && modalOpen.includes('#')) {
           modalOpen = modalOpen.split('#')[0];
+        }
+        let modalSize = {};
+        if (loadingProps.modalSize === "extrasmall") {
+          modalSize = { extraSmall: true }
+        } else if (loadingProps.modalSize === "small") {
+          modalSize = { small: true }
+        } else if (loadingProps.modalSize === "medium") {
+          modalSize = { medium: true }
+        } else if (loadingProps.modalSize === "large") {
+          modalSize = { large: true }
+        } else if (loadingProps.modalSize === "semifull") {
+          modalSize = { semifull: true }
+        } else if (loadingProps.modalSize === "full") {
+          modalSize = { full: true }
         }
         return (
           <AnterosModal
             id={loadingProps.viewName}
             title={loadingProps.caption}
             primary
-            semifull
+            {...modalSize}
             showHeaderColor={true}
             showContextIcon={false}
             isOpen={modalOpen === loadingProps.viewName}
