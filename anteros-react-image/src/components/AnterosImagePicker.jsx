@@ -253,6 +253,7 @@ export default class AnterosImagePicker extends React.Component {
   }
 
   onCloseButton(event) {
+    this.dsImage.cancel();
     this.setState({ ...this.state, modal: false });
   }
 
@@ -310,6 +311,7 @@ export default class AnterosImagePicker extends React.Component {
             <AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
+              showCloseButton={this.props.showCloseButton}
               onCloseButton={this.onCloseButton}
               onButtonClick={this.onButtonClick}
               handleSaveWhileEditing={this.saveImg}
@@ -372,6 +374,7 @@ export default class AnterosImagePicker extends React.Component {
             <AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
+              showCloseButton={this.props.showCloseButton}
               onCloseButton={this.onCloseButton}
               onButtonClick={this.onButtonClick}
               handleSaveWhileEditing={this.saveImg}
@@ -475,7 +478,8 @@ AnterosImagePicker.propTypes = {
   large: columnProps,
   extraLarge: columnProps,
   captureWidth: PropTypes.number.isRequired,
-  captureHeight: PropTypes.number.isRequired
+  captureHeight: PropTypes.number.isRequired,
+  showCloseButton: PropTypes.bool
 };
 
 AnterosImagePicker.defaultProps = {
@@ -485,7 +489,8 @@ AnterosImagePicker.defaultProps = {
   value: '',
   disabled:false,
   captureWidth: 480,
-  captureHeight: 270
+  captureHeight: 270,
+  showCloseButton: false
 };
 
 class AnterosImagePickerEdicao extends Component {
@@ -588,6 +593,13 @@ class AnterosImagePickerEdicao extends Component {
     );
   }
 }
+AnterosImagePickerEdicao.propTypes = {
+  showCloseButton: PropTypes.bool
+};
+
+AnterosImagePickerEdicao.defaultProps = {
+  showCloseButton: false
+};
 
 class ImageContent extends Component {
   constructor(props) {
