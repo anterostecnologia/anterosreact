@@ -77,7 +77,7 @@ export default class AnterosImagePicker extends React.Component {
     }
     this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
 
-    if (this.props.dataSource.isEmptyField(this.props.dataField)) {
+    if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly) {
       this.props.dataSource.setFieldByName(this.props.dataField, '');
     }
     this.dsImage = new AnterosLocalDatasource();
@@ -769,7 +769,7 @@ class ImageContent extends Component {
 
         if (
           _this.props.dataSource &&
-          _this.props.dataSource.getState() !== 'dsBrowse'
+          _this.props.dataSource.getState() !== 'dsBrowse' && !_this.props.readOnly
         ) {
           _this.props.dataSource.setFieldByName(
             _this.props.dataField,
