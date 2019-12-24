@@ -1993,17 +1993,21 @@ export default class AnterosCombobox extends React.Component {
             maxLength
 		} = this.props;
 		
-		let dataStyle = this.props.style;
+		let dataStyle = {...this.props.style, width: width};
+
+		let classStyle = ''
         if (primary) {
-            dataStyle = "btn-primary";
-        } else if (info) {
-            dataStyle = "btn-info";
+			classStyle = "btn-primary";
+        } else if (secondary) {
+			classStyle = "btn-primary";
+		} else if (info) {
+            classStyle = "btn-info";
         } else if (danger) {
-            dataStyle = "btn-danger";
+            classStyle = "btn-danger";
         } else if (success) {
-            dataStyle = "btn-success";
+            classStyle = "btn-success";
         } else if (warning) {
-            dataStyle = "btn-warning";
+            classStyle = "btn-warning";
 		}
 		
 		let content = <div ref={ref => this.wrapper = ref}
@@ -2011,14 +2015,14 @@ export default class AnterosCombobox extends React.Component {
 		style={this.props.wrapperStyle}>
 	   {this.renderHiddenField(valueArray)}
 	   <div ref={ref => this.control = ref}
-		   className="Select-control"
+		   className={"Select-control" + classStyle}
 		   onKeyDown={this.handleKeyDown}
 		   onMouseDown={this.handleMouseDown}
 		   onTouchEnd={this.handleTouchEnd}
 		   onTouchMove={this.handleTouchMove}
 		   onTouchStart={this.handleTouchStart}
 		   style={dataStyle}
-			>
+		>
 				<span className="Select-multi-value-wrapper" id={this._instancePrefix + '-value'}>
 					{this.renderValue(valueArray, isOpen)}
 					{this.renderInput(valueArray, focusedOptionIndex)}
