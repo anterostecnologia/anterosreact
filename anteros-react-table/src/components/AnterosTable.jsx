@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import lodash from 'lodash';
-import {AnterosError, AnterosUtils, AnterosDateUtils, AnterosStringMask} from "anteros-react-core";
+import { AnterosError, AnterosUtils, AnterosDateUtils, AnterosStringMask } from "anteros-react-core";
 import PropTypes from 'prop-types';
 
 export default class AnterosTable extends Component {
@@ -17,7 +17,7 @@ export default class AnterosTable extends Component {
             .bind(this);
         this.renderBoolean = this
             .renderBoolean
-            .bind(this);    
+            .bind(this);
         this.renderDate = this
             .renderDate
             .bind(this);
@@ -42,7 +42,7 @@ export default class AnterosTable extends Component {
         this.renderCep = this
             .renderCep
             .bind(this);
-        this.renderBoolean = this.renderBoolean.bind(this);    
+        this.renderBoolean = this.renderBoolean.bind(this);
         this.validateColumns();
     }
 
@@ -56,32 +56,32 @@ export default class AnterosTable extends Component {
 
         arrChildren
             .forEach(function (child) {
-                if (child.type && !(child.type.componentName ==='AnterosTableColumn')) {
+                if (child.type && !(child.type.componentName === 'AnterosTableColumn')) {
                     throw new AnterosError("Somente AnterosTableColumn podem ser informados como filhos de AnterosTable.");
                 }
             });
     }
 
     renderDate(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         return AnterosDateUtils.formatDate(value, this.props.dateFormat);
     }
 
     renderDateTime(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         return AnterosDateUtils.formatDate(value, this.props.dateFormat + " " + this.props.timeFormat);
     }
 
     renderTime(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         return AnterosDateUtils.formatDate(value, this.props.timeFormat);
     }
 
     renderBoolean(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         let newData = value;
         if (value === true) {
@@ -93,52 +93,52 @@ export default class AnterosTable extends Component {
     }
 
     renderNumber(column, value, record) {
-        if (!column || !column.props.maskFormatNumber) 
+        if (!column || !column.props.maskFormatNumber)
             return value;
         return AnterosUtils.formatNumber(value, column.props.maskFormatNumber);
     }
 
     renderFone(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         if (!value)
-            return value;    
+            return value;
         let _mask = new AnterosStringMask("(99) 99999-9999");
         return _mask.apply(value);
     }
 
     renderPlaca(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         if (!value)
-            return value;  
+            return value;
         let _mask = new AnterosStringMask('SSS-AAAAA');
         return _mask.apply(value);
     }
 
     renderCpf(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         if (!value)
-            return value;  
+            return value;
         let _mask = new AnterosStringMask('999.999.999-99');
         return _mask.apply(value);
     }
 
     renderCnpj(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         if (!value)
-            return value;  
+            return value;
         let _mask = new AnterosStringMask('99.999.999/9999-99');
         return _mask.apply(value);
     }
 
     renderCep(column, value, record) {
-        if (!column) 
+        if (!column)
             return value;
         if (!value)
-            return value;  
+            return value;
         let _mask = new AnterosStringMask('99999-999');
         return _mask.apply(value);
     }
@@ -155,12 +155,27 @@ export default class AnterosTable extends Component {
             height = column.props.imageHeight;
         }
         if (!value)
-            return value;  
+            return value;
 
-            
-
-        return <img className={classNameImage} src={value} height={height} width={width}/>;
+        let imgSrc = value;
+        if (this.isBase64(value)) {
+            if (this.isUrl(atob(value))) {
+                imgSrc = atob(value);
+            } else {
+                imgSrc = 'data:image;base64,' + value;
+            }
+        }
+        return <img className={classNameImage} src={imgSrc} height={height} width={width} />;
     }
+
+    isUrl(string) {
+		try {
+			new URL(string);
+			return true;
+		} catch (_) {
+			return false;
+		}
+	}
 
     render() {
         let idTable = this.idTable;
@@ -222,11 +237,11 @@ export default class AnterosTable extends Component {
                 tabIndex={this.props.tabIndex}
                 ref={ref => this.divTable = ref}
                 style={{
-                borderColor: "silver",
-                border: "1px",
-                width: "100%",
-                height: "100%"
-            }}>
+                    borderColor: "silver",
+                    border: "1px",
+                    width: "100%",
+                    height: "100%"
+                }}>
                 <table
                     ref={ref => this.table = ref}
                     id={idTable}
@@ -250,8 +265,8 @@ export default class AnterosTable extends Component {
                                             onClick={(column.onClickHeaderColumn)}
                                             data-column={column}
                                             style={{
-                                            textAlign: align
-                                        }}>{column.props.title}</th>
+                                                textAlign: align
+                                            }}>{column.props.title}</th>
                                     );
                                 })}
                         </tr>
@@ -263,68 +278,68 @@ export default class AnterosTable extends Component {
                             .map((record, i) => {
                                 return (
                                     <tr key={i}>{_this
-                                            .props
-                                            .children
-                                            .map((column, j) => {
-                                                let align = column.props.textAlign;
-                                                if (column.props.textAlignCenter) {
-                                                    align = "center";
-                                                } else if (column.props.textAlignRight) {
-                                                    align = "right";
+                                        .props
+                                        .children
+                                        .map((column, j) => {
+                                            let align = column.props.textAlign;
+                                            if (column.props.textAlignCenter) {
+                                                align = "center";
+                                            } else if (column.props.textAlignRight) {
+                                                align = "right";
+                                            }
+                                            let render = column.props.render;
+                                            if (render == undefined) {
+                                                if (column.props.dataType == "number") {
+                                                    render = _this.renderNumber;
+                                                } else if (column.props.dataType == "date") {
+                                                    render = _this.renderDate;
+                                                } else if (column.props.dataType == "date_time") {
+                                                    render = _this.renderDateTime;
+                                                } else if (column.props.dataType == "time") {
+                                                    render = _this.renderTime;
+                                                } else if (column.props.dataType == "image") {
+                                                    render = _this.renderImage;
+                                                } else if (column.props.dataType == "fone") {
+                                                    render = _this.renderFone;
+                                                } else if (column.props.dataType == "placa") {
+                                                    render = _this.renderPlaca;
+                                                } else if (column.props.dataType == "cpf") {
+                                                    render = _this.renderCpf;
+                                                } else if (column.props.dataType == "cnpj") {
+                                                    render = _this.renderCnpj;
+                                                } else if (column.props.dataType == "cep") {
+                                                    render = _this.renderCep;
+                                                } else if (column.props.dataType == "boolean") {
+                                                    render = _this.renderBoolean;
                                                 }
-                                                let render = column.props.render;
-                                                if (render == undefined) {
-                                                    if (column.props.dataType == "number") {
-                                                        render = _this.renderNumber;
-                                                    } else if (column.props.dataType == "date") {
-                                                        render = _this.renderDate;
-                                                    } else if (column.props.dataType == "date_time") {
-                                                        render = _this.renderDateTime;
-                                                    } else if (column.props.dataType == "time") {
-                                                        render = _this.renderTime;
-                                                    } else if (column.props.dataType == "image") {
-                                                        render = _this.renderImage;
-                                                    } else if (column.props.dataType == "fone") {
-                                                        render = _this.renderFone;
-                                                    } else if (column.props.dataType == "placa") {
-                                                        render = _this.renderPlaca;
-                                                    } else if (column.props.dataType == "cpf") {
-                                                        render = _this.renderCpf;
-                                                    } else if (column.props.dataType == "cnpj") {
-                                                        render = _this.renderCnpj;
-                                                    } else if (column.props.dataType == "cep") {
-                                                        render = _this.renderCep;
-                                                    } else if (column.props.dataType == "boolean") {
-                                                        render = _this.renderBoolean;    
-                                                    }
-                                                }
-                                                let classNameCell;
-                                                if (column.props.success) {
-                                                    classNameCell = "bg-success";
-                                                } else if (column.props.warning) {
-                                                    classNameCell = "bg-warning";
-                                                } else if (column.props.info) {
-                                                    classNameCell = "bg-info";
-                                                } else if (column.props.primary) {
-                                                    classNameCell = "bg-primary";
-                                                } else if (column.props.danger) {
-                                                    classNameCell = "bg-danger";
-                                                } else if (column.props.inverse) {
-                                                    classNameCell = "bg-inverse";
-                                                }
-                                                return (
-                                                    <td
-                                                        key={j}
-                                                        className={classNameCell}
-                                                        onClick={(column.onClickCellRow)}
-                                                        data-column={column}
-                                                        style={{
+                                            }
+                                            let classNameCell;
+                                            if (column.props.success) {
+                                                classNameCell = "bg-success";
+                                            } else if (column.props.warning) {
+                                                classNameCell = "bg-warning";
+                                            } else if (column.props.info) {
+                                                classNameCell = "bg-info";
+                                            } else if (column.props.primary) {
+                                                classNameCell = "bg-primary";
+                                            } else if (column.props.danger) {
+                                                classNameCell = "bg-danger";
+                                            } else if (column.props.inverse) {
+                                                classNameCell = "bg-inverse";
+                                            }
+                                            return (
+                                                <td
+                                                    key={j}
+                                                    className={classNameCell}
+                                                    onClick={(column.onClickCellRow)}
+                                                    data-column={column}
+                                                    style={{
                                                         textAlign: align
                                                     }}>{render
-                                                            ? render(column, record[column.props.dataField], record)
-                                                            : record[column.props.dataField]}</td>
-                                                );
-                                            })}
+                                                        ? render(column, record[column.props.dataField], record)
+                                                        : record[column.props.dataField]}</td>
+                                            );
+                                        })}
                                     </tr>
                                 );
                             })}
@@ -347,13 +362,13 @@ AnterosTable.propTypes = {
     showHover: PropTypes.bool.isRequired,
     dateFormat: PropTypes
         .oneOf([
-        'DD/MM/YYYY',
-        'DD-MM-YYYY',
-        'MM/DD/YYYY',
-        'MM-DD-YYYY',
-        'YYYY/MM/DD',
-        'YYYY-MM-DD'
-    ])
+            'DD/MM/YYYY',
+            'DD-MM-YYYY',
+            'MM/DD/YYYY',
+            'MM-DD-YYYY',
+            'YYYY/MM/DD',
+            'YYYY-MM-DD'
+        ])
         .isRequired,
     timeFormat: PropTypes
         .oneOf(['HH:mm:ss', 'HH:mm', 'hh:mm:ss', 'hh:mm'])
@@ -403,19 +418,19 @@ AnterosTableColumn.propTypes = {
     dataField: PropTypes.string.isRequired,
     dataType: PropTypes
         .oneOf([
-        'number',
-        'date',
-        'date_time',
-        'time',
-        'boolean',
-        'string',
-        'image',
-        'cep',
-        'fone',
-        'placa',
-        'cpf',
-        'cnpj'
-    ])
+            'number',
+            'date',
+            'date_time',
+            'time',
+            'boolean',
+            'string',
+            'image',
+            'cep',
+            'fone',
+            'placa',
+            'cpf',
+            'cnpj'
+        ])
         .isRequired,
     maskFormatNumber: PropTypes.string,
     onClickHeaderColumn: PropTypes.func,

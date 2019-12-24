@@ -68,8 +68,8 @@ export default class AnterosDataTable extends Component {
 		this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
 		this.refreshData = this.refreshData.bind(this);
 		this.refresh = this.refresh.bind(this);
-    	this.isBase64 = this.isBase64.bind(this);
-    	this.onTableClick = this.onTableClick.bind(this);
+		this.isBase64 = this.isBase64.bind(this);
+		this.onTableClick = this.onTableClick.bind(this);
 		this.currentRow = undefined;
 		this.currentCol = undefined;
 		this.dataTable;
@@ -237,33 +237,50 @@ export default class AnterosDataTable extends Component {
 			img = column.props.placeHolder;
 		}
 
-		let isb64 = this.isBase64(img);
+		let imgSrc = img;
+		if (this.isBase64(img)) {
+			if (this.isUrl(atob(img))) {
+				imgSrc = atob(img);
+			} else {
+				imgSrc = 'data:image;base64,' + img;
+			}
+		}
+
 
 		return ReactDOMServer.renderToString(
 			<img
 				className={classNameImage}
-				src={isb64 ? "data:image;base64," + img : img}
+				src={imgSrc}
 				height={height}
 				width={width}
 			/>
 		);
 	}
 
-	onClick(event) {}
+	isUrl(string) {
+		try {
+			new URL(string);
+			return true;
+		} catch (_) {
+			return false;
+		}
+	}
 
-	componentDidUpdate() {}
+	onClick(event) { }
+
+	componentDidUpdate() { }
 
 	createDatatable() {
 		let _this = this;
-		jQuery.fn.dataTableExt.oSort["number-asc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["number-asc"] = function (a, b) {
 			return AnterosUtils.parseNumber(a) - AnterosUtils.parseNumber(b);
 		};
 
-		jQuery.fn.dataTableExt.oSort["number-desc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["number-desc"] = function (a, b) {
 			return AnterosUtils.parseNumber(b) - AnterosUtils.parseNumber(a);
 		};
 
-		jQuery.fn.dataTableExt.oSort["customdate-asc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["customdate-asc"] = function (a, b) {
 			let dtA = AnterosDateUtils.parseDateWithFormat(
 				a,
 				Anteros.dataSourceDatetimeFormat
@@ -279,7 +296,7 @@ export default class AnterosDataTable extends Component {
 			else if (dtA > dtB) return 1;
 		};
 
-		jQuery.fn.dataTableExt.oSort["customdate-desc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["customdate-desc"] = function (a, b) {
 			let dtA = AnterosDateUtils.parseDateWithFormat(
 				a,
 				Anteros.dataSourceDatetimeFormat
@@ -295,7 +312,7 @@ export default class AnterosDataTable extends Component {
 			else if (dtA > dtB) return -1;
 		};
 
-		jQuery.fn.dataTableExt.oSort["customdatetime-asc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["customdatetime-asc"] = function (a, b) {
 			let dtA = AnterosDateUtils.parseDateWithFormat(
 				a,
 				Anteros.dataSourceDatetimeFormat
@@ -309,7 +326,7 @@ export default class AnterosDataTable extends Component {
 			return dtA.getMilliseconds() - dtB.getMilliseconds();
 		};
 
-		jQuery.fn.dataTableExt.oSort["customdatetime-desc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["customdatetime-desc"] = function (a, b) {
 			let dtA = AnterosDateUtils.parseDateWithFormat(
 				a,
 				anteros.dataSourceDatetimeFormat
@@ -323,7 +340,7 @@ export default class AnterosDataTable extends Component {
 			return dtB.getMilliseconds() - dtA.getMilliseconds();
 		};
 
-		jQuery.fn.dataTableExt.oSort["customtime-asc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["customtime-asc"] = function (a, b) {
 			let dtA = AnterosDateUtils.parseDateWithFormat(
 				a,
 				Anteros.dataSourceDatetimeFormat
@@ -337,7 +354,7 @@ export default class AnterosDataTable extends Component {
 			return dtA.getMilliseconds() - dtB.getMilliseconds();
 		};
 
-		jQuery.fn.dataTableExt.oSort["customtime-desc"] = function(a, b) {
+		jQuery.fn.dataTableExt.oSort["customtime-desc"] = function (a, b) {
 			let dtA = AnterosDateUtils.parseDateWithFormat(
 				a,
 				Anteros.dataSourceDatetimeFormat
@@ -473,19 +490,19 @@ export default class AnterosDataTable extends Component {
 				thousands: this.props.thousandsSeparator
 			}
 		});
-    if (this.props.showExportButtons == false) table.buttons().remove();
-    
+		if (this.props.showExportButtons == false) table.buttons().remove();
 
-    table
-    .on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
-        if (_this.props.onTableClick){
-          _this.props.onTableClick(e,_this);
-        }
-    } );
+
+		table
+			.on('user-select', function (e, dt, type, cell, originalEvent) {
+				if (_this.props.onTableClick) {
+					_this.props.onTableClick(e, _this);
+				}
+			});
 
 
 		if (this.props.enableCheckboxSelect) {
-			$("#" + this.idCheckBoxSelect).on("click", function() {
+			$("#" + this.idCheckBoxSelect).on("click", function () {
 				var rows = table.rows({ search: "applied" }).nodes();
 				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);
 				if (this.checked) {
@@ -508,7 +525,7 @@ export default class AnterosDataTable extends Component {
 			$("#" + this.idTable + " tbody").on(
 				"change",
 				'input[type="checkbox"][name="id[]"]',
-				function(event) {
+				function (event) {
 					_this.currentRow = event.target.parentElement._DT_CellIndex.row;
 					_this.currentCol = event.target.parentElement._DT_CellIndex.column;
 					table.rows().deselect();
@@ -518,7 +535,7 @@ export default class AnterosDataTable extends Component {
 						if (_this.props.onSelectRecord) {
 							_this.props.onSelectRecord(
 								table.rows(this.getAttribute("row")),
-								table.rows(this.getAttribute("row")).data()[0],_this.props.id
+								table.rows(this.getAttribute("row")).data()[0], _this.props.id
 							);
 						}
 					} else {
@@ -538,7 +555,7 @@ export default class AnterosDataTable extends Component {
 				}
 			);
 
-			table.on("key-focus", function(e, datatable, cell, originalEvent) {
+			table.on("key-focus", function (e, datatable, cell, originalEvent) {
 				_this.currentRow = cell.index().row;
 				_this.currentCol = cell.index().column;
 				_this.adjustHeaderCheckbox();
@@ -547,7 +564,7 @@ export default class AnterosDataTable extends Component {
 				}
 			});
 
-			table.on("page.dt", function() {
+			table.on("page.dt", function () {
 				_this.adjustHeaderCheckbox();
 				var info = table.page.info();
 				if (_this.onPageChange) {
@@ -555,7 +572,7 @@ export default class AnterosDataTable extends Component {
 				}
 			});
 
-			$(document).on("keydown.keyTable", function(e) {
+			$(document).on("keydown.keyTable", function (e) {
 				if (e.target == _this.divTable) {
 					if (
 						e.keyCode == 40 ||
@@ -596,13 +613,13 @@ export default class AnterosDataTable extends Component {
 				}
 			});
 
-			$(document).on("keypress.keyTable", function(e) {});
+			$(document).on("keypress.keyTable", function (e) { });
 		}
 
 		$("#" + this.idTable + " tbody").on(
 			"click",
 			"td.details-control",
-			function() {
+			function () {
 				var tr = $(this).closest("tr");
 				var row = table.row(tr);
 
@@ -618,7 +635,7 @@ export default class AnterosDataTable extends Component {
 			}
 		);
 
-		$("#" + this.idTable + " tbody").on("dblclick", "td", function() {
+		$("#" + this.idTable + " tbody").on("dblclick", "td", function () {
 			if (_this.props.onDoubleClick) {
 				var data = table.row(this).data();
 				_this.props.onDoubleClick(data);
@@ -630,7 +647,7 @@ export default class AnterosDataTable extends Component {
 			}
 		});
 
-		$("#" + this.idTable + " tbody").on("click", "td", function() {
+		$("#" + this.idTable + " tbody").on("click", "td", function () {
 			if (_this.props.onCellClick) {
 				var data = table.row(this).data();
 				var row = table.cell(this).index().row;
@@ -640,7 +657,7 @@ export default class AnterosDataTable extends Component {
 		});
 
 		let element = this.divTable.querySelector(".dataTables_scrollBody");
-		element.onscroll = function() {
+		element.onscroll = function () {
 			if (this.clientWidth < this.scrollWidth) {
 				this.classList.remove("shadow-left");
 				this.classList.remove("shadow-right");
@@ -675,7 +692,7 @@ export default class AnterosDataTable extends Component {
 			th1.addClass("datatable-danger");
 		}
 
-		table.on("select", function(e, dt, type, indexes) {
+		table.on("select", function (e, dt, type, indexes) {
 			if (_this.props.dataSource && _this.props.dataSource.isOpen()) {
 				_this.props.dataSource.gotoRecordByData(dt.data());
 			}
@@ -808,7 +825,7 @@ export default class AnterosDataTable extends Component {
 		let columns = this.getColumns();
 		let arrChildren = React.Children.toArray(columns);
 		let _this = this;
-		arrChildren.forEach(function(column) {
+		arrChildren.forEach(function (column) {
 			let className = "";
 
 			if (column.props.align == "right" || column.props.alignRight) {
@@ -924,10 +941,10 @@ export default class AnterosDataTable extends Component {
 			arrChildren = [checkBoxColumn, ...arrChildren];
 		}
 
-		arrChildren.forEach(function(child) {
+		arrChildren.forEach(function (child) {
 			if (child && child.type.componentName === "Columns") {
 				let arrColumns = React.Children.toArray(child.props.children);
-				arrColumns.forEach(function(childColumn) {
+				arrColumns.forEach(function (childColumn) {
 					if (
 						childColumn.type &&
 						childColumn.type.componentName === "AnterosDataTableColumn"
@@ -990,28 +1007,28 @@ export default class AnterosDataTable extends Component {
 		}
 
 		return (
-				<div
-          tabIndex={this.props.tabIndex}
-					ref={ref => (this.divTable = ref)}
-					style={{
-						pointerEvents: this.props.disabled ? "none" : "auto",
-						borderColor: "silver",
-						border: "1px",
-						width: "100%",
-						height: "100%"
-					}}
+			<div
+				tabIndex={this.props.tabIndex}
+				ref={ref => (this.divTable = ref)}
+				style={{
+					pointerEvents: this.props.disabled ? "none" : "auto",
+					borderColor: "silver",
+					border: "1px",
+					width: "100%",
+					height: "100%"
+				}}
+			>
+				<div id={this.idTable + "_header"} className="row" />
+				<table
+					ref={ref => (this.table = ref)}
+					id={this.idTable}
+					className={className}
+					cellSpacing="0"
 				>
-					<div id={this.idTable + "_header"} className="row" />
-					<table
-						ref={ref => (this.table = ref)}
-						id={this.idTable}
-						className={className}
-						cellSpacing="0"
-					>
-						<thead />
-						<tbody />
-					</table>
-				</div>
+					<thead />
+					<tbody />
+				</table>
+			</div>
 		);
 	}
 }
@@ -1131,7 +1148,7 @@ export class Columns extends Component {
 
 	validateChildrens() {
 		let arrChildren = React.Children.toArray(this.props.children);
-		arrChildren.forEach(function(child) {
+		arrChildren.forEach(function (child) {
 			if (
 				child.type &&
 				!(child.type.componentName === "AnterosDataTableColumn")
