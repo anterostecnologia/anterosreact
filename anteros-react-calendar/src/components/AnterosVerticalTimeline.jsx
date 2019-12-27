@@ -10,8 +10,9 @@ import VisibilitySensor from 'react-visibility-sensor';
 
 
 /** Componente AnterosVerticalTimeline */
-const AnterosVerticalTimeline = ({ animate, children, className, layout }) => (
+const AnterosVerticalTimeline = ({ animate, children, className, layout, style }) => (
   <div
+    style={style}
     className={classNames(className, 'vertical-timeline', {
       'vertical-timeline--animate': animate,
       'vertical-timeline--two-columns': layout === '2-columns',

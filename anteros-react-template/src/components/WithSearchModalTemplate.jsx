@@ -33,13 +33,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
 
   const mapStateToProps = state => {
-    let query, sort, activeSortIndex, activeFilter, user;
+    let query, sort, activeSortIndex, activeFilter, user, quickFilterText;
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
       query = reducer.query;
       sort = reducer.sort;
       activeSortIndex = reducer.activeSortIndex;
       activeFilter = reducer.activeFilter;
+      quickFilterText = reducer.quickFilterText;
     }
     user = state[loadingProps.userReducerName].user;
     return {
@@ -47,7 +48,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
       sort: sort,
       activeSortIndex: activeSortIndex,
       activeFilter: activeFilter,
-      user: user
+      user: user,
+      quickFilterText: quickFilterText
     };
   };
 
@@ -56,13 +58,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
       setDatasource: dataSource => {
         dispatch(loadingProps.actions.setDatasource(dataSource));
       },
-      setFilter: (activeFilter, query, sort, activeSortIndex) => {
+      setFilter: (activeFilter, query, sort, activeSortIndex, quickFilterText) => {
         dispatch(
           loadingProps.actions.setFilter(
             activeFilter,
             query,
             sort,
-            activeSortIndex
+            activeSortIndex,
+            quickFilterText
           )
         );
       }

@@ -867,6 +867,7 @@ export class AnterosQueryBuilder extends React.Component {
             <AnterosButton
               primary
               icon="fal fa-filter"
+              disabled
               onClick={this.onFilterClick}
             />
             {customFilter}
