@@ -34,7 +34,8 @@ const defaultValues = {
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  defaultSortFields: undefined
 };
 
 export default function WithMasonryContainerTemplate(_loadingProps) {
@@ -234,7 +235,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 loadingProps.resource,
                 0,
                 loadingProps.pageSize,
-                this.filter.getQuickFilterSort(),
+                this.getSortFields(),
                 this.getUser(), loadingProps.fieldsToForceLazy
               )
             );
@@ -275,6 +276,13 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           activeSortIndex,
           this.props.quickFilterText
         );
+      }
+
+      getSortFields(){
+        if (this.filter.getQuickFilterSort() && this.filter.getQuickFilterSort() !== ''){
+          return this.filter.getQuickFilterSort();
+        }
+        return loadingProps.defaultSortFields;
       }
 
       onSelectActiveFilter(
@@ -459,7 +467,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.resource,
             filter.toJSON(),
             page,
-            loadingProps.pageSize, this.getUser()
+            loadingProps.pageSize, this.getUser(), loadingProps.fieldsToForceLazy
           );
         } else {
           if (
@@ -472,14 +480,14 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               this.filter.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filter.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filter.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           }
         }
@@ -514,7 +522,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize, this.filter.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+              loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }

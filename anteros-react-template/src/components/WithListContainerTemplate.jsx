@@ -197,6 +197,7 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
         );
       }
 
+
       onSelectActiveFilter(
         activeFilter,
         filter,

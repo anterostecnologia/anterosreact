@@ -26,7 +26,8 @@ const defaultValues = {
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
   fieldsToForceLazy: '',
-  modalSize: 'semifull'
+  modalSize: 'semifull',
+  defaultSortFields: undefined
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
@@ -187,7 +188,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             filter.toJSON(),
             page,
             loadingProps.pageSize,
-            this.filterRef.current.getQuickFilterSort(), this.getUser()
+            this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
           );
         } else {
           if (
@@ -200,14 +201,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
               this.filterRef.current.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           }
         }
@@ -331,6 +332,13 @@ export default function WithSearchModalTemplate(_loadingProps) {
         );
       }
 
+      getSortFields(){
+        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== ''){
+          return this.filterRef.current.getQuickFilterSort();
+        }
+        return loadingProps.defaultSortFields;
+      }
+
       onDatasourceEvent(event, error) {
         let loading = this.state.loading;
         if (
@@ -410,7 +418,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               filter.toJSON(),
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -419,7 +427,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               loadingProps.resource,
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }

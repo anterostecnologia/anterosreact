@@ -213,7 +213,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.resource,
             filter.toJSON(),
             page,
-            loadingProps.pageSize
+            loadingProps.pageSize, this.props.user, loadingProps.fieldsToForceLazy
           );
         } else {
           if (
@@ -226,14 +226,16 @@ export default function WithCardListContainerTemplate(_loadingProps) {
               this.filterRef.current.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort()
+              this.filterRef.current.getQuickFilterSort(),
+              this.props.user, loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort()
+              this.filterRef.current.getQuickFilterSort(),
+              this.props.user, loadingProps.fieldsToForceLazy
             );
           }
         }
