@@ -16,7 +16,9 @@ const defaultValues = {
     pageSize: 30,
     requireSelectRecord: false,
     fieldsToForceLazy: '',
-    modalSize: 'large'
+    modalSize: 'large',
+    modalContentHeight: '',
+    modalContentWidth: ''
 };
 
 export default function WithFormModalTemplate(_loadingProps) {
@@ -220,6 +222,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         {...modalSize}
                         showHeaderColor={true}
                         showContextIcon={false}
+                        style={{height:loadingProps.modalContentHeight, width:loadingProps.modalContentWidth}}
                         isOpen={this.props.modalOpen === loadingProps.viewName}
                         onClose={this.onClose}
                     >

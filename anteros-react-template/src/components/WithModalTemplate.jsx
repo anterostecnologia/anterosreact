@@ -15,7 +15,9 @@ const defaultValues = {
   openMainDataSource: false,
   pageSize: 30,
   requireSelectRecord: false,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  modalContentHeight: '',
+  modalContentWidth: ''
 };
 
 export default function WithModalTemplate(_loadingProps) {
@@ -198,6 +200,7 @@ export default function WithModalTemplate(_loadingProps) {
             large
             showHeaderColor={true}
             showContextIcon={false}
+            style={{height:loadingProps.modalContentHeight, width:loadingProps.modalContentWidth}}
             isOpen={this.props.modalOpen === loadingProps.viewName}
             onClose={this.onClose}
           >

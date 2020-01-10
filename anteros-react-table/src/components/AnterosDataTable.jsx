@@ -70,6 +70,10 @@ export default class AnterosDataTable extends Component {
 		this.refresh = this.refresh.bind(this);
 		this.isBase64 = this.isBase64.bind(this);
 		this.onTableClick = this.onTableClick.bind(this);
+		this.getValue = this.getValue.bind(this);
+		this.isBase64 = this.isBase64.bind(this);
+		this.isUrl = this.isUrl.bind(this);
+		this.renderAudio = this.renderAudio.bind(this);
 		this.currentRow = undefined;
 		this.currentCol = undefined;
 		this.dataTable;
@@ -103,6 +107,49 @@ export default class AnterosDataTable extends Component {
 				.html() +
 			'">'
 		);
+	}
+
+	getValue(data) {
+		if (data && data !== '') {
+			if (this.isBase64(data)) {
+				if (this.isUrl(atob(data))) {
+					return atob(data);
+				} else {
+					return 'data:audio;base64,' + data;
+				}
+			} else {
+				return data;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	isBase64(str) {
+		try {
+			return btoa(atob(str)) === str;
+		} catch (err) {
+			return false;
+		}
+	}
+
+	isUrl(string) {
+		try {
+			new URL(string);
+			return true;
+		} catch (_) {
+			return false;
+		}
+	}
+
+	renderAudio(data, type, full, meta) {
+		let value = this.getValue(data);
+		return ReactDOMServer.renderToString(<audio
+			className={`react-audio-player`}
+			controls={true}
+			src={value}
+			tabIndex={-1}
+		/>);
 	}
 
 	renderDetails(data, type, full, meta) {
@@ -880,6 +927,8 @@ export default class AnterosDataTable extends Component {
 				customRender = _this.renderCnpj;
 			} else if (column.props.dataType == "boolean") {
 				customRender = _this.renderBoolean;
+			} else if (column.props.dataType == "audio") {
+				customRender = _this.renderAudio;
 			}
 
 			if (column.props.render) {
@@ -1206,7 +1255,8 @@ AnterosDataTableColumn.propTypes = {
 		"fone",
 		"placa",
 		"cpf",
-		"cnpj"
+		"cnpj",
+		"audio"
 	]).isRequired,
 	maskFormatNumber: PropTypes.string,
 	title: PropTypes.string.isRequired,

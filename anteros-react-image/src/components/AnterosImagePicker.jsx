@@ -67,6 +67,9 @@ export default class AnterosImagePicker extends React.Component {
     this.state = { value: '', modal: false };
 
     if (this.props.dataSource) {
+      if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly) {
+        this.props.dataSource.setFieldByName(this.props.dataField, '');
+      }
       let value = this.props.dataSource.fieldByName(this.props.dataField);
       if (!value) {
         value = '';
@@ -77,15 +80,13 @@ export default class AnterosImagePicker extends React.Component {
     }
     this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
 
-    if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly) {
-      this.props.dataSource.setFieldByName(this.props.dataField, '');
-    }
+
     this.dsImage = new AnterosLocalDatasource();
     this.dsImage.open();
     this.dsImage.insert();
     this.dsImage.setFieldByName(
       'editedImg',
-      this.props.dataSource.fieldByName(this.props.dataField)
+      this.state.value
     );
     this.dsImage.post();
 
@@ -93,15 +94,24 @@ export default class AnterosImagePicker extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let value = nextProps.value;
     if (nextProps.dataSource) {
+      if (nextProps.dataSource.isEmptyField(nextProps.dataField) && !nextProps.readOnly) {
+        nextProps.dataSource.setFieldByName(nextProps.dataField, '');
+      }
       let value = nextProps.dataSource.fieldByName(nextProps.dataField);
       if (!value) {
         value = '';
       }
-      this.setState({ value: value });
-    } else {
-      this.setState({ value: nextProps.value });
     }
+    this.setState({ value });
+
+    this.dsImage.edit();
+    this.dsImage.setFieldByName(
+      'editedImg',
+      value
+    );
+    this.dsImage.post();
   }
 
   componentDidMount() {
@@ -194,11 +204,11 @@ export default class AnterosImagePicker extends React.Component {
   saveImg(isConfirm) {
     if (isConfirm) {
       this.dsImage.post();
-      this.props.dataSource.setFieldByName(
-        this.props.dataField,
-        this.dsImage.fieldByName('editedImg')
-      );
-      this.setState({ ...this.state, modal: false });
+      let value = this.dsImage.fieldByName('editedImg');
+      if (this.props.dataSource) {
+        this.props.dataSource.setFieldByName(this.props.dataField, value);
+      }
+      this.setState({ ...this.state, value, modal: false });
     }
   }
 

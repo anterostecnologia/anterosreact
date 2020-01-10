@@ -43,9 +43,10 @@ import { AnterosCol, AnterosRow } from "anteros-react-layout";
 import { AnterosList } from "anteros-react-list";
 import lodash from "lodash";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Fragment, Component } from "react";
 import uniqueId from "uuid/v4";
 import { autoBind } from "anteros-react-core";
+import { AnterosDatetimeRangeSelect } from "anteros-react-calendar";
 
 export class AnterosQueryBuilder extends React.Component {
   constructor(props) {
@@ -170,14 +171,14 @@ export class AnterosQueryBuilder extends React.Component {
     });
   }
 
-  getQuickFilterText(){
+  getQuickFilterText() {
     return this.state.quickFilterText;
   }
 
   getQuickFilterFields() {
     let result = "";
     let appendDelimiter = false;
-    this.getFields(this.props).forEach(function(field) {
+    this.getFields(this.props).forEach(function (field) {
       if (field.quickFilter === true) {
         if (appendDelimiter) {
           result = result + ",";
@@ -192,10 +193,10 @@ export class AnterosQueryBuilder extends React.Component {
   getQuickFilterSort() {
     let result = "";
     let appendDelimiter = false;
-    this.getFields(this.props).forEach(function(field) {
+    this.getFields(this.props).forEach(function (field) {
       if (field.quickFilterSort === true) {
         if (appendDelimiter)
-            result += ","; 
+          result += ",";
         result += field.name;
         appendDelimiter = true;
       }
@@ -290,12 +291,12 @@ export class AnterosQueryBuilder extends React.Component {
     let result = [];
     let flds = this.getFields(this.props);
     if (flds) {
-      flds.forEach(function(field, index) {
+      flds.forEach(function (field, index) {
         let selected = false;
         let asc_desc = "asc";
         let order = index;
         if (sort) {
-          sort.forEach(function(item) {
+          sort.forEach(function (item) {
             if (item.name === field.name) {
               selected = item.selected;
               asc_desc = item.asc_desc;
@@ -311,7 +312,7 @@ export class AnterosQueryBuilder extends React.Component {
           label: field.label
         });
       });
-      result = result.sort(function(a, b) {
+      result = result.sort(function (a, b) {
         return a.order - b.order;
       });
     }
@@ -355,11 +356,11 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  
+
   componentWillReceiveProps(nextProps) {
-    this.setState({...this.state, quickFilterText: nextProps.quickFilterText});
+    this.setState({ ...this.state, quickFilterText: nextProps.quickFilterText });
   }
-  
+
 
   onDatasourceEvent(event, error) {
     if (event === dataSourceEvents.ON_ERROR) {
@@ -441,7 +442,7 @@ export class AnterosQueryBuilder extends React.Component {
       if (!this.props.onSaveFilter) {
         new AnterosError(
           "Para salvar os filtros  é necessário configurar onSaveFilter e retornar uma Prom" +
-            "ise."
+          "ise."
         );
       }
       AnterosSweetAlert({
@@ -452,7 +453,7 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Cancelar",
         allowOutsideClick: false,
         focusCancel: true
-      }).then(function(filterName) {
+      }).then(function (filterName) {
         _this.props.dataSource.gotoRecordByData(_this.state.recordFilter);
         _this.props.dataSource.edit();
         let filterData = {
@@ -471,7 +472,7 @@ export class AnterosQueryBuilder extends React.Component {
       if (!this.props.onSaveFilter) {
         new AnterosError(
           "Para salvar os filtros é necessário configurar onSaveFilter e retornar uma Promi" +
-            "se."
+          "se."
         );
       }
       AnterosSweetAlert({
@@ -486,7 +487,7 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Cancelar",
         allowOutsideClick: false,
         focusCancel: true
-      }).then(function(filterName) {
+      }).then(function (filterName) {
         _this.props.dataSource.insert();
         let filterData = {
           filter: _this.state.root,
@@ -520,7 +521,7 @@ export class AnterosQueryBuilder extends React.Component {
         confirmButtonText: "Sim",
         cancelButtonText: "Não",
         focusCancel: true
-      }).then(function() {
+      }).then(function () {
         _this.props.dataSource.gotoRecordByData(_this.state.recordFilter);
         _this.props.dataSource.delete();
       });
@@ -540,7 +541,7 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Cancelar",
         allowOutsideClick: false,
         focusCancel: true
-      }).then(function(filterName) {
+      }).then(function (filterName) {
         _this.props.dataSource.gotoRecordByData(_this.state.recordFilter);
         _this.props.dataSource.edit();
         _this.props.dataSource.setFieldByName("filterName", filterName);
@@ -569,7 +570,7 @@ export class AnterosQueryBuilder extends React.Component {
 
   getSelectedSort() {
     let result = [];
-    this.state.sort.forEach(function(item) {
+    this.state.sort.forEach(function (item) {
       if (item.selected) {
         result.push({ name: item.name, asc_desc: item.asc_desc });
       }
@@ -586,7 +587,7 @@ export class AnterosQueryBuilder extends React.Component {
 
   getSortItem(field) {
     let result;
-    this.state.sort.forEach(function(item) {
+    this.state.sort.forEach(function (item) {
       if (item.name === field) {
         result = item;
       }
@@ -596,7 +597,7 @@ export class AnterosQueryBuilder extends React.Component {
 
   getSortItemByOrder(order) {
     let result;
-    this.state.sort.forEach(function(item) {
+    this.state.sort.forEach(function (item) {
       if (item.order === order) {
         result = item;
       }
@@ -625,7 +626,7 @@ export class AnterosQueryBuilder extends React.Component {
       label: item.label
     });
     let sort = this.state.sort;
-    sort = sort.sort(function(a, b) {
+    sort = sort.sort(function (a, b) {
       return a.order - b.order;
     });
     this.setState({
@@ -655,7 +656,7 @@ export class AnterosQueryBuilder extends React.Component {
         });
       }
       let sort = this.state.sort;
-      sort = sort.sort(function(a, b) {
+      sort = sort.sort(function (a, b) {
         return a.order - b.order;
       });
       this.setState({
@@ -687,7 +688,7 @@ export class AnterosQueryBuilder extends React.Component {
         });
       }
       let sort = this.state.sort;
-      sort = sort.sort(function(a, b) {
+      sort = sort.sort(function (a, b) {
         return a.order - b.order;
       });
       this.setState({
@@ -707,20 +708,20 @@ export class AnterosQueryBuilder extends React.Component {
     let result = [];
     if (props.children) {
       let arrChildren = React.Children.toArray(props.children);
-      arrChildren.forEach(function(child) {
-        if (child.type && child.type.componentName ==='QueryFields') {
+      arrChildren.forEach(function (child) {
+        if (child.type && child.type.componentName === 'QueryFields') {
           if (child.props.children) {
             let arrChild = React.Children.toArray(child.props.children);
-            arrChild.forEach(function(chd) {
-              if (chd.type && !(chd.type.componentName ==='QueryField')) {
+            arrChild.forEach(function (chd) {
+              if (chd.type && !(chd.type.componentName === 'QueryField')) {
                 throw new AnterosError(
                   "Somente filhos do tipo QueryField podem ser usados com QueryFields."
                 );
               }
               let values = [];
               let chld = React.Children.toArray(chd.props.children);
-              chld.forEach(function(val) {
-                if (val.type && !(val.type.componentName ==='QueryFieldValue')) {
+              chld.forEach(function (val) {
+                if (val.type && !(val.type.componentName === 'QueryFieldValue')) {
                   throw new AnterosError(
                     "Somente filhos do tipo QueryFieldValue podem ser usados com QueryFields"
                   );
@@ -799,8 +800,36 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  onClickCalendar(event){
-    $('#filterDateTime').click();
+  onClickOkCalendar(event, startDate, endDate) {
+    if (this.props.onSelectDateRange){
+      this.props.onSelectDateRange(startDate, endDate);
+    }
+    let qf = this.state.quickFilterText;
+    if (qf && qf !== ''){
+      qf = qf + ',';
+    } else {
+      qf = '';
+    }
+    qf = qf + startDate.format('DD/MM/YYYY')+":"+endDate.format('DD/MM/YYYY');
+    this.setState({
+      ...this.state,
+      quickFilterText: qf,
+      modalOpen: ""
+    });
+  }
+  onClickCancelCalendar(event) {
+    this.setState({
+      ...this.state,
+      modalOpen: ""
+    });
+  }
+
+  onClickCalendar(event) {
+    const {
+      root: { id, rules, condition },
+      schema
+    } = this.state;
+    this.setState({ ...this.state, modalOpen: id + "_modalRange" });
   }
 
   render() {
@@ -809,8 +838,8 @@ export class AnterosQueryBuilder extends React.Component {
     let index = 0;
     let _this = this;
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function(child) {
-      if (child.type && child.type.componentName ==='CustomFilter') {
+    arrChildren.forEach(function (child) {
+      if (child.type && child.type.componentName === 'CustomFilter') {
         customFilter = child.props.children;
       } else {
         children.push(child);
@@ -855,9 +884,8 @@ export class AnterosQueryBuilder extends React.Component {
               icon="fal fa-search"
               onClick={this.onSearchClick}
             />{" "}
-            
-            {this.props.showDateTimeButton ? (  
-              // <AnterosDateRangePicker id="filterDateTime" style={{width:"30px"}}/>            
+
+            {this.props.showDateTimeButton ? (
               <AnterosButton
                 primary
                 icon="fal fa-calendar"
@@ -1039,6 +1067,7 @@ export class AnterosQueryBuilder extends React.Component {
               </AnterosForm>
             </div>
           </AnterosModal>
+          <DateRangeModal name={id} modalOpen={this.state.modalOpen} onClickOK={this.onClickOkCalendar} onClickCancel={this.onClickCancelCalendar} />
         </div>
       </div>
     );
@@ -1074,7 +1103,7 @@ export class AnterosQueryBuilder extends React.Component {
 
   getField(name) {
     let result;
-    this.getFields(this.props).forEach(function(field) {
+    this.getFields(this.props).forEach(function (field) {
       if (field.name === name) {
         result = field;
       }
@@ -1085,7 +1114,7 @@ export class AnterosQueryBuilder extends React.Component {
   getOperators(field) {
     let fld = this.getField(field);
     let oprs = [];
-    this.props.operators.forEach(function(op) {
+    this.props.operators.forEach(function (op) {
       if (op.dataTypes.indexOf(fld.dataType) >= 0) {
         oprs.push(op);
       }
@@ -1240,7 +1269,7 @@ AnterosQueryBuilder.defaultProps = {
 };
 
 export class CustomFilter extends React.Component {
-  static get componentName(){
+  static get componentName() {
     return 'CustomFilter';
   }
 
@@ -1250,7 +1279,7 @@ export class CustomFilter extends React.Component {
 }
 
 export class QueryFields extends React.Component {
-  static get componentName(){
+  static get componentName() {
     return 'QueryFields';
   }
 
@@ -1260,7 +1289,7 @@ export class QueryFields extends React.Component {
 }
 
 export class QueryField extends React.Component {
-  static get componentName(){
+  static get componentName() {
     return 'QueryField';
   }
   render() {
@@ -1285,7 +1314,7 @@ QueryField.defaultProps = {
 };
 
 export class QueryFieldValue extends React.Component {
-  static get componentName(){
+  static get componentName() {
     return 'QueryFieldValue';
   }
   render() {
@@ -1306,7 +1335,7 @@ class CustomSortItem extends React.Component {
     this.onDoubleClick = this.onDoubleClick.bind(this);
   }
 
-  static get componentName(){
+  static get componentName() {
     return 'CustomSortItem';
   }
 
@@ -1325,7 +1354,7 @@ class CustomSortItem extends React.Component {
   getChecked() {
     let field = this.props.recordData[this.props.dataFieldId];
     let checked = false;
-    this.props.dataSource.forEach(function(item) {
+    this.props.dataSource.forEach(function (item) {
       if (item.name === field) {
         checked = item.selected;
       }
@@ -1356,7 +1385,7 @@ class CustomSortItem extends React.Component {
   isAsc() {
     let field = this.props.recordData[this.props.dataFieldId];
     let asc = true;
-    this.props.dataSource.forEach(function(item) {
+    this.props.dataSource.forEach(function (item) {
       if (item.name === field) {
         asc = item.asc_desc === "asc";
       }
@@ -1423,7 +1452,7 @@ class RuleGroup extends React.Component {
     this.removeGroup = this.removeGroup.bind(this);
   }
 
-  static get componentName(){
+  static get componentName() {
     return 'RuleGroup';
   }
 
@@ -1510,20 +1539,20 @@ class RuleGroup extends React.Component {
                   rules={r.rules}
                 />
               ) : (
-                <Rule
-                  key={r.id}
-                  id={r.id}
-                  field={r.field}
-                  value={r.value}
-                  value2={r.value2}
-                  operator={r.operator}
-                  disabled={r.disabled}
-                  schema={this.props.schema}
-                  onSearchButtonClick={onSearchButtonClick}
-                  parentId={this.props.id}
-                  onRuleRemove={onRuleRemove}
-                />
-              );
+                  <Rule
+                    key={r.id}
+                    id={r.id}
+                    field={r.field}
+                    value={r.value}
+                    value2={r.value2}
+                    operator={r.operator}
+                    disabled={r.disabled}
+                    schema={this.props.schema}
+                    onSearchButtonClick={onSearchButtonClick}
+                    parentId={this.props.id}
+                    onRuleRemove={onRuleRemove}
+                  />
+                );
             })}
           </ul>
         </dd>
@@ -1591,7 +1620,7 @@ class Rule extends React.Component {
     this.getFieldValues = this.getFieldValues.bind(this);
   }
 
-  static get componentName(){
+  static get componentName() {
     return 'Rule';
   }
 
@@ -1674,22 +1703,22 @@ class Rule extends React.Component {
           level={level}
         />{" "}
         {operator === "between" &&
-        (dt !== "date" && dt !== "date_time" && dt !== "time") ? (
-          <ValueEditor
-            field={field}
-            dataType={dt}
-            operator={operator}
-            value={value2}
-            listValues={listValues}
-            disabled={disabled}
-            className="rule-value"
-            handleOnChange={this.onValue2Changed}
-            onSearchButtonClick={onSearchButtonClick}
-            level={level}
-          />
-        ) : (
-          ""
-        )}
+          (dt !== "date" && dt !== "date_time" && dt !== "time") ? (
+            <ValueEditor
+              field={field}
+              dataType={dt}
+              operator={operator}
+              value={value2}
+              listValues={listValues}
+              disabled={disabled}
+              className="rule-value"
+              handleOnChange={this.onValue2Changed}
+              onSearchButtonClick={onSearchButtonClick}
+              level={level}
+            />
+          ) : (
+            ""
+          )}
         <ActionElement
           label=""
           className="rule-remove btn btn-xs btn-danger fa fa-times"
@@ -1746,7 +1775,7 @@ class Rule extends React.Component {
       if (values.length > 0) {
         let appendDelimiter = false;
         let result = "";
-        values.forEach(function(v) {
+        values.forEach(function (v) {
           if (appendDelimiter) {
             result += ",";
           }
@@ -1794,7 +1823,7 @@ Rule.defaultProps = {
 };
 
 class ActionElement extends React.Component {
-  static get componentName(){
+  static get componentName() {
     return 'ActionElement';
   }
 
@@ -1822,7 +1851,7 @@ class ValueEditor extends React.Component {
     this.onButtonClick = this.onButtonClick.bind(this);
   }
 
-  static get componentName(){
+  static get componentName() {
     return 'ValueEditor';
   }
 
@@ -2000,7 +2029,7 @@ ValueEditor.propTypes = {
 };
 
 class ValueSelector extends React.Component {
-  static get componentName(){
+  static get componentName() {
     return 'ValueSelector';
   }
 
@@ -2044,3 +2073,117 @@ ValueSelector.propTypes = {
   handleOnChange: PropTypes.func,
   width: PropTypes.string
 };
+
+class DateRangeModal extends Component {
+  constructor(props) {
+    super(props);
+    this.applyCallback = this.applyCallback.bind(this);
+    this.onClickOk = this.onClickOk.bind(this);
+    this.rangeCallback = this.rangeCallback.bind(this);
+    let start = new Date();
+    let end= new Date();
+    this.state = {
+      start: moment(start),      
+      end: moment(end)
+        .add(5, 'days')
+    };
+
+    this.ranges = {
+      "Hoje": [moment(start), moment(end)],
+      "Ontem": [
+        moment(start).subtract(1, "days"),
+        moment(end).subtract(1, "days")
+      ],
+      "3 dias": [moment(start).subtract(3, "days"), moment(end)],
+      "5 dias": [moment(start).subtract(5, "days"), moment(end)],
+      "1 semana": [moment(start).subtract(7, "days"), moment(end)],
+      "2 semanas": [moment(start).subtract(14, "days"), moment(end)],
+      "1 mês": [moment(start).subtract(1, "months"), moment(end)],
+      "3 meses": [moment(start).subtract(3, "months"), moment(end)],
+      "1 ano": [moment(start).subtract(1, "years"), moment(end)]
+    };
+
+    this.local = {"format":"DD/MM/YYYY",
+    "sundayFirst" : false,
+    days: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+    months: [
+        'Janeiro',
+        'Feveiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
+        'Julho',
+        'Agosto',
+        'Setembro',
+        'Outubro',
+        'Novembro',
+        'Dezembro',],
+    fromDate: 'De',
+    toDate: 'Até',
+    selectingFrom: 'Selecione de',
+    selectingTo: 'Até',
+    maxDate: 'Data máxima',
+    close: 'Fechar',
+    apply: 'Aplicar',
+    cancel: 'Cancelar'};
+    
+  }
+
+  applyCallback(startDate, endDate) {
+    this.setState({
+      start: startDate,
+      end: endDate,
+    });
+  }
+
+  rangeCallback(index, value) {
+    console.log(index, value);
+  }
+
+  onClickOk(event) {
+    this.props.onClickOK(event, this.state.start, this.state.end);
+  }
+
+
+  render() {
+    return (<AnterosModal
+      title="Selecione o período"
+      primary
+      large
+      showHeaderColor={true}
+      showContextIcon={false}
+      style ={{width:"780px", height:"560px"}}
+      withScroll={false}
+      isOpen={this.props.modalOpen === this.props.name + "_modalRange"}
+      onClose={this.onClose}
+    >
+      <ModalActions>
+        <AnterosButton success onClick={this.onClickOk} caption="OK" />
+        <AnterosButton success onClick={this.props.onClickCancel} caption="Cancela" />
+      </ModalActions>
+
+      <div>
+        <AnterosForm>
+          <AnterosRow>
+            <AnterosCol>
+              <AnterosDatetimeRangeSelect
+                ranges={this.ranges}
+                start={this.state.start}
+                end={this.state.end}
+                applyCallback={this.applyCallback}
+                rangeCallback={this.rangeCallback}
+                autoApply
+                standalone
+                local={this.local}
+                style={{
+                  standaloneLayout: { display: "flex", maxWidth: "fit-content" }
+                }}
+              />
+            </AnterosCol>
+          </AnterosRow>
+        </AnterosForm>
+      </div>
+    </AnterosModal>);
+  }
+}
