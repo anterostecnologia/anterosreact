@@ -435,13 +435,15 @@ export default class AnterosModal extends React.Component {
                             <h4>
                                 {this.props.title}
                             </h4>
-                            <button
-                                type="button"
-                                onClick={this.onClickCloseButton}
-                                className="close"
-                                aria-label="Close">
-                                <span aria-hidden="true">{String.fromCharCode(215)}</span>
-                            </button>
+                            {this.props.showCloseButton ?
+                              <button
+                                  type="button"
+                                  onClick={this.onClickCloseButton}
+                                  className="close"
+                                  aria-label="Close">
+                                  <span aria-hidden="true">{String.fromCharCode(215)}</span>
+                              </button>
+                            : null }
                         </div>
                     </Then>
                 </If>
@@ -598,7 +600,8 @@ AnterosModal.propTypes = {
     semifull: PropTypes.bool,
     width : PropTypes.string,
     style : PropTypes.object,
-    withScroll : PropTypes.bool
+    withScroll : PropTypes.bool,
+    showCloseButton: PropTypes.bool
   };
   
   AnterosModal.defaultProps = {
@@ -621,7 +624,8 @@ AnterosModal.propTypes = {
     },
     unmountOnClose: true,
     showHeader: true,
-    withScroll: true
+    withScroll: true,
+    showCloseButton: false
   };
 
 

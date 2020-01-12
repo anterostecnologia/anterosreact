@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Grid, AutoSizer, defaultCellRangeRenderer } from 'react-virtualized';
@@ -8,47 +8,50 @@ import _ from 'lodash';
 // startsWith polyfill for IE11 support
 import 'core-js/fn/string/starts-with';
 
+class Marker extends PureComponent {
+    render() {
+        const { height, left, top } = this.props;
+        return <div className="rct9k-marker-overlay" style={{ height, left, top }} />;
+    };
+}
 
-const Marker = props => {
-    const {height, left, top} = props;
-    return <div className="rct9k-marker-overlay" style={{height, left, top}} />;
-  };
-  
-  Marker.propTypes = {
+Marker.propTypes = {
     height: PropTypes.number.isRequired,
     left: PropTypes.number.isRequired,
     top: PropTypes.number.isRequired
-  };
-  
+};
 
-const DefaultItemRenderer = props => {
-    const {item, ...rest} = props;
-  
-    return (
-      <span {...rest}>
-        <span className="rct9k-item-renderer-inner">{item.title}</span>
-      </span>
-    );
-  };
-  
-  /**
-   * Default group (row) renderer class
-   * @param {object} props - Component props
-   * @param {object} props.group - The group to be rendered
-   * @param {string} props.group.title - The group's title
-   * @param {string} props.group.id - The group's id
-   * @param {?...object} props.rest - Any other arguments for the span tag
-   */
-  const DefaultGroupRenderer = props => {
-    const {group, ...rest} = props;
-  
-    return (
-      <span data-group-index={group.id} {...rest}>
-        <span>{group.title}</span>
-      </span>
-    );
-  };
-  
+
+class DefaultItemRenderer extends PureComponent {
+    render() {
+        const { item, ...rest } = this.props;
+        return (
+            <span {...rest}>
+                <span className="rct9k-item-renderer-inner">{item.title}</span>
+            </span>
+        );
+    }
+};
+
+/**
+ * Default group (row) renderer class
+ * @param {object} props - Component props
+ * @param {object} props.group - The group to be rendered
+ * @param {string} props.group.title - The group's title
+ * @param {string} props.group.id - The group's id
+ * @param {?...object} props.rest - Any other arguments for the span tag
+ */
+class DefaultGroupRenderer extends PureComponent {
+    render() {
+        const { group, ...rest } = this.props;
+        return (
+            <span data-group-index={group.id} {...rest}>
+                <span>{group.title}</span>
+            </span>
+        );
+    }
+};
+
 
 const timebarFormat = {
     majorLabels: {
@@ -1449,36 +1452,36 @@ Timebar.defaultProps = {
 
 class SelectBox extends React.Component {
     constructor(props) {
-      super(props);
-      this.curX = 0;
-      this.curY = 0;
-      this.startX = 0;
-      this.startY = 0;
+        super(props);
+        this.curX = 0;
+        this.curY = 0;
+        this.startX = 0;
+        this.startY = 0;
     }
-  
+
     /**
      * Create the selection box
      * @param {number} x Starting x coordinate for selection box
      * @param {number} y Starting y coordinate for selection box
      */
     start(x, y) {
-      this.startX = x;
-      this.startY = y;
-      this.curX = 0;
-      this.curY = 0;
+        this.startX = x;
+        this.startY = y;
+        this.curX = 0;
+        this.curY = 0;
     }
-  
+
     /**
      * Update the selection box as the mouse moves
      * @param {number} x The current X coordinate of the mouse
      * @param {number} y The current Y coordinate of the mouse
      */
     move(x, y) {
-      this.curX = x;
-      this.curY = y;
-      this.forceUpdate();
+        this.curX = x;
+        this.curY = y;
+        this.forceUpdate();
     }
-  
+
     /**
      * Generally on mouse up.
      * Finish the selection box and return the rectangle created
@@ -1489,77 +1492,77 @@ class SelectBox extends React.Component {
      * @property {number} height The height of the box
      */
     end() {
-      const {startX, startY, curX, curY} = this;
-      const left = Math.min(startX, curX);
-      const top = Math.min(startY, curY);
-      const width = Math.abs(startX - curX);
-      const height = Math.abs(startY - curY);
-      let toReturn = {left, top, width, height};
-  
-      this.startX = 0;
-      this.startY = 0;
-      this.curX = 0;
-      this.curY = 0;
-      this.forceUpdate();
-      return toReturn;
+        const { startX, startY, curX, curY } = this;
+        const left = Math.min(startX, curX);
+        const top = Math.min(startY, curY);
+        const width = Math.abs(startX - curX);
+        const height = Math.abs(startY - curY);
+        let toReturn = { left, top, width, height };
+
+        this.startX = 0;
+        this.startY = 0;
+        this.curX = 0;
+        this.curY = 0;
+        this.forceUpdate();
+        return toReturn;
     }
-  
+
     /**
      * @ignore
      */
     render() {
-      const {startX, startY, curX, curY} = this;
-      const left = Math.min(startX, curX);
-      const top = Math.min(startY, curY);
-      const width = Math.abs(startX - curX);
-      const height = Math.abs(startY - curY);
-      let style = {left, top, width, height};
-      return <div className="rct9k-selector-outer" style={style} />;
+        const { startX, startY, curX, curY } = this;
+        const left = Math.min(startX, curX);
+        const top = Math.min(startY, curY);
+        const width = Math.abs(startX - curX);
+        const height = Math.abs(startY - curY);
+        let style = { left, top, width, height };
+        return <div className="rct9k-selector-outer" style={style} />;
     }
-  }
+}
 
-  class TimelineBody extends Component {
+class TimelineBody extends Component {
     componentDidMount() {
-      this.forceUpdate();
+        this.forceUpdate();
     }
     shouldComponentUpdate(nextProps) {
-      const {props} = this;
-      if (!props.shallowUpdateCheck) {
-        return true;
-      }
-  
-      // prettier-ignore
-      const shallowChange = props.height !== nextProps.height
-        || props.width !== nextProps.width
-        || props.rowCount !== nextProps.rowCount;
-  
-      if (props.forceRedrawFunc) {
-        return shallowChange || props.forceRedrawFunc(props, nextProps);
-      }
-  
-      return shallowChange;
+        const { props } = this;
+        if (!props.shallowUpdateCheck) {
+            return true;
+        }
+
+        // prettier-ignore
+        const shallowChange = props.height !== nextProps.height
+            || props.width !== nextProps.width
+            || props.rowCount !== nextProps.rowCount;
+
+        if (props.forceRedrawFunc) {
+            return shallowChange || props.forceRedrawFunc(props, nextProps);
+        }
+
+        return shallowChange;
     }
     render() {
-      const {width, columnWidth, height, rowHeight, rowCount} = this.props;
-      const {grid_ref_callback, cellRenderer} = this.props;
-  
-      return (
-        <Grid
-          ref={grid_ref_callback}
-          autoContainerWidth
-          cellRenderer={cellRenderer}
-          columnCount={2}
-          columnWidth={columnWidth}
-          height={height}
-          rowCount={rowCount}
-          rowHeight={rowHeight}
-          width={width}
-        />
-      );
+        const { width, columnWidth, height, rowHeight, rowCount } = this.props;
+        const { grid_ref_callback, cellRenderer } = this.props;
+
+        return (
+            <Grid
+                ref={grid_ref_callback}
+                autoContainerWidth
+                cellRenderer={cellRenderer}
+                columnCount={2}
+                columnWidth={columnWidth}
+                height={height}
+                rowCount={rowCount}
+                rowHeight={rowHeight}
+                width={width}
+            />
+        );
     }
-  }
-  
-  TimelineBody.propTypes = {
+}
+
+TimelineBody.propTypes = {
     width: PropTypes.number.isRequired,
     columnWidth: PropTypes.func.isRequired,
     height: PropTypes.number.isRequired,
@@ -1569,9 +1572,9 @@ class SelectBox extends React.Component {
     cellRenderer: PropTypes.func.isRequired,
     shallowUpdateCheck: PropTypes.bool,
     forceRedrawFunc: PropTypes.func
-  };
-  
-  TimelineBody.defaultProps = {
+};
+
+TimelineBody.defaultProps = {
     shallowUpdateCheck: false,
     forceRedrawFunc: null
-  };
+};

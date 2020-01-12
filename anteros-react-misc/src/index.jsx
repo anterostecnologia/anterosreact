@@ -18,6 +18,9 @@ import AnterosSpeedometer from './components/AnterosSpeedometer';
 import AnterosRadialGauge from './components/AnterosRadialGauge';
 import AnterosThermometer from './components/AnterosThermometer';
 import AnterosIframe from './components/AnterosIframe';
+// import {AnterosPlayer,AnterosReactPlayer,createSinglePlayer,Preview,AnterosDailyMotion,
+//     AnterosFacebook,AnterosFilePlayer,AnterosMixcloud,AnterosSoundCloud,
+//     AnterosStreamable,AnterosTwitch,AnterosVimeo,AnterosWistia,AnterosYouTube} from './components/AnterosReactPlayer'
 
 export {
     AnterosKnob, AnterosObjectInspector,InspectorItem ,
@@ -25,5 +28,7 @@ export {
     AnterosSlider, AnterosSpinner, AnterosStarRating, AnterosBarcode,
     AnterosIdleTimer,AnterosTimeAgo, AnterosQRCode, AnterosRecaptcha, AnterosTour, 
     AnterosTourStep,AnterosLinearProgressBar,AnterosFloater,AnterosSpeedometer,
-    AnterosRadialGauge, AnterosThermometer, AnterosIframe
+    // AnterosRadialGauge, AnterosThermometer, AnterosIframe,AnterosPlayer,AnterosReactPlayer,createSinglePlayer,Preview,AnterosDailyMotion,
+    // AnterosFacebook,AnterosFilePlayer,AnterosMixcloud,AnterosSoundCloud,
+    // AnterosStreamable,AnterosTwitch,AnterosVimeo,AnterosWistia,AnterosYouTube
 };

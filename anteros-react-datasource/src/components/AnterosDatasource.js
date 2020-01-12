@@ -404,7 +404,7 @@ class AnterosDatasource {
     }
 
     isLast() {
-        return (this.currentRecno == this.getTotalRecords - 1);
+        return (this.currentRecno == this.getTotalRecords() - 1);
     }
 
     first() {

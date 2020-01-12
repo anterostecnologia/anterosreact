@@ -25,20 +25,23 @@ const defaultValues = {
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  modalSize: 'semifull',
+  defaultSortFields: undefined
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
 
   const mapStateToProps = state => {
-    let query, sort, activeSortIndex, activeFilter, user;
+    let query, sort, activeSortIndex, activeFilter, user, quickFilterText;
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
       query = reducer.query;
       sort = reducer.sort;
       activeSortIndex = reducer.activeSortIndex;
       activeFilter = reducer.activeFilter;
+      quickFilterText = reducer.quickFilterText;
     }
     user = state[loadingProps.userReducerName].user;
     return {
@@ -46,7 +49,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
       sort: sort,
       activeSortIndex: activeSortIndex,
       activeFilter: activeFilter,
-      user: user
+      user: user,
+      quickFilterText: quickFilterText
     };
   };
 
@@ -55,13 +59,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
       setDatasource: dataSource => {
         dispatch(loadingProps.actions.setDatasource(dataSource));
       },
-      setFilter: (activeFilter, query, sort, activeSortIndex) => {
+      setFilter: (activeFilter, query, sort, activeSortIndex, quickFilterText) => {
         dispatch(
           loadingProps.actions.setFilter(
             activeFilter,
             query,
             sort,
-            activeSortIndex
+            activeSortIndex,
+            quickFilterText
           )
         );
       }
@@ -137,8 +142,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
-      getUser(){
-        if (this.props.user){
+      getUser() {
+        if (this.props.user) {
           return this.props.user;
         }
         return undefined;
@@ -183,7 +188,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             filter.toJSON(),
             page,
             loadingProps.pageSize,
-            this.filterRef.current.getQuickFilterSort(), this.getUser()
+            this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
           );
         } else {
           if (
@@ -196,14 +201,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
               this.filterRef.current.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           }
         }
@@ -211,7 +216,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
 
       componentDidMount() {
         this.openData();
-        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+        if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
           this.onDidMount();
         }
       }
@@ -255,7 +260,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
           );
           this.dataSource.setAjaxPageConfigHandler(null);
         }
-        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+        if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
         }
       }
@@ -325,6 +330,13 @@ export default function WithSearchModalTemplate(_loadingProps) {
           this.card.getCardBlockWidth(),
           this.card.getCardBlockHeight()
         );
+      }
+
+      getSortFields(){
+        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== ''){
+          return this.filterRef.current.getQuickFilterSort();
+        }
+        return loadingProps.defaultSortFields;
       }
 
       onDatasourceEvent(event, error) {
@@ -406,7 +418,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               filter.toJSON(),
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -415,7 +427,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               loadingProps.resource,
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }
@@ -459,15 +471,33 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       render() {
+        let modalOpen = this.props.modalOpen;
+        if (modalOpen && modalOpen.includes('#')) {
+          modalOpen = modalOpen.split('#')[0];
+        }
+        let modalSize = {};
+        if (loadingProps.modalSize === "extrasmall") {
+          modalSize = { extraSmall: true }
+        } else if (loadingProps.modalSize === "small") {
+          modalSize = { small: true }
+        } else if (loadingProps.modalSize === "medium") {
+          modalSize = { medium: true }
+        } else if (loadingProps.modalSize === "large") {
+          modalSize = { large: true }
+        } else if (loadingProps.modalSize === "semifull") {
+          modalSize = { semifull: true }
+        } else if (loadingProps.modalSize === "full") {
+          modalSize = { full: true }
+        }
         return (
           <AnterosModal
             id={loadingProps.viewName}
             title={loadingProps.caption}
             primary
-            semifull
+            {...modalSize}
             showHeaderColor={true}
             showContextIcon={false}
-            isOpen={this.props.modalOpen === loadingProps.viewName}
+            isOpen={modalOpen === loadingProps.viewName}
             onCloseButton={this.onCloseButton}
           >
             <AnterosAlert

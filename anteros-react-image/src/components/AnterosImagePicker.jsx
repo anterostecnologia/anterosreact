@@ -21,11 +21,11 @@ import { AnterosCol, AnterosRow } from 'anteros-react-layout';
 import { AnterosDropzone } from 'anteros-react-dropzone';
 import AnterosWebcam from './AnterosWebcam';
 import AnterosImageCropper from './AnterosImageCropper';
- 
+
 
 const $ = window.$;
 
-let base64ImageFile = function(imageFile) {
+let base64ImageFile = function (imageFile) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = event => {
@@ -67,6 +67,9 @@ export default class AnterosImagePicker extends React.Component {
     this.state = { value: '', modal: false };
 
     if (this.props.dataSource) {
+      if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly) {
+        this.props.dataSource.setFieldByName(this.props.dataField, '');
+      }
       let value = this.props.dataSource.fieldByName(this.props.dataField);
       if (!value) {
         value = '';
@@ -77,31 +80,38 @@ export default class AnterosImagePicker extends React.Component {
     }
     this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
 
-    if (this.props.dataSource.isEmptyField(this.props.dataField)) {
-      this.props.dataSource.setFieldByName(this.props.dataField, '');
-    }
+
     this.dsImage = new AnterosLocalDatasource();
     this.dsImage.open();
     this.dsImage.insert();
     this.dsImage.setFieldByName(
       'editedImg',
-      this.props.dataSource.fieldByName(this.props.dataField)
+      this.state.value
     );
     this.dsImage.post();
 
-    this.state = {...this.state, cropping: true};
+    this.state = { ...this.state, cropping: true };
   }
 
   componentWillReceiveProps(nextProps) {
+    let value = nextProps.value;
     if (nextProps.dataSource) {
+      if (nextProps.dataSource.isEmptyField(nextProps.dataField) && !nextProps.readOnly) {
+        nextProps.dataSource.setFieldByName(nextProps.dataField, '');
+      }
       let value = nextProps.dataSource.fieldByName(nextProps.dataField);
       if (!value) {
         value = '';
       }
-      this.setState({ value: value });
-    } else {
-      this.setState({ value: nextProps.value });
     }
+    this.setState({ value });
+
+    this.dsImage.edit();
+    this.dsImage.setFieldByName(
+      'editedImg',
+      value
+    );
+    this.dsImage.post();
   }
 
   componentDidMount() {
@@ -194,11 +204,11 @@ export default class AnterosImagePicker extends React.Component {
   saveImg(isConfirm) {
     if (isConfirm) {
       this.dsImage.post();
-      this.props.dataSource.setFieldByName(
-        this.props.dataField,
-        this.dsImage.fieldByName('editedImg')
-      );
-      this.setState({ ...this.state, modal: false });
+      let value = this.dsImage.fieldByName('editedImg');
+      if (this.props.dataSource) {
+        this.props.dataSource.setFieldByName(this.props.dataField, value);
+      }
+      this.setState({ ...this.state, value, modal: false });
     }
   }
 
@@ -222,11 +232,11 @@ export default class AnterosImagePicker extends React.Component {
         cancelButtonText: 'Não',
         focusCancel: false
       })
-        .then(function(isConfirm) {
+        .then(function (isConfirm) {
           _this.saveImg(isConfirm);
           return;
         })
-        .catch(function(reason) {
+        .catch(function (reason) {
           // quando apertar o botao "Não" cai aqui. Apenas ignora. (sem processamento necessario)
         });
     } else if (button.props.id === 'btnCancel') {
@@ -239,21 +249,47 @@ export default class AnterosImagePicker extends React.Component {
         cancelButtonText: 'Não',
         focusCancel: true
       })
-        .then(function(isConfirm) {
+        .then(function (isConfirm) {
           if (isConfirm) {
             _this.dsImage.cancel();
             _this.setState({ ..._this.state, modal: false });
           }
           return;
         })
-        .catch(function(reason) {
+        .catch(function (reason) {
           // quando apertar o botao "Não" cai aqui. Apenas ignora. (sem processamento necessario)
         });
     }
   }
 
   onCloseButton(event) {
+    this.dsImage.cancel();
     this.setState({ ...this.state, modal: false });
+  }
+
+  getValue() {
+    if (this.state.value && this.state.value !== '') {
+      if (isBase64(this.state.value)) {
+        if (this.isUrl(atob(this.state.value))) {
+          return atob(this.state.value);
+        } else {
+          return 'data:image;base64,' + this.state.value;
+        }
+      } else {
+        return this.state.value;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  isUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   render() {
@@ -283,12 +319,7 @@ export default class AnterosImagePicker extends React.Component {
             >
               <img
                 alt={this.props.alt ? this.props.alt : ''}
-                src={
-                  this.state.value && this.state.value !== ''
-                    ? isBase64(this.state.value)
-                      ? 'data:image;base64,' + this.state.value
-                      : this.state.value
-                    : null
+                src={this.getValue()
                 }
                 style={{
                   ...this.props.style,
@@ -310,6 +341,7 @@ export default class AnterosImagePicker extends React.Component {
             <AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
+              showCloseButton={this.props.showCloseButton}
               onCloseButton={this.onCloseButton}
               onButtonClick={this.onButtonClick}
               handleSaveWhileEditing={this.saveImg}
@@ -325,6 +357,7 @@ export default class AnterosImagePicker extends React.Component {
             secondary
             id="btnEditImg"
             icon="fal fa-image"
+            visible={!this.props.disabled}
             onButtonClick={this.onButtonClick}
             caption="Editar a imagem"
           />
@@ -346,12 +379,7 @@ export default class AnterosImagePicker extends React.Component {
           >
             <img
               alt={this.props.alt ? this.props.alt : ''}
-              src={
-                this.state.value && this.state.value !== ''
-                  ? isBase64(this.state.value)
-                    ? 'data:image;base64,' + this.state.value
-                    : this.state.value
-                  : null
+              src={this.getValue()
               }
               style={{
                 ...this.props.style,
@@ -371,6 +399,7 @@ export default class AnterosImagePicker extends React.Component {
             <AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
+              showCloseButton={this.props.showCloseButton}
               onCloseButton={this.onCloseButton}
               onButtonClick={this.onButtonClick}
               handleSaveWhileEditing={this.saveImg}
@@ -385,6 +414,7 @@ export default class AnterosImagePicker extends React.Component {
           <AnterosButton
             secondary
             icon="fal fa-image"
+            visible={!this.props.disabled}
             onButtonClick={this.onButtonClick}
             caption="Editar a imagem"
           />
@@ -427,7 +457,7 @@ export default class AnterosImagePicker extends React.Component {
         ) {
           return onInvalidImage(
             `${this.props.imageTooSmall ||
-              'Imagem muito pequena.'} ${minWidth} x ${minHeight}`
+            'Imagem muito pequena.'} ${minWidth} x ${minHeight}`
           ); //pass error
         }
 
@@ -473,7 +503,8 @@ AnterosImagePicker.propTypes = {
   large: columnProps,
   extraLarge: columnProps,
   captureWidth: PropTypes.number.isRequired,
-  captureHeight: PropTypes.number.isRequired
+  captureHeight: PropTypes.number.isRequired,
+  showCloseButton: PropTypes.bool
 };
 
 AnterosImagePicker.defaultProps = {
@@ -481,8 +512,10 @@ AnterosImagePicker.defaultProps = {
   height: '200px',
   readOnly: false,
   value: '',
+  disabled: false,
   captureWidth: 480,
-  captureHeight: 270
+  captureHeight: 270,
+  showCloseButton: false
 };
 
 class AnterosImagePickerEdicao extends Component {
@@ -495,7 +528,7 @@ class AnterosImagePickerEdicao extends Component {
     this.clear = this.clear.bind(this);
   }
 
-  clear(){
+  clear() {
     this.imageContentRef.current.clear()
   }
 
@@ -520,12 +553,12 @@ class AnterosImagePickerEdicao extends Component {
           confirmButtonText: 'Salvar imagem',
           focusCancel: false
         })
-          .then(function(isConfirm) {
+          .then(function (isConfirm) {
             if (_this.props.handleSaveWhileEditing) {
               _this.props.handleSaveWhileEditing(isConfirm);
             }
           })
-          .catch(function(reason) {
+          .catch(function (reason) {
             // quando apertar o botao "Cancelar" cai aqui. Apenas ignora. (sem processamento necessario)
           });
       }
@@ -585,6 +618,13 @@ class AnterosImagePickerEdicao extends Component {
     );
   }
 }
+AnterosImagePickerEdicao.propTypes = {
+  showCloseButton: PropTypes.bool
+};
+
+AnterosImagePickerEdicao.defaultProps = {
+  showCloseButton: false
+};
 
 class ImageContent extends Component {
   constructor(props) {
@@ -748,13 +788,13 @@ class ImageContent extends Component {
         ) {
           return onInvalidImage(
             `${this.props.imageTooSmall ||
-              'Imagem muito pequena.'} ${minWidth} x ${minHeight}`
+            'Imagem muito pequena.'} ${minWidth} x ${minHeight}`
           ); //pass error
         }
 
         if (
           _this.props.dataSource &&
-          _this.props.dataSource.getState() !== 'dsBrowse'
+          _this.props.dataSource.getState() !== 'dsBrowse' && !_this.props.readOnly
         ) {
           _this.props.dataSource.setFieldByName(
             _this.props.dataField,
@@ -775,6 +815,27 @@ class ImageContent extends Component {
         }
       }
     };
+  }
+
+  getValue() {
+    if (isBase64(this.state.currentImage)) {
+      if (this.isUrl(atob(this.state.currentImage))) {
+        return atob(this.state.currentImage);
+      } else {
+        return 'data:image;base64,' + this.state.currentImage;
+      }
+    } else {
+      return this.state.currentImage;
+    }
+  }
+
+  isUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   handleChangeStatus(fileWithMeta, status, files) {
@@ -879,9 +940,7 @@ class ImageContent extends Component {
                   maxHeight: '45vh'
                 }}
                 src={
-                  isBase64(this.state.currentImage)
-                    ? 'data:image;base64,' + this.state.currentImage
-                    : this.state.currentImage
+                  this.getValue()
                 }
               />
             ) : !this.state.cropping ? (
@@ -892,9 +951,7 @@ class ImageContent extends Component {
                 <AnterosImageCropper
                   crossOrigin="true" // boolean, set it to true if your image is cors protected or it is hosted on cloud like aws s3 image server
                   src={
-                    isBase64(this.state.currentImage)
-                      ? 'data:image;base64,' + this.state.currentImage
-                      : this.state.currentImage
+                    this.getValue()
                   }
                   style={{
                     width: 'auto',

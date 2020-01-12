@@ -7,7 +7,7 @@ export default class AnterosIcon extends Component {
     }
 
     render() {
-        return (<i className={this.props.icon?this.props.icon:this.props.name} aria-hidden="true" style={{ paddingRight: "4px", backgroundColor: this.props.backgroundColor, color: this.props.color, fontSize:this.props.size,...this.props.style }}></i>);
+        return (<i onClick={this.props.onClick} className={this.props.icon?this.props.icon:this.props.name} aria-hidden="true" style={{ paddingRight: "4px", backgroundColor: this.props.backgroundColor, color: this.props.color, fontSize:this.props.size,...this.props.style }}></i>);
     }
 
 }

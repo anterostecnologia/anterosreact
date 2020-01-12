@@ -33,7 +33,8 @@ const defaultValues = {
   openMainDataSource: true,
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  defaultSortFields: undefined
 };
 
 export default function WithTableContainerTemplate(_loadingProps) {
@@ -235,7 +236,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 loadingProps.resource,
                 0,
                 loadingProps.pageSize,
-                this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
               )
             );
           }
@@ -350,6 +351,13 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
 
         this.table.resize(width, newHeight);
+      }
+
+      getSortFields(){
+        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== ''){
+          return this.filterRef.current.getQuickFilterSort();
+        }
+        return loadingProps.defaultSortFields;
       }
 
       onDatasourceEvent(event, error) {
@@ -480,7 +488,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             filter.toJSON(),
             page,
             loadingProps.pageSize,
-            this.filterRef.current.current.getQuickFilterSort()
+            this.getSortFields()
           );
         } else {
           if (
@@ -493,14 +501,14 @@ export default function WithTableContainerTemplate(_loadingProps) {
               this.filterRef.current.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser()
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           }
         }
@@ -536,7 +544,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
               loadingProps.resource,
               0,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(), this.getUser(), loadingProps.fieldsToForceLazy
+              this.getSortFields(),
+              this.getUser(), loadingProps.fieldsToForceLazy
             )
           );
         }

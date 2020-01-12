@@ -158,6 +158,17 @@ export default class AnterosDatetimePicker extends React.Component {
 
   onKeyPress(event) {
     $(this.divInput).datetimepicker("hide");
+
+    this.setState({ value: this.state.value+event.key});
+    if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
+      let value = AnterosDateUtils.parseDateWithFormat(event.target.value, this.props.format);
+      if (value > 0 || (value == 0 && event.target.value == "")) {
+        this.props.dataSource.setFieldByName(this.props.dataField, value);
+      }
+    }
+    if (this.props.onChange) {
+      this.props.onChange(event);
+    }
   }
 
   render() {

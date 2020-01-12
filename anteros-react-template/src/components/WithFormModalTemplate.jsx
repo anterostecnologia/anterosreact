@@ -15,7 +15,10 @@ const defaultValues = {
     openMainDataSource: false,
     pageSize: 30,
     requireSelectRecord: false,
-    fieldsToForceLazy: ''
+    fieldsToForceLazy: '',
+    modalSize: 'large',
+    modalContentHeight: '',
+    modalContentWidth: ''
 };
 
 export default function WithFormModalTemplate(_loadingProps) {
@@ -110,7 +113,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         DATASOURCE_EVENTS,
                         this.onDatasourceEvent
                     );
-                    if (this.dataSource instanceof AnterosRemoteDatasource){
+                    if (this.dataSource instanceof AnterosRemoteDatasource) {
                         this.dataSource.setAjaxPageConfigHandler(null);
                     }
                 }
@@ -193,15 +196,33 @@ export default function WithFormModalTemplate(_loadingProps) {
                 }
             }
 
+
+
             render() {
+                let modalSize = {};
+                if (loadingProps.modalSize === "extrasmall") {
+                    modalSize = { extraSmall: true }
+                } else if (loadingProps.modalSize === "small") {
+                    modalSize = { small: true }
+                } else if (loadingProps.modalSize === "medium") {
+                    modalSize = { medium: true }
+                } else if (loadingProps.modalSize === "large") {
+                    modalSize = { large: true }
+                } else if (loadingProps.modalSize === "semifull") {
+                    modalSize = { semifull: true }
+                } else if (loadingProps.modalSize === "full") {
+                    modalSize = { full: true }
+                }
+
                 return (
                     <AnterosModal
                         id={'modal' + loadingProps.viewName}
                         title={loadingProps.caption}
                         primary
-                        large
+                        {...modalSize}
                         showHeaderColor={true}
                         showContextIcon={false}
+                        style={{height:loadingProps.modalContentHeight, width:loadingProps.modalContentWidth}}
                         isOpen={this.props.modalOpen === loadingProps.viewName}
                         onClose={this.onClose}
                     >

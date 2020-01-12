@@ -213,7 +213,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.resource,
             filter.toJSON(),
             page,
-            loadingProps.pageSize
+            loadingProps.pageSize, this.props.user, loadingProps.fieldsToForceLazy
           );
         } else {
           if (
@@ -226,14 +226,16 @@ export default function WithCardListContainerTemplate(_loadingProps) {
               this.filterRef.current.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort()
+              this.filterRef.current.getQuickFilterSort(),
+              this.props.user, loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort()
+              this.filterRef.current.getQuickFilterSort(),
+              this.props.user, loadingProps.fieldsToForceLazy
             );
           }
         }
@@ -332,7 +334,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                 loadingProps.resource,
                 0,
                 loadingProps.pageSize,
-                this.filterRef.current.getQuickFilterSort(), loadingProps.fieldsToForceLazy
+                this.filterRef.current.getQuickFilterSort(), this.props.user, loadingProps.fieldsToForceLazy
               )
             );
           }
@@ -419,7 +421,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             fields,
             0,
             loadingProps.pageSize,
-            sort, loadingProps.fieldsToForceLazy
+            sort, this.props.user, loadingProps.fieldsToForceLazy
           )
         );
       }
@@ -561,7 +563,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             this.dataSourceEdicao.open(
               loadingProps.endPoints.FIND_ONE(
                 loadingProps.resource,
-                this.dataSource.fieldByName('id')
+                this.dataSource.fieldByName('id'), this.props.user, loadingProps.fieldsToForceLazy
               ),
               error => {
                 _this.loading = false;
@@ -632,7 +634,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
               loadingProps.resource,
               filter.toJSON(),
               loadingProps.pageSize,
-              0, loadingProps.fieldsToForceLazy
+              0, '', this.props.user, loadingProps.fieldsToForceLazy
             )
           );
         } else {
@@ -647,7 +649,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               0,
-              loadingProps.pageSize, loadingProps.fieldsToForceLazy
+              loadingProps.pageSize, '', this.props.user, loadingProps.fieldsToForceLazy
             )
           );
         }
