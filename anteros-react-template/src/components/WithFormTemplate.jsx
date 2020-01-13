@@ -291,10 +291,11 @@ export default function WithFormTemplate(_loadingProps) {
             >
               <AnterosForm id={loadingProps.formName}>
                 <WrappedComponent
+                  {...this.props}
                   dataSource={this.props.dataSource}
                   loadingProps={loadingProps}
                   onButtonClick={this.onButtonClick}
-                  user={this.props.user}
+                  user={this.props.user}                  
                 />
               </AnterosForm>
             </AnterosBlockUi>

@@ -1,3 +1,5 @@
+import autoBind from './AnterosAutoBind';
+
 /**
  * Date utility
  */
@@ -267,7 +269,9 @@ var commonFormatterKeys = [
 ];
 
 class AnterosDateUtils {
-	constructor() {}
+	constructor() {
+		autoBind(this);
+	}
 	/**
 	 * @summary Add the specified number of days to the given date.
 	 *
@@ -3749,9 +3753,10 @@ class AnterosDateUtils {
 	 * //=> Sun Jul 02 1995 00:00:00
 	 */
 	max() {
+		let _this = this;
 		var dirtyDates = Array.prototype.slice.call(arguments);
 		var dates = dirtyDates.map(function(dirtyDate) {
-			return this.parse(dirtyDate);
+			return _this.parse(dirtyDate);
 		});
 		var latestTimestamp = Math.max.apply(null, dates);
 		return new Date(latestTimestamp);
@@ -3777,9 +3782,10 @@ class AnterosDateUtils {
 	 * //=> Wed Feb 11 1987 00:00:00
 	 */
 	min() {
+		let _this = this;
 		var dirtyDates = Array.prototype.slice.call(arguments);
 		var dates = dirtyDates.map(function(dirtyDate) {
-			return this.parse(dirtyDate);
+			return _this.parse(dirtyDate);
 		});
 		var earliestTimestamp = Math.min.apply(null, dates);
 		return new Date(earliestTimestamp);

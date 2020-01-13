@@ -27,7 +27,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: '',
   modalSize: 'semifull',
-  defaultSortFields: undefined
+  defaultSortFields: ''
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
@@ -592,7 +592,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                   />
                 </AnterosCol>
               </AnterosRow>
-              <WrappedComponent dataSource={this.dataSource} />
+              <WrappedComponent {...this.props} dataSource={this.dataSource} />
             </div>
           </AnterosModal>
         );

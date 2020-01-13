@@ -15,7 +15,9 @@ const defaultValues = {
   openMainDataSource: false,
   pageSize: 30,
   requireSelectRecord: false,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  modalContentHeight: '',
+  modalContentWidth: ''
 };
 
 export default function WithModalTemplate(_loadingProps) {
@@ -166,6 +168,13 @@ export default function WithModalTemplate(_loadingProps) {
 
       onClick(event) {
         if (event.target.getAttribute('data-user') === 'btnOK') {
+          if (
+            WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
+          ) {
+            if (!this.onBeforeOk()) {
+              return;
+            }
+          }
           if (loadingProps.requireSelectRecord === false) {
             this.props.onClickOk(event, this.props.selectedRecords);
           } else {
@@ -198,6 +207,7 @@ export default function WithModalTemplate(_loadingProps) {
             large
             showHeaderColor={true}
             showContextIcon={false}
+            style={{height:loadingProps.modalContentHeight, width:loadingProps.modalContentWidth}}
             isOpen={this.props.modalOpen === loadingProps.viewName}
             onClose={this.onClose}
           >
@@ -219,7 +229,7 @@ export default function WithModalTemplate(_loadingProps) {
             </ModalActions>
 
             <div>
-              <WrappedComponent dataSource={this.dataSource} {...this.props} />
+              <WrappedComponent {...this.props} dataSource={this.dataSource} {...this.props} />
             </div>
           </AnterosModal>
         );

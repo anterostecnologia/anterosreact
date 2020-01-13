@@ -36,7 +36,8 @@ const defaultValues = {
   defaultView: 'cards',
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
-  fieldsToForceLazy: ''
+  fieldsToForceLazy: '',
+  defaultSortFields: ''
 };
 
 export default function WithCardListContainerTemplate(_loadingProps) {
@@ -79,52 +80,52 @@ export default function WithCardListContainerTemplate(_loadingProps) {
   const mapDispatchToProps = dispatch => {
     return loadingProps.actions.hasOwnProperty('setDatasourceEdicao')
       ? {
-          setDatasource: dataSource => {
-            dispatch(loadingProps.actions.setDatasource(dataSource));
-          },
-          setDatasourceEdicao: dataSource => {
-            dispatch(loadingProps.actions.setDatasourceEdicao(dataSource));
-          },
-          setFilter: (
-            activeFilter,
-            query,
-            sort,
-            activeSortIndex,
-            quickFilterText
-          ) => {
-            dispatch(
-              loadingProps.actions.setFilter(
-                activeFilter,
-                query,
-                sort,
-                activeSortIndex,
-                quickFilterText
-              )
-            );
-          }
+        setDatasource: dataSource => {
+          dispatch(loadingProps.actions.setDatasource(dataSource));
+        },
+        setDatasourceEdicao: dataSource => {
+          dispatch(loadingProps.actions.setDatasourceEdicao(dataSource));
+        },
+        setFilter: (
+          activeFilter,
+          query,
+          sort,
+          activeSortIndex,
+          quickFilterText
+        ) => {
+          dispatch(
+            loadingProps.actions.setFilter(
+              activeFilter,
+              query,
+              sort,
+              activeSortIndex,
+              quickFilterText
+            )
+          );
         }
+      }
       : {
-          setDatasource: dataSource => {
-            dispatch(loadingProps.actions.setDatasource(dataSource));
-          },
-          setFilter: (
-            activeFilter,
-            query,
-            sort,
-            activeSortIndex,
-            quickFilterText
-          ) => {
-            dispatch(
-              loadingProps.actions.setFilter(
-                activeFilter,
-                query,
-                sort,
-                activeSortIndex,
-                quickFilterText
-              )
-            );
-          }
-        };
+        setDatasource: dataSource => {
+          dispatch(loadingProps.actions.setDatasource(dataSource));
+        },
+        setFilter: (
+          activeFilter,
+          query,
+          sort,
+          activeSortIndex,
+          quickFilterText
+        ) => {
+          dispatch(
+            loadingProps.actions.setFilter(
+              activeFilter,
+              query,
+              sort,
+              activeSortIndex,
+              quickFilterText
+            )
+          );
+        }
+      };
   };
 
   if (!loadingProps.endPoints) {
@@ -141,7 +142,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         ) {
           throw new AnterosError(
             'Implemente o método getFieldsFilter na classe ' +
-              WrappedComponent.type
+            WrappedComponent.type
           );
         }
 
@@ -160,7 +161,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         if (this.hasUserActions === false) {
           throw new AnterosError(
             'Implemente o método getUserActions na classe ' +
-              WrappedComponent.type
+            WrappedComponent.type
           );
         }
 
@@ -171,7 +172,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         ) {
           throw new AnterosError(
             'Implemente o método getPositionUserActions na classe ' +
-              WrappedComponent.type
+            WrappedComponent.type
           );
         }
 
@@ -201,6 +202,13 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         AnterosQueryBuilderData.configureDatasource(this.dsFilter);
       }
 
+      getSortFields() {
+        if (this.filter.getQuickFilterSort() && this.filter.getQuickFilterSort() !== '') {
+          return this.filter.getQuickFilterSort();
+        }
+        return loadingProps.defaultSortFields;
+      }
+
       pageConfigHandler(page) {
         if (
           this.props.query &&
@@ -217,25 +225,23 @@ export default function WithCardListContainerTemplate(_loadingProps) {
           );
         } else {
           if (
-            this.filterRef.current.getQuickFilterText() &&
-            this.filterRef.current.getQuickFilterText() !== ''
+            this.filter.getQuickFilterText() &&
+            this.filter.getQuickFilterText() !== ''
           ) {
             return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
               loadingProps.resource,
               this.props.quickFilterText,
-              this.filterRef.current.getQuickFilterFields(),
+              this.filter.getQuickFilterFields(),
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(),
-              this.props.user, loadingProps.fieldsToForceLazy
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           } else {
             return loadingProps.endPoints.FIND_ALL(
               loadingProps.resource,
               page,
               loadingProps.pageSize,
-              this.filterRef.current.getQuickFilterSort(),
-              this.props.user, loadingProps.fieldsToForceLazy
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
             );
           }
         }
@@ -590,7 +596,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             cancelButtonText: 'Não',
             focusCancel: true
           })
-            .then(function() {
+            .then(function () {
               _this.dataSource.delete(error => {
                 if (error) {
                   _this.setState({
@@ -601,7 +607,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                 }
               });
             })
-            .catch(error => {});
+            .catch(error => { });
         } else if (button.props.id === 'btnClose') {
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.setState({
@@ -615,7 +621,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         this.props.history.push(button.props.route);
       }
 
-      onSearchButtonClick(field, event) {}
+      onSearchButtonClick(field, event) { }
 
       onDoubleClickTable(data) {
         this.props.history.push(loadingProps.routes.edit);
@@ -793,31 +799,31 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                   {this.getFieldsFilter()}
                 </AnterosQueryBuilder>
               ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end'
-                  }}
-                >
-                  <UserActions
-                    dataSource={this.dataSource}
-                    onButtonClick={this.onButtonClick}
-                    onButtonSearch={this.onButtonSearch}
-                    routes={loadingProps.routes}
-                    allowRemove={loadingProps.disableRemove ? false : true}
-                    labelButtonAdd={loadingProps.labelButtonAdd}
-                    labelButtonEdit={loadingProps.labelButtonEdit}
-                    labelButtonRemove={loadingProps.labelButtonRemove}
-                    labelButtonSelect={loadingProps.labelButtonSelect}
-                    positionUserActions={this.positionUserActions}
-                    hasSelectedItem={this.state.selectedItem ? true : false}
-                    userActions={
-                      this.hasUserActions ? this.getUserActions() : null
-                    }
-                  />
-                </div>
-              )}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end'
+                    }}
+                  >
+                    <UserActions
+                      dataSource={this.dataSource}
+                      onButtonClick={this.onButtonClick}
+                      onButtonSearch={this.onButtonSearch}
+                      routes={loadingProps.routes}
+                      allowRemove={loadingProps.disableRemove ? false : true}
+                      labelButtonAdd={loadingProps.labelButtonAdd}
+                      labelButtonEdit={loadingProps.labelButtonEdit}
+                      labelButtonRemove={loadingProps.labelButtonRemove}
+                      labelButtonSelect={loadingProps.labelButtonSelect}
+                      positionUserActions={this.positionUserActions}
+                      hasSelectedItem={this.state.selectedItem ? true : false}
+                      userActions={
+                        this.hasUserActions ? this.getUserActions() : null
+                      }
+                    />
+                  </div>
+                )}
 
               {this.state.selectedView === 'cards' ? (
                 <Fragment>
@@ -854,20 +860,20 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                       >
                         {!this.dataSource.isEmpty()
                           ? this.dataSource.getData().map(r => {
-                              return (
-                                <CardItem
-                                  selected={
-                                    this.state.selectedItem
-                                      ? this.state.selectedItem.id === r.id
-                                      : false
-                                  }
-                                  onSelectedItem={this.onSelectedItem}
-                                  key={r.id}
-                                  record={r}
-                                  onButtonClick={this.onButtonClick}
-                                />
-                              );
-                            })
+                            return (
+                              <CardItem
+                                selected={
+                                  this.state.selectedItem
+                                    ? this.state.selectedItem.id === r.id
+                                    : false
+                                }
+                                onSelectedItem={this.onSelectedItem}
+                                key={r.id}
+                                record={r}
+                                onButtonClick={this.onButtonClick}
+                              />
+                            );
+                          })
                           : null}
                       </AnterosMasonry>
                     </div>
@@ -877,22 +883,23 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                   </div>
                 </Fragment>
               ) : (
-                <AnterosDataTable
-                  id={'table' + loadingProps.viewName}
-                  height={'200px'}
-                  ref={ref => (this.table = ref)}
-                  dataSource={this.dataSource}
-                  width="100%"
-                  enablePaging={false}
-                  enableSearching={false}
-                  showExportButtons={false}
-                  onDoubleClick={this.onDoubleClickTable}
-                >
-                  {this.getColumns()}
-                </AnterosDataTable>
-              )}
+                  <AnterosDataTable
+                    id={'table' + loadingProps.viewName}
+                    height={'200px'}
+                    ref={ref => (this.table = ref)}
+                    dataSource={this.dataSource}
+                    width="100%"
+                    enablePaging={false}
+                    enableSearching={false}
+                    showExportButtons={false}
+                    onDoubleClick={this.onDoubleClickTable}
+                  >
+                    {this.getColumns()}
+                  </AnterosDataTable>
+                )}
 
               <WrappedComponent
+                {...this.props}
                 user={this.props.user}
                 dataSource={this.dataSource}
               />
@@ -903,7 +910,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                   <AnterosLabel
                     caption={`Total ${
                       loadingProps.caption
-                    } ${this.dataSource.getGrandTotalRecords()}`}
+                      } ${this.dataSource.getGrandTotalRecords()}`}
                   />
                 </AnterosCol>
                 <AnterosCol medium={8}>

@@ -1,27 +1,25 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 
-
-
-
-
-
-
 /** Componente AnterosVerticalTimeline */
-const AnterosVerticalTimeline = ({ animate, children, className, layout, style }) => (
-  <div
-    style={style}
-    className={classNames(className, 'vertical-timeline', {
+
+class AnterosVerticalTimeline extends PureComponent {
+  render(){
+    let {animate, children, className, layout, style} = this.props;
+    let clns = classNames(className, 'vertical-timeline', {
       'vertical-timeline--animate': animate,
       'vertical-timeline--two-columns': layout === '2-columns',
       'vertical-timeline--one-column': layout === '1-column',
-    })}
-  >
-    {children}
-  </div>
-);
+    });
+    return (<div style={style} className={clns}>
+      {children}
+    </div>);
+  }
+
+}
+
 
 AnterosVerticalTimeline.propTypes = {
   /** Esta propriedade requer um conjunto de elementos do componente 'AnterosVerticalTimelineElement' */

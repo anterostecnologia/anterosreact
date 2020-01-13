@@ -281,6 +281,18 @@ class AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
 
+    moveRecord(oldIndex, newIndex){
+        if (this.isEmpty()) {
+            return false;
+        }
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+        }
+        let record = this.currentRecord;
+        this.data = arrayMove(this.data,oldIndex,newIndex);
+        this.gotoRecordByData(record);
+    }
+
     gotoRecordByData(record) {
         let _this = this;
         if (this.getState() != dataSourceConstants.DS_BROWSE) {

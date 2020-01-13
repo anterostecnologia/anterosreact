@@ -16,6 +16,12 @@ export function processErrorMessage(error) {
 		) {
 			msgErro =
 				"Recurso não encontrado no servidor ou a url está incorreta. Erro 404";
+		} else if (	error.response && error.response.status && error.response.status == 405	) {
+			msgErro =
+				"Método não permitido no servidor ou a url está incorreta. Erro 405";		
+		} else if (	error.response && error.response.status && error.response.status == 400	) {
+			msgErro =
+					"Requisição incorreta. Erro 400";
 		} else if (error.response && error.response.data) {
 			msgErro = error.response.data;
 		} else if (error.response) {
