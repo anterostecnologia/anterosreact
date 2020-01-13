@@ -18,6 +18,7 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "@emotion/styled": "^10.0.27",
     "anteros-react-buttons": "^1.0.9",
     "anteros-react-calendar": "^1.0.7",
     "anteros-react-containers": "^1.0.9",

@@ -175,7 +175,14 @@ export default function WithFormModalTemplate(_loadingProps) {
 
             onClick(event, button) {
                 if (button.props.id === "btnOK") {
-                    if (this.dataSource) {
+                    if (
+                        WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
+                      ) {
+                        if (!this.onBeforeOk()) {
+                          return;
+                        }
+                      }
+                    if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                         this.dataSource.post();
                     }
                     this.props.onClickOk(event, this.props.selectedRecords);
@@ -246,7 +253,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         </ModalActions>
 
                         <div>
-                            <WrappedComponent dataSource={this.dataSource} {...this.props} />
+                            <WrappedComponent {...this.props} dataSource={this.dataSource} />
                         </div>
                     </AnterosModal>
                 );

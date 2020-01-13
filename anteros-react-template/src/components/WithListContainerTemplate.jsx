@@ -577,6 +577,7 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
                 </AnterosMasonry>
               </div>
               <WrappedComponent
+                {...this.props}
                 user={this.props.user}
                 dataSource={this.dataSource}
               />

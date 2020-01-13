@@ -168,6 +168,13 @@ export default function WithModalTemplate(_loadingProps) {
 
       onClick(event) {
         if (event.target.getAttribute('data-user') === 'btnOK') {
+          if (
+            WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
+          ) {
+            if (!this.onBeforeOk()) {
+              return;
+            }
+          }
           if (loadingProps.requireSelectRecord === false) {
             this.props.onClickOk(event, this.props.selectedRecords);
           } else {
@@ -222,7 +229,7 @@ export default function WithModalTemplate(_loadingProps) {
             </ModalActions>
 
             <div>
-              <WrappedComponent dataSource={this.dataSource} {...this.props} />
+              <WrappedComponent {...this.props} dataSource={this.dataSource} {...this.props} />
             </div>
           </AnterosModal>
         );

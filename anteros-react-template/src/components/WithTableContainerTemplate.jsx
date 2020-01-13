@@ -34,7 +34,7 @@ const defaultValues = {
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
   fieldsToForceLazy: '',
-  defaultSortFields: undefined
+  defaultSortFields: ''
 };
 
 export default function WithTableContainerTemplate(_loadingProps) {
@@ -709,6 +709,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 {this.getColumns()}
               </AnterosDataTable>
               <WrappedComponent
+                {...this.props}
                 ref={ref => (this.wrappedRef = ref)}
                 user={this.props.user}
                 history={this.props.history}

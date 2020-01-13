@@ -35,7 +35,7 @@ const defaultValues = {
   messageLoading: 'Carregando, por favor aguarde...',
   withFilter: true,
   fieldsToForceLazy: '',
-  defaultSortFields: undefined
+  defaultSortFields: ''
 };
 
 export default function WithMasonryContainerTemplate(_loadingProps) {
@@ -697,6 +697,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 </AnterosMasonry>
               </div>
               <WrappedComponent
+                {...this.props}
                 user={this.props.user}
                 dataSource={this.dataSource}
                 history={this.props.history}
