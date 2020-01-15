@@ -1,16 +1,16 @@
-/*! Select for DataTables 1.2.2
- * 2015-2016 SpryMedia Ltd - datatables.net/license/mit
+/*! Select for DataTables 1.3.1
+ * 2015-2019 SpryMedia Ltd - datatables.net/license/mit
  */
 
 /**
  * @summary     Select for DataTables
  * @description A collection of API methods, events and buttons for DataTables
  *   that provides selection options of the items in a DataTable
- * @version     1.2.2
+ * @version     1.3.1
  * @file        dataTables.select.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     datatables.net/forums
- * @copyright   Copyright 2015-2016 SpryMedia Ltd.
+ * @copyright   Copyright 2015-2019 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license/mit
@@ -54,7 +54,7 @@ var DataTable = $.fn.dataTable;
 // Version information for debugger
 DataTable.select = {};
 
-DataTable.select.version = '1.2.2';
+DataTable.select.version = '1.3.1';
 
 DataTable.select.init = function ( dt ) {
 	var ctx = dt.settings()[0];
@@ -68,6 +68,7 @@ DataTable.select.init = function ( dt ) {
 	var items = 'row';
 	var style = 'api';
 	var blurable = false;
+	var toggleable = true;
 	var info = true;
 	var selector = 'td, th';
 	var className = 'selected';
@@ -88,6 +89,10 @@ DataTable.select.init = function ( dt ) {
 		if ( opts.blurable !== undefined ) {
 			blurable = opts.blurable;
 		}
+		
+		if ( opts.toggleable !== undefined ) {
+			toggleable = opts.toggleable;
+		}
 
 		if ( opts.info !== undefined ) {
 			info = opts.info;
@@ -99,6 +104,10 @@ DataTable.select.init = function ( dt ) {
 
 		if ( opts.style !== undefined ) {
 			style = opts.style;
+			setStyle = true;
+		}
+		else {
+			style = 'os';
 			setStyle = true;
 		}
 
@@ -115,6 +124,7 @@ DataTable.select.init = function ( dt ) {
 	dt.select.items( items );
 	dt.select.style( style );
 	dt.select.blurable( blurable );
+	dt.select.toggleable( toggleable );
 	dt.select.info( info );
 	ctx._select.className = className;
 
@@ -139,14 +149,11 @@ DataTable.select.init = function ( dt ) {
 };
 
 /*
-
 Select is a collection of API methods, event handlers, event emitters and
 buttons (for the `Buttons` extension) for DataTables. It provides the following
 features, with an overview of how they are implemented:
-
 ## Selection of rows, columns and cells. Whether an item is selected or not is
    stored in:
-
 * rows: a `_select_selected` property which contains a boolean value of the
   DataTables' `aoData` object for each row
 * columns: a `_select_selected` property which contains a boolean value of the
@@ -154,50 +161,42 @@ features, with an overview of how they are implemented:
 * cells: a `_selected_cells` property which contains an array of boolean values
   of the `aoData` object for each row. The array is the same length as the
   columns array, with each element of it representing a cell.
-
 This method of using boolean flags allows Select to operate when nodes have not
 been created for rows / cells (DataTables' defer rendering feature).
-
 ## API methods
-
 A range of API methods are available for triggering selection and de-selection
 of rows. Methods are also available to configure the selection events that can
 be triggered by an end user (such as which items are to be selected). To a large
 extent, these of API methods *is* Select. It is basically a collection of helper
 functions that can be used to select items in a DataTable.
-
 Configuration of select is held in the object `_select` which is attached to the
 DataTables settings object on initialisation. Select being available on a table
 is not optional when Select is loaded, but its default is for selection only to
 be available via the API - so the end user wouldn't be able to select rows
 without additional configuration.
-
 The `_select` object contains the following properties:
-
 ```
 {
-	items:string     - Can be `rows`, `columns` or `cells`. Defines what item 
-	                   will be selected if the user is allowed to activate row
-	                   selection using the mouse.
-	style:string     - Can be `none`, `single`, `multi` or `os`. Defines the
-	                   interaction style when selecting items
-	blurable:boolean - If row selection can be cleared by clicking outside of
-	                   the table
-	info:boolean     - If the selection summary should be shown in the table
-	                   information elements
+	items:string       - Can be `rows`, `columns` or `cells`. Defines what item 
+	                     will be selected if the user is allowed to activate row
+	                     selection using the mouse.
+	style:string       - Can be `none`, `single`, `multi` or `os`. Defines the
+	                     interaction style when selecting items
+	blurable:boolean   - If row selection can be cleared by clicking outside of
+	                     the table
+	toggleable:boolean - If row selection can be cancelled by repeated clicking
+	                     on the row
+	info:boolean       - If the selection summary should be shown in the table
+	                     information elements
 }
 ```
-
 In addition to the API methods, Select also extends the DataTables selector
 options for rows, columns and cells adding a `selected` option to the selector
 options object, allowing the developer to select only selected items or
 unselected items.
-
 ## Mouse selection of items
-
 Clicking on items can be used to select items. This is done by a simple event
 handler that will select the items using the API methods.
-
  */
 
 
@@ -310,7 +309,7 @@ function disableMouseSelection( dt )
 		.off( 'mouseup.dtSelect', selector )
 		.off( 'click.dtSelect', selector );
 
-	$('body').off( 'click.dtSelect' + dt.table().node().id );
+	$('body').off( 'click.dtSelect' + _safeId(dt.table().node()) );
 }
 
 /**
@@ -324,6 +323,7 @@ function enableMouseSelection ( dt )
 	var container = $( dt.table().container() );
 	var ctx = dt.settings()[0];
 	var selector = ctx._select.selector;
+	var matchSelection;
 
 	container
 		.on( 'mousedown.dtSelect', selector, function(e) {
@@ -335,6 +335,10 @@ function enableMouseSelection ( dt )
 					.one('selectstart.dtSelect', selector, function () {
 						return false;
 					} );
+			}
+
+			if ( window.getSelection ) {
+				matchSelection = window.getSelection();
 			}
 		} )
 		.on( 'mouseup.dtSelect', selector, function() {
@@ -348,14 +352,23 @@ function enableMouseSelection ( dt )
 
 			// If text was selected (click and drag), then we shouldn't change
 			// the row's selected state
-			if ( window.getSelection && $.trim( window.getSelection().toString() ) ) {
-				return;
+			if ( matchSelection ) {
+				var selection = window.getSelection();
+
+				// If the element that contains the selection is not in the table, we can ignore it
+				// This can happen if the developer selects text from the click event
+				if ( ! selection.anchorNode || $(selection.anchorNode).closest('table')[0] === dt.table().node() ) {
+					if ( selection !== matchSelection ) {
+						return;
+					}
+				}
 			}
 
 			var ctx = dt.settings()[0];
+			var wrapperClass = $.trim(dt.settings()[0].oClasses.sWrapper).replace(/ +/g, '.');
 
 			// Ignore clicks inside a sub-table
-			if ( $(e.target).closest('div.dataTables_wrapper')[0] != dt.table().container() ) {
+			if ( $(e.target).closest('div.'+wrapperClass)[0] != dt.table().container() ) {
 				return;
 			}
 
@@ -392,7 +405,7 @@ function enableMouseSelection ( dt )
 		} );
 
 	// Blurable
-	$('body').on( 'click.dtSelect' + dt.table().node().id, function ( e ) {
+	$('body').on( 'click.dtSelect' + _safeId(dt.table().node()), function ( e ) {
 		if ( ctx._select.blurable ) {
 			// If the click was inside the DataTables container, don't blur
 			if ( $(e.target).parents().filter( dt.table().container() ).length ) {
@@ -401,8 +414,8 @@ function enableMouseSelection ( dt )
 
 			// Ignore elements which have been removed from the DOM (i.e. paging
 			// buttons)
-			if ( e.target.getRootNode() !== document ) {
-				return;
+			if ( $(e.target).parents('html').length === 0 ) {
+			 	return;
 			}
 
 			// Don't blur in Editor form
@@ -455,6 +468,10 @@ function info ( api )
 		return;
 	}
 
+	if ( api.select.style() === 'api' ) {
+		return;
+	}
+
 	var rows    = api.rows( { selected: true } ).flatten().length;
 	var columns = api.columns( { selected: true } ).flatten().length;
 	var cells   = api.cells( { selected: true } ).flatten().length;
@@ -462,7 +479,7 @@ function info ( api )
 	var add = function ( el, name, num ) {
 		el.append( $('<span class="select-item"/>').append( api.i18n(
 			'select.'+name+'s',
-			{ _: '%d '+name+'s selecionado', 0: '', 1: '1 '+name+' selecionado' },
+			{ _: '%d '+name+'s selected', 0: '', 1: '1 '+name+' selected' },
 			num
 		) ) );
 	};
@@ -471,19 +488,19 @@ function info ( api )
 	$.each( ctx.aanFeatures.i, function ( i, el ) {
 		el = $(el);
 
-		// var output  = $('<span class="select-info"/>');
-		// add( output, 'linha', rows );
-		// add( output, 'coluna', columns );
-		// add( output, 'célula', cells  );
+		var output  = $('<span class="select-info"/>');
+		add( output, 'row', rows );
+		add( output, 'column', columns );
+		add( output, 'cell', cells  );
 
-		// var exisiting = el.children('span.select-info');
-		// if ( exisiting.length ) {
-		// 	exisiting.remove();
-		// }
+		var exisiting = el.children('span.select-info');
+		if ( exisiting.length ) {
+			exisiting.remove();
+		}
 
-		// if ( output.text() !== '' ) {
-		// 	el.append( output );
-		// }
+		if ( output.text() !== '' ) {
+			el.append( output );
+		}
 	} );
 }
 
@@ -648,7 +665,12 @@ function clear( ctx, force )
 function typeSelect ( e, dt, ctx, type, idx )
 {
 	var style = dt.select.style();
+	var toggleable = dt.select.toggleable();
 	var isSelected = dt[type]( idx, { selected: true } ).any();
+	
+	if ( isSelected && ! toggleable ) {
+		return;
+	}
 
 	if ( style === 'os' ) {
 		if ( e.ctrlKey || e.metaKey ) {
@@ -700,6 +722,10 @@ function typeSelect ( e, dt, ctx, type, idx )
 	}
 }
 
+function _safeId( node ) {
+	return node.id.replace(/[^a-zA-Z0-9\-\_]/g, '-');
+}
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -718,7 +744,7 @@ $.each( [
 		var data;
 		var out = [];
 
-		if ( selected === undefined ) {
+		if ( selected !== true && selected !== false ) {
 			return indexes;
 		}
 
@@ -784,6 +810,16 @@ apiRegister( 'select.blurable()', function ( flag ) {
 
 	return this.iterator( 'table', function ( ctx ) {
 		ctx._select.blurable = flag;
+	} );
+} );
+
+apiRegister( 'select.toggleable()', function ( flag ) {
+	if ( flag === undefined ) {
+		return this.context[0]._select.toggleable;
+	}
+
+	return this.iterator( 'table', function ( ctx ) {
+		ctx._select.toggleable = flag;
 	} );
 } );
 
@@ -1021,12 +1057,29 @@ function namespacedEvents ( config ) {
 	return 'draw.dt.DT'+unique+' select.dt.DT'+unique+' deselect.dt.DT'+unique;
 }
 
+function enabled ( dt, config ) {
+	if ( $.inArray( 'rows', config.limitTo ) !== -1 && dt.rows( { selected: true } ).any() ) {
+		return true;
+	}
+
+	if ( $.inArray( 'columns', config.limitTo ) !== -1 && dt.columns( { selected: true } ).any() ) {
+		return true;
+	}
+
+	if ( $.inArray( 'cells', config.limitTo ) !== -1 && dt.cells( { selected: true } ).any() ) {
+		return true;
+	}
+
+	return false;
+}
+
 var _buttonNamespace = 0;
 
 $.extend( DataTable.ext.buttons, {
 	selected: {
 		text: i18n( 'selected', 'Selected' ),
 		className: 'buttons-selected',
+		limitTo: [ 'rows', 'columns', 'cells' ],
 		init: function ( dt, node, config ) {
 			var that = this;
 			config._eventNamespace = '.select'+(_buttonNamespace++);
@@ -1034,11 +1087,7 @@ $.extend( DataTable.ext.buttons, {
 			// .DT namespace listeners are removed by DataTables automatically
 			// on table destroy
 			dt.on( namespacedEvents(config), function () {
-				var enable = that.rows( { selected: true } ).any() ||
-				             that.columns( { selected: true } ).any() ||
-				             that.cells( { selected: true } ).any();
-
-				that.enable( enable );
+				that.enable( enabled(dt, config) );
 			} );
 
 			this.disable();
