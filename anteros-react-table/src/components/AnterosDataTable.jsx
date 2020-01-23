@@ -78,6 +78,7 @@ export default class AnterosDataTable extends Component {
 		this.currentRow = undefined;
 		this.currentCol = undefined;
 		this.dataTable;
+		this.domDataTable;
 		this.resize = this.resize.bind(this);
 		this.initializeDatatable = this.initializeDatatable.bind(this);
 		this.generateColumns = this.generateColumns.bind(this);
@@ -92,10 +93,8 @@ export default class AnterosDataTable extends Component {
 		this.sortNumberAsc = this.sortNumberAsc.bind(this);
 		this.sortNumberDesc = this.sortNumberDesc.bind(this);
 		this.onUserSelect = this.onUserSelect.bind(this);
-		this.onSelectAllClick = this.onSelectAllClick.bind(this);
 		this.getCheckboxSelectAll = this.getCheckboxSelectAll.bind(this);
 		this.getTableBody = this.getTableBody.bind(this);
-		this.onChangeTableBody = this.onChangeTableBody.bind(this);
 		this.onKeyFocusTable = this.onKeyFocusTable.bind(this);
 		this.onPageChangeTable = this.onPageChangeTable.bind(this);
 		this.onKeyDownDocument = this.onKeyDownDocument.bind(this);
@@ -448,60 +447,17 @@ export default class AnterosDataTable extends Component {
 		}
 	}
 
-	onSelectAllClick() {
-		var rows = this.dataTable.rows({ search: "applied" }).nodes();
-		$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);
-		if (this.checked) {
-			if (this.props.onSelectAllRecords) {
-				let result = [this.dataTable.rows()[0].length];
-				for (let i = 0; i < table.rows()[0].length; i++) {
-					result[i] = this.dataTable.rows(i).data()[0];
-				}
-				this.props.onSelectAllRecords(result, this.props.id);
-			}
-		} else {
-			if (this.props.onUnSelectAllRecords) {
-				this.props.onUnSelectAllRecords(this.props.id);
-			}
-		}
-	};
+	
 
 	getCheckboxSelectAll() {
-		return $("." + this.idCheckBoxSelect).get(0);
+		return $("." + this.idCheckBoxSelect)
 	}
 
 	getTableBody() {
 		return $("#" + this.idTable + " tbody");
 	}
 
-	onChangeTableBody(event) {
-		this.currentRow = event.target.parentElement._DT_CellIndex.row;
-		this.currentCol = event.target.parentElement._DT_CellIndex.column;
-		this.dataTable.rows().deselect();
-		this.dataTable.row(this.currentRow).select();
 
-		if (this.checked) {
-			if (this.props.onSelectRecord) {
-				this.props.onSelectRecord(
-					this.dataTable.rows(this.getAttribute("row")),
-					this.dataTable.rows(this.getAttribute("row")).data()[0], this.props.id
-				);
-			}
-		} else {
-			if (this.props.onUnSelectRecord) {
-				this.props.onUnSelectRecord(
-					this.dataTable.rows(this.getAttribute("row")),
-					this.dataTable.rows(this.getAttribute("row")).data()[0], this.props.id
-				);
-			}
-		}
-		if (!this.checked) {
-			var el = $("." + this.idCheckBoxSelect).get(0);
-			if (el && el.checked && "indeterminate" in el) {
-				el.indeterminate = true;
-			}
-		}
-	}
 
 	onKeyFocusTable(e, datatable, cell, originalEvent) {
 		this.currentRow = cell.index().row;
@@ -688,14 +644,58 @@ export default class AnterosDataTable extends Component {
 		}
 		this.dataTable.on('user-select', this.onUserSelect);
 		if (this.props.enableCheckboxSelect) {
-			this.getCheckboxSelectAll().onclick = this.onSelectAllClick;
+			this.getCheckboxSelectAll().on("click", function () {		
+				var rows = _this.dataTable.rows({ search: "applied" }).nodes();		
+				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);		
+				if (this.checked) {		
+					if (_this.props.onSelectAllRecords) {		
+						let result = [_this.dataTable.rows()[0].length];		
+						for (let i = 0; i < _this.dataTable.rows()[0].length; i++) {		
+							result[i] = _this.dataTable.rows(i).data()[0];		
+						}		
+						_this.props.onSelectAllRecords(result, _this.props.id);		
+					}		
+				} else {		
+					if (_this.props.onUnSelectAllRecords) {		
+						_this.props.onUnSelectAllRecords(_this.props.id);		
+					}		
+				}		
+			});
 			this.adjustHeaderCheckbox();
-			this.getTableBody().on("change", 'input[type="checkbox"][name="id[]"]', this.onChangeTableBody);
-			this.dataTable.on("key-focus", this.onKeyFocusTable);
-			this.dataTable.on("page.dt", this.onPageChangeTable);
-			this.getDocument().on("keydown.keyTable", this.onKeyDownDocument);
-			this.getDocument().on("keypress.keyTable", this.onKeyPressDocument);
+			this.getTableBody().on("change", 'input[type="checkbox"][name="id[]"]', function (event) {
+				_this.currentRow = event.target.parentElement._DT_CellIndex.row;
+				_this.currentCol = event.target.parentElement._DT_CellIndex.column;
+				_this.dataTable.rows().deselect();
+				_this.dataTable.row(_this.currentRow).select();
+
+				if (this.checked) {
+					if (_this.props.onSelectRecord) {
+						_this.props.onSelectRecord(
+							_this.dataTable.rows(this.getAttribute("row")),
+							_this.dataTable.rows(this.getAttribute("row")).data()[0], _this.props.id
+						);
+					}
+				} else {
+					if (_this.props.onUnSelectRecord) {
+						_this.props.onUnSelectRecord(
+							_this.dataTable.rows(this.getAttribute("row")),
+							_this.dataTable.rows(this.getAttribute("row")).data()[0], _this.props.id
+						);
+					}
+				}
+				if (!this.checked) {
+					var el = $("#" + _this.idCheckBoxSelect).get(0);
+					if (el && el.checked && "indeterminate" in el) {
+						el.indeterminate = true;
+					}
+				}
+			}
+			);
 		}
+		this.dataTable.on("key-focus", this.onKeyFocusTable);
+		this.dataTable.on("page.dt", this.onPageChangeTable);
+		this.getDocument().on("keydown.keyTable", this.onKeyDownDocument);
+		this.getDocument().on("keypress.keyTable", this.onKeyPressDocument);
 		this.getTableBody().on("click", "td.details-control", this.onClickDetailsControl);
 		this.getTableBody().on("dblclick", "td", this.onDoubleClickTableBody);
 		this.getTableBody().on("click", "td", this.onClickTdTableBody);
@@ -1141,7 +1141,7 @@ export default class AnterosDataTable extends Component {
 			>
 				<div id={this.idTable + "_header"} className="row" />
 				<table
-					ref={ref => (this.dataTable = ref)}
+					ref={ref => (this.domDataTable = ref)}
 					id={this.idTable}
 					className={className}
 					cellSpacing="0"

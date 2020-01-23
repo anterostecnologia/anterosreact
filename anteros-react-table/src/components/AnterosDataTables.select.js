@@ -488,19 +488,19 @@ function info ( api )
 	$.each( ctx.aanFeatures.i, function ( i, el ) {
 		el = $(el);
 
-		var output  = $('<span class="select-info"/>');
-		add( output, 'row', rows );
-		add( output, 'column', columns );
-		add( output, 'cell', cells  );
+		// var output  = $('<span class="select-info"/>');
+		// add( output, 'row', rows );
+		// add( output, 'column', columns );
+		// add( output, 'cell', cells  );
 
-		var exisiting = el.children('span.select-info');
-		if ( exisiting.length ) {
-			exisiting.remove();
-		}
+		// var exisiting = el.children('span.select-info');
+		// if ( exisiting.length ) {
+		// 	exisiting.remove();
+		// }
 
-		if ( output.text() !== '' ) {
-			el.append( output );
-		}
+		// if ( output.text() !== '' ) {
+		// 	el.append( output );
+		// }
 	} );
 }
 
