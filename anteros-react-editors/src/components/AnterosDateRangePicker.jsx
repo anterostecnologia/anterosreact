@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import 'script-loader!bootstrap-daterangepicker/daterangepicker.js'
-import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js'
+import 'bootstrap-daterangepicker'
+import 'jquery-mask-plugin';
 import lodash from "lodash";
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import {Anteros, AnterosDateUtils, AnterosUtils} from "anteros-react-core";

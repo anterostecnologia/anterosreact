@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import 'script-loader!./AnterosBootstrapDatetimepicker.js'
-import 'script-loader!jquery-mask-plugin/dist/jquery.mask.min.js'
+import './AnterosBootstrapDatetimepicker.js'
 import lodash from "lodash";
+import { AnterosDateUtils, AnterosUtils } from 'anteros-react-core';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosDateUtils, Anteros, AnterosUtils } from 'anteros-react-core';
 import PropTypes from 'prop-types';
+import AnterosInputText from './AnterosInputMask';
+
 
 export default class AnterosDatetimePicker extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class AnterosDatetimePicker extends React.Component {
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.open = false;
-    this.idCalendar = lodash.uniqueId("dhPickerCal");
+    this.idCalendar = lodash.uniqueId("dtPickerCal");
     this.handleChange = this.handleChange.bind(this);
     if (this.props.dataSource) {
       let value = this.props.dataSource.fieldByName(this.props.dataField);
@@ -28,6 +29,7 @@ export default class AnterosDatetimePicker extends React.Component {
       this.state = { value: this.props.value };
     }
     this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,20 +49,19 @@ export default class AnterosDatetimePicker extends React.Component {
 
   componentDidMount() {
     let _this = this;
-    $(this.divInput).datetimepicker({
+    window.$(this.divInput).datetimepicker({
       locale: "pt-BR",
       showTodayButton: true,
       showClear: true,
       showClose: true,
       format: this.props.format
     });
-
-    $(this.divInput).on("dp.hide", function (e) {
+    window.$(this.divInput).on("dp.hide", function (e) {
       _this.open = false;
     });
-    $(this.divInput).on("dp.show", function (e) {
+    window.$(this.divInput).on("dp.show", function (e) {
       _this.open = true;
-      var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last'),
+      var datepicker = window.$('body').find('.bootstrap-datetimepicker-widget:last'),
         position = datepicker.offset(),
         parent = datepicker.parent(),
         parentPos = parent.offset(),
@@ -71,6 +72,7 @@ export default class AnterosDatetimePicker extends React.Component {
       datepicker.css({
         position: 'absolute',
         top: position.top,
+        zIndex: 999999,
         bottom: 'auto',
         left: position.left,
         right: 'auto'
@@ -82,22 +84,19 @@ export default class AnterosDatetimePicker extends React.Component {
       }
     });
 
-    $(this.divInput).on("dp.change", function (e) {
-      let date = moment(e.date).format(_this.props.format);
+    window.$(this.divInput).on("dp.change", function (e) {
+      let date = window.moment(e.date).format(_this.props.format);
+
       if (_this.props.dataSource && _this.props.dataSource.getState !== 'dsBrowse') {
-        _this.props.dataSource.setFieldByName(_this.props.dataField,moment(e.date).toDate());
+        _this.props.dataSource.setFieldByName(_this.props.dataField,window.moment(e.date).toDate());
       } else {
         _this.setState({ value: date });
       }
+
       if (_this.props.onChange) {
         _this.props.onChange(e, date);
       }
     });
-
-
-
-    $(this.input).unbind("focus");
-    $(this.input).mask('00/00/0000 00:00:00', { placeholder: this.props.placeholder });
 
     if (this.props.dataSource) {
       this.props.dataSource.addEventListener(
@@ -136,9 +135,9 @@ export default class AnterosDatetimePicker extends React.Component {
   onKeyDown(event) {
     if (event.keyCode == 116) {
       if (!this.open)
-        $(this.divInput).datetimepicker("show");
+        window.$(this.divInput).datetimepicker("show");
       else
-        $(this.divInput).datetimepicker("hide");
+        window.$(this.divInput).datetimepicker("hide");
       this.input.focus();
     }
   }
@@ -147,9 +146,7 @@ export default class AnterosDatetimePicker extends React.Component {
     this.setState({ value: event.target.value });
     if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
       let value = AnterosDateUtils.parseDateWithFormat(event.target.value, this.props.format);
-      if (value > 0 || (value == 0 && event.target.value == "")) {
-        this.props.dataSource.setFieldByName(this.props.dataField, value);
-      }
+      //this.props.dataSource.setFieldByName(this.props.dataField, value);
     }
     if (this.props.onChange) {
       this.props.onChange(event);
@@ -157,18 +154,7 @@ export default class AnterosDatetimePicker extends React.Component {
   }
 
   onKeyPress(event) {
-    $(this.divInput).datetimepicker("hide");
-
-    this.setState({ value: this.state.value+event.key});
-    if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
-      let value = AnterosDateUtils.parseDateWithFormat(event.target.value, this.props.format);
-      if (value > 0 || (value == 0 && event.target.value == "")) {
-        this.props.dataSource.setFieldByName(this.props.dataField, value);
-      }
-    }
-    if (this.props.onChange) {
-      this.props.onChange(event);
-    }
+    window.$(this.divInput).datetimepicker("hide");
   }
 
   render() {
@@ -179,13 +165,13 @@ export default class AnterosDatetimePicker extends React.Component {
 
     const colClasses = buildGridClassNames(this.props, false, []);
     let icon = "fa fa-calendar";
-    if (this.icon) {
+    if (this.props.icon) {
       icon = this.props.icon;
     }
+
     if (this.props.id) {
       this.idCalendar = this.props.id;
     }
-
     let className = AnterosUtils.buildClassNames("input-group date",
       (this.props.className ? this.props.className : ""),
       colClasses);
@@ -215,9 +201,9 @@ export default class AnterosDatetimePicker extends React.Component {
 
     return (
       <div className={className} id={this.props.id} style={{ ...this.props.style, width: width }} ref={ref => this.divInput = ref}>
-        <input disabled={(this.props.disabled ? true : false)} id={this.idCalendar} ref={ref => this.input = ref} type="text" value={this.state.value} className={classNameInput} onChange={this.handleChange}
-          onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} placeholder={this.props.placeHolder} readOnly={readOnly} />
-        <div className={classNameAddOn} style={{height: '38px', width:'38px', marginLeft:'0px', marginTop:'0px'}}>
+        <AnterosInputText id={this.idCalendar}  readOnly={readOnly} onKeyPress={this.onKeyPress} onKeyDown={this.onKeyDown} className={classNameInput} maskChar={null} disabled={(this.props.disabled ? true : false)}
+         mask={this.props.mask} value={this.state.value} onChange={this.handleChange}/>  
+        <div className={classNameAddOn} style={{margin: 0, height: '38px', width:'38px'}}>
           <span><i className={icon} /><img src={this.props.image} /></span></div>
       </div>
     );
@@ -233,6 +219,7 @@ AnterosDatetimePicker.propTypes = {
   dataField: PropTypes.string,
   placeHolder: PropTypes.string,
   format: PropTypes.string,
+  mask: PropTypes.string,
   value: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   extraSmall: columnProps,
@@ -259,8 +246,8 @@ AnterosDatetimePicker.propTypes = {
 AnterosDatetimePicker.defaultProps = {
   placeHolder: '',
   format: 'DD/MM/YYYY hh:mm:ss',
+  mask: '99/99/9999 99:99:99', 
   value: '',
   width: "220px",
   primary: true
-
 }

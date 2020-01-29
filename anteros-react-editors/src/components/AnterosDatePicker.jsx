@@ -98,8 +98,6 @@ export default class AnterosDatePicker extends React.Component {
       }
     });
 
-    window.$(this.input).unbind("focus");
-    window.$(this.input).mask('00/00/0000', { placeholder: this.props.placeholder });
     if (this.props.dataSource) {
       this.props.dataSource.addEventListener(
         [dataSourceEvents.AFTER_CLOSE,
