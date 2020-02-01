@@ -54,7 +54,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
     "install": "^0.12.2",
-    "jquery-mask-plugin": "^1.14.12",
+    "jquery-mask-plugin": "^1.14.16",
     "jquery.inputmask": "^3.3.4",
     "jquery.maskedinput": "^1.4.1",
     "lodash": "^4.17.4",

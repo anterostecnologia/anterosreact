@@ -29,6 +29,7 @@ import {
 	dataSourceEvents
 } from "anteros-react-datasource";
 import PropTypes from "prop-types";
+const uuidv4 = require('uuid/v4');
 
 const DATASOURCE_EVENTS = [
 	dataSourceEvents.AFTER_CLOSE,
@@ -45,10 +46,10 @@ const DATASOURCE_EVENTS = [
 export default class AnterosDataTable extends Component {
 	constructor(props) {
 		super(props);
-		this.idTable = this.props.id ? this.props.id : lodash.uniqueId("table");
-		this.idCheckBoxSelect = lodash.uniqueId("checkBoxSelect");
+		this.idTable = this.props.id ? this.props.id : uuidv4();
+		this.idCheckBoxSelect = uuidv4();
 		this.getColumns = this.getColumns.bind(this);
-		this.buildColumns = this.buildColumns.bind(this);
+		this.buildColumnsToDatatable = this.buildColumnsToDatatable.bind(this);
 		this.onClick = this.onClick.bind(this);
 		this.renderImage = this.renderImage.bind(this);
 		this.renderNumber = this.renderNumber.bind(this);
@@ -77,8 +78,35 @@ export default class AnterosDataTable extends Component {
 		this.currentRow = undefined;
 		this.currentCol = undefined;
 		this.dataTable;
+		this.domDataTable;
 		this.resize = this.resize.bind(this);
+		this.initializeDatatable = this.initializeDatatable.bind(this);
+		this.generateColumns = this.generateColumns.bind(this);
 		this.createDatatable = this.createDatatable.bind(this);
+		this.columns = [];
+		this.sortCustomDateAsc = this.sortCustomDateAsc.bind(this);
+		this.sortCustomDateDesc = this.sortCustomDateDesc.bind(this);
+		this.sortCustomDateTimeAsc = this.sortCustomDateTimeAsc.bind(this);
+		this.sortCustomDateTimeDesc = this.sortCustomDateTimeDesc.bind(this);
+		this.sortCustomTimeAsc = this.sortCustomTimeAsc.bind(this);
+		this.sortCustomTimeDesc = this.sortCustomTimeDesc.bind(this);
+		this.sortNumberAsc = this.sortNumberAsc.bind(this);
+		this.sortNumberDesc = this.sortNumberDesc.bind(this);
+		this.onUserSelect = this.onUserSelect.bind(this);
+		this.getCheckboxSelectAll = this.getCheckboxSelectAll.bind(this);
+		this.getTableBody = this.getTableBody.bind(this);
+		this.onKeyFocusTable = this.onKeyFocusTable.bind(this);
+		this.onPageChangeTable = this.onPageChangeTable.bind(this);
+		this.onKeyDownDocument = this.onKeyDownDocument.bind(this);
+		this.onKeyPressDocument = this.onKeyPressDocument.bind(this);
+		this.onClickDetailsControl = this.onClickDetailsControl.bind(this);
+		this.getDocument = this.getDocument.bind(this);
+		this.onDoubleClickTableBody = this.onDoubleClickTableBody.bind(this);
+		this.onClickTdTableBody = this.onClickTdTableBody.bind(this);
+		this.getScrollBody = this.getScrollBody.bind(this);
+		this.onScrollBody = this.onScrollBody.bind(this);
+		this.getThead = this.getThead.bind(this);
+		this.onSelectTable = this.onSelectTable.bind(this);
 	}
 
 	getColumnByIndex(index) {
@@ -317,103 +345,269 @@ export default class AnterosDataTable extends Component {
 
 	componentDidUpdate() { }
 
-	createDatatable() {
+	sortCustomDateAsc(a, b) {
+		let dtA = AnterosDateUtils.parseDateWithFormat(
+			a,
+			Anteros.dataSourceDatetimeFormat
+		);
+		let dtB = AnterosDateUtils.parseDateWithFormat(
+			b,
+			Anteros.dataSourceDatetimeFormat
+		);
+		if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
+			return 0;
+		if (dtA < dtB) return -1;
+		else if (dtA == dtB) return 0;
+		else if (dtA > dtB) return 1;
+	}
+
+	sortCustomDateDesc(a, b) {
+		let dtA = AnterosDateUtils.parseDateWithFormat(
+			a,
+			Anteros.dataSourceDatetimeFormat
+		);
+		let dtB = AnterosDateUtils.parseDateWithFormat(
+			b,
+			Anteros.dataSourceDatetimeFormat
+		);
+		if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
+			return 0;
+		if (dtA < dtB) return 1;
+		else if (dtA == dtB) return 0;
+		else if (dtA > dtB) return -1;
+	};
+
+	sortCustomDateTimeAsc(a, b) {
+		let dtA = AnterosDateUtils.parseDateWithFormat(
+			a,
+			Anteros.dataSourceDatetimeFormat
+		);
+		let dtB = AnterosDateUtils.parseDateWithFormat(
+			b,
+			Anteros.dataSourceDatetimeFormat
+		);
+		if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
+			return 0;
+		return dtA.getMilliseconds() - dtB.getMilliseconds();
+	};
+
+	sortCustomDateTimeDesc(a, b) {
+		let dtA = AnterosDateUtils.parseDateWithFormat(
+			a,
+			anteros.dataSourceDatetimeFormat
+		);
+		let dtB = AnterosDateUtils.parseDateWithFormat(
+			b,
+			anteros.dataSourceDatetimeFormat
+		);
+		if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
+			return 0;
+		return dtB.getMilliseconds() - dtA.getMilliseconds();
+	};
+
+	sortCustomTimeAsc(a, b) {
+		let dtA = AnterosDateUtils.parseDateWithFormat(
+			a,
+			Anteros.dataSourceDatetimeFormat
+		);
+		let dtB = AnterosDateUtils.parseDateWithFormat(
+			b,
+			Anteros.dataSourceDatetimeFormat
+		);
+		if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
+			return 0;
+		return dtA.getMilliseconds() - dtB.getMilliseconds();
+	};
+
+	sortCustomTimeDesc(a, b) {
+		let dtA = AnterosDateUtils.parseDateWithFormat(
+			a,
+			Anteros.dataSourceDatetimeFormat
+		);
+		let dtB = AnterosDateUtils.parseDateWithFormat(
+			b,
+			Anteros.dataSourceDatetimeFormat
+		);
+		if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
+			return 0;
+		return dtB.getMilliseconds() - dtA.getMilliseconds();
+	};
+
+	sortNumberAsc(a, b) {
+		return AnterosUtils.parseNumber(a) - AnterosUtils.parseNumber(b);
+	};
+
+	sortNumberDesc(a, b) {
+		return AnterosUtils.parseNumber(b) - AnterosUtils.parseNumber(a);
+	};
+
+	onUserSelect(e, dt, type, cell, originalEvent) {
+		if (this.props.onTableClick) {
+			this.props.onTableClick(e, _this);
+		}
+	}
+
+	
+
+	getCheckboxSelectAll() {
+		return $("." + this.idCheckBoxSelect)
+	}
+
+	getTableBody() {
+		return $("#" + this.idTable + " tbody");
+	}
+
+
+
+	onKeyFocusTable(e, datatable, cell, originalEvent) {
+		this.currentRow = cell.index().row;
+		this.currentCol = cell.index().column;
+		this.adjustHeaderCheckbox();
+		if (this.onFocusCell) {
+			this.onFocusCell(this.currentRow, this.currentCol);
+		}
+	}
+
+	onPageChangeTable() {
+		this.adjustHeaderCheckbox();
+		var info = this.dataTable.page.info();
+		if (this.onPageChange) {
+			this.onPageChange(info);
+		}
+	}
+
+	onKeyDownDocument(event) {
+		if (event.target == this.divTable) {
+			if (
+				event.keyCode == 40 ||
+				event.keyCode == 38 ||
+				event.keyCode == 34 ||
+				event.keyCode == 33
+			) {
+				this.dataTable.rows().deselect();
+				this.dataTable.row(this.currentRow).select();
+				this.adjustHeaderCheckbox();
+			}
+			if (event.keyCode == 32) {
+				this.adjustHeaderCheckbox();
+				event.preventDefault();
+				let id = "ch_" + this.idTable + "_" + this.currentRow + "_0";
+				let input = document.getElementById(id);
+				if (input) {
+					input.checked = !input.checked;
+					if (input.checked) {
+						if (this.props.onSelectRecord) {
+							this.props.onSelectRecord(
+								this.dataTable.row(this.currentRow),
+								this.dataTable.row(this.currentRow).data()[0], this.props.id
+							);
+						}
+					} else {
+						if (this.props.onUnSelectRecord) {
+							this.props.onUnSelectRecord(
+								this.dataTable.row(this.currentRow),
+								this.dataTable.row(this.currentRow).data()[0], this.props.id
+							);
+						}
+					}
+				}
+			}
+		}
+	};
+
+	onKeyPressDocument(event) {
+	}
+
+
+	onClickDetailsControl() {
+		var tr = $(this).closest("tr");
+		var row = this.dataTable.row(tr);
+
+		if (row.child.isShown()) {
+			row.child.hide();
+			tr.removeClass("shown");
+		} else {
+			if (this.props.renderDetails) {
+				row.child(this.props.renderDetails(row.data())).show();
+			}
+			tr.addClass("shown");
+		}
+	}
+
+	getDocument() {
+		return $(document);
+	}
+
+	onDoubleClickTableBody() {
+		if (this.props.onDoubleClick) {
+			let data = this.dataTable.row(this).data();
+			this.props.onDoubleClick(data);
+		} else if (_this.props.onCellDoubleClick) {
+			let data = table.row(this).data();
+			let row = table.cell(this).index().row;
+			let column = table.cell(this).index().column;
+			this.props.onCellDoubleClick(row, column, data);
+		}
+	}
+
+	onClickTdTableBody() {
+		if (this.props.onCellClick) {
+			let data = this.dataTable.row(this).data();
+			let row = this.dataTable.cell(this).index().row;
+			let column = this.dataTable.cell(this).index().column;
+			this.props.onCellClick(row, column, data);
+		}
+	}
+
+	getScrollBody() {
+		return this.divTable.querySelector(".dataTables_scrollBody");
+	}
+
+	onScrollBody() {
+		if (this.clientWidth < this.scrollWidth) {
+			this.classList.remove("shadow-left");
+			this.classList.remove("shadow-right");
+			this.classList.remove("shadow-left-right");
+			if (
+				this.scrollLeft > 0 &&
+				this.scrollLeft + this.clientWidth < this.scrollWidth
+			) {
+				this.classList.add("shadow-left-right");
+			} else if (this.scrollLeft + this.clientWidth == this.scrollWidth) {
+				this.classList.add("shadow-left");
+			} else if (this.scrollLeft == 0) {
+				this.classList.add("shadow-right");
+			}
+		}
+	};
+
+	getThead() {
+		return $(this.divTable)
+			.find("table")
+			.eq(0)
+			.find("thead")
+			.eq(0);
+	}
+
+	onSelectTable(e, dt, type, indexes) {
+		if (this.props.dataSource && this.props.dataSource.isOpen()) {
+			this.props.dataSource.gotoRecordByData(dt.data());
+		}
+	}
+
+
+	initializeDatatable() {
 		let _this = this;
-		jQuery.fn.dataTableExt.oSort["number-asc"] = function (a, b) {
-			return AnterosUtils.parseNumber(a) - AnterosUtils.parseNumber(b);
-		};
-
-		jQuery.fn.dataTableExt.oSort["number-desc"] = function (a, b) {
-			return AnterosUtils.parseNumber(b) - AnterosUtils.parseNumber(a);
-		};
-
-		jQuery.fn.dataTableExt.oSort["customdate-asc"] = function (a, b) {
-			let dtA = AnterosDateUtils.parseDateWithFormat(
-				a,
-				Anteros.dataSourceDatetimeFormat
-			);
-			let dtB = AnterosDateUtils.parseDateWithFormat(
-				b,
-				Anteros.dataSourceDatetimeFormat
-			);
-			if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
-				return 0;
-			if (dtA < dtB) return -1;
-			else if (dtA == dtB) return 0;
-			else if (dtA > dtB) return 1;
-		};
-
-		jQuery.fn.dataTableExt.oSort["customdate-desc"] = function (a, b) {
-			let dtA = AnterosDateUtils.parseDateWithFormat(
-				a,
-				Anteros.dataSourceDatetimeFormat
-			);
-			let dtB = AnterosDateUtils.parseDateWithFormat(
-				b,
-				Anteros.dataSourceDatetimeFormat
-			);
-			if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
-				return 0;
-			if (dtA < dtB) return 1;
-			else if (dtA == dtB) return 0;
-			else if (dtA > dtB) return -1;
-		};
-
-		jQuery.fn.dataTableExt.oSort["customdatetime-asc"] = function (a, b) {
-			let dtA = AnterosDateUtils.parseDateWithFormat(
-				a,
-				Anteros.dataSourceDatetimeFormat
-			);
-			let dtB = AnterosDateUtils.parseDateWithFormat(
-				b,
-				Anteros.dataSourceDatetimeFormat
-			);
-			if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
-				return 0;
-			return dtA.getMilliseconds() - dtB.getMilliseconds();
-		};
-
-		jQuery.fn.dataTableExt.oSort["customdatetime-desc"] = function (a, b) {
-			let dtA = AnterosDateUtils.parseDateWithFormat(
-				a,
-				anteros.dataSourceDatetimeFormat
-			);
-			let dtB = AnterosDateUtils.parseDateWithFormat(
-				b,
-				anteros.dataSourceDatetimeFormat
-			);
-			if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
-				return 0;
-			return dtB.getMilliseconds() - dtA.getMilliseconds();
-		};
-
-		jQuery.fn.dataTableExt.oSort["customtime-asc"] = function (a, b) {
-			let dtA = AnterosDateUtils.parseDateWithFormat(
-				a,
-				Anteros.dataSourceDatetimeFormat
-			);
-			let dtB = AnterosDateUtils.parseDateWithFormat(
-				b,
-				Anteros.dataSourceDatetimeFormat
-			);
-			if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
-				return 0;
-			return dtA.getMilliseconds() - dtB.getMilliseconds();
-		};
-
-		jQuery.fn.dataTableExt.oSort["customtime-desc"] = function (a, b) {
-			let dtA = AnterosDateUtils.parseDateWithFormat(
-				a,
-				Anteros.dataSourceDatetimeFormat
-			);
-			let dtB = AnterosDateUtils.parseDateWithFormat(
-				b,
-				Anteros.dataSourceDatetimeFormat
-			);
-			if (!AnterosDateUtils.isDate(dtA) || !AnterosDateUtils.isDate(dtB))
-				return 0;
-			return dtB.getMilliseconds() - dtA.getMilliseconds();
-		};
+		// Adiciona novas extensões de ordenação
+		let sortExtension = jQuery.fn.dataTableExt.oSort;
+		sortExtension["number-asc"] = this.sortNumberAsc;
+		sortExtension["number-desc"] = this.sortNumberDesc;
+		sortExtension["customdate-asc"] = this.sortCustomDateAsc;
+		sortExtension["customdate-desc"] = this.sortCustomDateDesc;
+		sortExtension["customdatetime-asc"] = this.sortCustomDateTimeAsc;
+		sortExtension["customdatetime-desc"] = this.sortCustomDateTimeDesc;
+		sortExtension["customtime-asc"] = this.sortCustomTimeAsc;
+		sortExtension["customtime-desc"] = this.sortCustomTimeDesc;
 
 		let classNameExportButtons = "btn-info";
 		if (this.props.exportButtonsPrimary) {
@@ -427,28 +621,109 @@ export default class AnterosDataTable extends Component {
 		} else if (this.props.exportButtonsWarning) {
 			classNameExportButtons = "btn-warning";
 		}
-
-		let data = [];
+		let dataSource = [];
 		if (
 			this.props.dataSource instanceof AnterosRemoteDatasource ||
 			this.props.dataSource instanceof AnterosLocalDatasource
 		) {
-			data = this.props.dataSource.getData();
+			dataSource = this.props.dataSource.getData();
 		} else {
-			data = this.props.dataSource;
+			dadataSource = this.props.dataSource;
 		}
-		let custom = {};
+		let customOptions = {};
 		if (this.showExportButtons) {
-			custom = {
+			customOptions = {
 				dom:
 					"<'row'<'col-md-4'B><'col-md-4'l><'col-md-4'f>r>t<'row'<'col-md-6'i><'col-md-6'p>" +
 					">"
 			};
 		}
+		this.dataTable = this.createDatatable(this.idTable, customOptions, dataSource, classNameExportButtons);
+		if (this.props.showExportButtons == false) {
+			this.dataTable.buttons().remove();
+		}
+		this.dataTable.on('user-select', this.onUserSelect);
+		if (this.props.enableCheckboxSelect) {
+			this.getCheckboxSelectAll().on("click", function () {		
+				var rows = _this.dataTable.rows({ search: "applied" }).nodes();		
+				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);		
+				if (this.checked) {		
+					if (_this.props.onSelectAllRecords) {		
+						let result = [_this.dataTable.rows()[0].length];		
+						for (let i = 0; i < _this.dataTable.rows()[0].length; i++) {		
+							result[i] = _this.dataTable.rows(i).data()[0];		
+						}		
+						_this.props.onSelectAllRecords(result, _this.props.id);		
+					}		
+				} else {		
+					if (_this.props.onUnSelectAllRecords) {		
+						_this.props.onUnSelectAllRecords(_this.props.id);		
+					}		
+				}		
+			});
+			this.adjustHeaderCheckbox();
+			this.getTableBody().on("change", 'input[type="checkbox"][name="id[]"]', function (event) {
+				_this.currentRow = event.target.parentElement._DT_CellIndex.row;
+				_this.currentCol = event.target.parentElement._DT_CellIndex.column;
+				_this.dataTable.rows().deselect();
+				_this.dataTable.row(_this.currentRow).select();
 
-		var table = $("#" + this.idTable).DataTable({
+				if (this.checked) {
+					if (_this.props.onSelectRecord) {
+						_this.props.onSelectRecord(
+							_this.dataTable.rows(this.getAttribute("row")),
+							_this.dataTable.rows(this.getAttribute("row")).data()[0], _this.props.id
+						);
+					}
+				} else {
+					if (_this.props.onUnSelectRecord) {
+						_this.props.onUnSelectRecord(
+							_this.dataTable.rows(this.getAttribute("row")),
+							_this.dataTable.rows(this.getAttribute("row")).data()[0], _this.props.id
+						);
+					}
+				}
+				if (!this.checked) {
+					var el = $("#" + _this.idCheckBoxSelect).get(0);
+					if (el && el.checked && "indeterminate" in el) {
+						el.indeterminate = true;
+					}
+				}
+			}
+			);
+		}
+		this.dataTable.on("key-focus", this.onKeyFocusTable);
+		this.dataTable.on("page.dt", this.onPageChangeTable);
+		this.getDocument().on("keydown.keyTable", this.onKeyDownDocument);
+		this.getDocument().on("keypress.keyTable", this.onKeyPressDocument);
+		this.getTableBody().on("click", "td.details-control", this.onClickDetailsControl);
+		this.getTableBody().on("dblclick", "td", this.onDoubleClickTableBody);
+		this.getTableBody().on("click", "td", this.onClickTdTableBody);
+		this.getScrollBody().onscroll = this.onScrollBody;
+
+		let thead = this.getThead();
+		if (this.props.success) {
+			thead.addClass("datatable-success");
+		} else if (this.props.primary) {
+			thead.addClass("datatable-primary");
+		} else if (this.props.warning) {
+			thead.addClass("datatable-warning");
+		} else if (this.props.info) {
+			thead.addClass("datatable-info");
+		} else if (this.props.danger) {
+			thead.addClass("datatable-danger");
+		}
+		this.dataTable.on("select", this.onSelectTable);
+	}
+
+	createDatatable(id, custom, data, classNameExportButtons) {
+		return $("#" + id).DataTable(this.buildOptions(custom, data, classNameExportButtons));
+	}
+
+	buildOptions(custom, data, classNameExportButtons) {
+		return {
 			...custom,
-			columns: this.buildColumns(),
+			columns: this.buildColumnsToDatatable(),
 			keys: true,
 			scrollY: this.props.height,
 			scrollX: true,
@@ -536,221 +811,11 @@ export default class AnterosDataTable extends Component {
 				decimal: this.props.decimalSeparator,
 				thousands: this.props.thousandsSeparator
 			}
-		});
-		if (this.props.showExportButtons == false) table.buttons().remove();
-
-
-		table
-			.on('user-select', function (e, dt, type, cell, originalEvent) {
-				if (_this.props.onTableClick) {
-					_this.props.onTableClick(e, _this);
-				}
-			});
-
-
-		if (this.props.enableCheckboxSelect) {
-			$("#" + this.idCheckBoxSelect).on("click", function () {
-				var rows = table.rows({ search: "applied" }).nodes();
-				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);
-				if (this.checked) {
-					if (_this.props.onSelectAllRecords) {
-						let result = [table.rows()[0].length];
-						for (let i = 0; i < table.rows()[0].length; i++) {
-							result[i] = table.rows(i).data()[0];
-						}
-						_this.props.onSelectAllRecords(result, _this.props.id);
-					}
-				} else {
-					if (_this.props.onUnSelectAllRecords) {
-						_this.props.onUnSelectAllRecords(_this.props.id);
-					}
-				}
-			});
-
-			this.adjustHeaderCheckbox();
-
-			$("#" + this.idTable + " tbody").on(
-				"change",
-				'input[type="checkbox"][name="id[]"]',
-				function (event) {
-					_this.currentRow = event.target.parentElement._DT_CellIndex.row;
-					_this.currentCol = event.target.parentElement._DT_CellIndex.column;
-					table.rows().deselect();
-					table.row(_this.currentRow).select();
-
-					if (this.checked) {
-						if (_this.props.onSelectRecord) {
-							_this.props.onSelectRecord(
-								table.rows(this.getAttribute("row")),
-								table.rows(this.getAttribute("row")).data()[0], _this.props.id
-							);
-						}
-					} else {
-						if (_this.props.onUnSelectRecord) {
-							_this.props.onUnSelectRecord(
-								table.rows(this.getAttribute("row")),
-								table.rows(this.getAttribute("row")).data()[0], _this.props.id
-							);
-						}
-					}
-					if (!this.checked) {
-						var el = $("#" + _this.idCheckBoxSelect).get(0);
-						if (el && el.checked && "indeterminate" in el) {
-							el.indeterminate = true;
-						}
-					}
-				}
-			);
-
-			table.on("key-focus", function (e, datatable, cell, originalEvent) {
-				_this.currentRow = cell.index().row;
-				_this.currentCol = cell.index().column;
-				_this.adjustHeaderCheckbox();
-				if (_this.onFocusCell) {
-					_this.onFocusCell(_this.currentRow, _this.currentCol);
-				}
-			});
-
-			table.on("page.dt", function () {
-				_this.adjustHeaderCheckbox();
-				var info = table.page.info();
-				if (_this.onPageChange) {
-					_this.onPageChange(info);
-				}
-			});
-
-			$(document).on("keydown.keyTable", function (e) {
-				if (e.target == _this.divTable) {
-					if (
-						e.keyCode == 40 ||
-						e.keyCode == 38 ||
-						e.keyCode == 34 ||
-						e.keyCode == 33
-					) {
-						table.rows().deselect();
-						table.row(_this.currentRow).select();
-						_this.adjustHeaderCheckbox();
-					}
-					if (e.keyCode == 32) {
-						_this.adjustHeaderCheckbox();
-						e.preventDefault();
-
-						let id = "ch_" + _this.idTable + "_" + _this.currentRow + "_0";
-						let input = document.getElementById(id);
-						if (input) {
-							input.checked = !input.checked;
-
-							if (input.checked) {
-								if (_this.props.onSelectRecord) {
-									_this.props.onSelectRecord(
-										table.row(_this.currentRow),
-										table.row(_this.currentRow).data()[0], _this.props.id
-									);
-								}
-							} else {
-								if (_this.props.onUnSelectRecord) {
-									_this.props.onUnSelectRecord(
-										table.row(_this.currentRow),
-										table.row(_this.currentRow).data()[0], _this.props.id
-									);
-								}
-							}
-						}
-					}
-				}
-			});
-
-			$(document).on("keypress.keyTable", function (e) { });
-		}
-
-		$("#" + this.idTable + " tbody").on(
-			"click",
-			"td.details-control",
-			function () {
-				var tr = $(this).closest("tr");
-				var row = table.row(tr);
-
-				if (row.child.isShown()) {
-					row.child.hide();
-					tr.removeClass("shown");
-				} else {
-					if (_this.props.renderDetails) {
-						row.child(_this.props.renderDetails(row.data())).show();
-					}
-					tr.addClass("shown");
-				}
-			}
-		);
-
-		$("#" + this.idTable + " tbody").on("dblclick", "td", function () {
-			if (_this.props.onDoubleClick) {
-				var data = table.row(this).data();
-				_this.props.onDoubleClick(data);
-			} else if (_this.props.onCellDoubleClick) {
-				var data = table.row(this).data();
-				var row = table.cell(this).index().row;
-				var column = table.cell(this).index().column;
-				_this.props.onCellDoubleClick(row, column, data);
-			}
-		});
-
-		$("#" + this.idTable + " tbody").on("click", "td", function () {
-			if (_this.props.onCellClick) {
-				var data = table.row(this).data();
-				var row = table.cell(this).index().row;
-				var column = table.cell(this).index().column;
-				_this.props.onCellClick(row, column, data);
-			}
-		});
-
-		let element = this.divTable.querySelector(".dataTables_scrollBody");
-		element.onscroll = function () {
-			if (this.clientWidth < this.scrollWidth) {
-				this.classList.remove("shadow-left");
-				this.classList.remove("shadow-right");
-				this.classList.remove("shadow-left-right");
-				if (
-					this.scrollLeft > 0 &&
-					this.scrollLeft + this.clientWidth < this.scrollWidth
-				) {
-					this.classList.add("shadow-left-right");
-				} else if (this.scrollLeft + this.clientWidth == this.scrollWidth) {
-					this.classList.add("shadow-left");
-				} else if (this.scrollLeft == 0) {
-					this.classList.add("shadow-right");
-				}
-			}
 		};
-
-		let th1 = $(this.divTable)
-			.find("table")
-			.eq(0)
-			.find("thead")
-			.eq(0);
-		if (this.props.success) {
-			th1.addClass("datatable-success");
-		} else if (this.props.primary) {
-			th1.addClass("datatable-primary");
-		} else if (this.props.warning) {
-			th1.addClass("datatable-warning");
-		} else if (this.props.info) {
-			th1.addClass("datatable-info");
-		} else if (this.props.danger) {
-			th1.addClass("datatable-danger");
-		}
-
-		table.on("select", function (e, dt, type, indexes) {
-			if (_this.props.dataSource && _this.props.dataSource.isOpen()) {
-				_this.props.dataSource.gotoRecordByData(dt.data());
-			}
-		});
-
-		this.dataTable = table;
 	}
 
 	componentDidMount() {
-		this.createDatatable();
-
+		this.initializeDatatable();
 		if (
 			this.props.dataSource instanceof AnterosRemoteDatasource ||
 			this.props.dataSource instanceof AnterosLocalDatasource
@@ -760,27 +825,29 @@ export default class AnterosDataTable extends Component {
 				this.onDatasourceEvent
 			);
 		}
-		this.refreshData();
 	}
 
 	componentWillUnmount() {
-		var datatable = $("#" + this.idTable)
-			.dataTable()
-			.api();
-		datatable.clear();
-		datatable.destroy();
-		if (
-			this.props.dataSource instanceof AnterosRemoteDatasource ||
-			this.props.dataSource instanceof AnterosLocalDatasource
-		) {
-			this.props.dataSource.removeEventListener(
-				DATASOURCE_EVENTS,
-				this.onDatasourceEvent
-			);
+		if (this.divTable) {
+			var datatable = $("#" + this.idTable)
+				.dataTable()
+				.api();
+			datatable.clear();
+			datatable.destroy();
+			if (
+				this.props.dataSource instanceof AnterosRemoteDatasource ||
+				this.props.dataSource instanceof AnterosLocalDatasource
+			) {
+				this.props.dataSource.removeEventListener(
+					DATASOURCE_EVENTS,
+					this.onDatasourceEvent
+				);
+			}
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
+		this.columns = this.generateColumns();
 		if (nextProps.dataSource) {
 			this.refreshData();
 		}
@@ -867,7 +934,7 @@ export default class AnterosDataTable extends Component {
 		th2.addClass("dataTable_title_align_center");
 	}
 
-	buildColumns() {
+	buildColumnsToDatatable() {
 		let result = [];
 		let columns = this.getColumns();
 		let arrChildren = React.Children.toArray(columns);
@@ -951,6 +1018,13 @@ export default class AnterosDataTable extends Component {
 	}
 
 	getColumns() {
+		if (this.columns.length === 0) {
+			this.columns = this.generateColumns();
+		}
+		return this.columns;
+	}
+
+	generateColumns() {
 		let arrChildren = React.Children.toArray(this.props.children);
 		let result = [];
 		let _this = this;
@@ -975,9 +1049,7 @@ export default class AnterosDataTable extends Component {
 		if (this.props.enableCheckboxSelect) {
 			checkBoxColumn = React.createElement(AnterosDataTableColumn, {
 				title:
-					'<input type="checkbox" name="select_all" value="1" id="' +
-					this.idCheckBoxSelect +
-					'">',
+					'<input type="checkbox" class="' + this.idCheckBoxSelect + '" value="1">',
 				alignCenter: true,
 				dataField: "",
 				titleAlignCenter: true,
@@ -1069,7 +1141,7 @@ export default class AnterosDataTable extends Component {
 			>
 				<div id={this.idTable + "_header"} className="row" />
 				<table
-					ref={ref => (this.table = ref)}
+					ref={ref => (this.domDataTable = ref)}
 					id={this.idTable}
 					className={className}
 					cellSpacing="0"
