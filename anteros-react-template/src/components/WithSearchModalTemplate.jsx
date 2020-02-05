@@ -336,8 +336,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
         );
       }
 
-      getSortFields(){
-        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== ''){
+      getSortFields() {
+        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== '') {
           return this.filterRef.current.getQuickFilterSort();
         }
         return loadingProps.defaultSortFields;
@@ -518,17 +518,6 @@ export default function WithSearchModalTemplate(_loadingProps) {
                   ? this.getUserActions()
                   : null
                 : null}
-              <AnterosButton
-                id="btnSelecionar"
-                icon="fa fa-bolt"
-                disabled={
-                  this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                }
-                warning
-                onButtonClick={this.onButtonSearch}
-              >
-                Selecionar
-              </AnterosButton>
               <AnterosButton success dataUser="btnOK" onClick={this.onClick}>
                 OK
               </AnterosButton>{' '}
@@ -567,6 +556,17 @@ export default function WithSearchModalTemplate(_loadingProps) {
                   }
                   onSearchButtonClick={this.onSearchButtonClick}
                 >
+                  <AnterosButton
+                    id="btnSelecionar"
+                    icon="fa fa-bolt"
+                    disabled={
+                      this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                    }
+                    warning
+                    onButtonClick={this.onButtonSearch}
+                  >
+                    Selecionar
+                  </AnterosButton>
                   {this.getFieldsFilter()}
                 </AnterosQueryBuilder>
               ) : null}
