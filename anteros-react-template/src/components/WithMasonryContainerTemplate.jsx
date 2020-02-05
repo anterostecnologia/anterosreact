@@ -141,6 +141,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           );
         }
 
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
+
         autoBind(this);
         if (loadingProps.withFilter) {
           this.createDataSourceFilter();
@@ -230,20 +234,16 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             'customCreateDatasource'
           ) === false) {
           if (!this.dataSource.isOpen()) {
-            this.dataSource.open(
-              loadingProps.endPoints.FIND_ALL(
-                loadingProps.resource,
-                0,
-                loadingProps.pageSize,
-                this.getSortFields(),
-                this.getUser(), loadingProps.fieldsToForceLazy
-              )
-            );
+            this._openMainDataSource();
           }
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.dataSource.cancel();
           }
         }
+      }
+
+      _openMainDataSource() {
+        this.dataSource.open(loadingProps.endPoints.FIND_ALL(loadingProps.resource, 0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
       }
 
       componentWillUnmount() {
@@ -345,6 +345,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         }
       }
 
+      setStateTemplate(state){
+        this.setState({...state});
+      }      
+
       onSelectedItem(item) {
         this.setState({
           ...this.state,
@@ -395,6 +399,12 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       onButtonClick(event, button) {
+        if (WrappedComponent.prototype.hasOwnProperty('onCustomButtonClick') === true) {
+            if (!(this.onCustomButtonClick(event,button))) {
+              return;
+            }
+        }
+
         if (button.props.id === 'btnAdd') {
           if (WrappedComponent.prototype.hasOwnProperty('onCustomAdd') === true) {
             this.onCustomAdd(button.props.route);
@@ -445,7 +455,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             });
             return;
           }
-        }
+        } 
         this.props.history.push(button.props.route);
       }
 
@@ -558,6 +568,15 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           );
         }
         return result;
+      }
+
+      onClickOk(event, selectedRecords) {
+        this.setState({ ...this.state, modalOpen: null });
+        this._openMainDataSource();
+      }
+
+      onClickCancel(event) {
+          this.setState({ ...this.state, modalOpen: null });
       }
 
       render() {
@@ -698,8 +717,11 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               </div>
               <WrappedComponent
                 {...this.props}
+                state={this.state}
                 user={this.props.user}
                 dataSource={this.dataSource}
+                onClickOk={this.onClickOk}
+                onClickCancel={this.onClickCancel}
                 history={this.props.history}
               />
             </AnterosBlockUi>
