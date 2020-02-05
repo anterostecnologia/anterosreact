@@ -135,7 +135,11 @@ export default class AnterosTextArea extends React.Component {
 
     handleChange(event) {
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
-            this.props.dataSource.setFieldByName(this.props.dataField, btoa(event.target.value));
+            if (this.props.disableBase64Convertion) {
+                this.props.dataSource.setFieldByName(this.props.dataField, event.target.value);    
+            } else {
+                this.props.dataSource.setFieldByName(this.props.dataField, btoa(event.target.value));
+            }
         } else {
             this.setState({ value: event.target.value });
         }
@@ -198,10 +202,12 @@ AnterosTextArea.propTypes = {
     large: columnProps,
     extraLarge: columnProps,
     width: PropTypes.string,
-    height: PropTypes.string
+    height: PropTypes.string,
+    disableBase64Convertion: PropTypes.bool.isRequired
 };
 
 AnterosTextArea.defaultProps = {
     value: '',
-    maxLenght: 0
+    maxLenght: 0,
+    disableBase64Convertion: false
 }

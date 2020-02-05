@@ -90,7 +90,7 @@ class AnterosCheckbox extends Component {
 		this.setState({ isChecked: value == this.props.valueChecked });
 	}
 
-	onClick(event){
+	onClick(event) {
 		if (this.props.readOnly) {
 			event.preventDefault();
 		}
@@ -182,9 +182,15 @@ class AnterosCheckbox extends Component {
 						href={href}
 					/>
 					{icon}
-					<span style={this.props.valueStyle} onClick={this.toggleCheckboxChange}>
-						{value}
-					</span>
+					{value ?
+						<span style={this.props.valueStyle} onClick={this.toggleCheckboxChange}>
+							{value}
+						</span>
+						:
+						<span style={this.props.valueStyle} onClick={e => e}>
+							{value}
+						</span>
+					}
 				</label>
 			</div>
 		);
