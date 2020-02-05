@@ -6,7 +6,8 @@ import { buildGridClassNames, columnProps } from 'anteros-react-layout';
 import {
   AnterosLocalDatasource,
   AnterosRemoteDatasource,
-  dataSourceEvents
+  dataSourceEvents,
+  dataSourceConstants
 } from 'anteros-react-datasource';
 import PropTypes from 'prop-types';
 import { AnterosButton } from 'anteros-react-buttons';
@@ -66,7 +67,7 @@ export default class AnterosImagePicker extends React.Component {
     this.idImage = lodash.uniqueId('imagePicker');
     this.state = { value: '', modal: false };
 
-    if (this.props.dataSource) {
+    if (this.props.dataSource && this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
       if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly) {
         this.props.dataSource.setFieldByName(this.props.dataField, '');
       }
@@ -95,7 +96,7 @@ export default class AnterosImagePicker extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let value = nextProps.value;
-    if (nextProps.dataSource) {
+    if (nextProps.dataSource && nextProps.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
       if (nextProps.dataSource.isEmptyField(nextProps.dataField) && !nextProps.readOnly) {
         nextProps.dataSource.setFieldByName(nextProps.dataField, '');
       }
@@ -194,7 +195,7 @@ export default class AnterosImagePicker extends React.Component {
   onDoubleClickImage(event) {
     let readOnly = this.props.readOnly;
     if (this.props.dataSource && !readOnly) {
-      readOnly = this.props.dataSource.getState() === 'dsBrowse';
+      readOnly = this.props.dataSource.getState() === dataSourceConstants.DS_BROWSE;
     }
     if (!readOnly && !this.props.disabled) {
       $('#' + this.idImage + '_input').click();
@@ -205,7 +206,7 @@ export default class AnterosImagePicker extends React.Component {
     if (isConfirm) {
       this.dsImage.post();
       let value = this.dsImage.fieldByName('editedImg');
-      if (this.props.dataSource) {
+      if (this.props.dataSource && this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
         this.props.dataSource.setFieldByName(this.props.dataField, value);
       }
       this.setState({ ...this.state, value, modal: false });
@@ -463,7 +464,7 @@ export default class AnterosImagePicker extends React.Component {
 
         if (
           _this.props.dataSource &&
-          _this.props.dataSource.getState() !== 'dsBrowse'
+          _this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
         ) {
           _this.props.dataSource.setFieldByName(
             _this.props.dataField,
@@ -729,10 +730,12 @@ class ImageContent extends Component {
         cropping: false,
         currentImage: image
       });
-      this.props.dataSource.setFieldByName(
-        this.props.dataField,
-        image.split(',')[1]
-      );
+      if (this.props.dataSource && this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+        this.props.dataSource.setFieldByName(
+          this.props.dataField,
+          image.split(',')[1]
+        );
+      }
     } else if (button.props.id === 'btnCut') {
 
       let image = this.cropperRef
@@ -748,10 +751,12 @@ class ImageContent extends Component {
         cropping: false,
         currentImage: cutedImg
       });
-      this.props.dataSource.setFieldByName(
-        this.props.dataField,
-        cutedImg.split(',')[1]
-      );
+      if (this.props.dataSource && this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+        this.props.dataSource.setFieldByName(
+          this.props.dataField,
+          cutedImg.split(',')[1]
+        );
+      }
     }
   }
 
@@ -794,7 +799,7 @@ class ImageContent extends Component {
 
         if (
           _this.props.dataSource &&
-          _this.props.dataSource.getState() !== 'dsBrowse' && !_this.props.readOnly
+          _this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE && !_this.props.readOnly
         ) {
           _this.props.dataSource.setFieldByName(
             _this.props.dataField,
