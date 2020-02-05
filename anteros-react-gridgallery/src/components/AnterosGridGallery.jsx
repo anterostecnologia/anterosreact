@@ -34,9 +34,9 @@ export default class AnterosGridGallery extends Component {
     componentWillReceiveProps(np) {
         if (this.state.images != np.images || this.props.maxRows != np.maxRows) {
             this.setState({
-                images: (np.images?np.images:[]),
+                images: (np.images ? np.images : []),
                 thumbnails: this.renderThumbs(this._gallery.clientWidth,
-                    (np.images?np.images:[]))
+                    (np.images ? np.images : []))
             });
         }
     }
@@ -234,21 +234,22 @@ export default class AnterosGridGallery extends Component {
         return thumbs;
     }
 
-    render () {
+    render() {
         var images = this.state.thumbnails.map((item, idx) => {
             return <Image
-            key={"Image-"+idx+"-"+item.src}
-            item={item}
-            index={idx}
-            margin={this.props.margin}
-            height={this.props.rowHeight}
-            isSelectable={this.props.enableImageSelection}
-            onClick={this.getOnClickThumbnailFn()}
-            onSelectImage={this.onSelectImage}
-            tagStyle={this.props.tagStyle}
-            tileViewportStyle={this.props.tileViewportStyle}
-            thumbnailStyle={this.props.thumbnailStyle}
-                />;});
+                key={"Image-" + idx + "-" + item.src}
+                item={item}
+                index={idx}
+                margin={this.props.margin}
+                height={this.props.rowHeight}
+                isSelectable={this.props.enableImageSelection}
+                onClick={this.getOnClickThumbnailFn()}
+                onSelectImage={this.onSelectImage}
+                tagStyle={this.props.tagStyle}
+                tileViewportStyle={this.props.tileViewportStyle}
+                thumbnailStyle={this.props.thumbnailStyle}
+            />;
+        });
         var resizeIframeStyles = {
             height: 0,
             margin: 0,
@@ -260,29 +261,28 @@ export default class AnterosGridGallery extends Component {
             width: "100%"
         };
         return (
-                <div id={this.props.id} className="ReactGridGallery" ref={(c) => this._gallery = c}>
-                    <iframe style={resizeIframeStyles} ref={(c) => c && c.contentWindow.addEventListener('resize', this.onResize) } />
+            <div id={this.props.id} className="ReactGridGallery" ref={(c) => this._gallery = c}>
+                <iframe style={resizeIframeStyles} ref={(c) => c && c.contentWindow.addEventListener('resize', this.onResize)} />
                 {images}
                 <Lightbox
-            images={this.props.images}
-            backdropClosesModal={this.props.backdropClosesModal}
-            currentImage={this.state.currentImage}
-            customControls={this.props.customControls}
-            enableKeyboardInput={this.props.enableKeyboardInput}
-            imageCountSeparator={this.props.imageCountSeparator}
-            isOpen={this.state.lightboxIsOpen}
-            onClickImage={this.getOnClickImageFn()}
-            onClickNext={this.getOnClickNextFn()}
-            onClickPrev={this.getOnClickPrevFn()}
-            showCloseButton={this.props.showCloseButton}
-            showImageCount={this.props.showImageCount}
-            onClose={this.closeLightbox}
-            width={this.props.lightboxWidth}
-            theme={this.props.theme}
-            onClickThumbnail={this.getOnClickLightboxThumbnailFn()}
-            showThumbnails={this.props.showLightboxThumbnails}
-                />
-                </div>
+                    images={this.props.images}
+                    backdropClosesModal={this.props.backdropClosesModal}
+                    currentImage={this.state.currentImage}
+                    customControls={this.props.customControls}
+                    enableKeyboardInput={this.props.enableKeyboardInput}
+                    imageCountSeparator={this.props.imageCountSeparator}
+                    isOpen={this.state.lightboxIsOpen}
+                    onClickImage={this.getOnClickImageFn()}
+                    onClickNext={this.getOnClickNextFn()}
+                    onClickPrev={this.getOnClickPrevFn()}
+                    showCloseButton={this.props.showCloseButton}
+                    showImageCount={this.props.showImageCount}
+                    onClose={this.closeLightbox}
+                    width={this.props.lightboxWidth}
+                    theme={this.props.theme}
+                    onClickThumbnail={this.getOnClickLightboxThumbnailFn()}
+                    showThumbnails={this.props.showLightboxThumbnails} />
+            </div>
         );
     }
 }
@@ -442,137 +442,143 @@ class Image extends Component {
     }
 
     renderCheckButton() {
-        return ( 
-            <CheckButton key = "Select"
-            index = {
-                this.props.index
-            }
-            color = {
-                "rgba(255, 255, 255, 0.7)"
-            }
-            selectedColor = {
-                "#4285f4"
-            }
-            hoverColor = {
-                "rgba(255, 255, 255, 1)"
-            }
-            isSelected = {
-                this.props.item.isSelected
-            }
-            isSelectable = {
-                this.props.isSelectable
-            }
-            onClick = {
-                this.props.isSelectable ?
-                this.props.onSelectImage : null
-            }
-            parentHover = {
-                this.state.hover
-            }
+        return (
+            <CheckButton key="Select"
+                index={
+                    this.props.index
+                }
+                color={
+                    "#CFCFCF"
+                }
+                selectedColor={
+                    "#4285f4"
+                }
+                hoverColor={
+                    "#E7D7B5"
+                }
+                isSelected={
+                    this.props.item.isSelected
+                }
+                isSelectable={
+                    this.props.isSelectable
+                }
+                onClick={
+                    this.props.isSelectable ?
+                        this.props.onSelectImage : null
+                }
+                parentHover={
+                    this.state.hover
+                }
             />
         );
     }
 
-    render () {
-        var tags = (typeof this.props.item.tags === 'undefined') ? <noscript/> :
-                this.props.item.tags.map((tag) => {
-                    return <div title={tag.title}
-                    key={"tag-"+tag.value}
-                    style={{display: "inline-block",
-                            cursor: 'pointer',
-                            pointerEvents: 'visible',
-                            margin: "2px"}}>
-                        <span style={this.tagStyle()}>{tag.value}</span>
-                        </div>;
-                });
+    render() {
+        var tags = (typeof this.props.item.tags === 'undefined') ? <noscript /> :
+            this.props.item.tags.map((tag) => {
+                return <div title={tag.title}
+                    key={"tag-" + tag.value}
+                    style={{
+                        display: "inline-block",
+                        cursor: 'pointer',
+                        pointerEvents: 'visible',
+                        margin: "2px"
+                    }}>
+                    <span style={this.tagStyle()}>{tag.value}</span>
+                </div>;
+            });
 
         var customOverlay = (typeof this.props.item.customOverlay === 'undefined')
-                ? <noscript/> :
-                <div style={{
-                    pointerEvents: "none",
-                    opacity: this.state.hover ? 1 : 0,
-                    position: "absolute",
-                    height: "100%",
-                    width: "100%"}}>
+            ? <noscript /> :
+            <div style={{
+                pointerEvents: "none",
+                opacity: this.state.hover ? 1 : 0,
+                position: "absolute",
+                height: "100%",
+                width: "100%"
+            }}>
                 {this.props.item.customOverlay}
             </div>;
 
         return (
-                <div className="tile"
-            key={"tile-"+this.props.index}
-            onMouseEnter={(e) => this.setState({hover: true})}
-            onMouseLeave={(e) => this.setState({hover: false})}
-            style={{
-                margin: this.props.margin,
-                WebkitUserSelect: "none",
-                position: "relative",
-                float: "left",
-                background: "#eee",
-                padding: "0px"}}>
+            <div className="tile"
+                key={"tile-" + this.props.index}
+                onMouseEnter={(e) => this.setState({ hover: true })}
+                onMouseLeave={(e) => this.setState({ hover: false })}
+                style={{
+                    margin: this.props.margin,
+                    WebkitUserSelect: "none",
+                    position: "relative",
+                    float: "left",
+                    background: "#eee",
+                    padding: "0px"
+                }}>
 
                 <div className="tile-icon-bar"
-            key={"tile-icon-bar-"+this.props.index}
-            style={{
-                pointerEvents: "none",
-                opacity: 1,
-                position: "absolute",
-                height: "36px",
-                width: "100%"}}>
-                {this.renderCheckButton()}
+                    key={"tile-icon-bar-" + this.props.index}
+                    style={{
+                        pointerEvents: "none",
+                        opacity: 1,
+                        position: "absolute",
+                        height: "36px",
+                        width: "100%"
+                    }}>
+                    {this.renderCheckButton()}
                 </div>
 
                 <div className="tile-bottom-bar"
-            key={"tile-bottom-bar-"+this.props.index}
-            style={{
-                padding: "2px",
-                pointerEvents: "none",
-                position: "absolute",
-                minHeight: "0px",
-                maxHeight: "160px",
-                width: "100%",
-                bottom: "0px"
-            }}>
-                {tags}
-            </div>
+                    key={"tile-bottom-bar-" + this.props.index}
+                    style={{
+                        padding: "2px",
+                        pointerEvents: "none",
+                        position: "absolute",
+                        minHeight: "0px",
+                        maxHeight: "160px",
+                        width: "100%",
+                        bottom: "0px"
+                    }}>
+                    {tags}
+                </div>
 
                 {customOverlay}
 
                 <div className="tile-overlay"
-            key={"tile-overlay-"+this.props.index}
-            style={{
-                pointerEvents: "none",
-                opacity: 1,
-                position: "absolute",
-                height: "100%",
-                width: "100%",
-                background: (this.state.hover
-                             && !this.props.item.isSelected
-                             && this.props.isSelectable) ?
-                    'linear-gradient(to bottom,rgba(0,0,0,0.26),transparent 56px,transparent)' : 'none'}}>
+                    key={"tile-overlay-" + this.props.index}
+                    style={{
+                        pointerEvents: "none",
+                        opacity: 1,
+                        position: "absolute",
+                        height: "100%",
+                        width: "100%",
+                        background: (this.state.hover
+                            && !this.props.item.isSelected
+                            && this.props.isSelectable) ?
+                            'linear-gradient(to bottom,rgba(0,0,0,0.26),transparent 56px,transparent)' : 'none'
+                    }}>
                 </div>
 
                 <div className="tile-viewport"
-            style={this.tileViewportStyle()}
-            key={"tile-viewport-"+this.props.index}
-            onClick={this.props.onClick ?
-                     (e) => this.props.onClick.call(this, this.props.index, e) : null}>
-                <img
-            key={"img-"+this.props.index}
-            src={this.props.item.thumbnail} title={this.props.item.caption}
-            style={this.thumbnailStyle()} />
+                    style={this.tileViewportStyle()}
+                    key={"tile-viewport-" + this.props.index}
+                    onClick={this.props.onClick ?
+                        (e) => this.props.onClick.call(this, this.props.index, e) : null}>
+                    <img
+                        key={"img-" + this.props.index}
+                        src={this.props.item.thumbnail} title={this.props.item.caption}
+                        style={this.thumbnailStyle()} />
                 </div>
                 {this.props.item.thumbnailCaption && (
-                        <div className="tile-description"
-                    style={{
-                        background: "white",
-                        height: "100%",
-                        width: "100%",
-                        margin: 0,
-                        userSelect: "text",
-                        WebkitUserSelect: "text",
-                        MozUserSelect: "text",
-                        overflow: "hidden"
-                    }}>
+                    <div className="tile-description"
+                        style={{
+                            background: "white",
+                            height: "100%",
+                            width: "100%",
+                            margin: 0,
+                            userSelect: "text",
+                            WebkitUserSelect: "text",
+                            MozUserSelect: "text",
+                            overflow: "hidden"
+                        }}>
                         {this.props.item.thumbnailCaption}
                     </div>
                 )}
@@ -629,72 +635,72 @@ class CheckButton extends Component {
         return 'hidden';
     }
 
-    render () {
+    render() {
         let circleStyle = {
             display: this.props.isSelected ? "block" : "none"
         };
 
         return (
-                <div
-            title="Select"
-            style={{
-                visibility: this.visibility(),
-                background: 'none',
-                float: 'left',
-                width: '36px',
-                height: '36px',
-                border: 'none',
-                padding: '6px',
-                cursor: 'pointer',
-                pointerEvents: 'visible'
-            }}
-            onClick={this.props.onClick ?
-                     (e) => this.props.onClick(this.props.index, e) : null
-            }
-            onMouseOver={(e) => this.setState({hover: true})}
-            onMouseOut={(e) => this.setState({hover: false})}>
+            <div
+                title="Select"
+                style={{
+                    visibility: this.visibility(),
+                    background: 'none',
+                    float: 'left',
+                    width: '36px',
+                    height: '36px',
+                    border: 'none',
+                    padding: '6px',
+                    cursor: 'pointer',
+                    pointerEvents: 'visible'
+                }}
+                onClick={this.props.onClick ?
+                    (e) => this.props.onClick(this.props.index, e) : null
+                }
+                onMouseOver={(e) => this.setState({ hover: true })}
+                onMouseOut={(e) => this.setState({ hover: false })}>
                 <svg
-            fill={this.fill()}
-            height="24" viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg">
+                    fill={this.fill()}
+                    height="24" viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg">
 
-                <radialGradient
-            id="shadow"
-            cx="38"
-            cy="95.488"
-            r="10.488"
-            gradientTransform="matrix(1 0 0 -1 -26 109)"
-            gradientUnits="userSpaceOnUse">
-                <stop
-            offset=".832"
-            stopColor="#010101">
-                </stop>
-                <stop
-            offset="1"
-            stopColor="#010101"
-            stopOpacity="0">
-                </stop>
-                </radialGradient>
+                    <radialGradient
+                        id="shadow"
+                        cx="38"
+                        cy="95.488"
+                        r="10.488"
+                        gradientTransform="matrix(1 0 0 -1 -26 109)"
+                        gradientUnits="userSpaceOnUse">
+                        <stop
+                            offset=".832"
+                            stopColor="#010101">
+                        </stop>
+                        <stop
+                            offset="1"
+                            stopColor="#010101"
+                            stopOpacity="0">
+                        </stop>
+                    </radialGradient>
 
-                <circle
-            style={circleStyle}
-            opacity=".26"
-            fill="url(#shadow)"
-            cx="12" cy="13.512"
-            r="10.488">
-                </circle>
-                <circle
-            style={circleStyle}
-            fill="#FFF"
-            cx="12"
-            cy="12.2"
-            r="8.292">
-                </circle>
-                <path d="M0 0h24v24H0z" fill="none"/>
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <circle
+                        style={circleStyle}
+                        opacity=".26"
+                        fill="url(#shadow)"
+                        cx="12" cy="13.512"
+                        r="10.488">
+                    </circle>
+                    <circle
+                        style={circleStyle}
+                        fill="#FFF"
+                        cx="12"
+                        cy="12.2"
+                        r="8.292">
+                    </circle>
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                 </svg>
-                </div>
+            </div>
         )
     }
 }

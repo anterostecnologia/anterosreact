@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { AnterosModal, ModalActions } from 'anteros-react-containers';
 import { AnterosAlert } from 'anteros-react-notification';
 import { AnterosButton } from 'anteros-react-buttons';
@@ -52,6 +52,10 @@ export default function WithFormModalTemplate(_loadingProps) {
                     if (this.props.dataSource) {
                         this.dataSource = this.props.dataSource;
                     }
+                }
+
+                if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+                    loadingProps.routes = this.getRoutes();
                 }
 
                 this.state = {
@@ -173,15 +177,31 @@ export default function WithFormModalTemplate(_loadingProps) {
                 });
             }
 
+            getButtons() {
+                if (WrappedComponent.prototype.hasOwnProperty('getCustomButtons') === true) {
+                    return this.getCustomButtons();
+                } else {
+                    return (<Fragment>
+                        <AnterosButton success id="btnOK" onClick={this.onClick}>
+                            OK
+                        </AnterosButton>{' '}
+                                    <AnterosButton danger id="btnCancel" onClick={this.onClick}>
+                                        Cancela
+                        </AnterosButton>
+                    </Fragment>);
+                }
+            }
+
             onClick(event, button) {
                 if (button.props.id === "btnOK") {
                     if (
                         WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
-                      ) {
+                    ) {
                         if (!this.onBeforeOk()) {
-                          return;
+                            return;
                         }
-                      }
+                    }
+
                     if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                         this.dataSource.post();
                     }
@@ -229,7 +249,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         {...modalSize}
                         showHeaderColor={true}
                         showContextIcon={false}
-                        style={{height:loadingProps.modalContentHeight, width:loadingProps.modalContentWidth}}
+                        style={{ height: loadingProps.modalContentHeight, width: loadingProps.modalContentWidth }}
                         isOpen={this.props.modalOpen === loadingProps.viewName}
                         onClose={this.onClose}
                     >
@@ -244,14 +264,8 @@ export default function WithFormModalTemplate(_loadingProps) {
                                 {this.state.alertMessage}
                             </div> : this.state.alertMessage}</AnterosAlert>
                         <ModalActions>
-                            <AnterosButton success id="btnOK" onClick={this.onClick}>
-                                OK
-              </AnterosButton>{' '}
-                            <AnterosButton danger id="btnCancel" onClick={this.onClick}>
-                                Cancela
-              </AnterosButton>
+                            {this.getButtons()}
                         </ModalActions>
-
                         <div>
                             <WrappedComponent {...this.props} dataSource={this.dataSource} />
                         </div>

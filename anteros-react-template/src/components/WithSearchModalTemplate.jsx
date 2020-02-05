@@ -114,6 +114,10 @@ export default function WithSearchModalTemplate(_loadingProps) {
           );
         }
 
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
+
         this.hasUserActions = WrappedComponent.prototype.hasOwnProperty(
           'getUserActions'
         );

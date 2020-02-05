@@ -48,6 +48,9 @@ export default function WithModalTemplate(_loadingProps) {
           }
           this.createMainDataSource();
         }
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
 
         this.state = {
           alertIsOpen: false,

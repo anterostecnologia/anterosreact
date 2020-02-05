@@ -135,6 +135,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
           throw new AnterosError('Implemente o método getColumns na classe.');
         }
 
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
+
         if (
           WrappedComponent.prototype.hasOwnProperty('getFieldsFilter') === false
         ) {
@@ -711,6 +715,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               <WrappedComponent
                 {...this.props}
                 ref={ref => (this.wrappedRef = ref)}
+                state={this.state}
                 user={this.props.user}
                 history={this.props.history}
                 dataSource={this.dataSource}

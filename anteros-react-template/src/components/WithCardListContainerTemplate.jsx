@@ -901,6 +901,8 @@ export default function WithCardListContainerTemplate(_loadingProps) {
               <WrappedComponent
                 {...this.props}
                 user={this.props.user}
+                state={this.state}
+                history={this.props.history}
                 dataSource={this.dataSource}
               />
             </AnterosBlockUi>

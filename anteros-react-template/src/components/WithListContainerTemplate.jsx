@@ -124,6 +124,10 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
           });
         }
 
+        if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
+          loadingProps.routes = this.getRoutes();
+        }
+
         this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
         this.dataSource.addEventListener(
           DATASOURCE_EVENTS,
@@ -578,7 +582,9 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
               </div>
               <WrappedComponent
                 {...this.props}
+                state={this.state}
                 user={this.props.user}
+                history={this.props.history}
                 dataSource={this.dataSource}
               />
             </AnterosBlockUi>
