@@ -182,15 +182,9 @@ class AnterosCheckbox extends Component {
 						href={href}
 					/>
 					{icon}
-					{value ?
-						<span style={this.props.valueStyle} onClick={this.toggleCheckboxChange}>
+					<span style={this.props.valueStyle} onClick={e => e}>
 							{value}
 						</span>
-						:
-						<span style={this.props.valueStyle} onClick={e => e}>
-							{value}
-						</span>
-					}
 				</label>
 			</div>
 		);
