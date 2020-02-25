@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import {
   AnterosButton,
   AnterosAdvancedDropdown,
@@ -129,9 +130,9 @@ export default class AnterosMainHeader extends Component {
             hintPosition="bottom"
           />
 
-          <AnterosMediaQuery minDeviceWidth={1224}>
+          {this.props.showInputSearch?<AnterosMediaQuery minDeviceWidth={1224}>
             <AnterosInputSearch placeHolder="Procurar" />
-          </AnterosMediaQuery>
+          </AnterosMediaQuery>:null}
         </AnterosToolbarGroup>
 
         <AnterosToolbarGroup justifyContent="center">
@@ -173,6 +174,14 @@ export default class AnterosMainHeader extends Component {
       </AnterosToolbar>
     );
   }
+}
+
+AnterosMainHeader.propTypes = {
+  showInputSearch : PropTypes.bool.isRequired
+}
+
+AnterosMainHeader.defaultPropTypes = {
+  showInputSearch : true
 }
 
 export class UserActions extends Component {

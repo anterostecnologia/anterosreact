@@ -14,7 +14,7 @@ import { AnterosNotificationContainer } from 'anteros-react-notification';
 import { connect } from 'react-redux';
 import { autoBind, AnterosError } from 'anteros-react-core';
 
-const defaultProps = {menuHorizontal:false};
+const defaultProps = {menuHorizontal:false, showInputSearch: true};
 
 export default function WithMainLayoutTemplate(_loadingProps) {
     let loadingProps = {...defaultProps, ..._loadingProps}
@@ -147,6 +147,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                         logoNormal={loadingProps.logo}
                         onSetOpenSidebar={this.onSetOpen}
                         sidebarOpen={this.state.sidebarOpen}
+                        showInputSearch={loadingProps.showInputSearch}
                         userName={
                             this.props.authenticated ? this.props.user.profile.name : ''
                         }

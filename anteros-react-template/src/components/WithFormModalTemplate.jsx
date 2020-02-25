@@ -197,15 +197,30 @@ export default function WithFormModalTemplate(_loadingProps) {
                     if (
                         WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
                     ) {
-                        if (!this.onBeforeOk()) {
-                            return;
+                        let _this = this;
+                        let result = this.onBeforeOk();
+                        if (result instanceof Promise){    
+                            result.then(function (response) {
+                                _this.setState({ ..._this.state, alertIsOpen: false, alertMessage: '' });
+                                if (_this.dataSource && _this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
+                                    _this.dataSource.post();
+                                }
+                                _this.props.onClickOk(event, _this.props.selectedRecords);
+                            }).catch(function (error) {
+                                _this.setState({ ..._this.state, alertIsOpen: true, alertMessage: processErrorMessage(error) });
+                            });
+                        } else if (result) {
+                            if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
+                                this.dataSource.post();
+                            }
+                            this.props.onClickOk(event, this.props.selectedRecords);
                         }
-                    }
-
-                    if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
-                        this.dataSource.post();
-                    }
-                    this.props.onClickOk(event, this.props.selectedRecords);
+                    } else {
+                        if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
+                            this.dataSource.post();
+                        }
+                        this.props.onClickOk(event, this.props.selectedRecords);
+                    }                    
                 } else if (button.props.id == "btnCancel") {
                     if (this.dataSource) {
                         this.dataSource.cancel();

@@ -32,7 +32,7 @@ import { AnterosMasonry } from 'anteros-react-masonry';
 const defaultValues = {
   openDataSourceFilter: true,
   openMainDataSource: true,
-  messageLoading: 'Carregando, por favor aguarde...',
+  messageLoading: 'Por favor aguarde...',
   withFilter: true,
   fieldsToForceLazy: '',
   defaultSortFields: ''

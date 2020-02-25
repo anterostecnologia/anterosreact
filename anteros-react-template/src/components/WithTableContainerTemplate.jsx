@@ -31,7 +31,7 @@ import { AnterosPagination } from 'anteros-react-navigation';
 const defaultValues = {
   openDataSourceFilter: true,
   openMainDataSource: true,
-  messageLoading: 'Carregando, por favor aguarde...',
+  messageLoading: 'Por favor aguarde...',
   withFilter: true,
   fieldsToForceLazy: '',
   defaultSortFields: ''
@@ -357,8 +357,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
         this.table.resize(width, newHeight);
       }
 
-      getSortFields(){
-        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== ''){
+      getSortFields() {
+        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== '') {
           return this.filterRef.current.getQuickFilterSort();
         }
         return loadingProps.defaultSortFields;
@@ -418,18 +418,34 @@ export default function WithTableContainerTemplate(_loadingProps) {
             this.onCustomAdd(button.props.route);
             return;
           } else {
-            if (!this.dataSource.isOpen()) 
-                 this.dataSource.open();
-              this.dataSource.insert();
+            if (WrappedComponent.prototype.hasOwnProperty('onBeforeInsert') === true) {
+              if (!this.onBeforeInsert()) {
+                return;
+              }
+            }
+            if (!this.dataSource.isOpen())
+              this.dataSource.open();
+            this.dataSource.insert();
           }
         } else if (button.props.id === 'btnEdit') {
           if (WrappedComponent.prototype.hasOwnProperty('onCustomEdit') === true) {
             this.onCustomEdit(button.props.route);
             return;
           } else {
+            if (WrappedComponent.prototype.hasOwnProperty('onBeforeEdit') === true) {
+              if (!this.onBeforeEdit()) {
+                return;
+              }
+            }
+
             this.dataSource.edit();
           }
         } else if (button.props.id === 'btnRemove') {
+          if (WrappedComponent.prototype.hasOwnProperty('onBeforeRemove') === true) {
+            if (!this.onBeforeRemove()) {
+              return;
+            }
+          }
           let _this = this;
           AnterosSweetAlert({
             title: 'Deseja remover ?',
@@ -563,13 +579,14 @@ export default function WithTableContainerTemplate(_loadingProps) {
         });
       }
 
-      onShowHideLoad(show){
+      onShowHideLoad(show) {
         this.setState({
-          ...this.state, 
+          ...this.state,
           loading: show,
           update: Math.random()
         })
       }
+
 
       render() {
         return (
