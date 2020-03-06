@@ -24,7 +24,7 @@ export default class AnterosTextArea extends React.Component {
             if (!value) {
                 value = '';
             }
-            if (isBase64(value)) {
+            if (isBase64(value) && !this.props.disableBase64Convertion) {
                 this.state = { value: atob(value) };
             } else {
                 this.state = { value: value };
@@ -46,7 +46,7 @@ export default class AnterosTextArea extends React.Component {
             if (!value) {
                 value = '';
             }
-            if (isBase64(value)) {
+            if (isBase64(value) && !this.props.disableBase64Convertion) {
                 this.setState({ value: atob(value) });
             } else {
                 this.setState({ value: value });
@@ -95,7 +95,7 @@ export default class AnterosTextArea extends React.Component {
         if (!value) {
             value = '';
         }
-        if (isBase64(value)) {
+        if (isBase64(value) && !this.props.disableBase64Convertion) {
             this.setState({ value: atob(value) });
         } else {
             this.setState({ value: value });
@@ -136,11 +136,7 @@ export default class AnterosTextArea extends React.Component {
     handleChange(event) {
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
             if (this.props.disableBase64Convertion) {
-                if (isBase64(event.target.value)) {
-                    this.props.dataSource.setFieldByName(this.props.dataField, atob(event.target.value));    
-                } else {
-                    this.props.dataSource.setFieldByName(this.props.dataField, event.target.value);    
-                }
+                this.props.dataSource.setFieldByName(this.props.dataField, event.target.value);
             } else {
                 this.props.dataSource.setFieldByName(this.props.dataField, btoa(event.target.value));
             }
