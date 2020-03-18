@@ -149,7 +149,7 @@ export default class AnterosDatePicker extends React.Component {
       //this.props.dataSource.setFieldByName(this.props.dataField, value);
     }
     if (this.props.onChange) {
-      this.props.onChange(event);
+      this.props.onChange(event, value);
     }
   }
 
