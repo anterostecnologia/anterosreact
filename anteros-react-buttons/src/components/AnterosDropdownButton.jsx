@@ -85,6 +85,7 @@ AnterosDropdownButton.propTypes = {
 	borderColor: PropTypes.string,
 	color: PropTypes.string,
 	icon: PropTypes.string,
+	iconSize: PropTypes.string,
 	image: PropTypes.string,
 	caption: PropTypes.string,
 	onClickButton: PropTypes.func,
@@ -109,6 +110,7 @@ AnterosDropdownButton.defaultProps = {
 	borderColor: undefined,
 	color: undefined,
 	icon: undefined,
+	iconSize: undefined,
 	image: undefined,
 	caption: undefined
 };
