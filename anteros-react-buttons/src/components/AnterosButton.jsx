@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import lodash from "lodash";
 import { AnterosFloater } from "anteros-react-core";
+import { AnterosCol, AnterosRow } from 'anteros-react-layout';
 
 
 /**
@@ -14,7 +15,7 @@ export default class AnterosButton extends Component {
     this.idButton = lodash.uniqueId("btn");
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   onClick(event) {
     event.stopPropagation();
@@ -27,9 +28,9 @@ export default class AnterosButton extends Component {
     }
   }
 
-  static get componentName(){
+  static get componentName() {
     return 'AnterosButton';
-}
+  }
 
   render() {
     let className = "btn";
@@ -212,7 +213,7 @@ export default class AnterosButton extends Component {
           data-user={this.props.dataUser}
           onClick={this.onClick}
           className={customIcon}
-          style={{ color: this.props.iconColor, fontSize: this.props.iconSize }}
+          style={{ ...this.props.iconStyle, color: this.props.iconColor, fontSize: this.props.iconSize }}
         />
       );
     }
@@ -244,11 +245,51 @@ export default class AnterosButton extends Component {
         type="button"
         className={className}
       >
-        {icon}
+        {this.props.useColsAndRows ?
+          null
+          :
+          <Fragment>
+            {icon}
+          </Fragment>
+        }
+
         {image}
-        {this.props.caption ? (
-          <span style={{ paddingLeft: "4px" }}>{this.props.caption}</span>
-        ) : null}
+        {this.props.useColsAndRows ?
+          <Fragment>
+            {
+              this.props.caption ? (
+                <Fragment>
+                  <AnterosRow>
+                    <AnterosCol small={1}>
+                      {icon}
+                    </AnterosCol>
+                    <AnterosCol small={10} >
+                      <span style={this.props.captionStyle ? this.props.captionStyle : { paddingLeft: "4px" }}>{this.props.caption}</span>
+                      {
+                        this.props.subCaption ?
+                          <Fragment>
+                            <br />
+                            <span style={this.props.subCaptionStyle ? this.props.subCaptionStyle : { paddingLeft: "4px" }}>{this.props.subCaption}</span>
+                          </Fragment>
+                          : null
+                      }
+                    </AnterosCol>
+                  </AnterosRow>
+                </Fragment>
+              ) : null
+            }
+          </Fragment>
+          :
+          <Fragment>
+            {
+              this.props.caption ? (
+                <Fragment>
+                  <span style={this.props.captionStyle ? this.props.captionStyle : { paddingLeft: "4px" }}>{this.props.caption}</span>
+                </Fragment>
+              ) : null
+            }
+          </Fragment>
+        }
         {this.props.children}
       </button>
     );
@@ -259,13 +300,13 @@ export default class AnterosButton extends Component {
   }
 }
 
-AnterosButton.propTypes = { 
-  /** Permite desabilitar o uso do componente */  
-  disabled: PropTypes.bool, 
+AnterosButton.propTypes = {
+  /** Permite desabilitar o uso do componente */
+  disabled: PropTypes.bool,
   /** Transforma o botão no formato oval */
-  oval: PropTypes.bool, 
+  oval: PropTypes.bool,
   /** Troca a cor do componente para o definido no tema em sucess */
-  success: PropTypes.bool, 
+  success: PropTypes.bool,
   /** Troca a cor do componente para o definido no tema em info */
   info: PropTypes.bool,
   /** Transforma o botão num link */
@@ -304,10 +345,20 @@ AnterosButton.propTypes = {
   iconColor: PropTypes.string,
   /** Tamanho do ícone */
   iconSize: PropTypes.string,
+  /** Estilo do ícone */
+  iconStyle: PropTypes.object,
   /** Imagem a ser usada no botão */
   image: PropTypes.string,
+  /** Utilizar AnterosCol e AnterosRow */
+  useColsAndRows: PropTypes.bool,
   /** Título do botão */
   caption: PropTypes.string,
+  /** Estilo do título do botão */
+  captionStyle: PropTypes.object,
+  /** subtítulo do botão */
+  subCaption: PropTypes.string,
+  /** Estilo do subtítulo do botão */
+  subCaptionStyle: PropTypes.object,
   /** Evento onclick no botão */
   onButtonClick: PropTypes.func,
   /** Dica do botão */
@@ -322,11 +373,11 @@ AnterosButton.propTypes = {
   googlePlus: PropTypes.bool,
   /** Transforma o botão no estiloe Linkedin */
   linkedin: PropTypes.bool,
-   /** Transforma o botão no estiloe Instagram */
+  /** Transforma o botão no estiloe Instagram */
   instagram: PropTypes.bool,
-   /** Transforma o botão no estiloe Pinterest */
+  /** Transforma o botão no estiloe Pinterest */
   pinterest: PropTypes.bool,
-   /** Transforma o botão no estiloe Dribbble */
+  /** Transforma o botão no estiloe Dribbble */
   dribbble: PropTypes.bool,
   /** Transforma o botão no estiloe youtube */
   youtube: PropTypes.bool,
@@ -357,8 +408,13 @@ AnterosButton.defaultProps = {
   color: undefined,
   dropdown: false,
   icon: undefined,
+  iconStyle: {},
   image: undefined,
   caption: undefined,
+  captionStyle: undefined,
+  subCaption: undefined,
+  subcCaptionStyle: undefined,
+  useColsAndRows: false,
   hintPosition: "top",
   inline: true,
   visible: true
