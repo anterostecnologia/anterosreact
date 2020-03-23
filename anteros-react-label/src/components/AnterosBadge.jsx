@@ -40,8 +40,6 @@ export default class AnterosBadge extends Component {
             className += " badge-danger";
         } else if (this.props.dark) {
             className += " badge-dark";
-        } else {
-            className += " badge-anteros-default";
         }
 
         if (this.props.topRight){

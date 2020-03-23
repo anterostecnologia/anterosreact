@@ -102,6 +102,7 @@ class AnterosVerticalTimelineElement extends React.Component {
     return (
       <div
         id={id}
+        onClick={this.props.onClick}
         className={classNames(className, 'vertical-timeline-element', {
           'vertical-timeline-element--left': position === 'left',
           'vertical-timeline-element--right': position === 'right',
@@ -113,7 +114,7 @@ class AnterosVerticalTimelineElement extends React.Component {
           {...visibilitySensorProps}
           onChange={this.onVisibilitySensorChange}
         >
-          <div>
+          <div style={this.props.selected?{borderRight:"8px solid yellow"}:{}}>
             <span // eslint-disable-line jsx-a11y/no-static-element-interactions
               style={iconStyle}
               onClick={iconOnClick}
@@ -151,6 +152,8 @@ AnterosVerticalTimelineElement.propTypes = {
      PropTypes.node,
    ]),
   className: PropTypes.string,
+  /** atribui um evento quando clicar no card */
+  onClick: PropTypes.func,
   /** altera as propriedades da 'seta' **/
   contentArrowStyle: PropTypes.shape({}),
   /**  altera as propriedades de estilo do conteudo do item **/

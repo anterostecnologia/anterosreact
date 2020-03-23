@@ -264,7 +264,7 @@ export default class AnterosGridGallery extends Component {
             <div id={this.props.id} className="ReactGridGallery" ref={(c) => this._gallery = c}>
                 <iframe style={resizeIframeStyles} ref={(c) => c && c.contentWindow.addEventListener('resize', this.onResize)} />
                 {images}
-                <Lightbox
+                {this.props.images && this.props.images.length>0?<Lightbox
                     images={this.props.images}
                     backdropClosesModal={this.props.backdropClosesModal}
                     currentImage={this.state.currentImage}
@@ -281,7 +281,7 @@ export default class AnterosGridGallery extends Component {
                     width={this.props.lightboxWidth}
                     theme={this.props.theme}
                     onClickThumbnail={this.getOnClickLightboxThumbnailFn()}
-                    showThumbnails={this.props.showLightboxThumbnails} />
+                    showThumbnails={this.props.showLightboxThumbnails} />:null}
             </div>
         );
     }

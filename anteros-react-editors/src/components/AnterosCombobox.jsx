@@ -1607,6 +1607,7 @@ export default class AnterosCombobox extends React.Component {
 			role: 'combobox',
 			required: this.state.required,
 			tabIndex: this.props.tabIndex,
+			readOnly: !this.props.directInput?this.props.directInput:true,
 			value,
 		};
 
@@ -2072,6 +2073,7 @@ AnterosCombobox.propTypes = {
     dataField: PropTypes.string,
 	deleteRemoves: PropTypes.bool,        // whether backspace removes an item if there is no text input
 	delimiter: PropTypes.string,          // delimiter to use to join multiple values for the hidden field value
+	directInput: PropTypes.bool.isRequired,
 	disabled: PropTypes.bool,             // whether the Select is disabled or not
 	dropdownComponent: PropTypes.func,    // dropdown component to render the menu in
 	escapeClearsValue: PropTypes.bool,    // whether escape clears the value when the menu is closed
@@ -2153,6 +2155,7 @@ AnterosCombobox.defaultProps = {
 	closeOnSelect: true,
 	deleteRemoves: true,
 	delimiter: ',',
+	directInput: true,
 	disabled: false,
 	dropdownComponent: Dropdown,
 	escapeClearsValue: true,

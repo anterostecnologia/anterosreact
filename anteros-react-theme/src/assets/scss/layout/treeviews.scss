@@ -1,3 +1,4 @@
+
 /*********
 ***  TreeViews
 *********/
@@ -9,97 +10,79 @@
     -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
     -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 20px;   
     overflow-x: auto;
     overflow-y: auto; 
-}
-
-.anteros-treeview ul {
-	-webkit-padding-start: 28px;
+  }
+  
+  .anteros-treeview ul {
+  -webkit-padding-start: 28px;
     margin: 0px 0px 0px 0px;
-}
-.anteros-treeview li {
+  }
+  .anteros-treeview li {
     list-style-type:none;
     margin:0;
-    padding:4px 0px 0px 0px;
     position:relative;
     line-height: 16px;
-}
-.anteros-treeview li::before{
+  }
+  .anteros-treeview li::before{
     content:'';
     left:-25px;
     position:absolute;
     right:auto
-}
-.anteros-treeview li::after {
+  }
+  .anteros-treeview li::after {
     content: '';
     left: -25px;
     position: absolute;
     right: auto;
-}
-.anteros-treeview li::before {
+  }
+  .anteros-treeview li::before {
     border-left:1px dotted #999;
     bottom: 30px;
     height: 100%;
     top: -2px;
     width:1px;
-}
-.anteros-treeview li::after {
+  }
+  .anteros-treeview li::after {
     border-top: 1px dotted #999;
     height: 20px;
     top: 15px;
     width: 22px;
-}
-.anteros-treeview li span {
+  }
+  .anteros-treeview li span {
     -moz-border-radius:2px;
     -webkit-border-radius:2px;
     display:inline-block;
     padding:2px;
     text-decoration:none
-}
-
-.anteros-treeview img {
+  }
+  
+  .anteros-treeview img {
     vertical-align: middle;
     height: auto;
     max-width: 100%;
-}
-
-.anteros-treeview li.parent_li>span {
+  }
+  
+  .anteros-treeview li.parent_li>span {
     cursor:pointer
-}
-.anteros-treeview>ul>li::before, .anteros-treeview>ul>li::after {
+  }
+  .anteros-treeview>ul>li::before, .anteros-treeview>ul>li::after {
     border:0
-}
-.anteros-treeview li:last-child::before {
+  }
+  .anteros-treeview li:last-child::before {
     height:18px
-}
-.anteros-treeview-item  {
+  }
+  .anteros-treeview-item  {
     background:auto;
     color:black;
     margin: 1px 1px 1px 2px;
-}
-
-.anteros-treeview-item:hover { 
+  }
+  
+  .anteros-treeview-item:hover { 
     background:#e7f4f9;
     color:black;
     margin: 1px 1px 1px 2px;
-}
-
-.anteros-treeview-expand-icon {
-    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNvyMY98AAAA6SURBVChTYzA2Nv5PKgZrAgIGYjH1NeETHyBNIDYujKwGr4lADKIxxKmvCV0MhPFqwoUp00QaNv4PAOwMmnSAdOa0AAAAAElFTkSuQmCC')
-}
-
-.anteros-treeview-collapse-icon {
-    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNvyMY98AAAAuSURBVChTYzA2Nv5PKgZrAgIGYvGI0ARi48LIagjaBJRH59NIEzoeAE2kYeP/ACH5p5ocHEzfAAAAAElFTkSuQmCC')
-}
-
-
-.anteros-treeview-unchecked-icon {
-    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC42/Ixj3wAAACJJREFUKFNjAIL/ZGCG/0AAIojCo5qgeFQTFMM1kYYZ/gMAfHeZdZRz5A0AAAAASUVORK5CYII=')
-}
-
-.anteros-treeview-checked-icon {
-    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC42/Ixj3wAAAFhJREFUKFOliwkOgCAMBPv/T9dWZ1GwIaAkA+xlcfwD5nHyWmJrpF6+TcygGN/FEaV6hDj/Qt7TR18GohVGLfBuE6ND2dDpA8xykJC9w8oTmU0LFf9Ge5gfsz5lqVmCYm8AAAAASUVORK5CYII=')
-}
+  }
+  

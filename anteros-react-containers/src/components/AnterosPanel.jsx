@@ -28,7 +28,7 @@ class AnterosPanel extends Component {
             style = {...style, border:0, boxShadow:"none"};
         }
         return (
-            <div id={this.props.id} className={className} style={style}>
+            <div id={this.props.id} className={className} style={style} onClick={this.onPanelClick}>
                 {this.props.children}
             </div>
         )
@@ -55,7 +55,8 @@ AnterosPanel.propTypes = {
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    border: PropTypes.bool
+    border: PropTypes.bool,
+    onPanelClick : PropTypes.func
 };
 
 AnterosPanel.defaultProps = {

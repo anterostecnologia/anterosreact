@@ -110,7 +110,9 @@ export default class AnterosImage extends Component {
                             </Then>
                             <Else>
                                 <div>
-                                    <div className="img"><img ref={ref => this.image = ref} src={this.props.src} alt="img" /></div>
+                                    <div className="img">
+                                        <img style={{backgroundColor: "transparent"}} ref={ref => this.image = ref} src={this.props.src} alt="img" />
+                                    </div>
                                     <div className="info">
                                         <div className="info-back">
                                             {this.props.children}
@@ -129,6 +131,7 @@ export default class AnterosImage extends Component {
                 maxWidth: this.props.maxWidth,
                 maxHeight: this.props.maxHeight,
                 margin: this.props.margin,
+                backgroundColor: "transparent",
                 WebkitTransition: "0.4s ease",
                 transition: "0.4s ease",
                 transform: "scale(" + scale + ")",

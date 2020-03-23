@@ -26,11 +26,11 @@ export default class AnterosList extends Component {
         this.buildChildrensFromDataSource = this.buildChildrensFromDataSource.bind(this);
         this.rebuildedChildrens = [];
         this.gotoItemById = this.gotoItemById.bind(this);
-        this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
+        this.onDatasourceEventList = this.onDatasourceEventList.bind(this);
         this.getRecordDataFromChildren = this.getRecordDataFromChildren.bind(this);
 
         if ((this.props.dataSource instanceof AnterosRemoteDatasource) || (this.props.dataSource instanceof AnterosLocalDatasource)) {
-            this.props.dataSource.addEventListener(DATASOURCE_EVENTS, this.onDatasourceEvent);
+            this.props.dataSource.addEventListener(DATASOURCE_EVENTS, this.onDatasourceEventList);
         }
     }
     componentDidMount() {
@@ -43,11 +43,11 @@ export default class AnterosList extends Component {
 
     componentWillUnmount() {
         if ((this.props.dataSource instanceof AnterosRemoteDatasource) || (this.props.dataSource instanceof AnterosLocalDatasource)) {
-            this.props.dataSource.removeEventListener(DATASOURCE_EVENTS, this.onDatasourceEvent);
+            this.props.dataSource.removeEventListener(DATASOURCE_EVENTS, this.onDatasourceEventList);
         }
     }
 
-    onDatasourceEvent(event, error) {
+    onDatasourceEventList(event, error) {
         if (event == dataSourceEvents.AFTER_SCROLL) {
             if (this.props.onSelectListItem && !this.props.dataSource.isEmpty()) {
                 this.setState({activeIndex: this.props.dataSource.getRecno()})

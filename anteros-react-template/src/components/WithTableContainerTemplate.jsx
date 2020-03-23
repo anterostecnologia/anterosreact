@@ -161,7 +161,20 @@ export default function WithTableContainerTemplate(_loadingProps) {
             : 'first';
 
         this.createDataSourceFilter();
-        this.createMainDataSource();
+
+        if (
+          WrappedComponent.prototype.hasOwnProperty(
+            'onCreateDatasource'
+          ) === true
+        ) {
+          this.dataSource = this.onCreateDatasource();
+          this.dataSource.addEventListener(
+            DATASOURCE_EVENTS,
+            this.onDatasourceEvent
+          );
+        } else {
+          this.createMainDataSource();
+        }
 
         if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
           loadingProps.routes = this.getRoutes();
@@ -235,14 +248,18 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
         if (loadingProps.openMainDataSource) {
           if (!this.dataSource.isOpen()) {
-            this.dataSource.open(
-              loadingProps.endPoints.FIND_ALL(
-                loadingProps.resource,
-                0,
-                loadingProps.pageSize,
-                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-              )
-            );
+            if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+              this.onFindAll(this.dataSource, this.getSortFields(), this.getUser());
+            } else {
+              this.dataSource.open(
+                loadingProps.endPoints.FIND_ALL(
+                  loadingProps.resource,
+                  0,
+                  loadingProps.pageSize,
+                  this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+                )
+              );
+            }
           }
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.dataSource.cancel();
@@ -326,16 +343,20 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onQuickFilter(filter, fields, sort) {
-        this.dataSource.open(
-          loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-            loadingProps.resource,
-            filter,
-            fields,
-            0,
-            loadingProps.pageSize,
-            sort, this.getUser(), loadingProps.fieldsToForceLazy
-          )
-        );
+        if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
+          this.onFindMultipleFields(this.dataSource, filter, fields, sort, this.getUser());
+        } else {
+          this.dataSource.open(
+            loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+              loadingProps.resource,
+              filter,
+              fields,
+              0,
+              loadingProps.pageSize,
+              sort, this.getUser(), loadingProps.fieldsToForceLazy
+            )
+          );
+        }
       }
 
       onToggleFilter(opened) {
@@ -542,14 +563,19 @@ export default function WithTableContainerTemplate(_loadingProps) {
         ) {
           var filter = new AnterosFilterDSL();
           filter.buildFrom(this.props.query, this.props.sort);
-          this.dataSource.open(
-            loadingProps.endPoints.FIND_WITH_FILTER(
-              loadingProps.resource,
-              filter.toJSON(),
-              loadingProps.pageSize,
-              0, this.getUser(), loadingProps.fieldsToForceLazy
-            )
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
+            this.onFindWithFilter(this.dataSource, filter.toJSON(), this.getUser());
+          } else {
+            this.dataSource.open(
+              loadingProps.endPoints.FIND_WITH_FILTER(
+                loadingProps.resource,
+                filter.toJSON(),
+                0,
+                loadingProps.pageSize,
+                this.getUser(), loadingProps.fieldsToForceLazy
+              )
+            );
+          }
         } else {
           this.props.setFilter(
             this.props.activeFilter,
@@ -559,15 +585,19 @@ export default function WithTableContainerTemplate(_loadingProps) {
             ''
           );
 
-          this.dataSource.open(
-            loadingProps.endPoints.FIND_ALL(
-              loadingProps.resource,
-              0,
-              loadingProps.pageSize,
-              this.getSortFields(),
-              this.getUser(), loadingProps.fieldsToForceLazy
-            )
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+            this.onFindAll(this.dataSource, this.getSortFields(), this.getUser());
+          } else {
+            this.dataSource.open(
+              loadingProps.endPoints.FIND_ALL(
+                loadingProps.resource,
+                0,
+                loadingProps.pageSize,
+                this.getSortFields(),
+                this.getUser(), loadingProps.fieldsToForceLazy
+              )
+            );
+          }
         }
       }
 

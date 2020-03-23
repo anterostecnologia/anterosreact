@@ -1,13 +1,24 @@
-import { AnterosStringUtils,AnterosJacksonParser,AnterosUtils,AnterosDateUtils,
-    AnterosError, AnterosDatasourceError,Anteros,AnterosObjectUtils } from 'anteros-react-core';
+import {
+    AnterosStringUtils,
+    AnterosJacksonParser,
+    AnterosUtils,
+    AnterosDateUtils,
+    AnterosError,
+    AnterosDatasourceError,
+    Anteros,
+    AnterosObjectUtils
+} from 'anteros-react-core';
 import axios from 'axios';
-import { cloneDeep, clone } from 'lodash';
+import {
+    cloneDeep,
+    clone
+} from 'lodash';
 import React from 'react';
 
 const dataSourceConstants = {
-    DS_BROWSE : 'dsBrowse',
-    DS_INSERT : 'dsInsert',
-    DS_EDIT : 'dsEdit'
+    DS_BROWSE: 'dsBrowse',
+    DS_INSERT: 'dsInsert',
+    DS_EDIT: 'dsEdit'
 };
 
 const dataSourceEvents = {
@@ -47,7 +58,7 @@ const DATASOURCE_EVENTS = [
     dataSourceEvents.ON_ERROR,
     dataSourceEvents.BEFORE_GOTO_PAGE,
     dataSourceEvents.AFTER_GOTO_PAGE
-  ];
+];
 
 class AnterosDatasource {
 
@@ -236,6 +247,7 @@ class AnterosDatasource {
 
         if (this.data) {
             let _this = this;
+            let result = undefined;
             this.data.forEach(function (record) {
                 let _record = record;
                 let _primaryKeyFields = _this.getPrimaryKeyFields();
@@ -246,9 +258,10 @@ class AnterosDatasource {
                     }
                 });
                 if (found == _primaryKeyFields.length) {
-                    return record;
+                    result = record;
                 }
             });
+            return result;
         }
     }
 
@@ -256,7 +269,9 @@ class AnterosDatasource {
         let result = [];
         if (!this.isEmpty()) {
             this.primaryKeyFields.forEach(function (field, index) {
-                result.push({ field: this.currentRecord[field] });
+                result.push({
+                    field: this.currentRecord[field]
+                });
             });
         }
     }
@@ -281,7 +296,7 @@ class AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
 
-    moveRecord(oldIndex, newIndex){
+    moveRecord(oldIndex, newIndex) {
         if (this.isEmpty()) {
             return false;
         }
@@ -289,7 +304,7 @@ class AnterosDatasource {
             throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
         }
         let record = this.currentRecord;
-        this.data = arrayMove(this.data,oldIndex,newIndex);
+        this.data = arrayMove(this.data, oldIndex, newIndex);
         this.gotoRecordByData(record);
     }
 
@@ -306,19 +321,20 @@ class AnterosDatasource {
             return true;
         }
 
+        let found = false;
         this.data.forEach(function (r, index) {
             if (record == r) {
                 _this.currentRecno = index;
                 _this.currentRecord = r;
                 _this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
-                return true;
+                found = true;
             }
         });
-        return false;
+        return found;
     }
 
-    isEmptyField(fieldName){
-        return this.fieldByName(fieldName)===undefined || this.fieldByName(fieldName)==='';
+    isEmptyField(fieldName) {
+        return this.fieldByName(fieldName) === undefined || this.fieldByName(fieldName) === '';
     }
 
     fieldByName(fieldName, defaultValue) {
@@ -341,7 +357,7 @@ class AnterosDatasource {
         }
 
         let value = this._fieldByName(record, fieldName);
-        if ((value===undefined) && (defaultValue!==undefined)){
+        if ((value === undefined) && (defaultValue !== undefined)) {
             value = defaultValue;
         }
         return value;
@@ -370,7 +386,12 @@ class AnterosDatasource {
         if (value instanceof Date) {
             newValue = AnterosDateUtils.formatDate(value, Anteros.dataSourceDatetimeFormat);
         }
-        AnterosObjectUtils.setNestedProperty(this.currentRecord, fieldName, newValue);
+        var split = fieldName.split(".");
+        if (split.length > 1) {
+            AnterosObjectUtils.setNestedProperty(this.currentRecord, fieldName, newValue);
+        } else {
+            this.currentRecord[fieldName] = newValue;
+        }
 
         this.dispatchEvent(dataSourceEvents.DATA_FIELD_CHANGED, null, fieldName);
     }
@@ -517,7 +538,7 @@ class AnterosDatasource {
     }
 
     _validateInsert() {
-        if (!this.isOpen()){
+        if (!this.isOpen()) {
             throw new AnterosDatasourceError('Não é possível realizar INSERT com o dataSource fechado.');
         }
         if (this.getState() == dataSourceConstants.DS_EDIT) {
@@ -581,7 +602,7 @@ class AnterosDatasource {
     }
 
     _validateEdit() {
-        if (!this.isOpen()){
+        if (!this.isOpen()) {
             throw new AnterosDatasourceError('Não é possível realizar EDIT com o dataSource fechado.');
         }
         if (this.isEmpty()) {
@@ -667,24 +688,24 @@ class AnterosDatasource {
             this.listeners.forEach(function (listener) {
                 if (listener.event == event) {
                     if (fieldName) {
-                        if (listener.fieldName){
+                        if (listener.fieldName) {
                             if (listener.fieldName.startsWith(fieldName)) {
                                 listener.dispatch(event, error, fieldName);
                             }
                         } else {
-                            listener.dispatch(event, error, fieldName); 
+                            listener.dispatch(event, error, fieldName);
                         }
-                        
+
                     } else {
-                        if (listener.dispatch===undefined){
+                        if (listener.dispatch === undefined) {
                             listToRemove.push(listener);
                         } else {
-                         listener.dispatch(event, error);
+                            listener.dispatch(event, error);
                         }
                     }
                 }
             });
-            listToRemove.forEach(function(item){
+            listToRemove.forEach(function (item) {
                 _this.removeEventListener(item.dispatch, item.event, item.fieldName);
             });
         }
@@ -695,10 +716,18 @@ class AnterosDatasource {
         let _this = this;
         if (AnterosUtils.isArray(event)) {
             event.forEach(function (ev) {
-                _this.listeners.push({ event: ev, dispatch, fieldName });
+                _this.listeners.push({
+                    event: ev,
+                    dispatch,
+                    fieldName
+                });
             });
         } else {
-            this.listeners.push({ event, dispatch, fieldName });
+            this.listeners.push({
+                event,
+                dispatch,
+                fieldName
+            });
         }
     }
 
@@ -732,7 +761,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
         this.totalRecords = this.data.length;
         this.grandTotalRecords = this.data.length;
         this.first();
-        this.dispatchEvent(dataSourceEvents.AFTER_OPEN);        
+        this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
         this.cloneOnEdit = (cloneOnEdit == undefined ? false : cloneOnEdit);
     }
 
@@ -770,6 +799,48 @@ class AnterosLocalDatasource extends AnterosDatasource {
         this.grandTotalRecords = this.data.length;
         this.currentRecord = record;
         this.currentRecno = this.data.length - 1;
+        this.dispatchEvent(dataSourceEvents.AFTER_POST);
+        this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
+    }
+
+    appendFirst(record) {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
+            throw new AnterosDatasourceError('Registro já está sendo editado.');
+        }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+        }
+
+        if (!this.data) {
+            this.data = [];
+        }
+
+        this.data.splice(0, 0, record);
+        this.totalRecords = this.data.length;
+        this.grandTotalRecords = this.data.length;
+        this.currentRecord = record;
+        this.currentRecno = 0;
+        this.dispatchEvent(dataSourceEvents.AFTER_POST);
+        this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
+    }
+
+    appendAtIndex(record, index) {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
+            throw new AnterosDatasourceError('Registro já está sendo editado.');
+        }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+        }
+
+        if (!this.data) {
+            this.data = [];
+        }
+
+        this.data.splice(index, 0, record);
+        this.totalRecords = this.data.length;
+        this.grandTotalRecords = this.data.length;
+        this.currentRecord = record;
+        this.currentRecno = index;
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
@@ -831,6 +902,12 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         }
     }
 
+    refresh(){
+        if (this.ajaxConfig) {
+            this.executeAjax(this.ajaxConfig, dataSourceEvents.AFTER_OPEN, callback);    
+        }
+    }
+
     append(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
@@ -863,8 +940,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.BEFORE_POST);
 
         let ajaxPostConfig = this.ajaxPostConfigHandler(this.currentRecord);
-        axios(ajaxPostConfig
-        ).then(function (response) {
+        axios(ajaxPostConfig).then(function (response) {
             if (_this.validatePostResponse(response)) {
                 if (_this.dsState == dataSourceConstants.DS_EDIT) {
                     _this.data[_this.getRecno()] = _this.currentRecord;
@@ -898,8 +974,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this._validateDelete();
         this.dispatchEvent(dataSourceEvents.BEFORE_DELETE);
         let ajaxDeleteConfig = this.ajaxDeleteConfigHandler(this.currentRecord);
-        axios(ajaxDeleteConfig
-        ).then(function (response) {
+        axios(ajaxDeleteConfig).then(function (response) {
             if (_this.validateDeleteResponse(response)) {
                 _this.data.splice(_this.currentRecno, 1);
                 if (_this.data.length == 0)
@@ -937,8 +1012,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
     executeAjax(ajaxConfig, event, callback) {
         let _this = this;
         this.executed = false;
-        axios((ajaxConfig ? ajaxConfig : this.ajaxConfig)
-        ).then(function (response) {
+        axios((ajaxConfig ? ajaxConfig : this.ajaxConfig)).then(function (response) {
             if (response.data.hasOwnProperty(_this.totalPagesProperty)) {
                 _this.totalPages = response.data[_this.totalPagesProperty];
             }
@@ -981,12 +1055,12 @@ class AnterosRemoteDatasource extends AnterosDatasource {
             _this.executed = true;
             _this.first();
             _this.dispatchEvent(event);
-            if (callback){
+            if (callback) {
                 callback();
             }
         }).catch(function (error) {
             if (_this.executed) {
-                if (callback){
+                if (callback) {
                     callback(error);
                 }
                 throw new Error(error);
@@ -1006,4 +1080,11 @@ class AnterosRemoteDatasource extends AnterosDatasource {
 }
 
 
-export { AnterosDatasource, AnterosLocalDatasource, AnterosRemoteDatasource, DATASOURCE_EVENTS, dataSourceConstants, dataSourceEvents };
+export {
+    AnterosDatasource,
+    AnterosLocalDatasource,
+    AnterosRemoteDatasource,
+    DATASOURCE_EVENTS,
+    dataSourceConstants,
+    dataSourceEvents
+};
