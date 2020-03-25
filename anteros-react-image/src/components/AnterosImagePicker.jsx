@@ -100,7 +100,7 @@ export default class AnterosImagePicker extends React.Component {
       if (nextProps.dataSource.isEmptyField(nextProps.dataField) && !nextProps.readOnly) {
         nextProps.dataSource.setFieldByName(nextProps.dataField, '');
       }
-      let value = nextProps.dataSource.fieldByName(nextProps.dataField);
+      value = nextProps.dataSource.fieldByName(nextProps.dataField);
       if (!value) {
         value = '';
       }
