@@ -902,9 +902,9 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         }
     }
 
-    refresh(){
+    refresh() {
         if (this.ajaxConfig) {
-            this.executeAjax(this.ajaxConfig, dataSourceEvents.AFTER_OPEN, callback);    
+            this.executeAjax(this.ajaxConfig, dataSourceEvents.AFTER_OPEN, callback);
         }
     }
 
@@ -1035,19 +1035,27 @@ class AnterosRemoteDatasource extends AnterosDatasource {
 
             if (response.data.hasOwnProperty(_this.contentProperty)) {
                 let temp = AnterosJacksonParser.convertJsonToObject(response.data[_this.contentProperty]);
-                if (AnterosUtils.isArray(temp))
-                    _this.data = temp;
-                else {
+                if (temp === "") {
                     _this.data = [];
-                    _this.data.push(temp);
+                } else {
+                    if (AnterosUtils.isArray(temp))
+                        _this.data = temp;
+                    else {
+                        _this.data = [];
+                        _this.data.push(temp);
+                    }
                 }
             } else {
                 let temp = AnterosJacksonParser.convertJsonToObject(response.data);
-                if (AnterosUtils.isArray(temp))
-                    _this.data = temp;
-                else {
+                if (temp === "") {
                     _this.data = [];
-                    _this.data.push(temp);
+                } else {
+                    if (AnterosUtils.isArray(temp))
+                        _this.data = temp;
+                    else {
+                        _this.data = [];
+                        _this.data.push(temp);
+                    }
                 }
                 _this.totalRecords = _this.data.length;
                 _this.grandTotalRecords = _this.data.length;

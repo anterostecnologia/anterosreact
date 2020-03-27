@@ -19,7 +19,7 @@ export class AnterosQueryBuilderData {
 
   static getFilters(form, component) {
     return {
-      url: `v1/filtro/findFilterByForm?form=${form}&component=${component}`,
+      url: `v1/filtro/findFilterByForm?form=${form}&component=${component}&fieldsToForceLazy=`,
       method: 'get'
     };
   }
