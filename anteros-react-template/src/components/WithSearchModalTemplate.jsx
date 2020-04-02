@@ -129,7 +129,21 @@ export default function WithSearchModalTemplate(_loadingProps) {
             : 'first';
 
         this.createDataSourceFilter();
-        this.createMainDataSource();
+
+        if (
+          WrappedComponent.prototype.hasOwnProperty(
+            'onCreateDatasource'
+          ) === true
+        ) {
+          this.dataSource = this.onCreateDatasource();
+          this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+          this.dataSource.addEventListener(
+            DATASOURCE_EVENTS,
+            this.onDatasourceEvent
+          );
+        } else {
+          this.createMainDataSource();
+        }
 
         this.state = {
           dataSource: [],
@@ -239,14 +253,18 @@ export default function WithSearchModalTemplate(_loadingProps) {
           }
           if (loadingProps.openMainDataSource) {
             if (!this.dataSource.isOpen()) {
-              this.dataSource.open(
-                loadingProps.endPoints.FIND_ALL(
-                  loadingProps.resource,
-                  0,
-                  loadingProps.pageSize,
-                  loadingProps.defaultSort, this.getUser(), loadingProps.fieldsToForceLazy
-                )
-              );
+              if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+                this.dataSource.open(this.onFindAll(0, loadingProps.pageSize, loadingProps.defaultSort, this.getUser(), loadingProps.fieldsToForceLazy));
+              } else {
+                this.dataSource.open(
+                  loadingProps.endPoints.FIND_ALL(
+                    loadingProps.resource,
+                    0,
+                    loadingProps.pageSize,
+                    loadingProps.defaultSort, this.getUser(), loadingProps.fieldsToForceLazy
+                  )
+                );
+              }
               this.handlePageChanged(0);
             }
             if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
@@ -317,16 +335,20 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       onQuickFilter(filter, fields, sort) {
-        this.dataSource.open(
-          loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-            loadingProps.resource,
-            filter,
-            fields,
-            0,
-            loadingProps.pageSize,
-            sort, this.getUser(), loadingProps.fieldsToForceLazy
-          )
-        );
+        if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
+          this.dataSource.open(this.onFindMultipleFields(filter, fields, 0, loadingProps.pageSize, sort, this.getUser(), loadingProps.fieldsToForceLazy));
+        } else {
+          this.dataSource.open(
+            loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+              loadingProps.resource,
+              filter,
+              fields,
+              0,
+              loadingProps.pageSize,
+              sort, this.getUser(), loadingProps.fieldsToForceLazy
+            )
+          );
+        }
       }
 
       onToggleFilter(opened) {
@@ -416,24 +438,34 @@ export default function WithSearchModalTemplate(_loadingProps) {
         ) {
           var filter = new AnterosFilterDSL();
           filter.buildFrom(this.props.query, this.props.sort);
-          this.dataSource.open(
-            loadingProps.endPoints.FIND_WITH_FILTER(
-              loadingProps.resource,
-              filter.toJSON(),
-              0,
-              loadingProps.pageSize,
-              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-            )
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
+            this.dataSource.open(this.onFindWithFilter(filter.toJSON(), 0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
+          } else {
+            this.dataSource.open(
+              loadingProps.endPoints.FIND_WITH_FILTER(
+                loadingProps.resource,
+                filter.toJSON(),
+                0,
+                loadingProps.pageSize,
+                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+              )
+            );
+          }
         } else {
-          this.dataSource.open(
-            loadingProps.endPoints.FIND_ALL(
-              loadingProps.resource,
-              0,
-              loadingProps.pageSize,
-              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-            )
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+            this.dataSource.open(this.onFindAll(0, loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(), loadingProps.fieldsToForceLazy));
+          } else {
+            this.dataSource.open(
+              loadingProps.endPoints.FIND_ALL(
+                loadingProps.resource,
+                0,
+                loadingProps.pageSize,
+                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+              )
+            );
+          }
         }
       }
 

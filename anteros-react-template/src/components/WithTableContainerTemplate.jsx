@@ -168,6 +168,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
           ) === true
         ) {
           this.dataSource = this.onCreateDatasource();
+          if (this.dataSource instanceof AnterosRemoteDatasource){
+              this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+          }
           this.dataSource.addEventListener(
             DATASOURCE_EVENTS,
             this.onDatasourceEvent
@@ -249,7 +252,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         if (loadingProps.openMainDataSource) {
           if (!this.dataSource.isOpen()) {
             if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-              this.onFindAll(this.dataSource, this.getSortFields(), this.getUser());
+              this.dataSource.open(this.onFindAll(0, loadingProps.pageSize, this.getSortFields(), this.getUser(),loadingProps.fieldsToForceLazy));
             } else {
               this.dataSource.open(
                 loadingProps.endPoints.FIND_ALL(
@@ -278,7 +281,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
             DATASOURCE_EVENTS,
             this.onDatasourceEvent
           );
-          this.dataSource.setAjaxPageConfigHandler(null);
+          if (this.dataSource instanceof AnterosRemoteDatasource){
+            this.dataSource.setAjaxPageConfigHandler(null);
+          }
         }
         if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
@@ -344,7 +349,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       onQuickFilter(filter, fields, sort) {
         if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
-          this.onFindMultipleFields(this.dataSource, filter, fields, sort, this.getUser());
+          this.dataSource.open(this.onFindMultipleFields(filter, fields, 0, loadingProps.pageSize, sort, this.getUser(), loadingProps.fieldsToForceLazy));
         } else {
           this.dataSource.open(
             loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
@@ -368,7 +373,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       onResize(width, height) {
         let newHeight;
-        if (loadingProps.withFilter) {
+        if (loadingProps.withFilter && this.filterRef && this.filterRef.current) {
           newHeight =
             height - this.filterRef.current.divFilter.clientHeight - 120;
         } else {
@@ -524,33 +529,48 @@ export default function WithTableContainerTemplate(_loadingProps) {
         ) {
           var filter = new AnterosFilterDSL();
           filter.buildFrom(this.props.query, this.props.sort);
-          return loadingProps.endPoints.FIND_WITH_FILTER(
-            loadingProps.resource,
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getSortFields()
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
+            return this.onFindWithFilter(filter.toJSON(), page, loadingProps.pageSize,
+              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy);
+          } else {
+            return loadingProps.endPoints.FIND_WITH_FILTER(
+              loadingProps.resource,
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getSortFields()
+            );
+          }
         } else {
           if (
             this.filterRef.current.getQuickFilterText() &&
             this.filterRef.current.getQuickFilterText() !== ''
           ) {
-            return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-              loadingProps.resource,
-              this.props.quickFilterText,
-              this.filterRef.current.getQuickFilterFields(),
-              page,
-              loadingProps.pageSize,
-              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-            );
+            if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
+              return this.onFindMultipleFields(this.props.quickFilterText, fiethis.filterRef.current.getQuickFilterFields(), page, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy);
+            } else {
+              return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+                loadingProps.resource,
+                this.props.quickFilterText,
+                this.filterRef.current.getQuickFilterFields(),
+                page,
+                loadingProps.pageSize,
+                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+              );
+            }
           } else {
-            return loadingProps.endPoints.FIND_ALL(
-              loadingProps.resource,
-              page,
-              loadingProps.pageSize,
-              this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-            );
+            if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+              return this.onFindAll(page, loadingProps.pageSize,
+                this.getSortFields(),
+                this.getUser(), loadingProps.fieldsToForceLazy);
+            } else {
+              return loadingProps.endPoints.FIND_ALL(
+                loadingProps.resource,
+                page,
+                loadingProps.pageSize,
+                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+              );
+            }
           }
         }
       }
@@ -564,7 +584,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
           var filter = new AnterosFilterDSL();
           filter.buildFrom(this.props.query, this.props.sort);
           if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
-            this.onFindWithFilter(this.dataSource, filter.toJSON(), this.getUser());
+            this.dataSource.open(this.onFindWithFilter(filter.toJSON(), 0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
           } else {
             this.dataSource.open(
               loadingProps.endPoints.FIND_WITH_FILTER(
@@ -586,7 +606,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
           );
 
           if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-            this.onFindAll(this.dataSource, this.getSortFields(), this.getUser());
+            this.dataSource.open(this.onFindAll(0, loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(), loadingProps.fieldsToForceLazy));
           } else {
             this.dataSource.open(
               loadingProps.endPoints.FIND_ALL(

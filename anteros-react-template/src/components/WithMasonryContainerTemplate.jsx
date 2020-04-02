@@ -229,15 +229,16 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           }
         }
 
-        if (loadingProps.openMainDataSource &&
-          WrappedComponent.prototype.hasOwnProperty(
-            'customCreateDatasource'
-          ) === false) {
-          if (!this.dataSource.isOpen()) {
-            this._openMainDataSource();
-          }
-          if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-            this.dataSource.cancel();
+        if (loadingProps.openMainDataSource) {
+          if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+            this.dataSource.open(this.onFindAll(0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
+          } else {
+            if (!this.dataSource.isOpen()) {
+              this._openMainDataSource();
+            }
+            if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+              this.dataSource.cancel();
+            }
           }
         }
       }
@@ -278,8 +279,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         );
       }
 
-      getSortFields(){
-        if (this.filter.getQuickFilterSort() && this.filter.getQuickFilterSort() !== ''){
+      getSortFields() {
+        if (this.filter.getQuickFilterSort() && this.filter.getQuickFilterSort() !== '') {
           return this.filter.getQuickFilterSort();
         }
         return loadingProps.defaultSortFields;
@@ -309,17 +310,21 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       onQuickFilter(filter, fields, sort) {
-        this.dataSource.open(
-          loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-            loadingProps.resource,
-            filter,
-            fields,
-            0,
-            loadingProps.pageSize,
-            sort,
-            this.getUser(), loadingProps.fieldsToForceLazy
-          )
-        );
+        if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
+          this.dataSource.open(this.onFindMultipleFields(filter, fields, 0, loadingProps.pageSize, sort, this.getUser(), loadingProps.fieldsToForceLazy));
+        } else {
+          this.dataSource.open(
+            loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+              loadingProps.resource,
+              filter,
+              fields,
+              0,
+              loadingProps.pageSize,
+              sort,
+              this.getUser(), loadingProps.fieldsToForceLazy
+            )
+          );
+        }
       }
 
       onToggleFilter(opened) {
@@ -345,9 +350,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         }
       }
 
-      setStateTemplate(state){
-        this.setState({...state});
-      }      
+      setStateTemplate(state) {
+        this.setState({ ...state });
+      }
 
       onSelectedItem(item) {
         this.setState({
@@ -400,9 +405,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
 
       onButtonClick(event, button) {
         if (WrappedComponent.prototype.hasOwnProperty('onCustomButtonClick') === true) {
-            if (!(this.onCustomButtonClick(event,button))) {
-              return;
-            }
+          if (!(this.onCustomButtonClick(event, button))) {
+            return;
+          }
         }
 
         if (button.props.id === 'btnAdd') {
@@ -455,7 +460,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             });
             return;
           }
-        } 
+        }
         this.props.history.push(button.props.route);
       }
 
@@ -511,15 +516,19 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         ) {
           var filter = new AnterosFilterDSL();
           filter.buildFrom(this.props.query, this.props.sort);
-          this.dataSource.open(
-            loadingProps.endPoints.FIND_WITH_FILTER(
-              loadingProps.resource,
-              filter.toJSON(),
-              loadingProps.pageSize,
-              0,
-              this.getUser(), loadingProps.fieldsToForceLazy
-            )
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
+            this.dataSource.open(this.onFindWithFilter(filter.toJSON(), 0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
+          } else {
+            this.dataSource.open(
+              loadingProps.endPoints.FIND_WITH_FILTER(
+                loadingProps.resource,
+                filter.toJSON(),
+                loadingProps.pageSize,
+                0,
+                this.getUser(), loadingProps.fieldsToForceLazy
+              )
+            );
+          }
         } else {
           this.props.setFilter(
             this.props.activeFilter,
@@ -528,13 +537,19 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             this.props.activeSortIndex,
             ''
           );
-          this.dataSource.open(
-            loadingProps.endPoints.FIND_ALL(
-              loadingProps.resource,
-              0,
-              loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-            )
-          );
+          if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+            this.dataSource.open(this.onFindAll(0, loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(), loadingProps.fieldsToForceLazy));
+          } else {
+            this.dataSource.open(
+              loadingProps.endPoints.FIND_ALL(
+                loadingProps.resource,
+                0,
+                loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+              )
+            );
+          }
         }
       }
 
@@ -576,7 +591,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       onClickCancel(event) {
-          this.setState({ ...this.state, modalOpen: null });
+        this.setState({ ...this.state, modalOpen: null });
       }
 
       render() {
