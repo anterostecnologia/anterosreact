@@ -400,7 +400,7 @@ export class AnterosQueryBuilder extends React.Component {
         } else {
           msg = error + "";
         }
-        AnterosSweetAlert("Atenção", msg, "error");
+        // AnterosSweetAlert("Atenção", msg, "error");
       }
     } else {
       if (!this.props.dataSource.isEmpty()) {
