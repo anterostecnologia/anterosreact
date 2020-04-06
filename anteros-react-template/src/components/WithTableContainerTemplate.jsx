@@ -168,8 +168,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
           ) === true
         ) {
           this.dataSource = this.onCreateDatasource();
-          if (this.dataSource instanceof AnterosRemoteDatasource){
-              this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+          if (this.dataSource instanceof AnterosRemoteDatasource) {
+            this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
           }
           this.dataSource.addEventListener(
             DATASOURCE_EVENTS,
@@ -252,7 +252,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         if (loadingProps.openMainDataSource) {
           if (!this.dataSource.isOpen()) {
             if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-              this.dataSource.open(this.onFindAll(0, loadingProps.pageSize, this.getSortFields(), this.getUser(),loadingProps.fieldsToForceLazy));
+              this.dataSource.open(this.onFindAll(0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
             } else {
               this.dataSource.open(
                 loadingProps.endPoints.FIND_ALL(
@@ -281,7 +281,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             DATASOURCE_EVENTS,
             this.onDatasourceEvent
           );
-          if (this.dataSource instanceof AnterosRemoteDatasource){
+          if (this.dataSource instanceof AnterosRemoteDatasource) {
             this.dataSource.setAjaxPageConfigHandler(null);
           }
         }
@@ -384,8 +384,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       getSortFields() {
-        if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== '') {
-          return this.filterRef.current.getQuickFilterSort();
+        if (loadingProps.withFilter && this.filterRef && this.filterRef.current) {
+          if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== '') {
+            return this.filterRef.current.getQuickFilterSort();
+          }
         }
         return loadingProps.defaultSortFields;
       }
@@ -541,7 +543,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               this.getSortFields()
             );
           }
-        } else {
+        } else if (loadingProps.withFilter && this.filterRef && this.filterRef.current) {
           if (
             this.filterRef.current.getQuickFilterText() &&
             this.filterRef.current.getQuickFilterText() !== ''
