@@ -111,7 +111,7 @@ AnterosText.propTypes = {
     truncate: PropTypes.bool.isRequired,
     display: PropTypes.oneOf([1, 2, 3, 4]),
     mask: PropTypes.string,
-    maskPatten: PropTypes.oneOf(['cnpj', 'cpf', 'cep', 'fone', 'currency', 'date', 'datetime', 'time']),
+    maskPattern: PropTypes.oneOf(['cnpj', 'cpf', 'cep', 'fone', 'currency', 'date', 'datetime', 'time']),
     currencyPrefix: PropTypes.string
 }
 
