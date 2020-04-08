@@ -641,6 +641,30 @@ export default function WithTableContainerTemplate(_loadingProps) {
         })
       }
 
+      handleOnSelectRecord(row, data, tableId) {
+        if (WrappedComponent.prototype.hasOwnProperty('onSelectRecord') === true) {
+          this.onSelectRecord(row, data, tableId)
+        }
+      }
+
+      handleOnUnselectRecord(row, data, tableId) {
+        if (WrappedComponent.prototype.hasOwnProperty('onUnselectRecord') === true) {
+          this.onUnselectRecord(row, data, tableId)
+        }
+      }
+
+      handleOnSelectAllRecords(records, tableId) {
+        if (WrappedComponent.prototype.hasOwnProperty('onSelectAllRecords') === true) {
+          this.onSelectAllRecords(records, tableId)
+        }
+      }
+
+      handleOnUnselectAllRecords(tableId) {
+        if (WrappedComponent.prototype.hasOwnProperty('onUnselectAllRecords') === true) {
+          this.onUnselectAllRecords(tableId)
+        }
+      }
+
 
       render() {
         return (
@@ -780,6 +804,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 enableSearching={false}
                 showExportButtons={false}
                 onDoubleClick={this.onDoubleClickTable}
+                onSelectRecord={this.handleOnSelectRecord}
+                onUnSelectRecord={this.handleOnUnselectRecord}
+                onSelectAllRecords={this.handleOnSelectAllRecords}
+                onUnSelectAllRecords={this.handleOnUnselectAllRecords}
               >
                 {this.getColumns()}
               </AnterosDataTable>
