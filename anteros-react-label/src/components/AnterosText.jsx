@@ -69,7 +69,10 @@ export default class AnterosText extends Component {
             if (currencyPrefix) {
                 newText = currencyPrefix + newText
             }
-        } else if (maskPattern === "datetime") {
+        }
+        
+        
+        if (maskPattern === "datetime") {
             let dt = AnterosDateUtils.parseDateWithFormat(text, Anteros.dataSourceDatetimeFormat);
             if (dt instanceof Date) {
                 newText = AnterosDateUtils.formatDate(dt, Anteros.displayDatetimeFormat);
