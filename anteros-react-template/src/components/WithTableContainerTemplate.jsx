@@ -518,7 +518,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
       onSearchButtonClick(field, event) { }
 
       onDoubleClickTable(data) {
-        if (loadingProps.routes.edit) {
+        if (WrappedComponent.prototype.hasOwnProperty('onCustomDoubleClick') === true) {
+          this.onCustomDoubleClick(data);
+        } else if (loadingProps.routes.edit) {
           this.props.history.push(loadingProps.routes.edit);
         }
       }
