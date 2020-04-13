@@ -5,7 +5,9 @@ import AnterosClockPicker from './components/AnterosClockPicker';
 import AnterosColorPicker from './components/AnterosColorPicker';
 import AnterosDatePicker from './components/AnterosDatePicker';
 import AnterosDateRangePicker from './components/AnterosDateRangePicker';
-import AnterosDatetimePicker from "./components/AnterosDatetimePicker";
+import AnterosDateTimePicker from "./components/AnterosDateTimePicker";
+import AnterosDateTimeRangePicker from "./components/AnterosDateTimeRangePicker";
+import AnterosTimePicker from "./components/AnterosTimePicker";
 import AnterosEdit from './components/AnterosEdit';
 import AnterosEmojiArea from './components/AnterosEmojiArea';
 import AnterosMaskEdit from './components/AnterosMaskEdit';
@@ -15,7 +17,6 @@ import AnterosRadioGroup, { AnterosRadio } from './components/AnterosRadioGroup'
 import AnterosSelect, { AnterosSelectOption } from './components/AnterosSelect';
 import AnterosTagsInput from './components/AnterosTagsInput';
 import AnterosTextArea from './components/AnterosTextArea';
-import AnterosTimePicker from './components/AnterosTimePicker';
 import AnterosLookupEdit from './components/AnterosLookupEdit';
 import AnterosLookupNumber from './components/AnterosLookupNumber';
 import AnterosLookupCombobox from "./components/AnterosLookupCombobox";
@@ -35,12 +36,13 @@ import AnterosDropdownSelect from './components/AnterosDropdownSelect';
 export {
     AnterosCheckbox, AnterosCheckboxSlide, AnterosCheckboxToggle,
     AnterosClockPicker, AnterosColorPicker, AnterosDatePicker,
-    AnterosDateRangePicker, AnterosDatetimePicker, AnterosEdit,
+    AnterosDateRangePicker, AnterosDateTimePicker as AnterosDatetimePicker, AnterosEdit,
     AnterosEmojiArea, AnterosMaskEdit, AnterosNumber,AnterosPassword,
     AnterosRadioGroup, AnterosRadio, AnterosSelect, AnterosSelectOption,
     AnterosTagsInput, AnterosTextArea, AnterosTimePicker, AnterosLookupEdit,
-    AnterosLookupNumber, AnterosLookupCombobox, 
+    AnterosLookupNumber, AnterosLookupCombobox, AnterosDateTimeRangePicker,
     AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,
     AnterosMultiSelect,AnterosFeedback, AnterosIpAddressEdit, AnterosInputMask,
-    AnterosCep,AnterosCheckboxList,AnterosDropdownSelect
+    AnterosCep,AnterosCheckboxList,AnterosDropdownSelect, AnterosDateTimePicker,
+    
 };

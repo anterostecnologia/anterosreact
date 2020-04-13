@@ -2,15 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
-import {AnterosCalendar} from 'anteros-react-calendar';
+import { AnterosCalendar, AnterosClock } from 'anteros-react-calendar';
 import Fit from 'react-fit';
-import { DateInput } from './AnterosDatePicker';
-import { columnProps } from "anteros-react-layout";
+import { DateTimeInput } from './AnterosDateTimePicker';
+import {  columnProps } from "anteros-react-layout";
 import { AnterosUtils } from 'anteros-react-core';
-const baseClassName = 'react-daterange-picker';
-const outsideActionEvents = ['mousedown', 'focusin', 'touchstart'];
-const allViews = ['century', 'decade', 'year', 'month'];
-
 /**
  * Calls a function, if it's defined, with specified arguments
  * @param {Function} fn
@@ -18,9 +14,9 @@ const allViews = ['century', 'decade', 'year', 'month'];
  */
 export function callIfDefined(fn, ...args) {
     if (fn && typeof fn === 'function') {
-      fn(...args);
+        fn(...args);
     }
-  }
+}
 
 export const isMinDate = (props, propName, componentName) => {
     const { [propName]: minDate } = props;
@@ -62,16 +58,25 @@ export const isMaxDate = (props, propName, componentName) => {
     return null;
 };
 
-export default class AnterosDateRangePicker extends PureComponent {
+const allViews = ['hour', 'minute', 'second'];
+const baseClassName = 'react-datetimerange-picker';
+const outsideActionEvents = ['mousedown', 'focusin', 'touchstart'];
+
+export default class AnterosDateTimeRangePicker extends PureComponent {
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.isOpen !== prevState.isOpenProps) {
-            return {
-                isOpen: nextProps.isOpen,
-                isOpenProps: nextProps.isOpen,
-            };
+        const nextState = {};
+
+        if (nextProps.isCalendarOpen !== prevState.isCalendarOpenProps) {
+            nextState.isCalendarOpen = nextProps.isCalendarOpen;
+            nextState.isCalendarOpenProps = nextProps.isCalendarOpen;
         }
 
-        return null;
+        if (nextProps.isClockOpen !== prevState.isClockOpenProps) {
+            nextState.isClockOpen = nextProps.isClockOpen;
+            nextState.isClockOpenProps = nextProps.isClockOpen;
+        }
+
+        return nextState;
     }
 
     state = {};
@@ -81,12 +86,27 @@ export default class AnterosDateRangePicker extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { isOpen } = this.state;
-        const { onCalendarClose, onCalendarOpen } = this.props;
+        const { isCalendarOpen, isClockOpen } = this.state;
+        const {
+            onCalendarClose,
+            onCalendarOpen,
+            onClockClose,
+            onClockOpen,
+        } = this.props;
 
-        if (isOpen !== prevState.isOpen) {
+        const isWidgetOpen = isCalendarOpen || isClockOpen;
+        const prevIsWidgetOpen = prevState.isCalendarOpen || prevState.isClockOpen;
+
+        if (isWidgetOpen !== prevIsWidgetOpen) {
             this.handleOutsideActionListeners();
-            callIfDefined(isOpen ? onCalendarOpen : onCalendarClose);
+        }
+
+        if (isCalendarOpen !== prevState.isCalendarOpen) {
+            callIfDefined(isCalendarOpen ? onCalendarOpen : onCalendarClose);
+        }
+
+        if (isClockOpen !== prevState.isClockOpen) {
+            callIfDefined(isClockOpen ? onClockOpen : onClockClose);
         }
     }
 
@@ -100,16 +120,55 @@ export default class AnterosDateRangePicker extends PureComponent {
 
     onOutsideAction = (event) => {
         if (this.wrapper && !this.wrapper.contains(event.target)) {
-            this.closeCalendar();
+            this.closeWidgets();
         }
     }
 
+    onDateChange = ([valueFrom, valueTo], closeWidgets = true) => {
+        const { value } = this.props;
+        const [prevValueFrom, prevValueTo] = [].concat(value);
+
+        const nextValueFrom = (() => {
+            if (!prevValueFrom) {
+                return valueFrom;
+            }
+
+            const valueWithHour = new Date(valueFrom);
+            valueWithHour.setHours(
+                prevValueFrom.getHours(),
+                prevValueFrom.getMinutes(),
+                prevValueFrom.getSeconds(),
+                prevValueFrom.getMilliseconds(),
+            );
+
+            return valueWithHour;
+        })();
+
+        const nextValueTo = (() => {
+            if (!prevValueTo) {
+                return valueTo;
+            }
+
+            const valueWithHour = new Date(valueTo);
+            valueWithHour.setHours(
+                prevValueTo.getHours(),
+                prevValueTo.getMinutes(),
+                prevValueTo.getSeconds(),
+                prevValueTo.getMilliseconds(),
+            );
+
+            return valueWithHour;
+        })();
+
+        this.onChange([nextValueFrom, nextValueTo], closeWidgets);
+    }
+
     // eslint-disable-next-line react/destructuring-assignment
-    onChange = (value, closeCalendar = this.props.closeCalendar) => {
+    onChange = (value, closeWidgets = this.props.closeWidgets) => {
         const { onChange } = this.props;
 
-        if (closeCalendar) {
-            this.closeCalendar();
+        if (closeWidgets) {
+            this.closeWidgets();
         }
 
         if (onChange) {
@@ -117,16 +176,16 @@ export default class AnterosDateRangePicker extends PureComponent {
         }
     }
 
-    onChangeFrom = (valueFrom, closeCalendar) => {
+    onChangeFrom = (valueFrom, closeWidgets) => {
         const { value } = this.props;
         const [, valueTo] = [].concat(value);
-        this.onChange([valueFrom, valueTo], closeCalendar);
+        this.onChange([valueFrom, valueTo], closeWidgets);
     }
 
-    onChangeTo = (valueTo, closeCalendar) => {
+    onChangeTo = (valueTo, closeWidgets) => {
         const { value } = this.props;
         const [valueFrom] = [].concat(value);
-        this.onChange([valueFrom, valueTo], closeCalendar);
+        this.onChange([valueFrom, valueTo], closeWidgets);
     }
 
     onFocus = (event) => {
@@ -141,25 +200,54 @@ export default class AnterosDateRangePicker extends PureComponent {
             return;
         }
 
-        this.openCalendar();
+        switch (event.target.name) {
+            case 'day':
+            case 'month':
+            case 'year':
+                this.openCalendar();
+                break;
+            case 'hour12':
+            case 'hour24':
+            case 'minute':
+            case 'second':
+                this.openClock();
+                break;
+            default:
+        }
+    }
+
+    openClock = () => {
+        this.setState({
+            isCalendarOpen: false,
+            isClockOpen: true,
+        });
     }
 
     openCalendar = () => {
-        this.setState({ isOpen: true });
-    }
-
-    closeCalendar = () => {
-        this.setState((prevState) => {
-            if (!prevState.isOpen) {
-                return null;
-            }
-
-            return { isOpen: false };
+        this.setState({
+            isCalendarOpen: true,
+            isClockOpen: false,
         });
     }
 
     toggleCalendar = () => {
-        this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+        this.setState(prevState => ({
+            isCalendarOpen: !prevState.isCalendarOpen,
+            isClockOpen: false,
+        }));
+    }
+
+    closeWidgets = () => {
+        this.setState((prevState) => {
+            if (!prevState.isCalendarOpen && !prevState.isClockOpen) {
+                return null;
+            }
+
+            return {
+                isCalendarOpen: false,
+                isClockOpen: false,
+            };
+        });
     }
 
     stopPropagation = event => event.stopPropagation();
@@ -167,15 +255,17 @@ export default class AnterosDateRangePicker extends PureComponent {
     clear = () => this.onChange(null);
 
     handleOutsideActionListeners(shouldListen) {
-        const { isOpen } = this.state;
+        const { isCalendarOpen, isClockOpen } = this.state;
+        const isWidgetOpen = isCalendarOpen || isClockOpen;
 
-        const shouldListenWithFallback = typeof shouldListen !== 'undefined' ? shouldListen : isOpen;
+        const shouldListenWithFallback = typeof shouldListen !== 'undefined' ? shouldListen : isWidgetOpen;
         const fnName = shouldListenWithFallback ? 'addEventListener' : 'removeEventListener';
         outsideActionEvents.forEach(eventName => document[fnName](eventName, this.onOutsideAction));
     }
 
     renderInputs() {
         const {
+            amPmAriaLabel,
             autoFocus,
             calendarAriaLabel,
             calendarIcon,
@@ -186,35 +276,49 @@ export default class AnterosDateRangePicker extends PureComponent {
             disableCalendar,
             disabled,
             format,
+            hourAriaLabel,
+            hourPlaceholder,
             locale,
             maxDate,
             maxDetail,
             minDate,
+            minuteAriaLabel,
+            minutePlaceholder,
             monthAriaLabel,
             monthPlaceholder,
             name,
             nativeInputAriaLabel,
             rangeDivider,
             required,
+            secondAriaLabel,
+            secondPlaceholder,
             showLeadingZeros,
             value,
             yearAriaLabel,
             yearPlaceholder,
         } = this.props;
-        const { isOpen } = this.state;
+
+        const { isCalendarOpen, isClockOpen } = this.state;
 
         const [valueFrom, valueTo] = [].concat(value);
 
         const ariaLabelProps = {
+            amPmAriaLabel,
             dayAriaLabel,
+            hourAriaLabel,
+            minuteAriaLabel,
             monthAriaLabel,
             nativeInputAriaLabel,
+            secondAriaLabel,
             yearAriaLabel,
         };
 
         const placeholderProps = {
             dayPlaceholder,
+            hourPlaceholder,
+            minutePlaceholder,
             monthPlaceholder,
+            secondPlaceholder,
             yearPlaceholder,
         };
 
@@ -224,7 +328,7 @@ export default class AnterosDateRangePicker extends PureComponent {
             className: `${baseClassName}__inputGroup`,
             disabled,
             format,
-            isCalendarOpen: isOpen,
+            isWidgetOpen: isCalendarOpen || isClockOpen,
             locale,
             maxDate,
             maxDetail,
@@ -262,7 +366,7 @@ export default class AnterosDateRangePicker extends PureComponent {
 
         return (
             <div className={`${baseClassName}__wrapper`}>
-                <DateInput
+                <DateTimeInput
                     {...commonProps}
                     autoFocus={autoFocus}
                     className={`${baseClassName}__inputGroup`}
@@ -283,7 +387,7 @@ export default class AnterosDateRangePicker extends PureComponent {
                     <span className={`far fa-arrow-right`}>
                     </span>
                 </div>
-                <DateInput
+                <DateTimeInput
                     {...commonProps}
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
@@ -306,11 +410,11 @@ export default class AnterosDateRangePicker extends PureComponent {
                 )}
                 {calendarIcon !== null && !disableCalendar && (
                     <div className={classNameAddOn} onBlur={this.resetValue}
-                    onClick={this.toggleCalendar}
-                    disabled={disabled}
-                    onFocus={this.stopPropagation}
-                    style={{ margin: 0, height: '38px', width: '38px' }}>
-                    <span><i className={icon} /><img alt="" src={this.props.image} /></span></div>
+                        onClick={this.toggleCalendar}
+                        disabled={disabled}
+                        onFocus={this.stopPropagation}
+                        style={{ margin: 0, height: '38px', width: '38px' }}>
+                        <span><i className={icon} /><img alt="" src={this.props.image} /></span></div>
                 )}
             </div>
         );
@@ -318,15 +422,16 @@ export default class AnterosDateRangePicker extends PureComponent {
 
     renderCalendar() {
         const { disableCalendar } = this.props;
-        const { isOpen } = this.state;
+        const { isCalendarOpen } = this.state;
 
-        if (isOpen === null || disableCalendar) {
+        if (isCalendarOpen === null || disableCalendar) {
             return null;
         }
 
         const {
             calendarClassName,
-            className: datePickerClassName, // Unused, here to exclude it from calendarProps
+            className: dateTimeRangePickerClassName, // Unused, here to exclude it from calendarProps
+            maxDetail: dateTimeRangePickerMaxDetail, // Unused, here to exclude it from calendarProps
             onChange,
             value,
             ...calendarProps
@@ -336,10 +441,10 @@ export default class AnterosDateRangePicker extends PureComponent {
 
         return (
             <Fit>
-                <div className={mergeClassNames(className, `${className}--${isOpen ? 'open' : 'closed'}`)}>
+                <div className={mergeClassNames(className, `${className}--${isCalendarOpen ? 'open' : 'closed'}`)}>
                     <AnterosCalendar
                         className={calendarClassName}
-                        onChange={this.onChange}
+                        onChange={this.onDateChange}
                         selectRange
                         value={value || null}
                         {...calendarProps}
@@ -349,20 +454,56 @@ export default class AnterosDateRangePicker extends PureComponent {
         );
     }
 
+    renderClock() {
+        const { disableClock } = this.props;
+        const { isClockOpen } = this.state;
+
+        if (isClockOpen === null || disableClock) {
+            return null;
+        }
+
+        const {
+            clockClassName,
+            className: dateTimeRangePickerClassName, // Unused, here to exclude it from clockProps
+            maxDetail,
+            onChange,
+            value,
+            ...clockProps
+        } = this.props;
+
+        const className = `${baseClassName}__clock`;
+        const [valueFrom] = [].concat(value);
+
+        const maxDetailIndex = allViews.indexOf(maxDetail);
+
+        return (
+            <Fit>
+                <div className={mergeClassNames(className, `${className}--${isClockOpen ? 'open' : 'closed'}`)}>
+                    <AnterosClock
+                        className={clockClassName}
+                        renderMinuteHand={maxDetailIndex > 0}
+                        renderSecondHand={maxDetailIndex > 1}
+                        value={valueFrom}
+                        {...clockProps}
+                    />
+                </div>
+            </Fit>
+        );
+    }
+
     render() {
-        const { className, disabled, width } = this.props;
-        const { isOpen } = this.state;
+        const { className, disabled } = this.props;
+        const { isCalendarOpen, isClockOpen } = this.state;
 
         return (
             <div
                 className={mergeClassNames(
                     baseClassName,
-                    `${baseClassName}--${isOpen ? 'open' : 'closed'}`,
+                    `${baseClassName}--${isCalendarOpen || isClockOpen ? 'open' : 'closed'}`,
                     `${baseClassName}--${disabled ? 'disabled' : 'enabled'}`,
                     className,
                 )}
                 {...this.eventProps}
-                style={{ width: width }}
                 onFocus={this.onFocus}
                 ref={(ref) => {
                     if (!ref) {
@@ -374,6 +515,7 @@ export default class AnterosDateRangePicker extends PureComponent {
             >
                 {this.renderInputs()}
                 {this.renderCalendar()}
+                {this.renderClock()}
             </div>
         );
     }
@@ -409,15 +551,16 @@ const ClearIcon = (
     </svg>
 );
 
-AnterosDateRangePicker.defaultProps = {
+AnterosDateTimeRangePicker.defaultProps = {
     calendarIcon: CalendarIcon,
     clearIcon: ClearIcon,
-    closeCalendar: true,
-    isOpen: null,
-    name: 'daterange',
+    closeWidgets: true,
+    isCalendarOpen: null,
+    isClockOpen: null,
+    maxDetail: 'minute',
+    name: 'datetimerange',
     rangeDivider: ' ',
-    primary: true,
-    width: "auto",
+    primary: true
 };
 
 const isValue = PropTypes.oneOfType([
@@ -425,7 +568,8 @@ const isValue = PropTypes.oneOfType([
     PropTypes.instanceOf(Date),
 ]);
 
-AnterosDateRangePicker.propTypes = {
+AnterosDateTimeRangePicker.propTypes = {
+    amPmAriaLabel: PropTypes.string,
     autoFocus: PropTypes.bool,
     calendarAriaLabel: PropTypes.string,
     calendarClassName: PropTypes.oneOfType([
@@ -439,17 +583,27 @@ AnterosDateRangePicker.propTypes = {
     ]),
     clearAriaLabel: PropTypes.string,
     clearIcon: PropTypes.node,
-    closeCalendar: PropTypes.bool,
+    clockClassName: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
+    closeWidgets: PropTypes.bool,
     dayAriaLabel: PropTypes.string,
     dayPlaceholder: PropTypes.string,
     disableCalendar: PropTypes.bool,
+    disableClock: PropTypes.bool,
     disabled: PropTypes.bool,
     format: PropTypes.string,
-    isOpen: PropTypes.bool,
+    hourAriaLabel: PropTypes.string,
+    hourPlaceholder: PropTypes.string,
+    isCalendarOpen: PropTypes.bool,
+    isClockOpen: PropTypes.bool,
     locale: PropTypes.string,
     maxDate: isMaxDate,
     maxDetail: PropTypes.oneOf(allViews),
     minDate: isMinDate,
+    minuteAriaLabel: PropTypes.string,
+    minutePlaceholder: PropTypes.string,
     monthAriaLabel: PropTypes.string,
     monthPlaceholder: PropTypes.string,
     name: PropTypes.string,
@@ -457,10 +611,13 @@ AnterosDateRangePicker.propTypes = {
     onCalendarClose: PropTypes.func,
     onCalendarOpen: PropTypes.func,
     onChange: PropTypes.func,
+    onClockClose: PropTypes.func,
+    onClockOpen: PropTypes.func,
     onFocus: PropTypes.func,
     rangeDivider: PropTypes.node,
     required: PropTypes.bool,
-    returnValue: PropTypes.oneOf(['start', 'end', 'range']),
+    secondAriaLabel: PropTypes.string,
+    secondPlaceholder: PropTypes.string,
     showLeadingZeros: PropTypes.bool,
     value: PropTypes.oneOfType([
         isValue,
