@@ -97,6 +97,12 @@ export default function WithFormTemplate(_loadingProps) {
             }
           }
           if (
+            WrappedComponent.prototype.hasOwnProperty('customClose') === true
+          ) {
+            this.customClose();
+            return;
+          }
+          if (
             this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
           ) {
             this.props.dataSource.cancel();
@@ -109,6 +115,12 @@ export default function WithFormTemplate(_loadingProps) {
             if (!this.onBeforeSave()) {
               return;
             }
+          }
+          if (
+            WrappedComponent.prototype.hasOwnProperty('customSave') === true
+          ) {
+            this.customSave();
+            return;
           }
           AnterosSweetAlert({
             title: 'Deseja salvar ?',
@@ -164,6 +176,12 @@ export default function WithFormTemplate(_loadingProps) {
             if (!this.onBeforeCancel()) {
               return;
             }
+          }
+          if (
+            WrappedComponent.prototype.hasOwnProperty('customCancel') === true
+          ) {
+            this.customCancel();
+            return;
           }
           AnterosSweetAlert({
             title: 'Deseja cancelar ?',
