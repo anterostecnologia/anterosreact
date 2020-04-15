@@ -27,7 +27,7 @@ export class AnterosFormSteps extends Component {
             ? this.props.id
             : lodash.uniqueId("formStep"));
         this.state = {
-            activeIndex: 0,
+            activeIndex: this.props.activeIndex,
             doneIndex: -1,
             isUp: false,
             visible: false
@@ -163,13 +163,15 @@ export class AnterosFormSteps extends Component {
         }
     }
 
-    handleScroll(event){
-        
+    handleScroll(event){        
         this.setState({
           ...this.state,
           isUp: event.target.scrollTop > ((event.target.scrollHeight-event.target.clientHeight)/2),
           visible: event.target.scrollHeight > event.target.clientHeight
       })
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({...this.state, activeIndex: nextProps.activeIndex});
     }
 
     render() {
@@ -303,6 +305,7 @@ export class AnterosFormSteps extends Component {
                     <AnterosButton
                         id={this.idFormStep + "_btnSuccess"}
                         success
+                        visible={this.props.showFinishButton}
                         disabled={!(this.state.activeIndex == this.numberOfSteps - 1)}
                         outline={this.props.buttonOutline}
                         pullRight
@@ -311,7 +314,7 @@ export class AnterosFormSteps extends Component {
                     <AnterosButton
                         id={this.idFormStep + "_btnCancel"}
                         danger
-                        visible={true}
+                        visible={this.props.showCancelButton}
                         outline={this.props.buttonOutline}
                         pullRight
                         caption={this.props.cancelCaption}
@@ -338,6 +341,8 @@ AnterosFormSteps.propTypes = {
     finishCaption: PropTypes.string.isRequired,
     cancelCaption: PropTypes.string.isRequired,
     buttonOutline: PropTypes.bool.isRequired,
+    showCancelButton : PropTypes.bool.isRequired,
+    showFinishButton : PropTypes.bool.isRequired,
     height: PropTypes.string,
     width: PropTypes.string,
     style: PropTypes.object,
@@ -363,6 +368,8 @@ AnterosFormSteps.defaultProps = {
     nextCaption: "Próximo",
     finishCaption: "Finalizar",
     cancelCaption: "Cancelar",
+    showCancelButton: true,
+    showFinishButton: true,
     buttonOutline: false,
     withScrollButton: false,
     scrollButtonCaptionUp: 'Voltar para o topo',

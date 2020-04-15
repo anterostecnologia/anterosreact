@@ -24,7 +24,13 @@ export default class AnterosText extends Component {
 
     constructor(props) {
         super(props);
+        this.onClick = this.onClick.bind(this);
     }
+
+    onClick(event){
+        this.props.onClick(this.props.link);
+    }
+
     render() {
         let { textAlign, className, style, text, color, fontWeight, fontFamily,
             fontSize, h1, h2, h3, h4, h5, h6, display, backgroundColor,
@@ -91,7 +97,14 @@ export default class AnterosText extends Component {
             var _mask = new AnterosStringMask(mask);
             newText = _mask.apply(newText);
         }
-        return (<Tag style={{ backgroundColor, color, fontFamily, fontWeight, fontSize, textAlign, ...style }} className={_className}>{newText}</Tag>);
+        let textDecoration = 'none'; 
+        let cursor = 'auto';       
+        if (this.props.link){
+            textDecoration = 'underline';
+            cursor = 'pointer';
+        }
+        
+        return (<Tag onClick={this.onClick} style={{ cursor, textDecoration, backgroundColor, color, fontFamily, fontWeight, fontSize, textAlign, ...style }} className={_className}>{newText}</Tag>);
     }
 }
 
@@ -102,6 +115,8 @@ AnterosText.propTypes = {
     fontFamily: PropTypes.string,
     fontSize: PropTypes.string,
     fontWeight: PropTypes.string,
+    link: PropTypes.string,
+    disabled: PropTypes.bool.isRequired,
     h1: PropTypes.bool.isRequired,
     h2: PropTypes.bool.isRequired,
     h3: PropTypes.bool.isRequired,
@@ -115,7 +130,8 @@ AnterosText.propTypes = {
     display: PropTypes.oneOf([1, 2, 3, 4]),
     mask: PropTypes.string,
     maskPattern: PropTypes.oneOf(['cnpj', 'cpf', 'cep', 'fone', 'currency', 'date', 'datetime', 'time']),
-    currencyPrefix: PropTypes.string
+    currencyPrefix: PropTypes.string,
+    onClick:PropTypes.func
 }
 
 AnterosText.defaultProps = {
@@ -129,7 +145,9 @@ AnterosText.defaultProps = {
     center: false,
     right: false,
     truncate: false,
-    currencyPrefix: undefined
+    disabled: false,
+    currencyPrefix: undefined,
+    onClick: () => {}
 }
 
 

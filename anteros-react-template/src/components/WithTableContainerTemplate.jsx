@@ -208,6 +208,21 @@ export default function WithTableContainerTemplate(_loadingProps) {
         return undefined;
       }
 
+      refreshData(){
+        if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
+          return this.onFindAll(page, loadingProps.pageSize,
+            this.getSortFields(),
+            this.getUser(), loadingProps.fieldsToForceLazy);
+        } else {
+          return loadingProps.endPoints.FIND_ALL(
+            loadingProps.resource,
+            page,
+            loadingProps.pageSize,
+            this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
+          );
+        }
+      }
+
       createMainDataSource() {
         if (this.props.dataSource) {
           this.dataSource = this.props.dataSource;
@@ -563,18 +578,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               );
             }
           } else {
-            if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-              return this.onFindAll(page, loadingProps.pageSize,
-                this.getSortFields(),
-                this.getUser(), loadingProps.fieldsToForceLazy);
-            } else {
-              return loadingProps.endPoints.FIND_ALL(
-                loadingProps.resource,
-                page,
-                loadingProps.pageSize,
-                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-              );
-            }
+            this.refreshData();
           }
         }
       }

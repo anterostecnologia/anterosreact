@@ -121,6 +121,7 @@ export default class AnterosPassword extends React.Component {
                     readOnly={readOnly}
                     required={this.props.required}
                     onChange={this.handleChange}
+                    onKeyDown={this.props.onKeyDown}
                 />
                 <div id="showPassword" className="input-group-addon" onClick={this.handleCheckChange.bind(this)}>
                     <i className={this.state.checked ? 'fa fa-eye-slash' : 'fa fa-eye'}></i>
@@ -159,11 +160,13 @@ AnterosPassword.propTypes = {
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
+    onKeyDown : PropTypes.func
 };
 
 AnterosPassword.defaultProps = {
     value: '',
     placeHolder: '',
     reveal: false,
-    required: true
+    required: true,
+    onKeyDown: () => {}
 }
