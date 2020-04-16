@@ -492,7 +492,7 @@ render() {
         onMouseDown: this.handleBackdropMouseDown,
         onKeyUp: this.handleEscape,
         onKeyDown: this.handleTab,
-        style: { display: 'block' },
+        style: {...this.props.style, display: 'block' },
         'aria-labelledby': labelledBy,
         role,
         tabIndex: '-1'

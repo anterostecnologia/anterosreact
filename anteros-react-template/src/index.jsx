@@ -7,9 +7,10 @@ import WithModalTemplate from './components/WithModalTemplate';
 import WithSearchModalTemplate from './components/WithSearchModalTemplate';
 import WithTableContainerTemplate from './components/WithTableContainerTemplate';
 import WithMainLayoutTemplate from './components/WithMainLayoutTemplate';
+import WithSearchMasonryModalTemplate from './components/WithSearchMasonryModalTemplate';
 
 export {
     WithCardListContainerTemplate, WithFormTemplate, WithListContainerTemplate, WithMasonryContainerTemplate,
     WithModalTemplate, WithSearchModalTemplate, WithTableContainerTemplate, WithMainLayoutTemplate,
-    WithFormModalTemplate
+    WithFormModalTemplate, WithSearchMasonryModalTemplate
 };

@@ -47,6 +47,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       activeSortIndex,
       activeFilter,
       quickFilterText,
+      needRefresh,
       user;
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
@@ -56,6 +57,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       activeSortIndex = reducer.activeSortIndex;
       activeFilter = reducer.activeFilter;
       quickFilterText = reducer.quickFilterText;
+      needRefresh = reducer.needRefresh;
     }
     user = state[loadingProps.userReducerName].user;
     return {
@@ -65,7 +67,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
       activeSortIndex: activeSortIndex,
       activeFilter: activeFilter,
       quickFilterText: quickFilterText,
-      user: user
+      user: user,
+      needRefresh: needRefresh
     };
   };
 
@@ -208,15 +211,20 @@ export default function WithTableContainerTemplate(_loadingProps) {
         return undefined;
       }
 
-      refreshData(){
+      refreshData(page){
+        var p = page;
+        if (page === undefined || page === null) {
+          p = 0;
+        }
+
         if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-          return this.onFindAll(page, loadingProps.pageSize,
+          return this.onFindAll(p, loadingProps.pageSize,
             this.getSortFields(),
             this.getUser(), loadingProps.fieldsToForceLazy);
         } else {
           return loadingProps.endPoints.FIND_ALL(
             loadingProps.resource,
-            page,
+            p,
             loadingProps.pageSize,
             this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
           );
@@ -278,6 +286,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 )
               );
             }
+          } else if (this.props.needRefresh) {
+            this.dataSource.open(this.refreshData(this.dataSource.getCurrentPage()));
           }
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.dataSource.cancel();
@@ -288,6 +298,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
           this.onDidMount();
         }
+
       }
 
       componentWillUnmount() {
@@ -578,7 +589,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               );
             }
           } else {
-            this.refreshData();
+            return this.refreshData(page);
           }
         }
       }

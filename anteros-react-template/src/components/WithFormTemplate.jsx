@@ -30,6 +30,9 @@ export default function WithFormTemplate(_loadingProps) {
 
   const mapDispatchToProps = dispatch => {
     return {
+      setNeedRefresh: () => {
+        dispatch(loadingProps.actions.setNeedRefresh());
+      },
       setDatasource: dataSource => {
         dispatch(loadingProps.actions.setDatasource(dataSource));
       }
@@ -162,6 +165,8 @@ export default function WithFormTemplate(_loadingProps) {
                     alertMessage: '',
                     saving: false
                   });
+
+                  _this.props.setNeedRefresh();
                   _this.props.history.push(button.props.route);
                 }
               });
