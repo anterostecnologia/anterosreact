@@ -12,7 +12,8 @@ import { autoBind } from 'anteros-react-core';
 import {
     AnterosQueryBuilder,
     AnterosQueryBuilderData,
-    AnterosFilterDSL
+    AnterosFilterDSL,
+    CustomFilter
 } from 'anteros-react-querybuilder';
 import {
     AnterosRemoteDatasource,
@@ -598,6 +599,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                                     }
                                     onSearchButtonClick={this.onSearchButtonClick}
                                 >
+                                    <CustomFilter>{this.getCustomFilter ? this.getCustomFilter() : null}</CustomFilter>
                                     <AnterosButton
                                         id="btnSelecionar"
                                         icon="fa fa-bolt"
