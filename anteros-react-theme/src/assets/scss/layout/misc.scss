@@ -10,9 +10,12 @@
 	height: 1px;
 	background-color: $color-primary;
 	content: '';
+	-webkit-transition: all 0.2s;
 	transition: all 0.2s;
-	backface-visibility: hidden;
-	transform: scaleX(0);
+	-webkit-backface-visibility: hidden;
+	        backface-visibility: hidden;
+	-webkit-transform: scaleX(0);
+	        transform: scaleX(0);
 }
 
 .bar {
@@ -69,14 +72,14 @@
 			display: inline-block;
 			text-align: center;
 			-webkit-transition: all 1s;
-			-o-transition: all 1s;
 			transition: all 1s;
 			line-height: 30px;
 		}
 
 		&:hover {
 			em {
-				transform: scale(2,2);
+				-webkit-transform: scale(2,2);
+				        transform: scale(2,2);
 			}
 		}
 	}

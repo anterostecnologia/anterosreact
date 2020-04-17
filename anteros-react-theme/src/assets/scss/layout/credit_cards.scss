@@ -68,20 +68,24 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
 
 .rccs {
   margin: 0 auto;
-  perspective: 1000px;
+  -webkit-perspective: 1000px;
+          perspective: 1000px;
   width: $rccs-size;
 
   &__card {
     height: $rccs-size / $rccs-card-ratio;
     margin: 0 auto;
     position: relative;
-    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+    -webkit-transition: all 0.4s linear;
     transition: all 0.4s linear;
     width: $rccs-size;
 
     &--front,
     &--back {
-      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+              backface-visibility: hidden;
       background: $rccs-default-background;
       border-radius: $rccs-size / 20;
       color: $rccs-light-text-color;
@@ -90,7 +94,8 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
       overflow: hidden;
       position: absolute;
       top: 0;
-      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+              transform-style: preserve-3d;
       width: 100%;
 
       @if $rccs-shadow != '' {
@@ -103,7 +108,8 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
     }
 
     &--back {
-      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+              transform: rotateY(180deg);
 
       .rccs__issuer {
         background-position: bottom center;
@@ -112,7 +118,8 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
         opacity: 0.6;
         right: auto;
         top: auto;
-        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
       }
     }
 
@@ -121,7 +128,9 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
       left: -170%;
       position: absolute;
       top: -60%;
-      transform: rotate(25deg);
+      -webkit-transform: rotate(25deg);
+              transform: rotate(25deg);
+      -webkit-transition: $rccs-background-transition;
       transition: $rccs-background-transition;
       width: 150%;
 
@@ -133,7 +142,8 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
     }
 
     &--flipped {
-      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+              transform: rotateY(180deg);
 
       .rccs__card--front {
         z-index: 10;
@@ -349,6 +359,7 @@ $rccs-visaelectron-logo: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBl
   &__expiry,
   &__cvc {
     opacity: 0.5;
+    -webkit-transition: opacity 0.3s;
     transition: opacity 0.3s;
   }
 

@@ -87,7 +87,6 @@
 }
 
 .ribbon-bookmark .ribbon-inner {
-    -webkit-box-shadow: none;
     box-shadow: none
 }
 
@@ -160,8 +159,6 @@
     left: -40px;
     width: 100%;
     -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
     transform: rotate(-45deg)
 }
 
@@ -174,8 +171,6 @@
     right: -40px;
     left: auto;
     -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
     transform: rotate(45deg)
 }
 
@@ -188,15 +183,11 @@
     top: auto;
     bottom: 16px;
     -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
     transform: rotate(45deg)
 }
 
 .ribbon-badge.ribbon-bottom.ribbon-reverse .ribbon-inner {
     -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
     transform: rotate(-45deg)
 }
 

@@ -200,6 +200,7 @@
 	z-index: 5;
 	opacity: 0;
 	font-size: $sidebar-font-size;
+	-webkit-transition: opacity 0.3s ease;
 	transition: opacity 0.3s ease;
 	z-index: 15;
 
@@ -243,14 +244,17 @@
     width: 16.25rem;
     background-position: bottom center;
     overflow: hidden;
+    -webkit-transition: all 200ms ease 0s;
     transition: all 200ms ease 0s;
     height: 100%; }
     .app-sidebar .site-logo {
       padding: 0.5rem 0.5rem;
       border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-      align-items: center;
+      -webkit-box-align: center;
+              align-items: center;
 	  // display: flex;
-	  justify-content: center;
+	  -webkit-box-pack: center;
+	          justify-content: center;
 	  height: $header-height;
 		// background: $color-primary;
 		}
@@ -292,16 +296,20 @@
         padding-bottom: 4px;
         padding-left: 24px;
         padding-right: 24px;
+        -webkit-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
         transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;        
     } 
     .app-sidebar .app-mainMenu a {
         width: 100%;
+        display: -webkit-box;
         display: flex;
         position: relative;
         box-sizing: border-box;
         text-align: left;
-        align-items: center;
-		justify-content: flex-start;
+        -webkit-box-align: center;
+                align-items: center;
+		-webkit-box-pack: start;
+		        justify-content: flex-start;
 		font-size: $sidebar-font-size;
         text-decoration: none;
     }
@@ -313,10 +321,15 @@
     .app-sidebar .app-mainMenu div .side-arrow, .app-sidebar .app-mainMenu li .side-arrow {
       margin-right: -5px;
       font-size: $sidebar-font-size;
+      -webkit-transition: -webkit-transform 0.2s ease-in-out;
+      transition: -webkit-transform 0.2s ease-in-out;
       transition: transform 0.2s ease-in-out;
-      transform: rotate(0); }
+      transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
+      -webkit-transform: rotate(0);
+              transform: rotate(0); }
     .app-sidebar .app-mainMenu li.item-active .side-arrow {
-      transform: rotate(90deg); }
+      -webkit-transform: rotate(90deg);
+              transform: rotate(90deg); }
     .app-sidebar .app-mainMenu .sub-menu {
       padding: 0; }
       .app-sidebar .app-mainMenu .sub-menu li {
@@ -350,7 +363,8 @@
   
   .custom-dropdown-menu, .notification-icon .custom-dropdown-menu, .cart-icon .custom-dropdown-menu, .app-dropdown .custom-dropdown-menu {
     padding: 0;
-    transform: translateY(70px) !important;
+    -webkit-transform: translateY(70px) !important;
+            transform: translateY(70px) !important;
     display: block;
     visibility: hidden;
     left: auto !important;
@@ -381,7 +395,8 @@
           background-color: $color-primary-two; }
   
   .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .custom-dropdown-menu {
-		transform: translateY(65px) !important;
+		-webkit-transform: translateY(65px) !important;
+		        transform: translateY(65px) !important;
 		z-index: 200;
 	 }
     .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .custom-dropdown-menu:after, .app-sidebar .top-sidebar .sidebar-user-block .app-dropdown.show .custom-dropdown-menu:before {
@@ -395,7 +410,8 @@
   
   .app-dropdown.show .custom-dropdown-menu {
     opacity: 1;
-    transform: translateY(49px) !important;
+    -webkit-transform: translateY(49px) !important;
+            transform: translateY(49px) !important;
     visibility: visible; }
   
   .app-dropdown .custom-dropdown-menu {
@@ -431,9 +447,11 @@
 	.app-header .site-logo {
 		width: $sidebar-width;
 		padding: 0.5rem 0.5rem;
-		align-items: center;
+		-webkit-box-align: center;
+		        align-items: center;
 		// display: flex;
-		justify-content: center;
+		-webkit-box-pack: center;
+		        justify-content: center;
 		height: $header-height;
 		// background: $color-primary; 
 }

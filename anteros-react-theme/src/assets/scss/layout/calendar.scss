@@ -6,8 +6,6 @@
   .react-clock *,
   .react-clock *:before,
   .react-clock *:after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
   .react-clock__face {
@@ -29,7 +27,8 @@
   .react-clock__hand__body {
     position: absolute;
     background-color: black;
-    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
   }
   .react-clock__mark {
     position: absolute;
@@ -41,7 +40,8 @@
   .react-clock__mark__body {
     position: absolute;
     background-color: black;
-    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
   }
   .react-clock__mark__number {
     position: absolute;
@@ -66,6 +66,7 @@
     width: 700px;
   }
   .react-calendar--doubleView .react-calendar__viewContainer {
+    display: -webkit-box;
     display: flex;
     margin: -0.5em;
   }
@@ -77,8 +78,6 @@
   .react-calendar *,
   .react-calendar *:before,
   .react-calendar *:after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
   .react-calendar button {
@@ -117,9 +116,12 @@
     font-weight: bold;
   }
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
+    display: -webkit-box;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+            justify-content: center;
     font-size: 0.75em;
     padding: calc(0.75em / 0.75) calc(0.5em / 0.75);
   }

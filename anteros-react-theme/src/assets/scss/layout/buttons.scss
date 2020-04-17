@@ -102,7 +102,8 @@
 		& > li:last-child {
 			a:hover:before {
 				height: 0px;
-				transform: scaleX(0)
+				-webkit-transform: scaleX(0);
+				        transform: scaleX(0)
 			}
 		}
 	}
@@ -119,9 +120,13 @@
   font-size: 18px;
 	line-height: 1.33; 	
 	cursor: pointer;
-	justify-content: center;
-  align-items: center;
+	-webkit-box-pack: center;
+	        justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+	display: -webkit-inline-box;
 	display: inline-flex;
+	-webkit-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 	transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
@@ -241,6 +246,7 @@
 	transform: translate(0, -50%);
 	color: $color-primary;
 	text-decoration: none;
+	-webkit-transition: opacity 0.3s;
 	transition: opacity 0.3s;
 }
 
@@ -253,6 +259,7 @@
 	transform: translate(0, -50%);
 	color: $color-primary;
 	text-decoration: none;
+	-webkit-transition: opacity 0.3s;
 	transition: opacity 0.3s;
 }
 
@@ -286,14 +293,16 @@
 }
 @keyframes scrollDown {
 	0% {
-	transform: rotate(-45deg) translate(0, 0);
+	-webkit-transform: rotate(-45deg) translate(0, 0);
+	        transform: rotate(-45deg) translate(0, 0);
 	opacity: 0;
 	}
 	50% {
 	opacity: 1;
 	}
 	100% {
-	transform: rotate(-45deg) translate(-5px, 5px);
+	-webkit-transform: rotate(-45deg) translate(-5px, 5px);
+	        transform: rotate(-45deg) translate(-5px, 5px);
 	opacity: 0;
 	}
 }
@@ -323,14 +332,16 @@
 }
 @keyframes scrollUp {
 	0% {
-	transform: rotate(135deg) translate(0, 0);
+	-webkit-transform: rotate(135deg) translate(0, 0);
+	        transform: rotate(135deg) translate(0, 0);
 	opacity: 0;
 	}
 	50% {
 	opacity: 1;
 	}
 	100% {
-	transform: rotate(135deg) translate(-5px, 5px);
+	-webkit-transform: rotate(135deg) translate(-5px, 5px);
+	        transform: rotate(135deg) translate(-5px, 5px);
 	opacity: 0;
 	}
 }

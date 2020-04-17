@@ -1,6 +1,10 @@
 /*********
 ***  Image lightbox
 *********/
+@-webkit-keyframes closeWindow_image_box {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+  }
 @keyframes closeWindow_image_box {
     0%   { opacity: 1; }
     100% { opacity: 0; }
@@ -103,8 +107,10 @@
     top: 0;
     right: 0;
     height:50px;
+    display: -webkit-box;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+            justify-content: space-between;
   }
   
   .toolbarSide_image_box {
@@ -124,7 +130,8 @@
   .toolbarLeftSide_image_box {
     padding-left: 20px;
     padding-right: 0;
-    flex: 0 1 auto;
+    -webkit-box-flex: 0;
+            flex: 0 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -137,7 +144,8 @@
   .toolbarRightSide_image_box {
     padding-left: 0;
     padding-right: 20px;
-    flex: 0 0 auto;
+    -webkit-box-flex: 0;
+            flex: 0 0 auto;
   }
   
   .toolbarRightSideNoFlex_image_box {
@@ -198,5 +206,6 @@
   }
   
   .outerAnimating_image_box {
-    animation-name: closeWindow_image_box;
+    -webkit-animation-name: closeWindow_image_box;
+            animation-name: closeWindow_image_box;
   }

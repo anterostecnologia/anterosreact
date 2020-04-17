@@ -92,6 +92,7 @@
     box-sizing: border-box;
     margin-bottom: 30px;
     padding: 8px;
+    -webkit-transition: width 0.5s, height 0.5s, top 0.5s, left 0.5s;
     transition: width 0.5s, height 0.5s, top 0.5s, left 0.5s;
   }
   .dashboard .widget .widget-inner {
@@ -176,7 +177,8 @@
     pointer-events: none;
   }
   .dashboard .widget.draggable :nth-child(2) {
-    filter: blur(1px) grayscale(60%);
+    -webkit-filter: blur(1px) grayscale(60%);
+            filter: blur(1px) grayscale(60%);
     opacity: 0.8;
   }
   .dashboard .widget.draggable:hover {
@@ -207,6 +209,7 @@
   }
   .dashboard .widget-panel-enter.widget-panel-enter-active {
     bottom: 0;
+    -webkit-transition: bottom 0.25s ease-in;
     transition: bottom 0.25s ease-in;
   }
   .dashboard .widget-panel-leave {
@@ -214,6 +217,7 @@
   }
   .dashboard .widget-panel-leave.widget-panel-leave-active {
     bottom: calc(0 - 200px);
+    -webkit-transition: bottom 0.25s ease-in;
     transition: bottom 0.25s ease-in;
   }
   .dashboard .widget-preview {
@@ -284,11 +288,9 @@
 
 .ui.statistic {
   display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   margin: 1em 0em;
   max-width: auto;
@@ -314,25 +316,19 @@
 
 .ui.statistics {
   display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: start;
-  -ms-flex-align: start;
   align-items: flex-start;
-  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
 .ui.statistics>.statistic {
   display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-flex: 0;
-  -ms-flex: 0 1 auto;
   flex: 0 1 auto;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   margin: 0em 1.5em 1em;
   max-width: auto;
@@ -340,7 +336,6 @@
 
 .ui.statistics {
   display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin: 1em -1.5em -1em;
 }
@@ -554,17 +549,14 @@
 .ui.horizontal.statistic {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -ms-flex-direction: row;
   flex-direction: row;
   -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
 .ui.horizontal.statistics {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   margin: 0em;
   max-width: none;
@@ -573,10 +565,8 @@
 .ui.horizontal.statistics .statistic {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -ms-flex-direction: row;
   flex-direction: row;
   -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   max-width: none;
   margin: 1em 0em;

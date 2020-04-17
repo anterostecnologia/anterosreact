@@ -1,13 +1,18 @@
 .dropzone-dropzone {
+    display: -webkit-box;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+    -webkit-box-align: center;
+            align-items: center;
     width: 100%;
     min-height: 120px;
     overflow: scroll;
     margin: 0 auto;
     position: relative;
     box-sizing: border-box;
+    -webkit-transition: all .15s linear;
     transition: all .15s linear;
     border: 2px solid #d9d9d9;
     border-radius: 4px;
@@ -31,9 +36,12 @@
   }
   
   .dropzone-inputLabel {
+    display: -webkit-box;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+            align-items: center;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -49,9 +57,12 @@
   }
   
   .dropzone-inputLabelWithFiles {
+    display: -webkit-box;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+            align-items: center;
     align-self: flex-start;
     padding: 0 14px;
     min-height: 32px;
@@ -71,10 +82,15 @@
   
   .dropzone-previewContainer {
     padding: 40px 3%;
+    display: -webkit-box;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
+    -webkit-box-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+            justify-content: space-between;
     position: relative;
     width: 100%;
     min-height: 60px;
@@ -84,8 +100,10 @@
   }
   
   .dropzone-previewStatusContainer {
+    display: -webkit-box;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+            align-items: center;
   }
   
   .dropzone-previewFileName {
