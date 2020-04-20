@@ -87,12 +87,10 @@
 }
 
 .checkbox input[type=checkbox] + label:before, .radio input[type=checkbox] + label:before {
-    -webkit-border-radius: 2px;
     border-radius: 2px
 }
 
 .checkbox input[type=radio] + label:before, .radio input[type=radio] + label:before {
-    -webkit-border-radius: 50%;
     border-radius: 50%
 }
 
@@ -108,7 +106,6 @@
     width: 8px;
     height: 8px;
     background: #343434;
-    -webkit-border-radius: 50%;
     border-radius: 50%;
     left: 4px;
     top: 4px
@@ -151,7 +148,6 @@
     top: 7px;
     width: 42px;
     height: 4px;
-    -webkit-border-radius: 25rem;
     border-radius: 25rem;
     background: #929faa;
     -webkit-transition: background .4s ease;
@@ -163,13 +159,11 @@
     height: 20px;
     top: -1px;
     border: solid 1px #c5d6de;
-    -webkit-border-radius: 50%;
     border-radius: 50%;
     -webkit-transition: left .4s ease;
     transition: left .4s ease;
     background: #fff;
-    background: -webkit-linear-gradient(top, #fff 0, #e4f6ff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e4f6ff));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), to(#e4f6ff));
     background: linear-gradient(to bottom, #fff 0, #e4f6ff 100%)
 }
 
@@ -192,8 +186,7 @@
 .checkbox-slide input:disabled + label:after {
     background: #fcfefe;
     border-color: #c5d6de;
-    background: -webkit-linear-gradient(top, #fcfefe 0, #edf2f5 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#fcfefe), to(#edf2f5));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fcfefe), to(#edf2f5));
     background: linear-gradient(to bottom, #fcfefe 0, #edf2f5 100%)
 }
 
@@ -204,7 +197,6 @@
 .checkbox-toggle input + label:after, .checkbox-toggle input + label:before {
     content: '';
     display: block;
-    -webkit-border-radius: 25rem;
     border-radius: 25rem;
     position: absolute;
     left: 0;
@@ -225,8 +217,7 @@
     -webkit-transition: left .4s ease;
     transition: left .4s ease;
     background: #fff;
-    background: -webkit-linear-gradient(top, #fff 0, #eef4f7 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eef4f7));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), to(#eef4f7));
     background: linear-gradient(to bottom, #fff 0, #eef4f7 100%)
 }
 
@@ -236,8 +227,7 @@
 .checkbox-toggle input + label:hover:after {
     border-color: #00a8ff;
     background: #fff;
-    background: -webkit-linear-gradient(top, #fff 0, #e9f8ff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e9f8ff));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), to(#e9f8ff));
     background: linear-gradient(to bottom, #fff 0, #e9f8ff 100%)
 }
 
@@ -293,8 +283,7 @@
     left: 23px;
     border-color: #00a8ff;
     background: #fff;
-    background: -webkit-linear-gradient(top, #fff 0, #e9f8ff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e9f8ff));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), to(#e9f8ff));
     background: linear-gradient(to bottom, #fff 0, #e9f8ff 100%)
 }
 
@@ -355,8 +344,7 @@
 .checkbox-toggle input:disabled + label:after {
     border-color: #dbe4eb;
     background: #fff;
-    background: -webkit-linear-gradient(top, #fff 0, #eef4f7 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eef4f7));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), to(#eef4f7));
     background: linear-gradient(to bottom, #fff 0, #eef4f7 100%)
 }
 
@@ -370,7 +358,6 @@
 }
 
 .checkbox-toggle.-large input + label:after, .checkbox-toggle.-large input + label:before {
-    -webkit-border-radius: 35rem;
     border-radius: 35rem;
     height: 30px;
     position: absolute;
@@ -399,7 +386,6 @@
 }
 
 .checkbox-toggle.-extra-large input + label:after, .checkbox-toggle.-extra-large input + label:before {
-    -webkit-border-radius: 45rem;
     border-radius: 45rem;
     height: 40px;
     position: absolute;

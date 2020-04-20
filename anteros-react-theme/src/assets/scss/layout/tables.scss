@@ -366,20 +366,14 @@ table tbody tr td{
 
 
 .shadow-left {
-   -webkit-box-shadow: inset 12px 0px 5px 0px rgba(0,0,0,0.12),;
-   -moz-box-shadow: inset 12px 0px 5px 0px rgba(0,0,0,0.12);
    box-shadow: inset 12px 0px 5px 0px rgba(0,0,0,0.12);
 
 }
 .shadow-right {
-   -webkit-box-shadow: inset -12px 0px 5px 0px rgba(0,0,0,0.12);
-   -moz-box-shadow: inset -12px 0px 5px 0px rgba(0,0,0,0.12);
    box-shadow: inset -12px 0px 5px 0px rgba(0,0,0,0.12);
 
 }
 
 .shadow-left-right {
-   -webkit-box-shadow: inset 12px 0px 5px 0px rgba(0,0,0,0.12), inset -12px 0px 5px 0px rgba(0,0,0,0.12);
-   -moz-box-shadow: inset 12px 0px 5px 0px rgba(0,0,0,0.12), inset -12px 0px 5px 0px rgba(0,0,0,0.12);
    box-shadow: inset 12px 0px 5px 0px rgba(0,0,0,0.12), inset -12px 0px 5px 0px rgba(0,0,0,0.12);
 }

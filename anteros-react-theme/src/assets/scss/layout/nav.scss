@@ -7,8 +7,10 @@ a:not(.btn) {
 	// overflow: hidden;
 	// vertical-align: top;
 	// z-index: 0;
+	-webkit-transition: $link-transition;
 	transition: $link-transition;
-	text-decoration: $link-decoration;
+	-webkit-text-decoration: $link-decoration;
+	        text-decoration: $link-decoration;
 	color: $link-color;
 
 	// &:before {
@@ -16,11 +18,13 @@ a:not(.btn) {
 	// }
 
 	&:hover{
-		text-decoration: $link-hover-decoration;
+		-webkit-text-decoration: $link-hover-decoration;
+		        text-decoration: $link-hover-decoration;
 		color: $link-hover-color;
 
 		&:before {
-			transform: scaleX(1);
+			-webkit-transform: scaleX(1);
+			        transform: scaleX(1);
 		}
 	}
 
@@ -119,8 +123,6 @@ span a {
 
 .nav {
     display:-webkit-box;
-    display:-webkit-flex;
-    display:-ms-flexbox;
     display:flex;
     padding-left:0;
     margin-bottom:0;

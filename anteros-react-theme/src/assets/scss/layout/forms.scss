@@ -65,6 +65,7 @@ textarea {
 		border-radius: 0;
 		border: none;
 		background-color: $color-divider;
+		-webkit-transition: background-color ease-in-out 15s, color ease-in-out .15s;
 		transition: background-color ease-in-out 15s, color ease-in-out .15s;
 
 		&.focus {

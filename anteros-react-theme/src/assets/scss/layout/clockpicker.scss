@@ -54,7 +54,6 @@
 	/* Disable text selection highlighting. Thanks to Hermanya */
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
-	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
@@ -103,33 +102,24 @@
 }
 .clockpicker-dial {
 	-webkit-transition: -webkit-transform 350ms, opacity 350ms;
-	-moz-transition: -moz-transform 350ms, opacity 350ms;
-	-ms-transition: -ms-transform 350ms, opacity 350ms;
-	-o-transition: -o-transform 350ms, opacity 350ms;
+	-webkit-transition: opacity 350ms, -webkit-transform 350ms;
+	transition: opacity 350ms, -webkit-transform 350ms;
 	transition: transform 350ms, opacity 350ms;
+	transition: transform 350ms, opacity 350ms, -webkit-transform 350ms;
 }
 .clockpicker-dial-out {
 	opacity: 0;
 }
 .clockpicker-hours.clockpicker-dial-out {
 	-webkit-transform: scale(1.2, 1.2);
-	-moz-transform: scale(1.2, 1.2);
-	-ms-transform: scale(1.2, 1.2);
-	-o-transform: scale(1.2, 1.2);
 	transform: scale(1.2, 1.2);
 }
 .clockpicker-minutes.clockpicker-dial-out {
 	-webkit-transform: scale(.8, .8);
-	-moz-transform: scale(.8, .8);
-	-ms-transform: scale(.8, .8);
-	-o-transform: scale(.8, .8);
 	transform: scale(.8, .8);
 }
 .clockpicker-canvas {
 	-webkit-transition: opacity 175ms;
-	-moz-transition: opacity 175ms;
-	-ms-transition: opacity 175ms;
-	-o-transition: opacity 175ms;
 	transition: opacity 175ms;
 }
 .clockpicker-canvas-out {
@@ -218,7 +208,6 @@
 	/* Disable text selection highlighting. Thanks to Hermanya */
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
-	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
@@ -267,33 +256,24 @@
 }
 .clockpicker-dial {
 	-webkit-transition: -webkit-transform 350ms, opacity 350ms;
-	-moz-transition: -moz-transform 350ms, opacity 350ms;
-	-ms-transition: -ms-transform 350ms, opacity 350ms;
-	-o-transition: -o-transform 350ms, opacity 350ms;
+	-webkit-transition: opacity 350ms, -webkit-transform 350ms;
+	transition: opacity 350ms, -webkit-transform 350ms;
 	transition: transform 350ms, opacity 350ms;
+	transition: transform 350ms, opacity 350ms, -webkit-transform 350ms;
 }
 .clockpicker-dial-out {
 	opacity: 0;
 }
 .clockpicker-hours.clockpicker-dial-out {
 	-webkit-transform: scale(1.2, 1.2);
-	-moz-transform: scale(1.2, 1.2);
-	-ms-transform: scale(1.2, 1.2);
-	-o-transform: scale(1.2, 1.2);
 	transform: scale(1.2, 1.2);
 }
 .clockpicker-minutes.clockpicker-dial-out {
 	-webkit-transform: scale(.8, .8);
-	-moz-transform: scale(.8, .8);
-	-ms-transform: scale(.8, .8);
-	-o-transform: scale(.8, .8);
 	transform: scale(.8, .8);
 }
 .clockpicker-canvas {
 	-webkit-transition: opacity 175ms;
-	-moz-transition: opacity 175ms;
-	-ms-transition: opacity 175ms;
-	-o-transition: opacity 175ms;
 	transition: opacity 175ms;
 }
 .clockpicker-canvas-out {

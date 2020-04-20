@@ -132,15 +132,23 @@
     }
 
 	.modal-body-center {
-        align-items: center;
-        justify-content: center;
+        -webkit-box-align: center;
+                align-items: center;
+        -webkit-box-pack: center;
+                justify-content: center;
+        display: -webkit-inline-box;
         display: inline-flex;
-		flex-direction: column
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		        flex-direction: column
     }
 
 	.modal-body-center-inline {
-        align-items: center;
-        justify-content: center;
+        -webkit-box-align: center;
+                align-items: center;
+        -webkit-box-pack: center;
+                justify-content: center;
+        display: -webkit-inline-box;
         display: inline-flex;
     }
 
@@ -164,6 +172,7 @@
 		.image-container {
 			margin: 0 auto 10px auto;
 			cursor: pointer;
+			-webkit-transition: all 0.3s ease;
 			transition: all 0.3s ease;
 			display: inline-block;
 			float: none;
@@ -190,7 +199,8 @@
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				transform: translateY(-50%) translateX(-50%);
+				-webkit-transform: translateY(-50%) translateX(-50%);
+				        transform: translateY(-50%) translateX(-50%);
 
 				.dz-message {
 					margin: 0;
@@ -259,14 +269,15 @@
 
 
 .fade-scale {
-  transform: scale(0);
+  -webkit-transform: scale(0);
+          transform: scale(0);
   opacity: 0;
   -webkit-transition: all .25s linear;
-  -o-transition: all .25s linear;
   transition: all .25s linear;
 }
 
 .fade-scale.in {
   opacity: 1;
-  transform: scale(1);
+  -webkit-transform: scale(1);
+          transform: scale(1);
 }

@@ -10,7 +10,6 @@ table.dataTable {
 }
 table.dataTable td,
 table.dataTable th {
-  -webkit-box-sizing: content-box;
   box-sizing: content-box;
 }
 table.dataTable td.dataTables_empty,
@@ -56,7 +55,8 @@ div.dataTables_wrapper div.dataTables_paginate {
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   margin: 2px 0;
   white-space: nowrap;
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+          justify-content: flex-end;
 }
 div.dataTables_wrapper div.dataTables_processing {
   position: absolute;
@@ -388,30 +388,13 @@ th.dataTable_title_align_center {
 
 @keyframes dtb-spinner {
   100% {
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes dtb-spinner {
-  100% {
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-ms-keyframes dtb-spinner {
-  100% {
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 @-webkit-keyframes dtb-spinner {
   100% {
     -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-moz-keyframes dtb-spinner {
-  100% {
-    -moz-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
@@ -467,7 +450,8 @@ ul.dt-button-collection.dropdown-menu.fixed.four-column {
 }
 ul.dt-button-collection.dropdown-menu > * {
   -webkit-column-break-inside: avoid;
-  break-inside: avoid;
+  -moz-column-break-inside: avoid;
+       break-inside: avoid;
 }
 ul.dt-button-collection.dropdown-menu.two-column {
   width: 300px;

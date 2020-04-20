@@ -31,6 +31,7 @@
     display: block;
     padding: 0.7rem;
     font-weight: 400;
+    -webkit-transition: all .2s ease;
     transition: all .2s ease;
   }
   
@@ -59,8 +60,6 @@
       top: 100%;
       left: 0;
       border: 1px solid $color-primary-lighter;
-      -webkit-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.37);
-      -moz-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.37);
       box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.37);
   }
   

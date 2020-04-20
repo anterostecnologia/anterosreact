@@ -6,13 +6,15 @@
     opacity: 1;
     font-size: 18px;
     pointer-events: auto;
-    transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
+    -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
 }
 
 .mytooltip:hover .tooltip-content4, .mytooltip:hover .tooltip-text2 {
     pointer-events: auto;
     opacity: 1;
-    transform: translate3d(0, 0, 0)
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0)
 }
 
 .mytooltip {
@@ -28,34 +30,42 @@
 .mytooltip:hover .tooltip-content {
     pointer-events: auto;
     opacity: 1;
-    transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0)
+    -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0);
+            transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0)
 }
 
 .mytooltip:hover .tooltip-content3 {
     opacity: 1;
     pointer-events: auto;
-    transform: scale3d(1, 1, 1)
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1)
 }
 
 .mytooltip:hover .tooltip-item2 {
     color: #fff;
-    transform: translate3d(0, -0.5em, 0)
+    -webkit-transform: translate3d(0, -0.5em, 0);
+            transform: translate3d(0, -0.5em, 0)
 }
 
 .mytooltip:hover .tooltip-content5 {
     opacity: 1;
     pointer-events: auto;
-    transition-delay: 0s
+    -webkit-transition-delay: 0s;
+            transition-delay: 0s
 }
 
 .mytooltip:hover .tooltip-text3 {
-    transition-delay: 0s;
-    transform: scale3d(1, 1, 1)
+    -webkit-transition-delay: 0s;
+            transition-delay: 0s;
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1)
 }
 
 .mytooltip:hover .tooltip-inner2 {
-    transition-delay: 0.3s;
-    transform: translate3d(0, 0, 0)
+    -webkit-transition-delay: 0.3s;
+            transition-delay: 0.3s;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0)
 }
 
 .tooltip-item {
@@ -74,7 +84,8 @@
     bottom: 100%;
     left: 50%;
     pointer-events: none;
-    transform: translateX(-50%)
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%)
 }
 
 .tooltip-content {
@@ -105,10 +116,16 @@
 .tooltip-effect-5 .tooltip-content {
     width: 180px;
     margin-left: -90px;
-    transform-origin: 50% calc(106%);
-    transform: rotate3d(0, 0, 1, 15deg);
+    -webkit-transform-origin: 50% calc(106%);
+            transform-origin: 50% calc(106%);
+    -webkit-transform: rotate3d(0, 0, 1, 15deg);
+            transform: rotate3d(0, 0, 1, 15deg);
+    -webkit-transition: opacity 0.2s, -webkit-transform 0.2s;
+    transition: opacity 0.2s, -webkit-transform 0.2s;
     transition: opacity 0.2s, transform 0.2s;
-    transition-timing-function: ease, cubic-bezier(0.17, 0.67, 0.4, 1.39)
+    transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s;
+    -webkit-transition-timing-function: ease, cubic-bezier(0.17, 0.67, 0.4, 1.39);
+            transition-timing-function: ease, cubic-bezier(0.17, 0.67, 0.4, 1.39)
 }
 
 .tooltip-effect-5 .tooltip-text {
@@ -162,18 +179,28 @@
 }
 
 .tooltip-effect-6 .tooltip-content2 {
-    transform: translate3d(0, 10px, 0) rotate3d(1, 1, 1, 45deg);
-    transform-origin: 50% 100%;
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, 10px, 0) rotate3d(1, 1, 1, 45deg);
+            transform: translate3d(0, 10px, 0) rotate3d(1, 1, 1, 45deg);
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-6 .tooltip-content2 i {
-    transform: scale3d(0, 0, 1);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: scale3d(0, 0, 1);
+            transform: scale3d(0, 0, 1);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-6:hover .tooltip-content2 i {
-    transform: rotate3d(1, 1, 1, 0)
+    -webkit-transform: rotate3d(1, 1, 1, 0);
+            transform: rotate3d(1, 1, 1, 0)
 }
 
 .tooltip-content2::after {
@@ -205,10 +232,16 @@
     font-size: 14;
     line-height: 27px;
     pointer-events: none;
-    transform: scale3d(0.1, 0.2, 1);
-    transform-origin: 50% 120%;
+    -webkit-transform: scale3d(0.1, 0.2, 1);
+            transform: scale3d(0.1, 0.2, 1);
+    -webkit-transform-origin: 50% 120%;
+            transform-origin: 50% 120%;
+    -webkit-transition: opacity 0.4s, -webkit-transform 0.4s;
+    transition: opacity 0.4s, -webkit-transform 0.4s;
     transition: opacity 0.4s, transform 0.4s;
-    transition-timing-function: ease, cubic-bezier(0.6, 0, 0.4, 1)
+    transition: opacity 0.4s, transform 0.4s, -webkit-transform 0.4s;
+    -webkit-transition-timing-function: ease, cubic-bezier(0.6, 0, 0.4, 1);
+            transition-timing-function: ease, cubic-bezier(0.6, 0, 0.4, 1)
 }
 
 .tooltip-content3::after {
@@ -220,7 +253,8 @@
     margin-left: -8px;
     top: 100%;
     background: #00aeef;
-    transform: translate3d(0, -60%, 0) rotate3d(0, 0, 1, 45deg)
+    -webkit-transform: translate3d(0, -60%, 0) rotate3d(0, 0, 1, 45deg);
+            transform: translate3d(0, -60%, 0) rotate3d(0, 0, 1, 45deg)
 }
 
 .tooltip-item2 {
@@ -230,7 +264,10 @@
     position: relative;
     display: inline-block;
     font-weight: 500;
-    transition: background-color 0.3s, color 0.3s, transform 0.3s
+    -webkit-transition: background-color 0.3s, color 0.3s, -webkit-transform 0.3s;
+    transition: background-color 0.3s, color 0.3s, -webkit-transform 0.3s;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-content4 {
@@ -251,8 +288,12 @@
     cursor: default;
     pointer-events: none;
     border-radius: 5px;
-    transform: translate3d(0, -0.5em, 0);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, -0.5em, 0);
+            transform: translate3d(0, -0.5em, 0);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-content4 a {
@@ -261,8 +302,12 @@
 
 .tooltip-text2 {
     opacity: 0;
-    transform: translate3d(0, 1.5em, 0);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, 1.5em, 0);
+            transform: translate3d(0, 1.5em, 0);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-content5 {
@@ -281,6 +326,7 @@
     margin: 0 0 20px -150px;
     cursor: default;
     pointer-events: none;
+    -webkit-transition: opacity 0.3s 0.3s;
     transition: opacity 0.3s 0.3s
 }
 
@@ -291,15 +337,23 @@
 .tooltip-text3 {
     border-bottom: 10px solid #009efb;
     overflow: hidden;
-    transform: scale3d(0, 1, 1);
-    transition: transform 0.3s 0.3s
+    -webkit-transform: scale3d(0, 1, 1);
+            transform: scale3d(0, 1, 1);
+    -webkit-transition: -webkit-transform 0.3s 0.3s;
+    transition: -webkit-transform 0.3s 0.3s;
+    transition: transform 0.3s 0.3s;
+    transition: transform 0.3s 0.3s, -webkit-transform 0.3s 0.3s
 }
 
 .tooltip-inner2 {
     background: #2b2b2b;
     padding: 40px;
-    transform: translate3d(0, 100%, 0);
-    transition: transform 0.3s
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100%, 0);
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+    transition: transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-content5::after {
@@ -318,30 +372,49 @@
 }
 
 .tooltip-effect-1 .tooltip-content {
-    transform: translate3d(0, -10px, 0);
+    -webkit-transform: translate3d(0, -10px, 0);
+            transform: translate3d(0, -10px, 0);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
     transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
     color: #fff
 }
 
 .tooltip-effect-2 .tooltip-content {
-    transform-origin: 50% calc(110%);
-    transform: perspective(1000px) rotate3d(1, 0, 0, 45deg);
-    transition: opacity 0.2s, transform 0.2s
+    -webkit-transform-origin: 50% calc(110%);
+            transform-origin: 50% calc(110%);
+    -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 45deg);
+            transform: perspective(1000px) rotate3d(1, 0, 0, 45deg);
+    -webkit-transition: opacity 0.2s, -webkit-transform 0.2s;
+    transition: opacity 0.2s, -webkit-transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s
 }
 
 .tooltip-effect-3 .tooltip-content {
-    transform: translate3d(0, 10px, 0) rotate3d(1, 1, 0, 25deg);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, 10px, 0) rotate3d(1, 1, 0, 25deg);
+            transform: translate3d(0, 10px, 0) rotate3d(1, 1, 0, 25deg);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-4 .tooltip-content {
-    transform-origin: 50% 100%;
-    transform: scale3d(0.7, 0.3, 1);
-    transition: opacity 0.2s, transform 0.2s
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-transform: scale3d(0.7, 0.3, 1);
+            transform: scale3d(0.7, 0.3, 1);
+    -webkit-transition: opacity 0.2s, -webkit-transform 0.2s;
+    transition: opacity 0.2s, -webkit-transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s
 }
 
 .tooltip.tooltip-effect-2:hover .tooltip-content {
-    transform: perspective(1000px) rotate3d(1, 0, 0, 0deg)
+    -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 0deg);
+            transform: perspective(1000px) rotate3d(1, 0, 0, 0deg)
 }
 
 a.mytooltip {
@@ -350,29 +423,50 @@ a.mytooltip {
 }
 
 .tooltip-effect-7 .tooltip-content2 {
-    transform: translate3d(0, 10px, 0);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, 10px, 0);
+            transform: translate3d(0, 10px, 0);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-7 .tooltip-content2 i {
-    transform: translate3d(0, 15px, 0);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, 15px, 0);
+            transform: translate3d(0, 15px, 0);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-8 .tooltip-content2 {
-    transform: translate3d(0, 10px, 0) rotate3d(0, 1, 0, 90deg);
-    transform-origin: 50% 100%;
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, 10px, 0) rotate3d(0, 1, 0, 90deg);
+            transform: translate3d(0, 10px, 0) rotate3d(0, 1, 0, 90deg);
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-8 .tooltip-content2 i {
-    transform: scale3d(0, 0, 1);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: scale3d(0, 0, 1);
+            transform: scale3d(0, 0, 1);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-9 .tooltip-content2 {
-    transform: translate3d(0, -20px, 0);
-    transition: opacity 0.3s, transform 0.3s
+    -webkit-transform: translate3d(0, -20px, 0);
+            transform: translate3d(0, -20px, 0);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
 .tooltip-effect-9 .tooltip-content2 i {

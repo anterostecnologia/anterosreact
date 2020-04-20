@@ -27,8 +27,12 @@ $item-list-col-shrink: 3 !default;
 		font-size: 1.05rem;
 	}
 
+	display: -webkit-box;
+
 	display: flex;
-	flex-flow: column nowrap;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	        flex-flow: column nowrap;
 
 	&.striped {
 		& > li {
@@ -57,15 +61,23 @@ $item-list-col-shrink: 3 !default;
 
 .item-list {
 	.item {
+		display: -webkit-box;
 		display: flex;
-		flex-direction: column;
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		        flex-direction: column;
 	}
 
 	.item-row {
+		display: -webkit-box;
 		display: flex;
-		align-items: stretch;
-		flex-direction: row;
-		justify-content: space-between;
+		-webkit-box-align: stretch;
+		        align-items: stretch;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		        flex-direction: row;
+		-webkit-box-pack: justify;
+		        justify-content: space-between;
 		flex-wrap: wrap;
 		min-width: 100%;
 
@@ -75,18 +87,22 @@ $item-list-col-shrink: 3 !default;
 	}
 
 	.item-col {
-		align-items: center;
+		-webkit-box-align: center;
+		        align-items: center;
+		display: -webkit-box;
 		display: flex;
 		padding: $item-list-padding-y $item-list-padding-x $item-list-padding-y 0;
 		flex-basis: 0;
-		flex-grow: $item-list-col-grow;
+		-webkit-box-flex: $item-list-col-grow;
+		        flex-grow: $item-list-col-grow;
 		flex-shrink: $item-list-col-shrink;
 		margin-left: auto;
 		margin-right: auto;
 		min-width: 0;
 
 		&.fixed {
-			flex-grow: 0;
+			-webkit-box-flex: 0;
+			        flex-grow: 0;
 			flex-shrink: 0;
 			flex-basis: auto;
 		}
@@ -173,7 +189,8 @@ $item-list-col-shrink: 3 !default;
 		flex-basis: 20px + $item-list-padding-x;
 
 		@include media-down(sm) {
-			order: -8;
+			-webkit-box-ordinal-group: -7;
+			        order: -8;
 		}
 	}
 
@@ -194,6 +211,7 @@ $item-list-col-shrink: 3 !default;
 	*********************************************/
 
 	.item-col.item-col-img {
+		display: -webkit-box;
 		display: flex;
 		flex-basis: 60px + $item-list-padding-x;
 
@@ -220,7 +238,8 @@ $item-list-col-shrink: 3 !default;
 	}
 
 	.item-img {
-		flex-grow: 1;
+		-webkit-box-flex: 1;
+		        flex-grow: 1;
 		align-self: stretch;
 	    background-color: #efefef;
 	    padding-bottom: 100%;
@@ -237,7 +256,8 @@ $item-list-col-shrink: 3 !default;
 	.item-col.item-col-title {
 
 		@include media-down(sm) {
-			order: -4;
+			-webkit-box-ordinal-group: -3;
+			        order: -4;
 		}
 
 		a {
@@ -270,7 +290,8 @@ $item-list-col-shrink: 3 !default;
 		padding-left: 0 !important;
 
 		@include media-down(sm) {
-			order: -3;
+			-webkit-box-ordinal-group: -2;
+			        order: -3;
 
 			flex-basis: 30px + $item-list-padding-x !important;
 			padding-right: $item-list-padding-x;
@@ -323,6 +344,7 @@ $item-list-col-shrink: 3 !default;
 			right: 100%;
 			background-color: $color-divider;
 			border-radius: 3px;
+			-webkit-transition: all 0.15s ease-in-out;
 			transition: all 0.15s ease-in-out;
 
 			&.direction-right {

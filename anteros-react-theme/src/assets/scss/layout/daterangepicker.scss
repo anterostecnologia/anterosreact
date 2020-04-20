@@ -1,4 +1,5 @@
 .react-daterange-picker {
+  display: -webkit-inline-box;
   display: inline-flex;
   position: relative;
   border: 1px solid #CED4DA;
@@ -9,8 +10,6 @@
 .react-daterange-picker *,
 .react-daterange-picker *:before,
 .react-daterange-picker *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -20,6 +19,7 @@
 }
 
 .react-daterange-picker__wrapper {
+  display: -webkit-box;
   display: flex;
   border-top-width: 0px;
   border-bottom-width: 0px;
@@ -29,7 +29,8 @@
 
 .react-daterange-picker__inputGroup {
   min-width: calc(4px + (4px * 3) + 0.54em * 6 + 0.217em * 2);
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
   padding: 0 2px;
   margin-left: 8px;
   border:0;
@@ -142,10 +143,13 @@
 
 .react-daterange-picker__inputGroup {
   min-width: calc(4px + (4px * 3) + 0.54em * 8 + 0.217em * 2);
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
+  display: -webkit-box;
   display: flex;
   padding: 2px;
-  align-items: baseline;
+  -webkit-box-align: baseline;
+          align-items: baseline;
 }
 
 .react-daterange-picker__inputGroup__divider {
@@ -193,7 +197,10 @@
 }
 
 .react-daterange-picker__clock .react-clock__second-hand {
+  -webkit-transition: -webkit-transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
+  transition: -webkit-transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
   transition: transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
+  transition: transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s, -webkit-transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
 }
 
 .react-daterange-picker__clock .react-clock__second-hand__body:before {
@@ -219,6 +226,7 @@
 
 
 .react-datetimerange-picker {
+  display: -webkit-inline-box;
   display: inline-flex;
   position: relative;
   border: 1px solid #CED4DA;
@@ -229,8 +237,6 @@
 .react-datetimerange-picker *,
 .react-datetimerange-picker *:before,
 .react-datetimerange-picker *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 .react-datetimerange-picker--disabled {
@@ -238,6 +244,7 @@
   color: #6d6d6d;
 }
 .react-datetimerange-picker__wrapper {
+  display: -webkit-box;
   display: flex;
   border: 0;
   border-top-width: 0px;
@@ -247,10 +254,13 @@
 }
 .react-datetimerange-picker__inputGroup {
   min-width: calc(4px + (4px * 3) + 0.54em * 6 + 0.217em * 2);
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
+  display: -webkit-box;
   display: flex;
   padding: 0 2px;
-  align-items: baseline;
+  -webkit-box-align: baseline;
+          align-items: baseline;
 }
 .react-datetimerange-picker__inputGroup__divider {
   padding: 1px 0;
@@ -353,10 +363,13 @@
 
 .react-datetimerange-picker__inputGroup {
   min-width: calc(4px + (4px * 3) +  0.54em * 8  +  0.217em * 2);
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
+  display: -webkit-box;
   display: flex;
   padding: 2px;
-  align-items: baseline;
+  -webkit-box-align: baseline;
+          align-items: baseline;
   border:0;
 }
 .react-datetimerange-picker__inputGroup__divider {
@@ -395,7 +408,10 @@
   border-top-left-radius: 0;
 }
 .react-datetimerange-picker__clock .react-clock__second-hand {
+  -webkit-transition: -webkit-transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
+  transition: -webkit-transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
   transition: transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
+  transition: transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s, -webkit-transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
 }
 .react-datetimerange-picker__clock .react-clock__second-hand__body:before {
   width: 5px;

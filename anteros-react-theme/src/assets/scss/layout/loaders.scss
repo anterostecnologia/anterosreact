@@ -501,7 +501,6 @@
   .ball-clip-rotate-pulse {
     position: relative;
     -webkit-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
     transform: translateY(-15px);
   }
   .ball-clip-rotate-pulse > div {
@@ -663,7 +662,6 @@
   .ball-scale-ripple-multiple {
     position: relative;
     -webkit-transform: translateY(-25px);
-    -ms-transform: translateY(-25px);
     transform: translateY(-25px);
   }
   .ball-scale-ripple-multiple > div:nth-child(0) {
@@ -776,7 +774,6 @@
   .ball-scale-multiple {
     position: relative;
     -webkit-transform: translateY(-30px);
-    -ms-transform: translateY(-30px);
     transform: translateY(-30px);
   }
   .ball-scale-multiple > div:nth-child(2) {
@@ -899,7 +896,6 @@
   .ball-triangle-path {
     position: relative;
     -webkit-transform: translate(-29.994px, -37.50938px);
-    -ms-transform: translate(-29.994px, -37.50938px);
     transform: translate(-29.994px, -37.50938px);
   }
   .ball-triangle-path > div:nth-child(1) {
@@ -1519,7 +1515,6 @@
   .ball-zig-zag {
     position: relative;
     -webkit-transform: translate(-15px, -15px);
-    -ms-transform: translate(-15px, -15px);
     transform: translate(-15px, -15px);
   }
   .ball-zig-zag > div {
@@ -1655,7 +1650,6 @@
   .ball-zig-zag-deflect {
     position: relative;
     -webkit-transform: translate(-15px, -15px);
-    -ms-transform: translate(-15px, -15px);
     transform: translate(-15px, -15px);
   }
   .ball-zig-zag-deflect > div {
@@ -1963,7 +1957,6 @@
     top: 13.63636px;
     left: 13.63636px;
     -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
     -webkit-animation: line-spin-fade-loader 1.2s -0.72s infinite ease-in-out;
     animation: line-spin-fade-loader 1.2s -0.72s infinite ease-in-out;
@@ -1972,7 +1965,6 @@
     top: 0;
     left: 20px;
     -webkit-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
     transform: rotate(90deg);
     -webkit-animation: line-spin-fade-loader 1.2s -0.6s infinite ease-in-out;
     animation: line-spin-fade-loader 1.2s -0.6s infinite ease-in-out;
@@ -1981,7 +1973,6 @@
     top: -13.63636px;
     left: 13.63636px;
     -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
     transform: rotate(45deg);
     -webkit-animation: line-spin-fade-loader 1.2s -0.48s infinite ease-in-out;
     animation: line-spin-fade-loader 1.2s -0.48s infinite ease-in-out;
@@ -1996,7 +1987,6 @@
     top: -13.63636px;
     left: -13.63636px;
     -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
     -webkit-animation: line-spin-fade-loader 1.2s -0.24s infinite ease-in-out;
     animation: line-spin-fade-loader 1.2s -0.24s infinite ease-in-out;
@@ -2005,7 +1995,6 @@
     top: 0;
     left: -20px;
     -webkit-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
     transform: rotate(90deg);
     -webkit-animation: line-spin-fade-loader 1.2s -0.12s infinite ease-in-out;
     animation: line-spin-fade-loader 1.2s -0.12s infinite ease-in-out;
@@ -2014,7 +2003,6 @@
     top: 13.63636px;
     left: -13.63636px;
     -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
     transform: rotate(45deg);
     -webkit-animation: line-spin-fade-loader 1.2s 0s infinite ease-in-out;
     animation: line-spin-fade-loader 1.2s 0s infinite ease-in-out;
@@ -2275,7 +2263,6 @@
     height: 10px;
     position: absolute;
     -webkit-transform: translate(0, -6.25px);
-    -ms-transform: translate(0, -6.25px);
     transform: translate(0, -6.25px);
     top: 25px;
     left: 70px;
@@ -2322,7 +2309,6 @@
   .cube-transition {
     position: relative;
     -webkit-transform: translate(-25px, -25px);
-    -ms-transform: translate(-25px, -25px);
     transform: translate(-25px, -25px);
   }
   .cube-transition > div {
@@ -2384,11 +2370,13 @@
     border-radius: 100%;
     -webkit-animation: spin-rotate 0.6s 0s infinite linear;
     animation: spin-rotate 0.6s 0s infinite linear;
-    background-image: -webkit-linear-gradient(
-      transparent 0%,
-      transparent 70%,
-      #fff 30%,
-      #fff 100%
+    background-image: -webkit-gradient(
+      linear,
+      left top, left bottom,
+      from(transparent),
+      color-stop(70%, transparent),
+      color-stop(30%, #fff),
+      to(#fff)
     );
     background-image: linear-gradient(
       transparent 0%,

@@ -33,7 +33,6 @@
     padding: 8px 10px;
     color: #343434;
     font-size: 1rem;
-    -webkit-box-shadow: none;
     box-shadow: none;
     position: relative
 }
@@ -94,7 +93,6 @@
     display: block;
     width: 6px;
     height: 6px;
-    -webkit-border-radius: 50%;
     border-radius: 50%;
     position: absolute;
     left: 0;
@@ -660,7 +658,6 @@
 }
 
 .ui-pnotify .alert {
-    -webkit-box-shadow: none;
     box-shadow: none
 }
 
