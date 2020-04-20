@@ -34,7 +34,8 @@ export default class AnterosLookupCombobox extends AnterosCombobox {
 			event == dataSourceEvents.AFTER_POST ||
 			event == dataSourceEvents.AFTER_DELETE
 		) {
-			if (this.props.dataSource) {
+			if (this.props.lookupDataSource) {
+				this.buildOptions(this.props);
 				this.setState({
 					...this.state,
 					update: Math.random()

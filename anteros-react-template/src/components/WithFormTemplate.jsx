@@ -83,7 +83,8 @@ export default function WithFormTemplate(_loadingProps) {
         this.state = {
           alertIsOpen: false,
           alertMessage: '',
-          saving: false
+          saving: false,
+          messageLoader: loadingProps.messageSaving
         };
       }
 
@@ -243,7 +244,8 @@ export default function WithFormTemplate(_loadingProps) {
           if (this.state.debugMessage){
             AnterosSweetAlert({
               title: 'Detalhes do erro',
-              html: '<b>'+this.state.debugMessage+'</b>'
+              html: '<b>'+this.state.debugMessage+'</b>',
+              width: '1000px'
             });
           }      
       }
@@ -307,7 +309,7 @@ export default function WithFormTemplate(_loadingProps) {
               }}
               tag="div"
               blocking={this.state.saving}
-              message={loadingProps.messageSaving}
+              message={this.state.messageLoader}
               loader={
                 <AnterosLoader active type="ball-pulse" color="#02a17c" />
               }
