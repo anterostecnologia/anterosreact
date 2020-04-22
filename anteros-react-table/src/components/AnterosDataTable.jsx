@@ -249,6 +249,10 @@ export default class AnterosDataTable extends Component {
 		return AnterosUtils.formatNumber(data, column.props.maskFormatNumber);
 	}
 
+	renderCode(data, type, full, meta) {
+		return data;
+	}
+
 	renderCep(data, type, full, meta) {
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
@@ -344,6 +348,48 @@ export default class AnterosDataTable extends Component {
 	onClick(event) { }
 
 	componentDidUpdate() { }
+
+	sortCustomCodeAsc(a, b) {
+		if (a === b) {
+			return 0;
+		} else if (isNaN(a) && isNaN(b)) {
+			if (a < b)
+				return -1;
+			else if (a > b)
+				return 1;
+		} else if (!isNaN(a) && isNaN(b)) {
+			return -1;
+		} else if (isNaN(a) && !isNaN(b)) {
+			return 1
+		} else {
+			if (Number(a) > Number(b)) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+	}
+
+	sortCustomCodeDesc(a, b) {
+		if (a === b) {
+			return 0;
+		} else if (isNaN(a) && isNaN(b)) {
+			if (a < b)
+				return 1;
+			else if (a > b)
+				return -1;
+		} else if (!isNaN(a) && isNaN(b)) {
+			return 1;
+		} else if (isNaN(a) && !isNaN(b)) {
+			return -1
+		} else {
+			if (Number(a) > Number(b)) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
+	};
 
 	sortCustomDateAsc(a, b) {
 		let dtA = AnterosDateUtils.parseDateWithFormat(
@@ -447,7 +493,7 @@ export default class AnterosDataTable extends Component {
 		}
 	}
 
-	
+
 
 	getCheckboxSelectAll() {
 		return $("." + this.idCheckBoxSelect)
@@ -608,6 +654,8 @@ export default class AnterosDataTable extends Component {
 		sortExtension["customdatetime-desc"] = this.sortCustomDateTimeDesc;
 		sortExtension["customtime-asc"] = this.sortCustomTimeAsc;
 		sortExtension["customtime-desc"] = this.sortCustomTimeDesc;
+		sortExtension["customcode-asc"] = this.sortCustomCodeAsc;
+		sortExtension["customcode-desc"] = this.sortCustomCodeDesc;
 
 		let classNameExportButtons = "btn-info";
 		if (this.props.exportButtonsPrimary) {
@@ -644,22 +692,22 @@ export default class AnterosDataTable extends Component {
 		}
 		this.dataTable.on('user-select', this.onUserSelect);
 		if (this.props.enableCheckboxSelect) {
-			this.getCheckboxSelectAll().on("click", function () {		
-				var rows = _this.dataTable.rows({ search: "applied" }).nodes();		
-				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);		
-				if (this.checked) {		
-					if (_this.props.onSelectAllRecords) {		
-						let result = [_this.dataTable.rows()[0].length];		
-						for (let i = 0; i < _this.dataTable.rows()[0].length; i++) {		
-							result[i] = _this.dataTable.rows(i).data()[0];		
-						}		
-						_this.props.onSelectAllRecords(result, _this.props.id);		
-					}		
-				} else {		
-					if (_this.props.onUnSelectAllRecords) {		
-						_this.props.onUnSelectAllRecords(_this.props.id);		
-					}		
-				}		
+			this.getCheckboxSelectAll().on("click", function () {
+				var rows = _this.dataTable.rows({ search: "applied" }).nodes();
+				$('input[type="checkbox"][name="id[]"]', rows).prop("checked", this.checked);
+				if (this.checked) {
+					if (_this.props.onSelectAllRecords) {
+						let result = [_this.dataTable.rows()[0].length];
+						for (let i = 0; i < _this.dataTable.rows()[0].length; i++) {
+							result[i] = _this.dataTable.rows(i).data()[0];
+						}
+						_this.props.onSelectAllRecords(result, _this.props.id);
+					}
+				} else {
+					if (_this.props.onUnSelectAllRecords) {
+						_this.props.onUnSelectAllRecords(_this.props.id);
+					}
+				}
 			});
 			this.adjustHeaderCheckbox();
 			this.getTableBody().on("change", 'input[type="checkbox"][name="id[]"]', function (event) {
@@ -982,6 +1030,9 @@ export default class AnterosDataTable extends Component {
 			} else if (column.props.dataType == "time") {
 				customRender = _this.renderTime;
 				type = "customtime";
+			} else if (column.props.dataType == "code") {
+				customRender = _this.renderCode;
+				type = "customcode";
 			} else if (column.props.dataType == "cep") {
 				customRender = _this.renderCep;
 			} else if (column.props.dataType == "fone") {

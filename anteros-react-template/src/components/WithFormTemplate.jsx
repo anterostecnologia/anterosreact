@@ -262,6 +262,9 @@ export default function WithFormTemplate(_loadingProps) {
         }
       }
 
+      update(newState){
+        this.setState({...this.state,...newState});
+      }
 
       render() {
         return (
@@ -320,7 +323,8 @@ export default function WithFormTemplate(_loadingProps) {
                   dataSource={this.props.dataSource}
                   loadingProps={loadingProps}
                   onButtonClick={this.onButtonClick}
-                  user={this.props.user}                  
+                  user={this.props.user}  
+                  update={this.update}                
                 />
               </AnterosForm>
             </AnterosBlockUi>
