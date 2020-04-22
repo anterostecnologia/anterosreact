@@ -262,7 +262,7 @@ export default class AnterosDateRangePicker extends PureComponent {
 
         return (
             <div className={`${baseClassName}__wrapper`}>
-                <DateInput
+                {!this.props.disableInput ? <DateInput
                     {...commonProps}
                     autoFocus={autoFocus}
                     className={`${baseClassName}__inputGroup`}
@@ -271,8 +271,8 @@ export default class AnterosDateRangePicker extends PureComponent {
                     onChange={this.onChangeFrom}
                     returnValue="start"
                     value={valueFrom}
-                />
-                <div style={{
+                /> : null}
+                {!this.props.disableInput ? <div style={{
                     paddingRight: '20px',
                     width: '80px',
                     color: '#a12f2f',
@@ -282,8 +282,8 @@ export default class AnterosDateRangePicker extends PureComponent {
                 }}>
                     <span className={`far fa-arrow-right`}>
                     </span>
-                </div>
-                <DateInput
+                </div> : null}
+                {!this.props.disableInput ? <DateInput
                     {...commonProps}
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
@@ -291,9 +291,9 @@ export default class AnterosDateRangePicker extends PureComponent {
                     onChange={this.onChangeTo}
                     returnValue="end"
                     value={valueTo}
-                />
+                /> : null}
                 {clearIcon !== null && (
-                    <button
+                    !this.props.disableInput ? <button
                         aria-label={clearAriaLabel}
                         className={`${baseClassName}__clear-button ${baseClassName}__button`}
                         disabled={disabled}
@@ -302,7 +302,7 @@ export default class AnterosDateRangePicker extends PureComponent {
                         type="button"
                     >
                         {clearIcon}
-                    </button>
+                    </button> : null
                 )}
                 {calendarIcon !== null && !disableCalendar && (
                     <div className={classNameAddOn} onBlur={this.resetValue}

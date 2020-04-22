@@ -74,6 +74,7 @@ export default class AnterosModal extends React.Component {
   }
 
   componentDidMount() {
+   
     if (this.props.onEnter) {
       this.props.onEnter();
     }
@@ -108,6 +109,7 @@ export default class AnterosModal extends React.Component {
   }
 
   componentWillUnmount() {
+    
     if (this.props.onExit) {
       this.props.onExit();
     }
@@ -405,28 +407,8 @@ export default class AnterosModal extends React.Component {
         }
     }
 
-    return (
-        <div
-            className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-dialog', (this.props.extraSmall
-            ? "modal-extra-small"
-            : ""), (this.props.small
-            ? "modal-small"
-            : ""), (this.props.medium
-            ? "modal-medium"
-            : ""), (this.props.large
-            ? "modal-large"
-            : ""), (this.props.semifull
-              ? "modal-semi-full"
-              : ""),(this.props.full
-            ? "modal-full"
-            : ""), this.props.className, {
-            [`modal-${this.props.size}`]: this.props.size
-        }), this.props.cssModule)}
-            role="document"
-            ref={(c) => {
-                this._dialog = c;
-              }}>
-            <div
+    let corpo = (
+      <div
                 className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-content', this.props.contentClassName), this.props.cssModule)}
                 style={{...this.props.style}}>
                 <If condition={this.props.showHeader}>
@@ -460,6 +442,55 @@ export default class AnterosModal extends React.Component {
                 </div>
                 {modalActions}
             </div>
+    )
+
+    let larguraModal = 0;
+    let alturaModal = 0;
+    let wdt = 0;
+    let hgt = 0;
+    let mtp = 0;
+    if(this.props.style){
+    wdt = this.props.style.width
+    hgt = this.props.style.height
+    if(wdt && hgt){
+      larguraModal = wdt.split('px')[0]
+      alturaModal = hgt.split('px')[0]
+    }
+    mtp = window.innerHeight/2 - alturaModal/2
+  }
+
+    return (
+      wdt && hgt? 
+      <div 
+          style={{width:wdt,height:hgt,marginLeft:window.innerWidth/2 - larguraModal/2,marginTop:mtp}}
+          role="document"
+          ref={(c) => {
+                this._dialog = c;
+              }}>
+                {corpo}
+        </div> :
+        <div
+            className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-dialog', (this.props.extraSmall
+            ? "modal-extra-small"
+            : ""), (this.props.small
+            ? "modal-small"
+            : ""), (this.props.medium
+            ? "modal-medium"
+            : ""), (this.props.large
+            ? "modal-large"
+            : ""), (this.props.semifull
+              ? "modal-semi-full"
+              : ""),(this.props.full
+            ? "modal-full"
+            : ""), this.props.className, {
+            [`modal-${this.props.size}`]: this.props.size
+        }), this.props.cssModule)}
+        style={{marginTop:100}}
+            role="document"
+            ref={(c) => {
+                this._dialog = c;
+              }}>
+            {corpo}
         </div>
     );
 }
@@ -523,6 +554,7 @@ render() {
           : <div className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal-backdrop', 'show', backdropClassName), cssModule)} />
       );
       
+      
 
       return (
         <AnterosPortal node={this._element}>
@@ -536,6 +568,7 @@ render() {
               cssModule={cssModule}
               className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal', modalClassName), cssModule)}
               innerRef={innerRef}
+              style={{width: '100%', display: 'block'}}
             >
               {external}
               {this.renderModalDialog()}

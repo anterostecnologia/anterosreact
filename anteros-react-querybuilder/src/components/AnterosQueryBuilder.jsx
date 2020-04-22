@@ -9,8 +9,8 @@ import {
 } from "anteros-react-buttons";
 import {
   AnterosForm,
-  AnterosModal,
-  ModalActions
+  ModalActions,
+  AnterosModal
 } from "anteros-react-containers";
 import {
   AnterosError,
@@ -31,7 +31,6 @@ import {
   AnterosCombobox,
   AnterosComboboxOption,
   AnterosDatePicker,
-  AnterosDateRangePicker,
   AnterosDatetimePicker,
   AnterosEdit,
   AnterosLookupCombobox,
@@ -47,7 +46,9 @@ import React, { Fragment, Component } from "react";
 import uniqueId from "uuid/v4";
 import { autoBind } from "anteros-react-core";
 import { AnterosDatetimeRangeSelect } from "anteros-react-calendar";
-import {AnterosDropdownSelect} from "anteros-react-editors";
+import {AnterosDropdownSelect,AnterosDateRangePicker} from "anteros-react-editors";
+import moment from 'moment'
+import AnterosMultiSelect from '../AnterosMultiSelect'
 
 export class AnterosQueryBuilder extends React.Component {
   constructor(props) {
@@ -183,7 +184,7 @@ export class AnterosQueryBuilder extends React.Component {
 
     if (!this.state.selectedFields || this.state.selectedFields.length == 0) {
       this.getFields(this.props).forEach(function (item) {
-        if (field.quickFilter === true) {
+        if (item.quickFilter === true) {
           if (appendDelimiter) {
             result = result + ",";
           }
@@ -505,7 +506,7 @@ export class AnterosQueryBuilder extends React.Component {
         input: "text",
         inputValue: this.state.recordFilter
           ? this.state.recordFilter.filterName
-          : "",
+          : "", 
         showConfirmButton: true,
         showCancelButton: true,
         confirmButtonText: "Salvar",
@@ -826,6 +827,7 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   onClickOkCalendar(event, startDate, endDate) {
+    this.state.quickFilterText = ''
     if (this.props.onSelectDateRange) {
       this.props.onSelectDateRange(startDate, endDate);
     }
@@ -840,7 +842,7 @@ export class AnterosQueryBuilder extends React.Component {
       ...this.state,
       quickFilterText: qf,
       modalOpen: ""
-    });
+    },() => this.onSearchClick());
   }
   onClickCancelCalendar(event) {
     this.setState({
@@ -936,11 +938,15 @@ export class AnterosQueryBuilder extends React.Component {
               />
             ) : null}
             {this.props.showDateTimeButton ? (
-              <AnterosButton
-                primary
-                icon="fal fa-calendar"
-                onClick={this.onClickCalendar}
-              />
+              // <AnterosButton
+              //   primary
+              //   icon="fal fa-calendar"
+              //   onClick={this.onClickCalendar}
+              // />
+              <AnterosDateRangePicker disableInput onChange={(value) => {
+                console.log('onChangeData',value)
+                this.onClickOkCalendar(null,moment(value[0]),moment(value[1]))
+              }}/>
             ) : null}
             <AnterosButton
               primary
@@ -1086,8 +1092,8 @@ export class AnterosQueryBuilder extends React.Component {
               </Then>
             </If>
           </AnterosRow>
-
-          <AnterosModal
+        </div>
+        {/* <AnterosModal
             id="modalFilter"
             title="Filtro"
             primary
@@ -1099,7 +1105,7 @@ export class AnterosQueryBuilder extends React.Component {
           >
             <ModalActions>
               <AnterosButton success onClick={this.onClickOk}>
-                OK
+                Aplicar
               </AnterosButton>{" "}
             </ModalActions>
 
@@ -1116,10 +1122,19 @@ export class AnterosQueryBuilder extends React.Component {
                 </AnterosRow>
               </AnterosForm>
             </div>
-          </AnterosModal>
-          <DateRangeModal name={id} modalOpen={this.state.modalOpen} onClickOK={this.onClickOkCalendar} onClickCancel={this.onClickCancelCalendar} />
+          </AnterosModal> */}
+          {/* <AnterosMultiSelect
+            options={[
+              { label: "Grapes 🍇", value: "grapes" },
+              { label: "Mango 🥭", value: "mango" },
+              { label: "Strawberry 🍓", value: "strawberry" },
+            ]}
+            value={this.state.selectedFields}
+            onChange={(values) => this.setState({selectedFields:values})}
+            labelledBy={"Select"}
+            style={{width:'250px'}}
+          /> */}
           <QuickSearchFieldsModal fields={this.getQuickFields()} selectedFields={this.state.selectedFields} name={id} modalOpen={this.state.modalOpen} onClickOK={this.onClickOkFields} onClickCancel={this.onClickCancelFields} />
-        </div>
       </div>
     );
   }
@@ -2127,121 +2142,6 @@ ValueSelector.propTypes = {
   width: PropTypes.string
 };
 
-class DateRangeModal extends Component {
-  constructor(props) {
-    super(props);
-    this.applyCallback = this.applyCallback.bind(this);
-    this.onClickOk = this.onClickOk.bind(this);
-    this.rangeCallback = this.rangeCallback.bind(this);
-    let start = new Date();
-    let end = new Date();
-    this.state = {
-      start: moment(start),
-      end: moment(end)
-        .add(5, 'days')
-    };
-
-    this.ranges = {
-      "Hoje": [moment(start), moment(end)],
-      "Ontem": [
-        moment(start).subtract(1, "days"),
-        moment(end).subtract(1, "days")
-      ],
-      "3 dias": [moment(start).subtract(3, "days"), moment(end)],
-      "5 dias": [moment(start).subtract(5, "days"), moment(end)],
-      "1 semana": [moment(start).subtract(7, "days"), moment(end)],
-      "2 semanas": [moment(start).subtract(14, "days"), moment(end)],
-      "1 mês": [moment(start).subtract(1, "months"), moment(end)],
-      "3 meses": [moment(start).subtract(3, "months"), moment(end)],
-      "1 ano": [moment(start).subtract(1, "years"), moment(end)]
-    };
-
-    this.local = {
-      "format": "DD/MM/YYYY",
-      "sundayFirst": false,
-      days: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-      months: [
-        'Janeiro',
-        'Feveiro',
-        'Março',
-        'Abril',
-        'Maio',
-        'Junho',
-        'Julho',
-        'Agosto',
-        'Setembro',
-        'Outubro',
-        'Novembro',
-        'Dezembro',],
-      fromDate: 'De',
-      toDate: 'Até',
-      selectingFrom: 'Selecione de',
-      selectingTo: 'Até',
-      maxDate: 'Data máxima',
-      close: 'Fechar',
-      apply: 'Aplicar',
-      cancel: 'Cancelar'
-    };
-
-  }
-
-  applyCallback(startDate, endDate) {
-    this.setState({
-      start: startDate,
-      end: endDate,
-    });
-  }
-
-  rangeCallback(index, value) {
-    console.log(index, value);
-  }
-
-  onClickOk(event) {
-    this.props.onClickOK(event, this.state.start, this.state.end);
-  }
-
-
-  render() {
-    return (<AnterosModal
-      title="Selecione o período"
-      primary
-      large
-      showHeaderColor={true}
-      showContextIcon={false}
-      style={{ width: "780px", height: "560px" }}
-      withScroll={false}
-      isOpen={this.props.modalOpen === this.props.name + "_modalRange"}
-      onClose={this.onClose}
-    >
-      <ModalActions>
-        <AnterosButton success onClick={this.onClickOk} caption="OK" />
-        <AnterosButton success onClick={this.props.onClickCancel} caption="Cancela" />
-      </ModalActions>
-
-      <div>
-        <AnterosForm>
-          <AnterosRow>
-            <AnterosCol>
-              <AnterosDatetimeRangeSelect
-                ranges={this.ranges}
-                start={this.state.start}
-                end={this.state.end}
-                applyCallback={this.applyCallback}
-                rangeCallback={this.rangeCallback}
-                autoApply
-                standalone
-                local={this.local}
-                style={{
-                  standaloneLayout: { display: "flex", maxWidth: "fit-content" }
-                }}
-              />
-            </AnterosCol>
-          </AnterosRow>
-        </AnterosForm>
-      </div>
-    </AnterosModal>);
-  }
-}
 
 class QuickSearchFieldsModal extends Component {
   constructor(props) {
