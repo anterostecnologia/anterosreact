@@ -233,6 +233,8 @@ export default class AnterosButton extends Component {
       <button
         id={this.props.id ? this.props.id : this.idButton}
         data-placement={this.props.hintPosition}
+        data-balloon-pos={this.props.hintPosition}
+        aria-label={this.props.hint}
         data-user={this.props.dataUser}
         data-toggle={dataToggle}
         aria-haspopup={ariaHaspopup}
@@ -364,7 +366,7 @@ AnterosButton.propTypes = {
   /** Dica do botão */
   hint: PropTypes.string,
   /** Posição da dica(hint) no botão */
-  hintPosition: PropTypes.oneOf(["top", "right", "left", "bottom"]),
+  hintPosition: PropTypes.oneOf(["up", "right", "left", "down"]),
   /** Transforma o botão no estilo Facebook */
   facebook: PropTypes.bool,
   /** Transforma o botão no estilo Twitter */
@@ -415,7 +417,7 @@ AnterosButton.defaultProps = {
   subCaption: undefined,
   subcCaptionStyle: undefined,
   useColsAndRows: false,
-  hintPosition: "top",
+  hintPosition: "up",
   inline: true,
   visible: true
 };
