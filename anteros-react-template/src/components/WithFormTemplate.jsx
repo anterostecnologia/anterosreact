@@ -14,7 +14,7 @@ import { autoBind } from 'anteros-react-core';
 import { AnterosBlockUi } from 'anteros-react-loaders';
 import { AnterosLoader } from 'anteros-react-loaders';
 
-const defaultValues = { messageSaving: 'Aguarde... salvando.' };
+const defaultValues = { messageSaving: 'Aguarde... salvando.', forceRefresh: true };
 
 export default function WithFormTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
@@ -29,10 +29,17 @@ export default function WithFormTemplate(_loadingProps) {
   };
 
   const mapDispatchToProps = dispatch => {
+    if (loadingProps.forceRefresh) {
+      return {
+        setNeedRefresh: () => {
+          dispatch(loadingProps.actions.setNeedRefresh());
+        },
+        setDatasource: dataSource => {
+          dispatch(loadingProps.actions.setDatasource(dataSource));
+        }
+      };
+    }
     return {
-      setNeedRefresh: () => {
-        dispatch(loadingProps.actions.setNeedRefresh());
-      },
       setDatasource: dataSource => {
         dispatch(loadingProps.actions.setDatasource(dataSource));
       }
@@ -167,7 +174,9 @@ export default function WithFormTemplate(_loadingProps) {
                     saving: false
                   });
 
-                  _this.props.setNeedRefresh();
+                  if (loadingProps.forceRefresh) {
+                    _this.props.setNeedRefresh();
+                  }
                   _this.props.history.push(button.props.route);
                 }
               });
