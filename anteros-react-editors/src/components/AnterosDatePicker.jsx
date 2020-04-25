@@ -524,6 +524,11 @@ export default class AnterosDatePicker extends Component {
         const { disabled } = this.props;
         const { isOpen } = this.state;
 
+        let readOnly = this.props.readOnly;
+        if (this.props.dataSource && !readOnly) {
+            readOnly = (this.props.dataSource.getState() === 'dsBrowse');
+        }
+
         const colClasses = buildGridClassNames(this.props, false, []);
 
         let className = AnterosUtils.buildClassNames(
@@ -540,7 +545,7 @@ export default class AnterosDatePicker extends Component {
                     className={mergeClassNames(
                         baseClassName,
                         `${baseClassName}--${isOpen ? 'open' : 'closed'}`,
-                        `${baseClassName}--${disabled ? 'disabled' : 'enabled'}`
+                        `${baseClassName}--${disabled || readOnly ? 'disabled' : 'enabled'}`
                     )}
                     {...this.eventProps}
                     style={{ width: width }}

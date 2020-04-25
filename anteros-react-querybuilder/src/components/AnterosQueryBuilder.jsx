@@ -48,7 +48,7 @@ import { autoBind } from "anteros-react-core";
 import { AnterosDatetimeRangeSelect } from "anteros-react-calendar";
 import {AnterosDropdownSelect,AnterosDateRangePicker} from "anteros-react-editors";
 import moment from 'moment'
-import AnterosMultiSelect from '../AnterosMultiSelect'
+// import AnterosMultiSelect from '../AnterosMultiSelect'
 
 export class AnterosQueryBuilder extends React.Component {
   constructor(props) {

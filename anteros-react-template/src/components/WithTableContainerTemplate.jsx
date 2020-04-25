@@ -467,7 +467,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onButtonClick(event, button) {
-        if (button.props.id === 'btnAdd') {
+        if (button.props.id === 'btnView') {
+          if (WrappedComponent.prototype.hasOwnProperty('onCustomView') === true) {
+            this.onCustomView(button.props.route);
+            return;
+          }
+        } else if (button.props.id === 'btnAdd') {
           if (WrappedComponent.prototype.hasOwnProperty('onCustomAdd') === true) {
             this.onCustomAdd(button.props.route);
             return;
@@ -876,6 +881,26 @@ class UserActions extends Component {
         {this.props.positionUserActions === 'first'
           ? this.props.userActions
           : null}
+        {this.props.routes.edit ? (
+          <AnterosButton
+            id="btnView"
+            route={this.props.routes.edit}
+            icon="fal fa-eye"
+            small
+            className="versatil-btn-visualizar"
+            caption={
+              this.props.labelButtonEdit ? this.props.labelButtonEdit : 'Visualizar'
+            }
+            hint={
+              this.props.labelButtonEdit ? this.props.labelButtonEdit : 'Visualizar'
+            }
+            onButtonClick={this.props.onButtonClick}
+            disabled={
+              this.props.dataSource.isEmpty() ||
+              this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+            }
+          />
+        ) : null}
         {this.props.routes.add ? (
           <AnterosButton
             id="btnAdd"

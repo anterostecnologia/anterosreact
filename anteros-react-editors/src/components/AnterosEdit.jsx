@@ -296,7 +296,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                         readOnly={readOnly}
                         maxLength={this.props.maxLength}
                         placeholder={this.props.placeHolder}/>
-                    <div className={classNameAddOn} style={{height: '38px', width:'38px'}} onClick={this.props.onButtonClick}>
+                    <div className={classNameAddOn} style={{height: '38px', width:'38px', ...this.props.styleButton}} onClick={this.props.onButtonClick}>
                         <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick}/></span>
                     </div>
                     {this.displayErrorMessage()}
@@ -373,6 +373,7 @@ AnterosEdit.propTypes = {
     iconColor: PropTypes.string,
     image: PropTypes.string,
     style: PropTypes.object,
+    styleButton: PropTypes.object,
     readOnly: PropTypes.bool.isRequired,
     classNameInput: PropTypes.string,
     pattern: PropTypes.string
