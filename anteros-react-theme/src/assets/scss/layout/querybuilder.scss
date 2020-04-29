@@ -364,3 +364,96 @@
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAAlCAQAAACn+wJeAAAB4UlEQVRIx+2XsWtTURTGrwouLQQDwYLFzT3yJBDoYoVvySQoKFShSHe7qAgqiMn9rcUibnVwEARBl0AgUIh/QXBxFIpKJHAhUBz0HQcf4U0xtZwu+r3l8t4758fHPe/jvhBcRIUuWbFuMKAWnEB9jEQWAk0SRt8LtMo+RmKdhDGiHrzEChOMHGPsiAkhBDbIMXKu+2KaJUfZwcsXD4RJrJFKKHaw6fVmRnmNT5ydC9TDSDRCIGOMMfh9u8pegRmzNKP8NUZvzu+oR6NY19mddqVVgG7MKL5SvHPrcJu3g/F2xvMqowKUOHMYUJXhrAa8Ku1j90/dVFFXxaypoYFqfzFR80h9mZKyENRUkskrgrSqfZmS1pVkGskvG7SiiUy5TGP5RpA2lMuUyzeC1Cw5yrwxSWtKrij1ZEpqhKBMY5kGXqCKeioiSHXtain817+k9gLLLD887ozhLl8xjGG86onZxuIe99jCsHjTCRMvYvF9+1QIIcTz8RuTzmkfP0+jdaYJHW9jXPYBvYj5/ZNlf06HxvgEYzoC8Tk5l1xAnXP8IHVam8faC3GTn3x5cMJr6q5h0fjI5+L4suU24PFCfMkHhvExHQyL20eQEfERhsVncdEfdYfvGK2jcPUOK/+A/QJb5yp50uoC6QAAAABJRU5ErkJggg==) -42px 1px no-repeat;
   font-size: 1px;
 }
+
+.custom-select-field {
+    height: 25px;
+    padding: 2px;
+    cursor: pointer;
+    white-space: pre;
+    background-color: rgba(51, 122, 183, .3);
+    color: #333;
+    border-radius: 5px;
+    line-height: 1.35715;
+    position: relative;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    font-size: 14px
+}
+
+.custom-select-operator {
+    height: 25px;
+    padding: 2px;
+    margin: 4px;
+    cursor: pointer;
+    white-space: pre;
+    background-color: rgba(92, 184, 92, .5);
+    color: #333;
+    border-radius: 5px;
+    line-height: 1.35715;
+    position: relative;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    font-size: 14px;
+}
+
+.rule-remove {
+    color: rgba(217, 83, 79, .5);
+    cursor: pointer;
+    margin: 4px;
+}
+
+.value-editor-edit {
+    font-size: 14px !important;
+    height: 28px !important;
+    padding: 4px;
+}
+
+.rules-list {
+    padding-inline-start: 28px;
+}
+
+.sort-body {
+    background-color: #F0F3F6;
+    height: calc(100% - 40px);
+    padding: 4px;
+}
+
+.sort-header {
+    background-color: white;
+    height: 40px;
+    border-bottom: 1px solid #cfd8dc;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.sort-group-container {
+    height: 100%;
+    margin-left: 2px;
+    margin-right: 222px;
+    border: 1px solid #cfd8dc;
+    width: 98%;
+}
+ 
+.filter-apply {
+    height: 56px;
+    border: 1px solid #cfd8dc;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.react-calendar {
+    width: 350px;
+    max-width: 100%;
+    background: white;
+    border: 1px solid #cfd8dc;
+    font-family: 'Poppins', 'Lato', 'PT Sans', 'Nunito', sans-serif;
+    line-height: 1.125em;
+}

@@ -1,26 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { processErrorMessage, AnterosError } from 'anteros-react-core';
+import { AnterosRemoteDatasource, dataSourceEvents, DATASOURCE_EVENTS, dataSourceConstants } from 'anteros-react-datasource';
+import { AnterosQueryBuilder, AnterosQueryBuilderData, AnterosFilterDSL } from 'anteros-react-querybuilder';
+import { processErrorMessage, AnterosError, autoBind } from 'anteros-react-core';
 import { AnterosModal, ModalActions } from 'anteros-react-containers';
 import { AnterosRow, AnterosCol } from 'anteros-react-layout';
 import { AnterosPagination } from 'anteros-react-navigation';
 import { AnterosAlert } from 'anteros-react-notification';
 import { AnterosMasonry } from 'anteros-react-masonry';
 import { AnterosButton } from 'anteros-react-buttons';
-import { autoBind } from 'anteros-react-core';
-import {
-    AnterosQueryBuilder,
-    AnterosQueryBuilderData,
-    AnterosFilterDSL,
-    CustomFilter
-} from 'anteros-react-querybuilder';
-import {
-    AnterosRemoteDatasource,
-    dataSourceEvents,
-    DATASOURCE_EVENTS,
-    dataSourceConstants
-} from 'anteros-react-datasource';
 
 const defaultValues = {
     openDataSourceFilter: true,
@@ -354,13 +343,6 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                 }
             }
 
-            onToggleFilter(opened) {
-                this.onResize(
-                    this.card.getCardBlockWidth(),
-                    this.card.getCardBlockHeight()
-                );
-            }
-
             getSortFields() {
                 if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== '') {
                     return this.filterRef.current.getQuickFilterSort();
@@ -576,43 +558,55 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
 
                         <div>
                             {loadingProps.withFilter ? (
-                                <AnterosQueryBuilder
-                                    query={this.props.query}
-                                    sort={this.props.sort}
-                                    ref={this.filterRef}
-                                    id={loadingProps.filterName}
-                                    formName={loadingProps.viewName}
-                                    activeSortIndex={this.props.activeSortIndex}
-                                    dataSource={this.dsFiltro}
-                                    activeFilter={this.props.activeFilter}
-                                    onSaveFilter={this.onSaveFilter}
-                                    onSelectActiveFilter={this.onSelectActiveFilter}
-                                    onQueryChange={this.onQueryChange}
-                                    onSortChange={this.onSortChange}
-                                    quickFilterWidth="50%"
-                                    onQuickFilter={this.onQuickFilter}
-                                    quickFilterText={this.props.quickFilterText}
-                                    height="170px"
-                                    allowSort={true}
-                                    disabled={
-                                        this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                    }
-                                    onSearchButtonClick={this.onSearchButtonClick}
-                                >
-                                    <CustomFilter>{this.getCustomFilter ? this.getCustomFilter() : null}</CustomFilter>
-                                    <AnterosButton
-                                        id="btnSelecionar"
-                                        icon="fa fa-bolt"
+                                <div style={{
+                                    display: 'flex',
+                                    flexFlow: 'row nowrap',
+                                    justifyContent: 'space-between'
+                                }}>
+                                    <div>
+                                        <AnterosButton
+                                            id="btnSelecionar"
+                                            icon="fa fa-bolt"
+                                            disabled={
+                                                this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                                            }
+                                            warning
+                                            onButtonClick={this.onButtonSearch}
+                                        >
+                                            Selecionar
+                                    </AnterosButton>
+                                    </div>
+                                    <AnterosQueryBuilder
+                                        zIndex={50}
+                                        query={this.props.query}
+                                        sort={this.props.sort}
+                                        id={loadingProps.filtroDispositivos}
+                                        formName={loadingProps.viewName}
+                                        ref={this.filterRef}
+                                        activeSortIndex={this.props.activeSortIndex}
+                                        dataSource={this.dsFilter}
+                                        activeFilter={this.props.activeFilter}
+                                        onSaveFilter={this.onSaveFilter}
+                                        onSelectActiveFilter={this.onSelectActiveFilter}
+                                        onQueryChange={this.onQueryChange}
+                                        onSortChange={this.onSortChange}
+                                        onQuickFilter={this.onQuickFilter}
+                                        quickFilterText={this.props.quickFilterText}
+                                        quickFilterWidth={
+                                            loadingProps.quickFilterWidth
+                                                ? loadingProps.quickFilterWidth
+                                                : '30%'
+                                        }
+                                        height="170px"
+                                        allowSort={true}
                                         disabled={
                                             this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                         }
-                                        warning
-                                        onButtonClick={this.onButtonSearch}
+                                        onSearchButtonClick={this.onSearchButtonClick}
                                     >
-                                        Selecionar
-                                    </AnterosButton>
-                                    {this.getFieldsFilter()}
-                                </AnterosQueryBuilder>
+                                        {this.getFieldsFilter()}
+                                    </AnterosQueryBuilder>
+                                </div>
                             ) : null}
 
 
@@ -640,7 +634,6 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                                         : null}
                                 </AnterosMasonry>
                             </div>
-
 
                             <AnterosRow>
                                 <AnterosCol medium={12}>
