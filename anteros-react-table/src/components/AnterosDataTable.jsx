@@ -676,7 +676,7 @@ export default class AnterosDataTable extends Component {
 		) {
 			dataSource = this.props.dataSource.getData();
 		} else {
-			dadataSource = this.props.dataSource;
+			dataSource = this.props.dataSource;
 		}
 		let customOptions = {};
 		if (this.showExportButtons) {
