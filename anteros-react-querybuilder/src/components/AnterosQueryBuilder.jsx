@@ -216,10 +216,10 @@ export class AnterosQueryBuilder extends React.Component {
                 right: '15px',
                 display: 'flex',
                 flexFlow: 'column nowrap',
-                webkitTransition: 'all .5s',
-                mozTransition: 'all .5s',
+                WebkitTransition: 'all .5s',
+                MozTransition: 'all .5s',
                 msTransition: 'all .5s',
-                oTransition: 'all .5s',
+                OTransition: 'all .5s',
                 transition: 'all .5s',
                 zIndex: this.props.zIndex
             }}>
@@ -255,10 +255,10 @@ export class AnterosQueryBuilder extends React.Component {
                     pointerEvents: this.state.expandedFilter ? 'all' : 'none',
                     opacity: this.state.expandedFilter ? 1 : 0,
                     flexFlow: 'column nowrap',
-                    webkitTransition: this.state.expandedFilter ? 'all .75s' : 'none',
-                    mozTransition: this.state.expandedFilter ? 'all .75s' : 'none',
+                    WebkitTransition: this.state.expandedFilter ? 'all .75s' : 'none',
+                    MozTransition: this.state.expandedFilter ? 'all .75s' : 'none',
                     msTransition: this.state.expandedFilter ? 'all .75s' : 'none',
-                    oTransition: this.state.expandedFilter ? 'all .75s' : 'none',
+                    OTransition: this.state.expandedFilter ? 'all .75s' : 'none',
                     transition: this.state.expandedFilter ? 'all .75s' : 'none'
                 }}>
                     <AnterosDetailFilter
