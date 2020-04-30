@@ -653,6 +653,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 }
             }
 
+            onResize(width, height) {
+                let newHeight = height - 120;
+                this.table.resize(width, newHeight);
+            }
+
 
             render() {
                 return (
@@ -660,10 +665,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
                         caption={loadingProps.caption}
                         className="versatil-card-full"
                         ref={ref => (this.card = ref)}
+                        withScroll={false}
                     >
                         <AnterosResizeDetector
                             handleWidth
                             handleHeight
+                            onResize={this.onResize}
                         />
                         <AnterosAlert
                             danger
