@@ -41,6 +41,7 @@ export class AnterosRadioButton extends Component {
                 primary: _this.props.primary,
                 danger: _this.props.danger,
                 secondary: _this.props.secondary,
+                checkedBorderColor: _this.props.checkedBorderColor
             }));
         });
         return (<div className="btn-group" data-toggle="buttons">
@@ -60,7 +61,12 @@ AnterosRadioButton.propTypes = {
     small: PropTypes.bool,
     primary: PropTypes.bool,
     danger: PropTypes.bool,
-    secondary: PropTypes.bool
+    secondary: PropTypes.bool,
+    checkedBorderColor: PropTypes.string
+}
+
+AnterosRadioButton.defaultProps = {
+    checkedBorderColor: 'yellow'
 }
 
 
@@ -155,9 +161,14 @@ export class AnterosRadioButtonItem extends Component {
             icon = (<i data-user={this.props.dataUser} onClick={this.onClick} className={this.props.icon} style={{ color: this.props.iconColor }}></i>);
         }
 
-        return (<label className={className} onClick={this.onClick} aria-pressed={checked} title={this.props.hint} data-placement={this.props.hintPosition}
+        let border;
+        if (this.props.checkedBorderColor && this.props.checked){
+            border = "1px solid "+this.props.checkedBorderColor;
+        }
+
+        return (<label tabIndex={-1} className={className} style={{...this.props.style, border}} onClick={this.onClick} aria-pressed={checked} title={this.props.hint} data-placement={this.props.hintPosition}
             ref={ref => this.button = ref}>
-            <input onClick={this.onClick} type="radio" name="radios" id={index} />{icon}<img data-user={this.props.dataUser} onClick={this.onClick} src={this.props.image} /> {this.props.caption}
+            <input tabIndex={-1} onClick={this.onClick} type="radio" name="radios" id={index} />{icon}<img data-user={this.props.dataUser} onClick={this.onClick} src={this.props.image} /> {this.props.caption}
         </label>);
     }
 }
@@ -190,6 +201,8 @@ AnterosRadioButtonItem.propTypes = {
     image: PropTypes.string,
     caption: PropTypes.string,
     hint: PropTypes.string,
+    style: PropTypes.object,
+    checkedBorderColor: PropTypes.string,
     hintPosition: PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
 };
 
@@ -211,7 +224,8 @@ AnterosRadioButtonItem.defaultProps = {
     image: undefined,
     caption: undefined,
     hintPosition: 'top',
-    checked: false
+    checked: false,
+    style: {}
 }
 
 
