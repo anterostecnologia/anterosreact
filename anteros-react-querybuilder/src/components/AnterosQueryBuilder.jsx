@@ -50,6 +50,9 @@ export class AnterosQueryBuilder extends React.Component {
 
     toggleExpandedFilter = () => {
         this.setState({ expandedFilter: !this.state.expandedFilter })
+        if(this.props.onToggleExpandedFilter){
+            this.props.onToggleExpandedFilter(this.state.expandedFilter);
+        }
     }
 
     getQuickFields() {
@@ -212,8 +215,8 @@ export class AnterosQueryBuilder extends React.Component {
                 height: heightFilter,
                 backgroundColor: 'white',
                 border: this.state.expandedFilter ? '1px solid #cfd8dc' : '1px solid transparent',
-                position: 'absolute',
-                right: '15px',
+                position: this.state.expandedFilter ? 'absolute' : 'relative',
+                right: '25px',
                 display: 'flex',
                 flexFlow: 'column nowrap',
                 WebkitTransition: 'all .5s',

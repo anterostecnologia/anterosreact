@@ -514,6 +514,13 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
             onSearchButtonClick(field, event) { }
 
+            onToggleExpandedFilter(expanded) {
+                this.setState({
+                    ...this.state,
+                    filterExpanded: expanded
+                })
+            }
+
             onDoubleClickTable(data) {
                 if (WrappedComponent.prototype.hasOwnProperty('onCustomDoubleClick') === true) {
                     this.onCustomDoubleClick(data);
@@ -664,6 +671,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     <AnterosCard
                         caption={loadingProps.caption}
                         className="versatil-card-full"
+                        withScroll={true}
                         ref={ref => (this.card = ref)}
                         withScroll={false}
                     >
@@ -719,23 +727,48 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                 <div style={{
                                     display: 'flex',
                                     flexFlow: 'row nowrap',
-                                    justifyContent: 'space-between'
+                                    justifyContent: 'space-between',
+                                    width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)'
                                 }}>
-                                    <UserActions
-                                        dataSource={this.dataSource}
-                                        onButtonClick={this.onButtonClick}
-                                        onButtonSearch={this.onButtonSearch}
-                                        routes={loadingProps.routes}
-                                        allowRemove={loadingProps.disableRemove ? false : true}
-                                        labelButtonAdd={loadingProps.labelButtonAdd}
-                                        labelButtonEdit={loadingProps.labelButtonEdit}
-                                        labelButtonRemove={loadingProps.labelButtonRemove}
-                                        labelButtonSelect={loadingProps.labelButtonSelect}
-                                        positionUserActions={this.positionUserActions}
-                                        userActions={
-                                            this.hasUserActions ? this.getUserActions() : null
-                                        }
-                                    />
+                                    <div style={{
+                                        width: '100%',
+                                        marginRight: '10px'
+                                    }}>
+                                        <UserActions
+                                            dataSource={this.dataSource}
+                                            onButtonClick={this.onButtonClick}
+                                            onButtonSearch={this.onButtonSearch}
+                                            routes={loadingProps.routes}
+                                            allowRemove={loadingProps.disableRemove ? false : true}
+                                            labelButtonAdd={loadingProps.labelButtonAdd}
+                                            labelButtonEdit={loadingProps.labelButtonEdit}
+                                            labelButtonRemove={loadingProps.labelButtonRemove}
+                                            labelButtonSelect={loadingProps.labelButtonSelect}
+                                            positionUserActions={this.positionUserActions}
+                                            userActions={
+                                                this.hasUserActions ? this.getUserActions() : null
+                                            }
+                                        />
+                                        {this.state.filterExpanded ? (
+                                            <AnterosDataTable
+                                                id={'table' + loadingProps.viewName}
+                                                height={'200px'}
+                                                ref={ref => (this.table = ref)}
+                                                dataSource={this.dataSource}
+                                                width="100%"
+                                                enablePaging={false}
+                                                enableSearching={false}
+                                                showExportButtons={false}
+                                                onDoubleClick={this.onDoubleClickTable}
+                                                onSelectRecord={this.handleOnSelectRecord}
+                                                onUnSelectRecord={this.handleOnUnselectRecord}
+                                                onSelectAllRecords={this.handleOnSelectAllRecords}
+                                                onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                                            >
+                                                {this.getColumns()}
+                                            </AnterosDataTable>
+                                        ) : null}
+                                    </div>
                                     <AnterosQueryBuilder
                                         zIndex={50}
                                         query={this.props.query}
@@ -763,6 +796,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                             this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                         }
                                         onSearchButtonClick={this.onSearchButtonClick}
+                                        onToggleExpandedFilter={this.onToggleExpandedFilter}
                                     >
                                         {this.getFieldsFilter()}
                                     </AnterosQueryBuilder>
@@ -793,23 +827,25 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                     </div>
                                 )}
 
-                            <AnterosDataTable
-                                id={'table' + loadingProps.viewName}
-                                height={'200px'}
-                                ref={ref => (this.table = ref)}
-                                dataSource={this.dataSource}
-                                width="100%"
-                                enablePaging={false}
-                                enableSearching={false}
-                                showExportButtons={false}
-                                onDoubleClick={this.onDoubleClickTable}
-                                onSelectRecord={this.handleOnSelectRecord}
-                                onUnSelectRecord={this.handleOnUnselectRecord}
-                                onSelectAllRecords={this.handleOnSelectAllRecords}
-                                onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                            >
-                                {this.getColumns()}
-                            </AnterosDataTable>
+                            {!this.state.filterExpanded ? (
+                                <AnterosDataTable
+                                    id={'table' + loadingProps.viewName}
+                                    height={'200px'}
+                                    ref={ref => (this.table = ref)}
+                                    dataSource={this.dataSource}
+                                    width="100%"
+                                    enablePaging={false}
+                                    enableSearching={false}
+                                    showExportButtons={false}
+                                    onDoubleClick={this.onDoubleClickTable}
+                                    onSelectRecord={this.handleOnSelectRecord}
+                                    onUnSelectRecord={this.handleOnUnselectRecord}
+                                    onSelectAllRecords={this.handleOnSelectAllRecords}
+                                    onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                                >
+                                    {this.getColumns()}
+                                </AnterosDataTable>
+                            ) : null}
                             <WrappedComponent
                                 {...this.props}
                                 ref={ref => (this.wrappedRef = ref)}
