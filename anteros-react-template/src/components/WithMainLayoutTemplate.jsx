@@ -139,6 +139,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                 <AnterosMainLayout
                   onSetOpenSidebar={this.onSetOpen}
                   sidebarOpen={this.state.sidebarOpen}
+                  withoutScroll={true}
                   horizontalMenu={horizontal}
                 >
                   <AnterosNotificationContainer />

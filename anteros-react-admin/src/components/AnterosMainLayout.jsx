@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {AnterosScrollbars} from "anteros-react-containers";
+import { AnterosScrollbars } from "anteros-react-containers";
 import { AnterosUtils } from "anteros-react-core";
 import AnterosSidebarLayout from "./AnterosSidebarLayout";
 import {
@@ -60,13 +60,30 @@ export default class AnterosMainLayout extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {}
+  componentDidUpdate(prevProps) { }
 
   static get componentName() {
     return "AnterosMainLayout";
   }
 
   renderPage() {
+    if (this.props.withoutScroll) {
+      return (<div
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          width: '100%',
+          height: 'calc(100vh - 60px)'
+        }}
+      >
+        <div className="app-page-content">
+          {this.getPageContent()}
+          {this.getPageFooter()}
+        </div>
+      </div>
+      );
+    }
+
     return (
       <AnterosScrollbars
         className="app-scroll"
@@ -105,8 +122,8 @@ export default class AnterosMainLayout extends Component {
   getMainMenu() {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function(child) {
-      if (child.type && child.type.componentName==='AnterosMainMenu') {
+    arrChildren.forEach(function (child) {
+      if (child.type && child.type.componentName === 'AnterosMainMenu') {
         result = child;
       }
     });
@@ -116,11 +133,11 @@ export default class AnterosMainLayout extends Component {
   getPageContent() {
     let result = [];
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function(child) {
-      if ((child.type && child.type.componentName!=='AnterosSidebarContent') &&
-        (child.type && child.type.componentName!=='AnterosMainHeader') &&
-        (child.type && child.type.componentName!== 'AnterosMainMenu') &&
-        (child.type && child.type.componentName!== 'AnterosMainFooter')
+    arrChildren.forEach(function (child) {
+      if ((child.type && child.type.componentName !== 'AnterosSidebarContent') &&
+        (child.type && child.type.componentName !== 'AnterosMainHeader') &&
+        (child.type && child.type.componentName !== 'AnterosMainMenu') &&
+        (child.type && child.type.componentName !== 'AnterosMainFooter')
       ) {
         result.push(child);
       }
@@ -131,8 +148,8 @@ export default class AnterosMainLayout extends Component {
   getPageFooter() {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function(child) {
-      if (child.type && child.type.componentName==='AnterosMainFooter') {
+    arrChildren.forEach(function (child) {
+      if (child.type && child.type.componentName === 'AnterosMainFooter') {
         result = child;
       }
     });
@@ -142,8 +159,8 @@ export default class AnterosMainLayout extends Component {
   getPageHeader() {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function(child) {
-      if (child.type && child.type.componentName==='AnterosMainHeader') {
+    arrChildren.forEach(function (child) {
+      if (child.type && child.type.componentName === 'AnterosMainHeader') {
         result = child;
       }
     });
@@ -153,8 +170,8 @@ export default class AnterosMainLayout extends Component {
   getSidebarContent() {
     let result = null;
     let arrChildren = React.Children.toArray(this.props.children);
-    arrChildren.forEach(function(child) {
-      if (child.type && child.type.componentName==='AnterosSidebarContent') {
+    arrChildren.forEach(function (child) {
+      if (child.type && child.type.componentName === 'AnterosSidebarContent') {
         result = child;
       }
     });

@@ -489,7 +489,7 @@ export default class AnterosDataTable extends Component {
 
 	onUserSelect(e, dt, type, cell, originalEvent) {
 		if (this.props.onTableClick) {
-			this.props.onTableClick(e, _this);
+			this.props.onTableClick(e, this);
 		}
 	}
 
