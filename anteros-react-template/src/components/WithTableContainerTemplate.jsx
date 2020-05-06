@@ -678,7 +678,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
                         <AnterosResizeDetector
                             handleWidth
                             handleHeight
-                            onResize={this.onResize}
                         />
                         <AnterosAlert
                             danger

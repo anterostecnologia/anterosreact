@@ -37,21 +37,17 @@ export class AnterosQueryBuilder extends React.Component {
             schema: {},
             quickFilterText: this.props.quickFilterText,
             showAdvancedFilter: this.props.showAdvancedFilter,
-            selectedFields: this.getQuickFields()
+            selectedFields: this.getQuickFields(),
+            expandedFilter: false,
         };
         autoBind(this);
     }
 
-    state = {
-        quickFilterText: '',
-        expandedFilter: true,
-        selectedFields: []
-    }
-
     toggleExpandedFilter = () => {
-        this.setState({ expandedFilter: !this.state.expandedFilter })
+        let newExpandedFilter = !this.state.expandedFilter;
+        this.setState({ expandedFilter: newExpandedFilter })
         if(this.props.onToggleExpandedFilter){
-            this.props.onToggleExpandedFilter(this.state.expandedFilter);
+            this.props.onToggleExpandedFilter(newExpandedFilter);
         }
     }
 
@@ -215,8 +211,7 @@ export class AnterosQueryBuilder extends React.Component {
                 height: heightFilter,
                 backgroundColor: 'white',
                 border: this.state.expandedFilter ? '1px solid #cfd8dc' : '1px solid transparent',
-                position: this.state.expandedFilter ? 'absolute' : 'relative',
-                right: '25px',
+                position: 'relative',
                 display: 'flex',
                 flexFlow: 'column nowrap',
                 WebkitTransition: 'all .5s',
