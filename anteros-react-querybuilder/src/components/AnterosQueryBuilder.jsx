@@ -51,7 +51,7 @@ export class AnterosQueryBuilder extends React.Component {
     toggleExpandedFilter = () => {
         this.setState({ expandedFilter: !this.state.expandedFilter })
         if(this.props.onToggleExpandedFilter){
-            this.props.onToggleExpandedFilter(this.state.expandedFilter);
+            this.props.onToggleExpandedFilter(!this.state.expandedFilter);
         }
     }
 
@@ -219,11 +219,11 @@ export class AnterosQueryBuilder extends React.Component {
                 right: '25px',
                 display: 'flex',
                 flexFlow: 'column nowrap',
-                WebkitTransition: 'all .5s',
-                MozTransition: 'all .5s',
-                msTransition: 'all .5s',
-                OTransition: 'all .5s',
-                transition: 'all .5s',
+                WebkitTransition: this.state.expandedFilter ? 'all .5s' : 'none',
+                MozTransition: this.state.expandedFilter ? 'all .5s' : 'none',
+                msTransition: this.state.expandedFilter ? 'all .5s' : 'none',
+                OTransition: this.state.expandedFilter ? 'all .5s' : 'none',
+                transition: this.state.expandedFilter ? 'all .5s' : 'none',
                 zIndex: this.props.zIndex
             }}>
                 <div style={{
