@@ -172,8 +172,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                     modalOpen: null,
                     update: Math.random(),
                     idRecord: 0,
-                    contentHeight: '540px',
+                    contentHeight: 'auto',
                     selectedItem: undefined,
+                    filterExpanded: undefined,
                     loading: false
                 };
             }
@@ -575,6 +576,20 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 this.setState({ ...this.state, modalOpen: null });
             }
 
+            onToggleExpandedFilter(expanded) {
+                this.setState({
+                    ...this.state,
+                    filterExpanded: expanded
+                })
+            }
+
+            onResize(width, height){
+                this.setState({
+                    ...this.state,
+                    contentHeight: height - 60
+                })
+            }
+
             render() {
 
                 return (
@@ -582,6 +597,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         caption={loadingProps.caption}
                         className="versatil-card-full"
                         ref={ref => (this.card = ref)}
+                        withScroll={false}
+                        styleBlock={{
+                            height: 'calc(100% - 120px)'
+                        }}
                     >
                         <AnterosResizeDetector
                             handleWidth
@@ -613,6 +632,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                             />
                         </HeaderActions>
                         <AnterosBlockUi
+                            tagStyle={{
+                                height: this.state.filterExpanded ? '100%' : 'auto'
+                            }}
                             styleBlockMessage={{
                                 border: '2px solid white',
                                 width: '200px',
@@ -635,39 +657,76 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                             <div style={{
                                 display: 'flex',
                                 flexFlow: 'row nowrap',
-                                justifyContent: 'space-between'
+                                justifyContent: 'space-between',
+                                width: 'calc(100%)',
+                                height: 'calc(100%)'
                             }}>
-                                <div>
-                                    {this.getPositionUserActions() === 'first'
-                                        ? this.getUserActions()
-                                        : null}
-                                    <AnterosButton
-                                        id="btnAdd"
-                                        route={loadingProps.routes.add}
-                                        icon="fal fa-plus"
-                                        small
-                                        className="versatil-btn-adicionar"
-                                        caption="Adicionar"
-                                        hint="Adicionar"
-                                        onButtonClick={this.onButtonClick}
-                                        disabled={
-                                            this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                        }
-                                    />
-                                    <AnterosButton
-                                        id="btnSelect"
-                                        icon="fal fa-bolt"
-                                        disabled={
-                                            this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                        }
-                                        small
-                                        caption="Selecionar"
-                                        className="versatil-btn-selecionar"
-                                        onButtonClick={this.onButtonSearch}
-                                    />{' '}
-                                    {this.getPositionUserActions() === 'last'
-                                        ? this.getUserActions()
-                                        : null}
+                                <div
+                                    style={{
+                                        width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
+                                    }}
+                                >
+                                    <div>
+                                        {this.getPositionUserActions() === 'first'
+                                            ? this.getUserActions()
+                                            : null}
+                                        <AnterosButton
+                                            id="btnAdd"
+                                            route={loadingProps.routes.add}
+                                            icon="fal fa-plus"
+                                            small
+                                            className="versatil-btn-adicionar"
+                                            caption="Adicionar"
+                                            hint="Adicionar"
+                                            onButtonClick={this.onButtonClick}
+                                            disabled={
+                                                this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                                            }
+                                        />
+                                        <AnterosButton
+                                            id="btnSelect"
+                                            icon="fal fa-bolt"
+                                            disabled={
+                                                this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                                            }
+                                            small
+                                            caption="Selecionar"
+                                            className="versatil-btn-selecionar"
+                                            onButtonClick={this.onButtonSearch}
+                                        />{' '}
+                                        {this.getPositionUserActions() === 'last'
+                                            ? this.getUserActions()
+                                            : null}
+                                    </div>
+
+                                    {this.state.filterExpanded ? (
+                                        <div
+                                            style={{
+                                                height: this.state.contentHeight,
+                                                overflow: 'auto',
+                                                paddingTop: '15px'
+                                            }}
+                                        >
+                                            <AnterosMasonry
+                                                className={'versatil-grid-layout'}
+                                                elementType={'ul'}
+                                                id={'masonry' + loadingProps.viewName}
+                                                options={{
+                                                    transitionDuration: 0,
+                                                    gutter: 10,
+                                                    horizontalOrder: true,
+                                                    isOriginLeft: true
+                                                }}
+                                                disableImagesLoaded={false}
+                                                updateOnEachImageLoad={false}
+                                            >
+                                                {!this.dataSource.isEmpty()
+                                                    ? this.createItems()
+                                                    : null}
+                                            </AnterosMasonry>
+                                        </div>
+                                    ) : null}
+
                                 </div>
 
                                 <AnterosQueryBuilder
@@ -697,35 +756,39 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                                         this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                     }
                                     onSearchButtonClick={this.onSearchButtonClick}
+                                    onToggleExpandedFilter={this.onToggleExpandedFilter}
                                 >
                                     {this.getFieldsFilter()}
                                 </AnterosQueryBuilder>
                             </div>
 
-                            <div
-                                style={{
-                                    height: this.state.contentHeight,
-                                    overflow: 'auto'
-                                }}
-                            >
-                                <AnterosMasonry
-                                    className={'versatil-grid-layout'}
-                                    elementType={'ul'}
-                                    id={'masonry' + loadingProps.viewName}
-                                    options={{
-                                        transitionDuration: 0,
-                                        gutter: 10,
-                                        horizontalOrder: true,
-                                        isOriginLeft: true
+                            {this.state.filterExpanded ? null : (
+                                <div
+                                    style={{
+                                        height: this.state.contentHeight,
+                                        overflow: 'auto',
+                                        paddingTop: '15px'
                                     }}
-                                    disableImagesLoaded={false}
-                                    updateOnEachImageLoad={false}
                                 >
-                                    {!this.dataSource.isEmpty()
-                                        ? this.createItems()
-                                        : null}
-                                </AnterosMasonry>
-                            </div>
+                                    <AnterosMasonry
+                                        className={'versatil-grid-layout'}
+                                        elementType={'ul'}
+                                        id={'masonry' + loadingProps.viewName}
+                                        options={{
+                                            transitionDuration: 0,
+                                            gutter: 10,
+                                            horizontalOrder: true,
+                                            isOriginLeft: true
+                                        }}
+                                        disableImagesLoaded={false}
+                                        updateOnEachImageLoad={false}
+                                    >
+                                        {!this.dataSource.isEmpty()
+                                            ? this.createItems()
+                                            : null}
+                                    </AnterosMasonry>
+                                </div>
+                            )}
                             <WrappedComponent
                                 {...this.props}
                                 state={this.state}
