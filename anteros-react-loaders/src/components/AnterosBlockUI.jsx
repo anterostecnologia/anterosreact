@@ -165,6 +165,7 @@ export default class AnterosBlockUi extends Component {
       renderChildren,
       keepInView,
       styleBlockMessage,
+      tagStyle,
       ...attributes
     } = this.props;
 
@@ -176,6 +177,7 @@ export default class AnterosBlockUi extends Component {
         {...attributes}
         className={classes}
         aria-busy={blocking}
+        style={tagStyle}
         ref={this.setContainer}
       >
         {blocking && (

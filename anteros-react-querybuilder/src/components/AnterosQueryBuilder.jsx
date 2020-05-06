@@ -215,21 +215,23 @@ export class AnterosQueryBuilder extends React.Component {
                 height: heightFilter,
                 backgroundColor: 'white',
                 border: this.state.expandedFilter ? '1px solid #cfd8dc' : '1px solid transparent',
-                position: this.state.expandedFilter ? 'absolute' : 'relative',
-                right: '25px',
+                position: 'relative',
                 display: 'flex',
                 flexFlow: 'column nowrap',
-                WebkitTransition: this.state.expandedFilter ? 'all .5s' : 'none',
-                MozTransition: this.state.expandedFilter ? 'all .5s' : 'none',
-                msTransition: this.state.expandedFilter ? 'all .5s' : 'none',
-                OTransition: this.state.expandedFilter ? 'all .5s' : 'none',
-                transition: this.state.expandedFilter ? 'all .5s' : 'none',
-                zIndex: this.props.zIndex
+                WebkitTransition: this.state.expandedFilter ? 'height .5s' : 'none',
+                MozTransition: this.state.expandedFilter ? 'height .5s' : 'none',
+                msTransition: this.state.expandedFilter ? 'height .5s' : 'none',
+                OTransition: this.state.expandedFilter ? 'height .5s' : 'none',
+                transition: this.state.expandedFilter ? 'height .5s' : 'none',
+                zIndex: this.props.zIndex,
+                overflow: this.state.expandedFilter ? 'hidden auto' : 'unset'
             }}>
                 <div style={{
                     padding: 3, width: 350, height: 51,
                     display: "flex", flexFlow: 'row nowrap', alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    backgroundColor:'white',
+                    position: this.state.expandedFilter ? 'fixed' : 'relative'
                 }}>
                     <AnterosEdit
                         onChange={this.onChangeQuickFilter}
@@ -258,11 +260,12 @@ export class AnterosQueryBuilder extends React.Component {
                     pointerEvents: this.state.expandedFilter ? 'all' : 'none',
                     opacity: this.state.expandedFilter ? 1 : 0,
                     flexFlow: 'column nowrap',
-                    WebkitTransition: this.state.expandedFilter ? 'all .75s' : 'none',
-                    MozTransition: this.state.expandedFilter ? 'all .75s' : 'none',
-                    msTransition: this.state.expandedFilter ? 'all .75s' : 'none',
-                    OTransition: this.state.expandedFilter ? 'all .75s' : 'none',
-                    transition: this.state.expandedFilter ? 'all .75s' : 'none'
+                    marginTop: '51px',
+                    WebkitTransition: this.state.expandedFilter ? 'opacity .75s' : 'none',
+                    MozTransition: this.state.expandedFilter ? 'opacity .75s' : 'none',
+                    msTransition: this.state.expandedFilter ? 'opacity .75s' : 'none',
+                    OTransition: this.state.expandedFilter ? 'opacity .75s' : 'none',
+                    transition: this.state.expandedFilter ? 'opacity .75s' : 'none'
                 }}>
                     <AnterosDetailFilter
                         onChangeCalendar={this.onClickOkCalendar}

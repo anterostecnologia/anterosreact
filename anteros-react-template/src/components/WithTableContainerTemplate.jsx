@@ -176,6 +176,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     alertIsOpen: false,
                     alertMessage: '',
                     loading: false,
+                    width: undefined,
+                    newHeight: undefined,
                     update: Math.random()
                 };
             }
@@ -278,7 +280,13 @@ export default function WithTableContainerTemplate(_loadingProps) {
                         this.dataSource.cancel();
                     }
                 }
-                this.table.refreshData();
+
+                if (this.table1) {
+                    this.table1.refreshData();
+                }
+                if (this.table2) {
+                    this.table2.refreshData();
+                }
 
                 if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
                     this.onDidMount();
@@ -302,8 +310,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
             }
             componentWillReceiveProps(nextProps) {
                 if (this.dataSource) {
-                    if (this.table) {
-                        this.table.refreshData();
+                    if (this.table1) {
+                        this.table1.refreshData();
+                    }
+                    if (this.table2) {
+                        this.table2.refreshData();
                     }
                 }
             }
@@ -519,6 +530,17 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     ...this.state,
                     filterExpanded: expanded
                 })
+
+                setTimeout(() => {
+                    if (this.state.newHeight !== undefined && this.state.width !== undefined) {
+                        if (this.table1) {
+                            this.table1.resize(this.state.width, this.state.newHeight);
+                        }
+                        if (this.table2) {
+                            this.table2.resize(this.state.width, this.state.newHeight);
+                        }
+                    }
+                }, 500)
             }
 
             onDoubleClickTable(data) {
@@ -662,7 +684,19 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
             onResize(width, height) {
                 let newHeight = height - 120;
-                this.table.resize(width, newHeight);
+
+                this.setState({
+                    ...this.state,
+                    width: width,
+                    newHeight: newHeight
+                })
+
+                if (this.table1) {
+                    this.table1.resize(width, newHeight);
+                }
+                if (this.table2) {
+                    this.table2.resize(width, newHeight);
+                }
             }
 
 
@@ -671,9 +705,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     <AnterosCard
                         caption={loadingProps.caption}
                         className="versatil-card-full"
-                        withScroll={true}
-                        ref={ref => (this.card = ref)}
                         withScroll={false}
+                        styleBlock={{
+                            height: 'calc(100% - 120px)'
+                        }}
+                        ref={ref => (this.card = ref)}
                     >
                         <AnterosResizeDetector
                             handleWidth
@@ -705,6 +741,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
                             />
                         </HeaderActions>
                         <AnterosBlockUi
+                            tagStyle={{
+                                height: this.state.filterExpanded ? '100%' : 'auto'
+                            }}
                             styleBlockMessage={{
                                 border: '2px solid white',
                                 width: '200px',
@@ -728,11 +767,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                     display: 'flex',
                                     flexFlow: 'row nowrap',
                                     justifyContent: 'space-between',
-                                    width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)'
+                                    width: 'calc(100%)',
+                                    height: 'calc(100%)'
                                 }}>
                                     <div style={{
-                                        width: '100%',
-                                        marginRight: '10px'
+                                        width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
                                     }}>
                                         <UserActions
                                             dataSource={this.dataSource}
@@ -753,7 +792,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                             <AnterosDataTable
                                                 id={'table' + loadingProps.viewName}
                                                 height={'200px'}
-                                                ref={ref => (this.table = ref)}
+                                                ref={ref => (this.table1 = ref)}
                                                 dataSource={this.dataSource}
                                                 width="100%"
                                                 enablePaging={false}
@@ -831,7 +870,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                 <AnterosDataTable
                                     id={'table' + loadingProps.viewName}
                                     height={'200px'}
-                                    ref={ref => (this.table = ref)}
+                                    ref={ref => (this.table2 = ref)}
                                     dataSource={this.dataSource}
                                     width="100%"
                                     enablePaging={false}
