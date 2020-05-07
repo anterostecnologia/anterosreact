@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getUserLocale } from 'get-user-locale';
+import {AnterosIcon} from "anteros-react-image";
 
 import {
   getCenturyLabel,
@@ -135,7 +136,7 @@ export default function Navigation({
           onClick={onClickPrevious2}
           type="button"
         >
-          {prev2Label}
+          <AnterosIcon icon="fas fa-angle-double-left"/>
         </button>
       )}
       <button
@@ -145,7 +146,7 @@ export default function Navigation({
         onClick={onClickPrevious}
         type="button"
       >
-        {prevLabel}
+        <AnterosIcon icon="fas fa-angle-left"/>
       </button>
       <button
         aria-label={navigationAriaLabel}
@@ -172,7 +173,7 @@ export default function Navigation({
         onClick={onClickNext}
         type="button"
       >
-        {nextLabel}
+        <AnterosIcon icon="fas fa-angle-right"/>
       </button>
       {next2Label !== null && shouldShowPrevNext2Buttons && (
         <button
@@ -182,7 +183,7 @@ export default function Navigation({
           onClick={onClickNext2}
           type="button"
         >
-          {next2Label}
+          <AnterosIcon icon="fas fa-angle-double-right"/>
         </button>
       )}
     </div>

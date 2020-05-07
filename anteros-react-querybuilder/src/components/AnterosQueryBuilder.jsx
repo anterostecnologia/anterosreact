@@ -46,7 +46,7 @@ export class AnterosQueryBuilder extends React.Component {
     toggleExpandedFilter = () => {
         let newExpandedFilter = !this.state.expandedFilter;
         this.setState({ expandedFilter: newExpandedFilter })
-        if(this.props.onToggleExpandedFilter){
+        if (this.props.onToggleExpandedFilter) {
             this.props.onToggleExpandedFilter(newExpandedFilter);
         }
     }
@@ -226,7 +226,7 @@ export class AnterosQueryBuilder extends React.Component {
                     padding: 3, width: 350, height: 51,
                     display: "flex", flexFlow: 'row nowrap', alignItems: "center",
                     justifyContent: "center",
-                    backgroundColor:'white',
+                    backgroundColor: 'white',
                     position: this.state.expandedFilter ? 'fixed' : 'relative'
                 }}>
                     <AnterosEdit
@@ -392,7 +392,11 @@ class AnterosFastFilter extends React.Component {
                         {this.renderCheckboxFields()}
                     </AnterosFormGroup>
                 </div>
-                <div>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
                     <AnterosCalendar
                         className={calendarClassName}
                         selectRange
