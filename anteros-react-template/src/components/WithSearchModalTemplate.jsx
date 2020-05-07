@@ -565,7 +565,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                     justifyContent: 'space-between',
                                     paddingBottom: '15px',
                                     width: 'calc(100%)',
-                                    height: this.state.filterExpanded ? '350px' : 'calc(100%)'
+                                    height: this.state.filterExpanded ? '500px' : 'calc(100%)'
                                 }}>
                                     <div style={{
                                         width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
