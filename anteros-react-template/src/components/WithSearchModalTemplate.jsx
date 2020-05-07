@@ -141,6 +141,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                     alertIsOpen: false,
                     alertMessage: '',
                     modalOpen: '',
+                    filterExpanded: undefined,
                     modalCallback: null
                 };
 
@@ -490,6 +491,13 @@ export default function WithSearchModalTemplate(_loadingProps) {
                 }
             }
 
+            onToggleExpandedFilter(expanded) {
+                this.setState({
+                    ...this.state,
+                    filterExpanded: expanded
+                })
+            }
+
             render() {
                 let modalOpen = this.props.modalOpen;
                 if (modalOpen && modalOpen.includes('#')) {
@@ -519,6 +527,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
                         showContextIcon={false}
                         isOpen={modalOpen === loadingProps.viewName}
                         onCloseButton={this.onCloseButton}
+                        withScroll={false}
+                        hideExternalScroll={true}
                     >
                         <AnterosAlert
                             danger
@@ -536,10 +546,10 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                 : null}
                             <AnterosButton success dataUser="btnOK" onClick={this.onClick}>
                                 OK
-              </AnterosButton>{' '}
+                            </AnterosButton>{' '}
                             <AnterosButton danger dataUser="btnCancel" onClick={this.onClick}>
                                 Fechar
-              </AnterosButton>
+                            </AnterosButton>
                             {this.positionUserActions === 'last'
                                 ? this.hasUserActions
                                     ? this.getUserActions()
@@ -552,20 +562,44 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                 <div style={{
                                     display: 'flex',
                                     flexFlow: 'row nowrap',
-                                    justifyContent: 'space-between'
+                                    justifyContent: 'space-between',
+                                    paddingBottom: '15px',
+                                    width: 'calc(100%)',
+                                    height: this.state.filterExpanded ? '350px' : 'calc(100%)'
                                 }}>
-                                    <div>
-                                        <AnterosButton
-                                            id="btnSelecionar"
-                                            icon="fa fa-bolt"
-                                            disabled={
-                                                this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                            }
-                                            warning
-                                            onButtonClick={this.onButtonSearch}
-                                        >
-                                            Selecionar
+                                    <div style={{
+                                        width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
+                                    }}>
+                                        <div>
+                                            <AnterosButton
+                                                id="btnSelecionar"
+                                                icon="fa fa-bolt"
+                                                disabled={
+                                                    this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                                                }
+                                                warning
+                                                onButtonClick={this.onButtonSearch}
+                                            >
+                                                Selecionar
                                         </AnterosButton>
+                                        </div>
+                                        {this.state.filterExpanded ? (
+                                            <AnterosDataTable
+                                                id={'tb' + loadingProps.viewName}
+                                                height="296px"
+                                                dataSource={this.dataSource}
+                                                width="100%"
+                                                enablePaging={false}
+                                                enableSearching={false}
+                                                showExportButtons={false}
+                                                onSelectRecord={this.onSelectRecord}
+                                                onUnSelectRecord={this.onUnSelectRecord}
+                                                onSelectAllRecords={this.onSelectAllRecords}
+                                                onUnSelectAllRecords={this.onUnSelectAllRecords}
+                                            >
+                                                {this.getColumns()}
+                                            </AnterosDataTable>
+                                        ) : null}
                                     </div>
 
                                     <AnterosQueryBuilder
@@ -595,27 +629,30 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                             this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                         }
                                         onSearchButtonClick={this.onSearchButtonClick}
+                                        onToggleExpandedFilter={this.onToggleExpandedFilter}
                                     >
                                         {this.getFieldsFilter()}
                                     </AnterosQueryBuilder>
                                 </div>
                             ) : null}
 
-                            <AnterosDataTable
-                                id={'tb' + loadingProps.viewName}
-                                height="350px"
-                                dataSource={this.dataSource}
-                                width="100%"
-                                enablePaging={false}
-                                enableSearching={false}
-                                showExportButtons={false}
-                                onSelectRecord={this.onSelectRecord}
-                                onUnSelectRecord={this.onUnSelectRecord}
-                                onSelectAllRecords={this.onSelectAllRecords}
-                                onUnSelectAllRecords={this.onUnSelectAllRecords}
-                            >
-                                {this.getColumns()}
-                            </AnterosDataTable>
+                            {this.state.filterExpanded ? null : (
+                                <AnterosDataTable
+                                    id={'tb' + loadingProps.viewName}
+                                    height="350px"
+                                    dataSource={this.dataSource}
+                                    width="100%"
+                                    enablePaging={false}
+                                    enableSearching={false}
+                                    showExportButtons={false}
+                                    onSelectRecord={this.onSelectRecord}
+                                    onUnSelectRecord={this.onUnSelectRecord}
+                                    onSelectAllRecords={this.onSelectAllRecords}
+                                    onUnSelectAllRecords={this.onUnSelectAllRecords}
+                                >
+                                    {this.getColumns()}
+                                </AnterosDataTable>
+                            )}
                             <AnterosRow>
                                 <AnterosCol medium={12}>
                                     <AnterosPagination

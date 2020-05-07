@@ -568,7 +568,7 @@ render() {
               cssModule={cssModule}
               className={AnterosUtils.mapToCssModules(AnterosUtils.buildClassNames('modal', modalClassName), cssModule)}
               innerRef={innerRef}
-              style={{width: '100%', display: 'block'}}
+              style={{width: '100%', display: 'block', overflow: this.props.hideExternalScroll ? 'hidden' : 'auto'}}
             >
               {external}
               {this.renderModalDialog()}
