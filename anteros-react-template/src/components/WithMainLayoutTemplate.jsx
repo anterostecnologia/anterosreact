@@ -14,7 +14,7 @@ import { AnterosNotificationContainer } from 'anteros-react-notification';
 import { connect } from 'react-redux';
 import { autoBind, AnterosError } from 'anteros-react-core';
 
-const defaultProps = {menuHorizontal:false, showInputSearch: true};
+const defaultProps = {menuHorizontal:false, showInputSearch: true, showUserBlock: true};
 
 export default function WithMainLayoutTemplate(_loadingProps) {
     let loadingProps = {...defaultProps, ..._loadingProps}
@@ -189,7 +189,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                       logoNormal={loadingProps.logo}
                       selectedSidebarImage={loadingProps.selectedSidebarImage}
                     >
-                      <AnterosUserBlock
+                      {loadingProps.showUserBlock?<AnterosUserBlock
                         userName={
                           this.props.authenticated ? this.props.user.profile.name : ''
                         }
@@ -207,9 +207,9 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                         { Actions ? (
                             Actions
                         ) : null }
-                      </AnterosUserBlock>
+                      </AnterosUserBlock>:null}
                       { MainMenu ? (
-                          <MainMenu onSelectMenuItem={this.onSelectMenuItem} visible={this.isMainMenuVisible()}/>
+                          <MainMenu withoutUserBlock={!loadingProps.showUserBlock} onSelectMenuItem={this.onSelectMenuItem} visible={this.isMainMenuVisible()}/>
                       ) : null }
                     </AnterosSidebarContent>
                   )}

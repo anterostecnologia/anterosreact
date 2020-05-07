@@ -79,6 +79,6 @@ export default class AnterosUserBlock extends Component {
 AnterosUserBlock.propTypes = {
   userName: PropTypes.string.isRequired,
   email: PropTypes.string,
-  avatar: PropTypes.string
+  avatar: PropTypes.string,  
 }
 

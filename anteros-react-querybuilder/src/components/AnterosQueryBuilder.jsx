@@ -223,7 +223,7 @@ export class AnterosQueryBuilder extends React.Component {
                 overflow: this.state.expandedFilter ? 'hidden auto' : 'unset'
             }}>
                 <div style={{
-                    padding: 3, width: 350, height: 51,
+                    padding: 3, width: 348, height: 51,
                     display: "flex", flexFlow: 'row nowrap', alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: 'white',
@@ -319,7 +319,11 @@ class AnterosDetailFilter extends React.Component {
         let fieldsFilter = this.convertQueryFields(this.props.children);
         return <div style={{ padding: "10px" }}>
             <AnterosText fontWeight="bold" text="Filtros salvos" />
-            <AnterosList height="140px" />
+            <AnterosList height="105px" />
+            <div className="filter-apply">
+                <AnterosButton id="btnApply" success icon="fad fa-filter" caption="Aplicar" />
+                <AnterosButton id="btnSave" primary icon="fad fa-save" caption="Salvar" />
+            </div>
             <AnterosCheckbox style={{ color: 'crimson' }}
                 value="Avançado"
                 checked={this.state.checked}
@@ -327,16 +331,13 @@ class AnterosDetailFilter extends React.Component {
                 valueUnchecked={false}
                 onCheckboxChange={this.onChange} />
             {this.state.checked ?
-                <AnterosAdvancedFilter width={350} height="450px" horizontal={false} border={"none"}>
+                <AnterosAdvancedFilter width={350} horizontal={false} border={"none"}>
                     <FilterFields>
                         {fieldsFilter}
                     </FilterFields>
                 </AnterosAdvancedFilter>
                 :
                 <AnterosFastFilter {...this.props} />}
-            <div className="filter-apply">
-                <AnterosButton success icon="fad fa-filter" caption="Aplicar filtro" />
-            </div>
         </div>
     }
 }
@@ -382,7 +383,7 @@ class AnterosFastFilter extends React.Component {
     render() {
         const { calendarClassName, ...calendarProps } = this.props;
         return (
-            <div style={{ paddingBottom: '10px', overflowY: 'auto', overflowX: 'hidden', height: "450px" }}>
+            <div style={{ paddingBottom: '10px', overflowY: 'auto', overflowX: 'hidden' }}>
                 <div style={{
                     height: '128px',
                     overflowY: 'auto',
