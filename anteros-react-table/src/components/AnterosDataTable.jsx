@@ -1143,6 +1143,9 @@ export default class AnterosDataTable extends Component {
 		let elementScroll = this.divTable.querySelector(".DTFC_ScrollWrapper");
 		window.$(elementBody).css("max-height", height);
 		window.$(elementScroll).css("height", height + 50);
+		window.$(elementBody).css("width", width);
+		window.$(elementScroll).css("width", width);
+		this.refresh();
 	}
 
 	onTableClick(event) {

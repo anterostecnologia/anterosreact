@@ -19,7 +19,8 @@ const defaultValues = {
     messageLoading: 'Por favor aguarde...',
     withFilter: true,
     fieldsToForceLazy: '',
-    defaultSortFields: ''
+    defaultSortFields: '',
+    layoutReducerName: 'layoutReducer'
 };
 
 export default function WithTableContainerTemplate(_loadingProps) {
@@ -32,7 +33,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
             activeSortIndex,
             activeFilter,
             quickFilterText,
-            needRefresh,
+            needRefresh = false,
+            needUpdateView = false,
             user;
         let reducer = state[loadingProps.reducerName];
         if (reducer) {
@@ -45,6 +47,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
             needRefresh = reducer.needRefresh;
         }
         user = state[loadingProps.userReducerName].user;
+        reducer = state[loadingProps.layoutReducerName];
+        if (reducer) {
+            needUpdateView = reducer.needUpdateView;
+        }
+
         return {
             dataSource: dataSource,
             query: query,
@@ -53,7 +60,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
             activeFilter: activeFilter,
             quickFilterText: quickFilterText,
             user: user,
-            needRefresh: needRefresh
+            needRefresh: needRefresh,
+            needUpdateView: needUpdateView
         };
     };
 
@@ -309,6 +317,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 }
             }
             componentWillReceiveProps(nextProps) {
+                this.onResize(
+                    this.card.getCardBlockWidth(),
+                    this.card.getCardBlockHeight()
+                  );
+
                 if (this.dataSource) {
                     if (this.table1) {
                         this.table1.refreshData();
@@ -534,10 +547,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 setTimeout(() => {
                     if (this.state.newHeight !== undefined && this.state.width !== undefined) {
                         if (this.table1) {
-                            this.table1.resize(this.state.width, this.state.newHeight);
+                            this.table1.resize(this.state.width-360, this.state.newHeight);
                         }
                         if (this.table2) {
-                            this.table2.resize(this.state.width, this.state.newHeight);
+                            this.table2.resize("100%", this.state.newHeight);
                         }
                     }
                 }, 500)
@@ -547,7 +560,13 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 if (WrappedComponent.prototype.hasOwnProperty('onCustomDoubleClick') === true) {
                     this.onCustomDoubleClick(data);
                 } else if (loadingProps.routes.edit) {
-                    this.props.history.push(loadingProps.routes.edit);
+
+                    if (WrappedComponent.prototype.hasOwnProperty('onCustomView') === true) {
+                        this.onCustomView(button.props.route);
+                        return;
+                    } else {
+                        this.props.history.push(loadingProps.routes.edit);
+                    }
                 }
             }
 
@@ -683,20 +702,19 @@ export default function WithTableContainerTemplate(_loadingProps) {
             }
 
             onResize(width, height) {
-                let newHeight = height - 120;
+                let newHeight = height - 120;   
 
+                if (this.table1) {
+                    this.table1.resize(width-350, newHeight);
+                }
+                if (this.table2) {
+                    this.table2.resize("100%", newHeight);
+                }
                 this.setState({
                     ...this.state,
                     width: width,
                     newHeight: newHeight
                 })
-
-                if (this.table1) {
-                    this.table1.resize(width, newHeight);
-                }
-                if (this.table2) {
-                    this.table2.resize(width, newHeight);
-                }
             }
 
 

@@ -206,6 +206,8 @@ export default class AnterosMainLayout extends Component {
             open={windowWidth <= 1199 ? sidebarOpen : false}
             docked={windowWidth > 1199 ? sidebarDocked : false}
             pullRight={rtlLayout}
+            menuOpened={this.props.menuOpened}
+            visible={this.props.sidebarVisible}
             onSetOpen={onSetOpenSidebar}
             styles={{ content: { overflowY: "" } }}
             contentClassName={AnterosUtils.buildClassNames({

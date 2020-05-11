@@ -48,6 +48,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             activeSortIndex,
             activeFilter,
             quickFilterText,
+            needUpdateView=false,
             user;
         let reducer = state[loadingProps.reducerName];
         if (reducer) {
@@ -59,6 +60,12 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             quickFilterText = reducer.quickFilterText;
         }
         user = state[loadingProps.userReducerName].user;
+
+        reducer = state[loadingProps.layoutReducerName];
+        if (reducer) {
+            needUpdateView = reducer.needUpdateView;
+        }
+
         return {
             dataSource: dataSource,
             query: query,
@@ -66,7 +73,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             activeSortIndex: activeSortIndex,
             activeFilter: activeFilter,
             quickFilterText: quickFilterText,
-            user: user
+            user: user,
+            needUpdateView: needUpdateView
         };
     };
 
@@ -260,6 +268,13 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         this.dataSource.setAjaxPageConfigHandler(null);
                     }
                 }
+            }
+
+            componentWillReceiveProps(nextProps) {
+                this.onResize(
+                    this.card.getCardBlockWidth(),
+                    this.card.getCardBlockHeight()
+                  );
             }
 
             onQueryChange(query) {

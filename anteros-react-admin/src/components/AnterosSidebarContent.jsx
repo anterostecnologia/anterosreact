@@ -20,12 +20,14 @@ export default class AnterosSidebarContent extends Component {
     const {
       enableSidebarBackgroundImage,
       selectedSidebarImage,
-      isDarkSidenav
+      isDarkSidenav,
+      style,
     } = this.props;
     if (
       enableSidebarBackgroundImage !== nextProps.enableSidebarBackgroundImage ||
       selectedSidebarImage !== nextProps.selectedSidebarImage ||
-      isDarkSidenav !== nextProps.isDarkSidenav
+      isDarkSidenav !== nextProps.isDarkSidenav ||
+      style !== nextProps.style
     ) {
       return true;
     } else {
@@ -70,7 +72,7 @@ export default class AnterosSidebarContent extends Component {
       children,
       visible
     } = this.props;
-    let newStyle = {};
+    let newStyle = this.props.style?this.props.style:{};
     if (enableSidebarBackgroundImage) {
       newStyle = { ...newStyle, background: `url(${selectedSidebarImage})` };
     }
@@ -96,14 +98,9 @@ export default class AnterosSidebarContent extends Component {
               'sidebar-overlay-light': !isDarkSidenav
             })}
           >
-            <AnterosScrollbars
-              className="app-scroll"
-              autoHide
-              autoHideDuration={100}
-              style={{ height: 'calc(100vh - 60px)' }}
-            >
+            <div className="app-scroll" style={{ height: '100vh', overflow: 'hidden' }}>
               {children}
-            </AnterosScrollbars>
+            </div>            
           </div>
         </div>
       </Fragment>

@@ -141,13 +141,13 @@ export default class AnterosImage extends Component {
                 style = { ...style, marginBottom: this.props.marginBottom }
             }
             if (this.props.marginTop) {
-                style = { ...style, marginBottom: this.props.marginTop }
+                style = { ...style, marginTop: this.props.marginTop }
             }
             if (this.props.marginLeft) {
-                style = { ...style, marginBottom: this.props.marginLeft }
+                style = { ...style, marginLeft: this.props.marginLeft }
             }
             if (this.props.marginRight) {
-                style = { ...style, marginBottom: this.props.marginRight }
+                style = { ...style, marginRight: this.props.marginRight }
             }
             return (
             <div>
@@ -163,16 +163,6 @@ export default class AnterosImage extends Component {
         }
     }
 }
-
-{/*<img ref={ref => this.image = ref}
-                className={className}
-                src={this.props.src}
-                style={style}
-                onMouseOut={this.onMouseOut}
-                onMouseOver={this.onMouseOver}>
-                {this.props.children}
-            </img>*/}
-
 
 AnterosImage.propTypes = {
     maxWidth: PropTypes.string,

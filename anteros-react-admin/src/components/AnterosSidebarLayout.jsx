@@ -20,7 +20,7 @@ const defaultStyles = {
     transition: 'transform .3s ease-out',
     WebkitTransition: '-webkit-transform .3s ease-out',
     willChange: 'transform',
-    overflowY: 'auto',
+    overflowY: 'hidden',
   },
   content: {
     position: 'absolute',
@@ -57,7 +57,7 @@ export default class AnterosSidebarLayout extends Component {
     super(props);
 
     this.state = {
-      sidebarWidth: props.defaultSidebarWidth,
+      sidebarWidth: props.menuOpened ? 350 : 60,
       touchIdentifier: null,
       touchStartX: null,
       touchStartY: null,
@@ -78,14 +78,14 @@ export default class AnterosSidebarLayout extends Component {
     this.setState({
       dragSupported: typeof window === 'object' && 'ontouchstart' in window,
     });
-    this.saveSidebarWidth();
   }
 
-  componentDidUpdate() {
-    if (!this.isTouching()) {
-      this.saveSidebarWidth();
+  componentWillReceiveProps(nextProps){
+    if (nextProps.menuOpened !== this.props.menuOpened){
+      this.setState({...this.state, sidebarWidth: nextProps.menuOpened ? 350 : 60});
     }
   }
+
 
   onTouchStart(ev) {
     if (!this.isTouching()) {
@@ -245,10 +245,11 @@ export default class AnterosSidebarLayout extends Component {
         sidebarStyle.transform = `translateX(0%)`;
         sidebarStyle.WebkitTransform = `translateX(0%)`;
       }
+      
       if (this.props.pullRight) {
-        contentStyle.right = `${this.state.sidebarWidth}px`;
+        contentStyle.right = this.props.visible?`${this.state.sidebarWidth}px`:'0px';
       } else {
-        contentStyle.left = `${this.state.sidebarWidth}px`;
+        contentStyle.left = this.props.visible?`${this.state.sidebarWidth}px`:'0px';
       }
     } else if (this.props.open) {
       sidebarStyle.transform = `translateX(0%)`;
