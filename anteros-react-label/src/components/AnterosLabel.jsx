@@ -20,7 +20,7 @@ export default class AnterosLabel extends Component {
 
 AnterosLabel.propTypes = {
     caption: PropTypes.string.isRequired,
-    textAlign: PropTypes.oneOf(['left', 'right']),
+    textAlign: PropTypes.oneOf(['left', 'right', 'center', 'start', 'end']),
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,

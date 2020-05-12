@@ -12,6 +12,7 @@ import { AnterosMasonry } from 'anteros-react-masonry';
 import { AnterosButton } from 'anteros-react-buttons';
 
 const defaultValues = {
+    allowEmpty: false,
     openDataSourceFilter: true,
     openMainDataSource: true,
     messageLoading: 'Carregando, por favor aguarde...',
@@ -439,7 +440,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
 
             onClick(event) {
                 if (event.target.getAttribute('data-user') === 'btnOK') {
-                    if (!this.state.selectedItem) {
+                    if (!this.state.selectedItem && !loadingProps.allowEmpty) {
                         this.setState({
                             ...this.state,
                             alertIsOpen: true,
