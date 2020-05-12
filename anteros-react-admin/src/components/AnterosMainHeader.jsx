@@ -7,7 +7,7 @@ import {
   AnterosAdvancedDropdownToggle
 } from "anteros-react-buttons";
 import { AnterosText } from "anteros-react-label";
-import AnterosMediaQuery  from "./AnterosMediaQuery";
+import AnterosMediaQuery from "./AnterosMediaQuery";
 import { AnterosToolbar, AnterosToolbarGroup } from "anteros-react-containers";
 import { Link } from "react-router-dom";
 import { AnterosInputSearch } from "anteros-react-querybuilder";
@@ -17,9 +17,9 @@ import { autoBind } from "anteros-react-core";
 
 function isBase64(str) {
   try {
-      return btoa(atob(str)) == str;
+    return btoa(atob(str)) == str;
   } catch (err) {
-      return false;
+    return false;
   }
 }
 
@@ -75,7 +75,7 @@ export default class AnterosMainHeader extends Component {
     });
   }
 
-  static get componentName(){
+  static get componentName() {
     return "AnterosMainHeader";
   }
 
@@ -85,7 +85,7 @@ export default class AnterosMainHeader extends Component {
     let toolbarCenter;
     if (this.props.children) {
       let arrChildren = React.Children.toArray(this.props.children);
-      arrChildren.forEach(function(child) {
+      arrChildren.forEach(function (child) {
         if (child.type && (child.type.componentName === 'UserActions')) {
           userActions = child.props.children;
         } else if (child.type && (child.type.componentName === 'ToolbarEnd')) {
@@ -115,7 +115,6 @@ export default class AnterosMainHeader extends Component {
               medium
               icon="fal fa-bars"
               iconSize="24px"
-              hint="Show code"
               color="white"
               onButtonClick={this.toggleSidebar}
               hintPosition="bottom"
@@ -125,14 +124,13 @@ export default class AnterosMainHeader extends Component {
             medium
             icon="fab fa-buromobelexperte"
             iconSize="24px"
-            hint="Show code"
             color="white"
             hintPosition="bottom"
           />
 
-          {this.props.showInputSearch?<AnterosMediaQuery minDeviceWidth={1224}>
+          {this.props.showInputSearch ? <AnterosMediaQuery minDeviceWidth={1224}>
             <AnterosInputSearch placeHolder="Procurar" />
-          </AnterosMediaQuery>:null}
+          </AnterosMediaQuery> : null}
         </AnterosToolbarGroup>
 
         <AnterosToolbarGroup justifyContent="center">
@@ -141,35 +139,34 @@ export default class AnterosMainHeader extends Component {
 
         <AnterosToolbarGroup justifyContent="end">
           {toolbarEnd}
-          {horizontalMenu || sidebarOpen ? (
-            <AnterosAdvancedDropdown
-              className="user-profile user-menu"
-              isOpen={this.state.userDropdownMenu}
-              toggle={this.toggleUserDropdownMenu}
-            >
-              <AnterosAdvancedDropdownToggle caret>
-                <AnterosImage
-                  src={
-                    imgUser && isB64
-                      ? 'data:image;base64,' + imgUser
-                      : imgUser
-                  }
-                  circle
-                  width="32px"
-                  height="32px"
-                />
-                <AnterosText text={this.props.userName} />
-              </AnterosAdvancedDropdownToggle>
-              <AnterosAdvancedDropdownMenu right>
-                <AnterosUserMenu
-                  userName={this.props.userName}
-                  email={this.props.email}
-                >
-                  {userActions}
-                </AnterosUserMenu>
-              </AnterosAdvancedDropdownMenu>
-            </AnterosAdvancedDropdown>
-          ) : null}
+
+          <AnterosAdvancedDropdown
+            className="user-profile user-menu"
+            isOpen={this.state.userDropdownMenu}
+            toggle={this.toggleUserDropdownMenu}
+          >
+            <AnterosAdvancedDropdownToggle caret>
+              <AnterosImage
+                src={
+                  imgUser && isB64
+                    ? 'data:image;base64,' + imgUser
+                    : imgUser
+                }
+                circle
+                width="42px"
+                height="42px"
+              />
+              <AnterosText text={this.props.userName} fontSize="12px"/>
+            </AnterosAdvancedDropdownToggle>
+            <AnterosAdvancedDropdownMenu right>
+              <AnterosUserMenu
+                userName={this.props.userName}
+                email={this.props.email}
+              >
+                {userActions}
+              </AnterosUserMenu>
+            </AnterosAdvancedDropdownMenu>
+          </AnterosAdvancedDropdown>
         </AnterosToolbarGroup>
       </AnterosToolbar>
     );
@@ -177,11 +174,11 @@ export default class AnterosMainHeader extends Component {
 }
 
 AnterosMainHeader.propTypes = {
-  showInputSearch : PropTypes.bool.isRequired
+  showInputSearch: PropTypes.bool.isRequired
 }
 
 AnterosMainHeader.defaultPropTypes = {
-  showInputSearch : true
+  showInputSearch: true
 }
 
 export class UserActions extends Component {
