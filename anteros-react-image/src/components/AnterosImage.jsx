@@ -125,7 +125,7 @@ export default class AnterosImage extends Component {
                 </div>
             </div>);
         } else {
-            let style = {
+            let style = {...this.props.style,
                 width: this.props.width,
                 height: this.props.height,
                 maxWidth: this.props.maxWidth,

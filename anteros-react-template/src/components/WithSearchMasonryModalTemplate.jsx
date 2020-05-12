@@ -584,14 +584,15 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                                         <div>
                                             <AnterosButton
                                                 id="btnSelecionar"
-                                                icon="fa fa-bolt"
+                                                icon="far fa-sync"
                                                 disabled={
                                                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                                 }
-                                                warning
+                                                secondary
+                                                hint="Atualizar sem filtro"
                                                 onButtonClick={this.onButtonSearch}
                                             >
-                                                Selecionar
+                                                Sem filtro
                                             </AnterosButton>
                                         </div>
 

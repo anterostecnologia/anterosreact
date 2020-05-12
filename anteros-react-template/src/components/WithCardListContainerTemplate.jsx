@@ -959,20 +959,21 @@ class UserActions extends Component {
                 ) : null}
                 <AnterosButton
                     id="btnSelect"
-                    icon="fal fa-bolt"
+                    icon="far fa-sync"
                     disabled={
                         this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                     }
                     small
+                    secondary
                     caption={
                         this.props.labelButtonSelect
                             ? this.props.labelButtonSelect
-                            : 'Selecionar'
+                            : 'Sem filtro'
                     }
                     hint={
                         this.props.labelButtonSelect
                             ? this.props.labelButtonSelect
-                            : 'Selecionar'
+                            : 'Atualizar sem filtro'
                     }
                     className="versatil-btn-selecionar"
                     onButtonClick={this.props.onButtonSearch}

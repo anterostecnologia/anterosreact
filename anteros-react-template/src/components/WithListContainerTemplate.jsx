@@ -474,12 +474,14 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
                                     />
                                     <AnterosButton
                                         id="btnSelect"
-                                        icon="fal fa-bolt"
+                                        icon="far fa-sync"
                                         disabled={
                                             this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                         }
                                         small
-                                        caption="Selecionar"
+                                        secondary
+                                        hint="Atualizar sem filtro"
+                                        caption="Sem filtro"
                                         className="versatil-btn-selecionar"
                                         onButtonClick={this.onButtonSearch}
                                     />
