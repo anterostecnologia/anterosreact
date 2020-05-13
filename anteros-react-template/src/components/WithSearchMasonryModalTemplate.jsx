@@ -229,7 +229,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
             componentDidMount() {
                 this.openData();
                 if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
-                    this.onDidMount();
+                    this.onDidMount(this.dataSource);
                 }
             }
 
