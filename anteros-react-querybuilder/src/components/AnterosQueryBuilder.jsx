@@ -203,6 +203,10 @@ export class AnterosQueryBuilder extends React.Component {
         this.setState({ selectedFields }, () => this.onSearchClick())
     }
 
+    getQuickFilterText(){
+        return this.state.quickFilterText;
+    }
+
     render() {
         const heightFilter = this.state.expandedFilter ? "calc(100%)" : '0px'
         return (
@@ -321,8 +325,8 @@ class AnterosDetailFilter extends React.Component {
             <AnterosText fontWeight="bold" text="Filtros salvos" />
             <AnterosList height="105px" />
             <div className="filter-apply">
-                <AnterosButton id="btnApply" success icon="fad fa-filter" caption="Aplicar" />
-                <AnterosButton id="btnSave" primary icon="fad fa-save" caption="Salvar" />
+                <AnterosButton id="btnApply" success icon="far fa-filter" caption="Aplicar" />
+                <AnterosButton id="btnSave" primary icon="far fa-save" caption="Salvar" />
             </div>
             <AnterosCheckbox style={{ color: 'crimson' }}
                 value="Avançado"

@@ -256,7 +256,7 @@
 	  -webkit-box-pack: center;
 	          justify-content: center;
 	  height: $header-height;
-		// background: $color-primary;
+	  background: $color-primary;	  
 		}
     .app-sidebar .app-sidebar-wrap .top-sidebar .sidebar-user-block {
       padding: 1.25rem; }
@@ -359,6 +359,7 @@
     width: 0; }
   
   .collapsed-sidebar .app-app-content {
+	background: linear-gradient(180deg,#e6e5f2,#bdcbd5);
     width: 100%; }
   
   .custom-dropdown-menu, .notification-icon .custom-dropdown-menu, .cart-icon .custom-dropdown-menu, .app-dropdown .custom-dropdown-menu {
@@ -454,6 +455,10 @@
 		        justify-content: center;
 		height: $header-height;
 		// background: $color-primary; 
+}
+
+.app-app-content {
+	background: linear-gradient(180deg, #e6e5f2, #bdcbd5);
 }
 
 
