@@ -9,15 +9,17 @@
 		box-shadow: none;
 		padding-left: 0px;
 		padding-right: 0px;
+		border-radius: 8px 8px 8px 8px;
+		border: 1px solid #cfd8dc;
 	}
 
 	margin-bottom: $card-margin-bottom;
-	border-radius: 0;
+	border-radius: 8px 8px 8px 8px;
 	border: 1px solid #cfd8dc;
 
 	.card-header {
 		background-image: none;
-		background-color: #ffffff;
+		background-color:#cfd8dc;
 		-webkit-box-align: center;
 		align-items: center;
 		display: -webkit-box;

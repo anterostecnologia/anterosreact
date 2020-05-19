@@ -343,14 +343,22 @@ export class AnterosRow extends Component {
             verticalClass = 'align-items-end';
         }
 
+        let st = {};
+        if (this.props.width){
+            st = {width: this.props.width};
+        }
+        if (this.props.height){
+            st = {...st, height: this.props.height};
+        }
+        if (this.props.style){
+            st = {...st, ...this.props.style};
+        }
+
         const classes = AnterosUtils.buildClassNames(className, noGutters
             ? 'no-gutters'
-            : null, 'row', horizontalClass, verticalClass,);
-            
+            : null, 'row', horizontalClass, verticalClass);            
 
-        return (<Tag {...attributes} className={classes} style={{
-            width, ...this.props.style
-        }}/>);
+        return (<Tag {...attributes} className={classes} style={{...st}}/>);
     };
 }
 

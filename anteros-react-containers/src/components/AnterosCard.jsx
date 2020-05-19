@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 
-
-
 class AnterosCard extends Component {
     constructor(props){
         super(props);
@@ -71,9 +69,30 @@ class AnterosCard extends Component {
         } else if (this.props.image) {
             imageTop = <img src={this.props.image} className="card-image-top" />;
         }
-        let style = { ...this.props.style, height: this.props.height, width: this.props.width, minHeight: this.props.minHeight, minWidth: this.props.minWidth };
+        let style = {};
+
+        if (this.props.height) {
+            style = {...style, height: this.props.height}
+        }
+
+        if (this.props.width) {
+            style = {...style, width: this.props.width}
+        }
+
+        if (this.props.minHeight) {
+            style = {...style, minHeight: this.props.minHeight}
+        }
+
+        if (this.props.minWidth) {
+            style = {...style, minWidth: this.props.minWidth}
+        }
+
         if (!this.props.visible) {
             style = { ...style, display: "none" };
+        }
+
+        if (this.props.style) {
+            style = {...style, ...this.props.style};
         }
 
         let icon;
