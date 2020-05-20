@@ -323,7 +323,9 @@ export default class AnterosList extends Component {
             this.rebuildedChildrens = this.rebuildChildrens();
         }
 
-        return (<div id={this.idList} ref={ref => this.list = ref} tabIndex={-1} className={this.props.showBorder ? "list-group-container" : ""} onKeyDown={this.handleKeyDown} style={{ width: this.props.width, height: this.props.height }}>
+        return (<div id={this.idList} ref={ref => this.list = ref} tabIndex={-1} 
+        className={this.props.showBorder ? "list-group-container" : ""} 
+        onKeyDown={this.handleKeyDown} style={{ width: this.props.width, height: this.props.height, ...this.props.style }}>
             <ul className="list-group" style={{ flexDirection: this.props.horizontal ? "row" : "column" }} >
                 {this.rebuildedChildrens}
             </ul>

@@ -302,10 +302,10 @@ class AnterosMegaMenuTop extends Component {
                 <i className='fa fa-chevron-left mmenu-btn-return-item mmenu-icon'></i>
               </a>
               <span className='mmenu-top-caption'>{this.props.caption}</span>
-              <AnterosIcon icon="mmenu-main-favorite far fa-star" style={selected} onClick={this.onClickOnlyFavorites} />
+              <AnterosIcon icon="mmenu-main-favorite fas fa-star" style={selected} onClick={this.onClickOnlyFavorites} />
             </div>
             :
-            <AnterosIcon icon="mmenu-caption mmenu-list-item-text mmenu-main-favorite far fa-star" style={selected} onClick={this.onClickOnlyFavorites} />}
+            <AnterosIcon icon="mmenu-caption mmenu-list-item-text mmenu-main-favorite fas fa-star" style={selected} onClick={this.onClickOnlyFavorites} />}
         </div>
       </div>
     )
@@ -398,6 +398,7 @@ export class AnterosMegaMenuItem extends Component {
       className = 'mmenu-item-selected';
     }
     let selected = this.isFavorite() ? { color: '#ffea00' } : {};
+    let classNameSelected = this.isFavorite() ? "fas fa-star mmenu-favorite-icon":"far fa-star mmenu-favorite-icon";
     return (
       <li id={this.idItem} className={className} onClick={this.onSelectedItem}>
         <div className='mmenu-caption mmenu-list-item-text' style={this.props.style}
@@ -416,7 +417,7 @@ export class AnterosMegaMenuItem extends Component {
         {children.length === 0 && this.context.menuOpened ?
           <div tabIndex="-1" className='mmenu-favorite' data-placement={this.props.hintPosition}
             data-balloon-pos={this.props.hintPosition} aria-label={this.props.hint}>
-            <i className={`far fa-star mmenu-favorite-icon`} style={selected} onClick={this.onClickFavorite} />
+            <i className={classNameSelected} style={selected} onClick={this.onClickFavorite} />
           </div> : null}
       </li>
     )

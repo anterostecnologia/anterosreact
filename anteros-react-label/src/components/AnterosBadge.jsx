@@ -26,6 +26,8 @@ export default class AnterosBadge extends Component {
             className += " badge-lg";
         } else if (this.props.small) {
             className += " badge-sm";
+        } else if (this.props.medium) {
+            className += " badge-md";
         }
 
         if (this.props.primary) {
@@ -178,6 +180,7 @@ AnterosBadge.propTypes = {
     pillFormat: PropTypes.bool,
     radiusFormat: PropTypes.bool,
     large: PropTypes.bool,
+    medium: PropTypes.bool,
     small: PropTypes.bool,
     backgroundColor: PropTypes.string,
     color: PropTypes.string,
@@ -210,6 +213,7 @@ AnterosBadge.defaultProps = {
     pillFormat: false,
     radiusFormat: false,
     large: false,
+    meidum: false,
     small: false,
     backgroundColor: undefined,
     color: undefined,
