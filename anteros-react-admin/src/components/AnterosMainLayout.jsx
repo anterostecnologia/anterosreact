@@ -88,7 +88,7 @@ export default class AnterosMainLayout extends Component {
       <AnterosScrollbars
         className="app-scroll"
         autoHide
-        autoHideDuration={100}
+        autoHideDuration={200}
         style={this.getScrollBarStyle()}
       >
         <div className="app-page-content">

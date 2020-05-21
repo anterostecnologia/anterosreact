@@ -17,7 +17,8 @@ import { autoBind, AnterosError } from 'anteros-react-core';
 const defaultProps = {
   menuHorizontal: false, showInputSearch: true, showUserBlock: true,
   layoutReducerName: 'layoutReducer',
-  logoSmall : undefined
+  logoSmall : undefined,
+  withoutScroll: true
 };
 
 export default function WithMainLayoutTemplate(_loadingProps) {
@@ -179,7 +180,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             onSetOpenSidebar={this.onSetOpen}
             sidebarOpen={this.state.sidebarOpen}
             sidebarVisible={this.isSideBarVisible()}
-            withoutScroll={true}
+            withoutScroll={loadingProps.withoutScroll}
             menuOpened={this.state.menuOpened}
             horizontalMenu={horizontal}
           >
