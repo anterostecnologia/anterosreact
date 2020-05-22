@@ -1,20 +1,19 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import AnterosScrollbars from "./AnterosScrollbars";
 
 class AnterosCard extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
         this.cardBlock = undefined;
     }
 
-    getCardBlockWidth() {
+    getCardBlockWidth(){
         return this.cardBlock.clientWidth;
     }
 
-    getCardBlockHeight() {
+    getCardBlockHeight(){
         return this.cardBlock.clientHeight;
     }
 
@@ -45,10 +44,10 @@ class AnterosCard extends Component {
             });
         }
 
-        let classNameFooterActions = AnterosUtils.buildClassNames("card-footer", (childFooterActions ? childFooterActions.props.className : null));
-        let styleFooterActions = (childFooterActions ? childFooterActions.props.style : null);
-        if (!footerActionsVisible) {
-            styleFooterActions = { ...styleFooterActions, display: "none" };
+        let classNameFooterActions = AnterosUtils.buildClassNames("card-footer",(childFooterActions?childFooterActions.props.className:null));
+        let styleFooterActions = (childFooterActions?childFooterActions.props.style:null);
+        if (!footerActionsVisible){
+            styleFooterActions = {...styleFooterActions,display:"none"};
         }
 
         let className = AnterosUtils.buildClassNames("card card-default",
@@ -73,19 +72,19 @@ class AnterosCard extends Component {
         let style = {};
 
         if (this.props.height) {
-            style = { ...style, height: this.props.height }
+            style = {...style, height: this.props.height}
         }
 
         if (this.props.width) {
-            style = { ...style, width: this.props.width }
+            style = {...style, width: this.props.width}
         }
 
         if (this.props.minHeight) {
-            style = { ...style, minHeight: this.props.minHeight }
+            style = {...style, minHeight: this.props.minHeight}
         }
 
         if (this.props.minWidth) {
-            style = { ...style, minWidth: this.props.minWidth }
+            style = {...style, minWidth: this.props.minWidth}
         }
 
         if (!this.props.visible) {
@@ -93,12 +92,12 @@ class AnterosCard extends Component {
         }
 
         if (this.props.style) {
-            style = { ...style, ...this.props.style };
+            style = {...style, ...this.props.style};
         }
 
         let icon;
         if (this.props.icon) {
-            icon = (<i style={{ color: this.props.iconColor, fontSize: this.props.iconSize, verticalAlign: "top" }} className={this.props.icon}></i>);
+            icon = (<i style={{ color: this.props.iconColor, fontSize: this.props.iconSize, verticalAlign:"top" }} className={this.props.icon}></i>);
         }
 
         return (
@@ -110,30 +109,17 @@ class AnterosCard extends Component {
                         </div>
 
                         <div className="actions">
-                            {headerActionsVisible ? headerActions : null}
+                            {headerActionsVisible?headerActions:null}
                         </div>
                     </div>
                 </div>) : null}
                 {imageTop}
                 <div ref={ref => (this.cardBlock = ref)} style={this.props.styleBlock}
-                    className={this.props.imageOverlay ? "card-img-overlay" : "card-block-without-scroll"}>
-                    {this.props.withScroll ?
-                        <AnterosScrollbars
-                            className="app-scroll"
-                            autoHide
-                            autoHideDuration={100}
-                            style={this.getScrollBarStyle()}
-                        >
-                            {(this.props.title ? <h4 className="card-title">{this.props.title}</h4> : null)}
-                            {(this.props.subTitle ? <h6 className="card-subtitle">{this.props.subTitle}</h6> : null)}
-                            {(this.props.text ? <p className="card-text">{this.props.text}</p> : null)}
-                            {newChildren}
-                        </AnterosScrollbars> : <Fragment>
-                            {(this.props.title ? <h4 className="card-title">{this.props.title}</h4> : null)}
-                            {(this.props.subTitle ? <h6 className="card-subtitle">{this.props.subTitle}</h6> : null)}
-                            {(this.props.text ? <p className="card-text">{this.props.text}</p> : null)}
-                            {newChildren}
-                        </Fragment>}
+                    className={this.props.imageOverlay ? "card-img-overlay" : (this.props.withScroll == false ? "card-block-without-scroll" : "card-block")}>
+                    {(this.props.title ? <h4 className="card-title">{this.props.title}</h4> : null)}
+                    {(this.props.subTitle ? <h6 className="card-subtitle">{this.props.subTitle}</h6> : null)}
+                    {(this.props.text ? <p className="card-text">{this.props.text}</p> : null)}
+                    {newChildren}
                 </div>
                 {imageBottom}
                 {(footerActions && this.props.showFooter) ? <div className={classNameFooterActions} style={styleFooterActions}>{footerActions}</div> : false}
@@ -152,7 +138,7 @@ AnterosCard.propTypes = {
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     image: PropTypes.string,
-    imageStyle: PropTypes.object,
+    imageStyle : PropTypes.object,
     imageTop: PropTypes.bool,
     imageBottom: PropTypes.bool,
     cardInverse: PropTypes.bool,
@@ -179,7 +165,7 @@ AnterosCard.propTypes = {
     extraLarge: columnProps,
     visible: PropTypes.bool,
     onCardClick: PropTypes.func,
-    icon: PropTypes.string,
+    icon : PropTypes.string,
     iconColor: PropTypes.string,
     iconSize: PropTypes.string,
     captionColor: PropTypes.string,
@@ -193,12 +179,12 @@ AnterosCard.defaultProps = {
     cardInverse: false,
     withScroll: true,
     visible: true,
-    captionColor: "#4f5f6f",
-    captionSize: "inherit"
+    captionColor:"#4f5f6f",
+    captionSize:"inherit"
 }
 
 export class HeaderActions extends Component {
-    static get componentName() {
+    static get componentName(){
         return 'HeaderActions';
     }
     render() {
@@ -208,14 +194,14 @@ export class HeaderActions extends Component {
 
 HeaderActions.propTypes = {
     visible: PropTypes.bool
-};
-
-HeaderActions.defaultProps = {
-    visible: true
-}
+ };
+ 
+ HeaderActions.defaultProps = {
+     visible: true
+ }
 
 export class FooterActions extends Component {
-    static get componentName() {
+    static get componentName(){
         return 'FooterActions';
     }
     render() {
@@ -224,7 +210,7 @@ export class FooterActions extends Component {
 }
 
 FooterActions.propTypes = {
-    visible: PropTypes.bool
+   visible: PropTypes.bool
 };
 
 FooterActions.defaultProps = {
@@ -232,7 +218,7 @@ FooterActions.defaultProps = {
 }
 
 export class AnterosCardGroup extends Component {
-    static get componentName() {
+    static get componentName(){
         return 'AnterosCardGroup';
     }
     render() {
@@ -241,7 +227,7 @@ export class AnterosCardGroup extends Component {
 }
 
 export class AnterosCardDeck extends Component {
-    static get componentName() {
+    static get componentName(){
         return 'AnterosCardDeck';
     }
     render() {
