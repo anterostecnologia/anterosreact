@@ -44,3 +44,13 @@
 		}
 	}
 }
+
+
+.dropdown-menu > div {
+	cursor: pointer;
+  }
+  
+  .dropdown-item.disabled {
+	cursor: not-allowed!important;
+	color: rgb(189, 189, 189) !important;
+  }

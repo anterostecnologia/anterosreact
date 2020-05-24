@@ -40,6 +40,9 @@ export default class AnterosDropdownMenuItem extends Component {
     }
 
     render() {
+        if (!this.props.visible)
+        return null;
+
         let icon;
         if (this.props.icon) {
             icon = (<i className={"icon " + this.props.icon} id={this.idItem3}></i>);
@@ -64,7 +67,8 @@ AnterosDropdownMenuItem.propTypes = {
     image: PropTypes.string,
     caption: PropTypes.string,
     onSelectMenuItem: PropTypes.func,
-    href: PropTypes.string
+    href: PropTypes.string,
+    visible: PropTypes.bool.isRequired
 };
 
 AnterosDropdownMenuItem.defaultProps = {
@@ -72,5 +76,6 @@ AnterosDropdownMenuItem.defaultProps = {
     icon: undefined,
     image: undefined,
     caption: undefined,
-    href: undefined
+    href: undefined,
+    visible: true
 }

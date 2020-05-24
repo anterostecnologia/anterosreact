@@ -1,3 +1,172 @@
-/*********
-***  Tabs
-*********/
+.AnterosTab_container {
+    position: relative;
+    display: block;
+    background-color: #fbfbfb;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 8px 8px 0 0;
+}
+
+/****************************/
+/******** tab styles ********/
+/****************************/
+.AnterosTab_tabs {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #eceff1;
+}
+
+.AnterosTab_accordion {
+    flex-direction: column;
+}
+
+.AnterosTab_tab {
+    background: #eee;
+    border-style: solid;
+    border-color: #ddd;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    z-index: 1;
+    white-space: nowrap;
+    padding: .7em 1em;
+    border: 0;
+}
+
+.AnterosTab_tab:focus {
+    outline: 0;
+    background-color: #e6e6e6;
+}
+
+.AnterosTab_accordion .AnterosTab_tab {
+    border-left-width: 1px;
+}
+
+.AnterosTab_tab--first {
+    border-left-width: 1px;
+}
+
+.AnterosTab_tab--selected {
+    background: #fff;
+    border-color: #ddd #ddd #fff;
+    border-width: 1px 1px 1px 0;
+    border: 1px solid #ddd;
+}
+
+.AnterosTab_tab--selected:focus {
+    background-color: #fff;
+}
+
+.AnterosTab_tab--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.AnterosTab_tab:focus {
+    z-index: 2;
+}
+
+.AnterosTab_tab--selected .AnterosTab_removable {
+    position: relative;
+}
+
+.AnterosTab_tab--selected .AnterosTab_removable-text {
+    margin-right: 10px;
+}
+
+.AnterosTab_tab--selected .AnterosTab_removable-icon {
+    position: absolute;
+    font-size: 18px;
+    right: 0.5em;
+    top: 0.2em;
+}
+
+
+/****************************/
+/********* panel styles *****/
+/****************************/
+.AnterosTab_panel {
+    margin-top: -1px;
+    padding: 1em;
+    border: 0;
+    overflow-x: auto;
+}
+
+.AnterosTab_accordion .AnterosTab_panel {
+    margin-top: 0;
+}
+
+/****************************/
+/******* showmore control ***/
+/****************************/
+.AnterosTab_showmore {
+    background: #eee;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    z-index: 1;
+    white-space: nowrap;
+    margin-left: -1px;
+    position: relative;
+}
+
+.AnterosTab_showmore--selected {
+    background: white;
+    border-bottom: none;
+}
+
+.AnterosTab_showmore-label {
+    padding: .7em 1em;
+    position: relative;
+    bottom: -1px;
+    z-index: 1;
+}
+
+.AnterosTab_showmore-label--selected {
+    background-color: #eee;
+}
+
+.AnterosTab_showmore-list {
+    position: absolute;
+    right: -1px;
+    top: 100%;
+    display: none;
+}
+
+.AnterosTab_showmore-list--opened {
+    display: block;
+}
+
+/****************************/
+/********** inkbar **********/
+/****************************/
+.AnterosTab_inkbar-wrapper {
+    width: 100%;
+}
+
+.AnterosTab_container_tabs {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center;
+    padding-right: 10px;
+    background-color: #eceff1;
+    border-bottom: 1px solid #ddd;
+}
+
+.AnterosTab_actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.AnterosTab_inkbar {
+    position: relative;
+    bottom: 0;
+    height: 2px;
+    margin-top: -2px;
+    margin-left: 10px;
+    background-color: deepskyblue;
+    transition: left 800ms cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 2;
+}
