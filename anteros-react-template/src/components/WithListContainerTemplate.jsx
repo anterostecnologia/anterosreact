@@ -401,7 +401,6 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
                                 icon="fa fa-times"
                                 small
                                 circle
-                                secondary
                                 disabled={
                                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                 }
