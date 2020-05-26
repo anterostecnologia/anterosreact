@@ -168,7 +168,7 @@ export default class AnterosList extends Component {
 
                 let id = record[_this.props.dataFieldId];
                 if (!id){
-                    id = this.idList+"_"+index;
+                    id = _this.idList+"_"+index;
                 }
                 
                 children.push(React.createElement(DynamicComponent,
@@ -183,7 +183,7 @@ export default class AnterosList extends Component {
             } else {
                 let id = record[_this.props.dataFieldId];
                 if (!id){
-                    id = this.idList+"_"+index;
+                    id = _this.idList+"_"+index;
                 }
                 children.push(React.createElement(AnterosListItem, {
                     key: id,
