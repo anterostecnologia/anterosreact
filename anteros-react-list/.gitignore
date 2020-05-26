@@ -1,3 +1,6 @@
+
+package-lock.json
+
 # Logs
 logs
 *.log
@@ -35,6 +38,4 @@ lib
 # Remove some common IDE working directories
 .idea
 .vscode
-lib/anteros-react.css.map
-lib/anteros-react.css.map
-lib/anteros-react.min.css
+lib
