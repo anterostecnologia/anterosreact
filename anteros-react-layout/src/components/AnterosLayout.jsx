@@ -136,7 +136,7 @@ export const columnProps = PropTypes.oneOfType([
 ]);
 
 export const getColumnSizeClass = (isXs, colWidth, colSize) => {
-    return `col-${colWidth}-${colSize}`;
+    return isXs ? `col-${colSize}` : `col-${colWidth}-${colSize}`;
 };
 
 export const getColumnAlignClass = (horizontalAlign) => {
@@ -173,7 +173,7 @@ export function buildGridClassNames(props, useHorizontalClass, attributes) {
                 delete attributes[colWidth];
             
             if (columnProp) {
-                const isXs = !i;
+                const isXs = (colWidth == 'xs');
                 let colClass;
 
                 if (lodash.isObject(columnProp)) {
