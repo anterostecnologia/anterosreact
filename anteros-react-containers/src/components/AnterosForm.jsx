@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {If, Then, AnterosError} from "anteros-react-core";
+import React, { Component } from 'react';
+import { If, Then, AnterosError } from "anteros-react-core";
 import PropTypes from 'prop-types';
-import {AnterosUtils} from 'anteros-react-core';
-import {buildGridClassNames, columnProps} from "anteros-react-layout";
-import {AnterosButton, AnterosDropdownButton} from 'anteros-react-buttons';
+import { AnterosUtils } from 'anteros-react-core';
+import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import { AnterosButton, AnterosDropdownButton } from 'anteros-react-buttons';
 
 export class AnterosBaseInputControl extends React.Component {
     constructor(props) {
@@ -12,9 +12,9 @@ export class AnterosBaseInputControl extends React.Component {
             isPristine: true,
             errorMessage: ""
         }
-        if (React.createRef) 
+        if (React.createRef)
             this.inputRef = React.createRef();
-        else 
+        else
             this.inputRef = (element) => {
                 //Before React 16.3
                 this.inputRefLegacy = element;
@@ -110,9 +110,9 @@ export class AnterosBaseInputControl extends React.Component {
             typeMismatch: "type"
         }
 
-        let {errorMessage} = this.props;
+        let { errorMessage } = this.props;
         let defaultErrorMessage = this.context.validationForm.defaultErrorMessage || {};
-        if (typeof(errorMessage) === "string") 
+        if (typeof (errorMessage) === "string")
             errorMessage = {
                 required: errorMessage
             };
@@ -125,9 +125,9 @@ export class AnterosBaseInputControl extends React.Component {
             let newErrorMessage = "";
             for (let prop in validityState) {
                 if (validityState[prop]) {
-                    if (prop === "customError") 
+                    if (prop === "customError")
                         newErrorMessage = input.validationMessage;
-                    else 
+                    else
                         newErrorMessage = errorMessage[map[prop]];
                     break;
                 }
@@ -157,7 +157,7 @@ export class AnterosBaseInputControl extends React.Component {
                 }
             }
 
-            this.setState({errorMessage: newErrorMessage});
+            this.setState({ errorMessage: newErrorMessage });
         }
     }
 
@@ -214,7 +214,7 @@ export class AnterosBaseInputControl extends React.Component {
     }
 
     _handleChange(e) {
-        if (this.props.onChange) 
+        if (this.props.onChange)
             this.props.onChange(e);
         this.checkError();
     }
@@ -321,7 +321,7 @@ export default class AnterosForm extends Component {
     }
 
     isBaseFormControl(element) {
-        if (typeof element !== "function") 
+        if (typeof element !== "function")
             return false;
         while (Object.getPrototypeOf(element) !== Object.prototype) {
             if (Object.getPrototypeOf(element) === AnterosBaseInputControl) {
@@ -342,10 +342,10 @@ export default class AnterosForm extends Component {
 
     setFormDirty() {
         let form = this.refs.form;
-        if (!form.classList.contains('was-validated')) 
+        if (!form.classList.contains('was-validated'))
             form.classList.add('was-validated');
-        }
-    
+    }
+
     getFormData() {
         let model = {};
         for (let name in this.inputs) {
@@ -393,9 +393,9 @@ export default class AnterosForm extends Component {
         inputs.forEach(input => {
             let inputRef = input.getInputRef();
             let validityState = inputRef.validity;
-            if (!validityState.valid) 
+            if (!validityState.valid)
                 map[inputRef.name] = input;
-            }
+        }
         )
         return map;
     }
@@ -408,7 +408,7 @@ export default class AnterosForm extends Component {
         this.validateInputs();
 
         if (form.checkValidity() === false) {
-            if (this.props.onErrorValidate) 
+            if (this.props.onErrorValidate)
                 this.props.onErrorValidate(formData, this.getErrorInputs(inputArr));
             if (this.props.setFocusOnError) {
                 let firstErrorInput = this.findFirstErrorInput(inputArr);
@@ -417,10 +417,10 @@ export default class AnterosForm extends Component {
                     .focus();
             }
         } else {
-            if (this.props.onValidated) 
+            if (this.props.onValidated)
                 this.props.onValidated(formData, inputArr);
-            }
         }
+    }
 
     resetValidationState(isClearValue) {
         for (let prop in this.inputs) {
@@ -442,7 +442,7 @@ export default class AnterosForm extends Component {
                 .remove("is-invalid");
             inputRef.setCustomValidity("");
             if (isClearValue) {
-                if (inputRef.type == "checkbox") 
+                if (inputRef.type == "checkbox")
                     inputRef.checked = false;
                 inputRef.value = "";
             }
@@ -470,7 +470,7 @@ export default class AnterosForm extends Component {
             ? 'form-inline'
             : false);
 
-        return (<form {...attributes} ref="form" className={classes}/>);
+        return (<form {...attributes} ref="form" className={classes} />);
     }
 }
 
@@ -520,20 +520,19 @@ export class AnterosFormGroup extends Component {
             disabled,
             color,
             check,
+            justifyContent,
             ...attributes
         } = this.props;
 
-        const className = AnterosUtils.buildClassNames(this.props.className, color
-            ? `has-${color}`
-            : false, row
-            ? 'row'
-            : false, check
-            ? 'form-check'
-            : 'form-group', check && disabled
-            ? 'disabled'
-            : false);
+        const className = AnterosUtils.buildClassNames(this.props.className,
+            color ? `has-${color}` : false,
+            row ? 'row' : false,
+            check ? 'form-check' : 'form-group',
+            check && disabled ? 'disabled' : false,
+            justifyContent ? `justify-content-${justifyContent}` : false
+        );
 
-        return (<div {...attributes} className={className}/>);
+        return (<div {...attributes} className={className} />);
     }
 }
 
@@ -543,7 +542,8 @@ AnterosFormGroup.propTypes = {
     disabled: PropTypes.bool,
     tag: PropTypes.string,
     color: PropTypes.string,
-    className: PropTypes.string
+    className: PropTypes.string,
+    justifyContent: PropTypes.oneOf(['start','center','end'])
 };
 
 AnterosFormGroup.defaultProps = {
@@ -579,7 +579,7 @@ export class AnterosInputGroup extends Component {
     }
 
     getChildContext() {
-        return {withinInputGroup: true};
+        return { withinInputGroup: true };
     }
 
     renderAddOn() {
@@ -593,8 +593,8 @@ export class AnterosInputGroup extends Component {
                 <i
                     className={this.props.icon}
                     style={{
-                    color: this.props.iconColor
-                }}></i>
+                        color: this.props.iconColor
+                    }}></i>
             );
         }
         let classNameImage;
@@ -608,7 +608,7 @@ export class AnterosInputGroup extends Component {
                 className={classNameImage}
                 src={this.props.image}
                 height={this.props.imageHeight}
-                width={this.props.imageWidth}/>;
+                width={this.props.imageWidth} />;
         }
 
         return (
@@ -701,7 +701,7 @@ export class AnterosInputGroupAddOn extends Component {
                 .Children
                 .toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if ((child.type && child.type.componentName === 'AnterosButton') || (child.type && child.type.componentName==='AnterosDropdownButton')) {
+                if ((child.type && child.type.componentName === 'AnterosButton') || (child.type && child.type.componentName === 'AnterosDropdownButton')) {
                     found = true;
                 }
             });
@@ -716,8 +716,8 @@ export class AnterosInputGroupAddOn extends Component {
                 <i
                     className={this.props.icon}
                     style={{
-                    color: this.props.iconColor
-                }}></i>
+                        color: this.props.iconColor
+                    }}></i>
             );
         }
         let classNameImage;
@@ -731,7 +731,7 @@ export class AnterosInputGroupAddOn extends Component {
                 className={classNameImage}
                 src={this.props.image}
                 height={this.props.imageHeight}
-                width={this.props.imageWidth}/>
+                width={this.props.imageWidth} />
         }
 
         let className = "input-group-addon";
