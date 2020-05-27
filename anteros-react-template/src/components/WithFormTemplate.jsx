@@ -289,7 +289,6 @@ export default function WithFormTemplate(_loadingProps) {
                 icon="fa fa-times"
                 route={loadingProps.routes.close}
                 small
-                secondary
                 circle
                 onButtonClick={this.onButtonClick}
               />

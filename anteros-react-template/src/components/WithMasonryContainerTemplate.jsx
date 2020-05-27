@@ -640,7 +640,6 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                                 icon="fa fa-times"
                                 small
                                 circle
-                                secondary
                                 disabled={
                                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                 }

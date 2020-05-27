@@ -20,7 +20,7 @@ export default class AnterosList extends Component {
         this.state = { activeIndex: this.props.activeIndex };
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.numberOfItens = 0;
-        this.idList = lodash.uniqueId('list');
+        this.idList = this.props.id ? this.props.id: lodash.uniqueId('list');
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.rebuildChildrens = this.rebuildChildrens.bind(this);
         this.buildChildrensFromDataSource = this.buildChildrensFromDataSource.bind(this);
@@ -168,7 +168,7 @@ export default class AnterosList extends Component {
 
                 let id = record[_this.props.dataFieldId];
                 if (!id){
-                    id = Math.random();
+                    id = _this.idList+"_"+index;
                 }
                 
                 children.push(React.createElement(DynamicComponent,
@@ -183,7 +183,7 @@ export default class AnterosList extends Component {
             } else {
                 let id = record[_this.props.dataFieldId];
                 if (!id){
-                    id = Math.random();
+                    id = _this.idList+"_"+index;
                 }
                 children.push(React.createElement(AnterosListItem, {
                     key: id,
@@ -454,7 +454,8 @@ AnterosList.propTypes = {
     dataFieldId: PropTypes.string,
     activeIndex: PropTypes.number,
     onMouseOver: PropTypes.func,
-    onMouseOut: PropTypes.func
+    onMouseOut: PropTypes.func,
+    id : PropTypes.string
 };
 
 AnterosList.defaultProps = {
