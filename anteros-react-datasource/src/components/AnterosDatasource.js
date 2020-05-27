@@ -62,7 +62,7 @@ const DATASOURCE_EVENTS = [
 
 class AnterosDatasource {
 
-    constructor() {
+    constructor(name) {
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.addEventListener = this.addEventListener.bind(this);
@@ -143,6 +143,11 @@ class AnterosDatasource {
         this.setFieldByName = this.setFieldByName.bind(this);
 
         this._enableListeners = true;
+
+        this.dataSourceName = name;
+        if (!name){
+            this.dataSourceName = "ds"+Math.random();
+        }
     }
 
     setContentProperty(name) {
@@ -746,8 +751,8 @@ class AnterosDatasource {
 }
 
 class AnterosLocalDatasource extends AnterosDatasource {
-    constructor(data) {
-        super();
+    constructor(data, name) {
+        super(name);
         this.open(data);
         this.cloneOnEdit = true;
     }
@@ -848,8 +853,8 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
 
 class AnterosRemoteDatasource extends AnterosDatasource {
-    constructor(ajaxConfig) {
-        super();
+    constructor(ajaxConfig, name) {
+        super(name);
         this.ajaxConfig = ajaxConfig;
         this.ajaxPageConfigHandler = undefined;
         this.ajaxPostConfigHandler = undefined;

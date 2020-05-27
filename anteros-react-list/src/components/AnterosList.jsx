@@ -166,29 +166,32 @@ export default class AnterosList extends Component {
                     compProps = component.props;
                 }
 
-                let id = record[_this.props.dataFieldId];
-                if (!id){
-                    id = _this.idList+"_"+index;
+                let newId = record[_this.props.dataFieldId];
+                if (!newId){
+                    newId = _this.idList+"_"+index;
                 }
+
+                let newKey = _this.idList+"_"+index;
                 
                 children.push(React.createElement(DynamicComponent,
                     {
-                        key: id,
-                        id: id,
+                        key: newKey,
+                        id: newId,
                         active: active,
                         index: index,
                         handleSelectItem: _this.handleSelectItem,
                         recordData: record, ...compProps,  ...rest
                     }));
             } else {
-                let id = record[_this.props.dataFieldId];
-                if (!id){
-                    id = _this.idList+"_"+index;
+                let newId = record[_this.props.dataFieldId];
+                if (!newId){
+                    newId = _this.idList+"_"+index;
                 }
+                let newKey = _this.idList+"_"+index;
                 children.push(React.createElement(AnterosListItem, {
-                    key: id,
+                    key: newKey,
                     disabled: record.disabled,
-                    id: id,
+                    id: newId,
                     index: index,
                     active: active,
                     success: record.success,

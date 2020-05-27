@@ -36,17 +36,51 @@ export default function WithFormTemplate(_loadingProps) {
         },
         setDatasource: dataSource => {
           dispatch(loadingProps.actions.setDatasource(dataSource));
+        },
+        setFilter: (
+          activeFilter,
+          query,
+          sort,
+          activeSortIndex,
+          quickFilterText
+        ) => {
+          dispatch(
+            loadingProps.actions.setFilter(
+              activeFilter,
+              query,
+              sort,
+              activeSortIndex,
+              quickFilterText
+            )
+          );
         }
       };
     }
     return {
       setDatasource: dataSource => {
         dispatch(loadingProps.actions.setDatasource(dataSource));
+      },
+      setFilter: (
+        activeFilter,
+        query,
+        sort,
+        activeSortIndex,
+        quickFilterText
+      ) => {
+        dispatch(
+          loadingProps.actions.setFilter(
+            activeFilter,
+            query,
+            sort,
+            activeSortIndex,
+            quickFilterText
+          )
+        );
       }
     };
   };
 
-  
+
 
   return WrappedComponent => {
     class FormView extends WrappedComponent {
@@ -142,7 +176,7 @@ export default function WithFormTemplate(_loadingProps) {
             cancelButtonText: 'Não',
             focusCancel: false
           })
-            .then(function() {
+            .then(function () {
               _this.setState({
                 ..._this.state,
                 saving: true
@@ -155,7 +189,7 @@ export default function WithFormTemplate(_loadingProps) {
                     ..._this.state,
                     alertIsOpen: true,
                     alertMessage: result,
-                    debugMessage: (debugMessage===""?undefined:debugMessage),
+                    debugMessage: (debugMessage === "" ? undefined : debugMessage),
                     saving: false
                   });
                 } else {
@@ -181,7 +215,7 @@ export default function WithFormTemplate(_loadingProps) {
                 }
               });
             })
-            .catch(function(reason) {
+            .catch(function (reason) {
               // quando apertar o botao "cancelar" cai aqui. Apenas ignora. (sem processamento necessario)
             });
         } else if (button.props.id === 'btnCancel') {
@@ -207,7 +241,7 @@ export default function WithFormTemplate(_loadingProps) {
             cancelButtonText: 'Não',
             focusCancel: true
           })
-            .then(function(isConfirm) {
+            .then(function (isConfirm) {
               if (isConfirm) {
                 if (
                   _this.props.dataSource.getState() !==
@@ -227,7 +261,7 @@ export default function WithFormTemplate(_loadingProps) {
               }
               return;
             })
-            .catch(function(reason) {
+            .catch(function (reason) {
               // quando apertar o botao "cancelar" cai aqui. Apenas ignora. (sem processamento necessario)
             });
         }
@@ -249,30 +283,30 @@ export default function WithFormTemplate(_loadingProps) {
         });
       }
 
-      onDetailClick(event, button){
-          if (this.state.debugMessage){
-            AnterosSweetAlert({
-              title: 'Detalhes do erro',
-              html: '<b>'+this.state.debugMessage+'</b>',
-              width: '1000px'
-            });
-          }      
+      onDetailClick(event, button) {
+        if (this.state.debugMessage) {
+          AnterosSweetAlert({
+            title: 'Detalhes do erro',
+            html: '<b>' + this.state.debugMessage + '</b>',
+            width: '1000px'
+          });
+        }
       }
 
-      componentDidMount(){
-        if ( WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+      componentDidMount() {
+        if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
           this.onDidMount();
         }
       }
 
-      componentWillUnMount(){
-        if ( WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
+      componentWillUnMount() {
+        if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
         }
       }
 
-      update(newState){
-        this.setState({...this.state,...newState});
+      update(newState) {
+        this.setState({ ...this.state, ...newState });
       }
 
       render() {
@@ -299,12 +333,12 @@ export default function WithFormTemplate(_loadingProps) {
               isOpen={this.state.alertIsOpen}
               autoCloseInterval={25000}
               onClose={this.onCloseAlert}
-            >{this.state.debugMessage?
+            >{this.state.debugMessage ?
               <div>
-                {this.state.debugMessage?<AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick}/>:null}
+                {this.state.debugMessage ? <AnterosButton id="dtnDetail" circle small icon="far fa-align-justify" onButtonClick={this.onDetailClick} /> : null}
                 {this.state.alertMessage}
               </div>
-              :this.state.alertMessage}
+              : this.state.alertMessage}
             </AnterosAlert>
             <AnterosBlockUi
               styleBlockMessage={{
@@ -316,10 +350,10 @@ export default function WithFormTemplate(_loadingProps) {
               }}
               styleOverlay={{
                 opacity: 0.1,
-                backgroundColor: 'black' 
+                backgroundColor: 'black'
               }}
               tag="div"
-              blocking={this.state.saving}
+              blocking={this.state.saving || this.state.loading}
               message={this.state.messageLoader}
               loader={
                 <AnterosLoader active type="ball-pulse" color="#02a17c" />
@@ -331,8 +365,10 @@ export default function WithFormTemplate(_loadingProps) {
                   dataSource={this.props.dataSource}
                   loadingProps={loadingProps}
                   onButtonClick={this.onButtonClick}
-                  user={this.props.user}  
-                  update={this.update}                
+                  user={this.props.user}
+                  update={this.update}
+                  setDatasource={this.props.setDatasource}
+                  setFilter={this.props.setFilter}
                 />
               </AnterosForm>
             </AnterosBlockUi>
