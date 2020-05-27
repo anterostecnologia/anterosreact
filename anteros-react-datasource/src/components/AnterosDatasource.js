@@ -1076,7 +1076,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                 if (callback) {
                     callback(error);
                 }
-                throw new Error(error);
+                throw new Error(error.name + ': ' + error.message);
             } else {
                 _this.dispatchEvent(dataSourceEvents.ON_ERROR, error);
             }
