@@ -39,7 +39,7 @@
     "bootstrap": "v4.0.0-alpha.6",
     "bootstrap-colorpicker": "^2.5.2",
     "bootstrap-daterangepicker": "^2.1.25",
-    "bootstrap-maxlength": "^1.6.0",
+    "bootstrap-maxlength": "^1.10.0",
     "bootstrap-select": "^1.12.4",
     "bootstrap-switch": "^3.3.4",
     "chosen-js": "^1.8.2",

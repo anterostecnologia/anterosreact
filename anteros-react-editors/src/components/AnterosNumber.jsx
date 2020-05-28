@@ -231,7 +231,7 @@ class AnterosNumber extends Component {
         />);
 
         if (colClasses.length > 0) {
-            return (<div className={AnterosUtils.buildClassNames(colClasses)}>
+            return (<div style={{...this.props.divStyle}} className={AnterosUtils.buildClassNames(colClasses)}>
                 {number}
             </div>);
         } else {
