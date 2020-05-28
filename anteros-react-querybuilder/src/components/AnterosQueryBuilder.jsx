@@ -38,7 +38,7 @@ export class AnterosQueryBuilder extends React.Component {
             quickFilterText: this.props.quickFilterText,
             showAdvancedFilter: this.props.showAdvancedFilter,
             selectedFields: this.getQuickFields(),
-            expandedFilter: false,
+            expandedFilter: this.props.expandedFilter,
         };
         autoBind(this);
     }
@@ -231,7 +231,7 @@ export class AnterosQueryBuilder extends React.Component {
                     display: "flex", flexFlow: 'row nowrap', alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: 'white',
-                    position: this.state.expandedFilter ? 'fixed' : 'relative'
+                    position: this.state.expandedFilter ? 'absolute' : 'relative'
                 }}>
                     <AnterosEdit
                         onChange={this.onChangeQuickFilter}

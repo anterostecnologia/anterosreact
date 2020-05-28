@@ -62,7 +62,9 @@ export class AnterosPagination extends Component {
     }
 
     onDatasourceEvent(event, error) {
-        this.setState({ ...this.state, currentPage: this.props.dataSource.getCurrentPage(), totalPages: this.props.dataSource.getTotalPages()});
+        this.setState({ ...this.state, 
+            currentPage: this.props.dataSource.getCurrentPage(), 
+            totalPages: this.props.dataSource.getTotalPages(), update: Math.random()});
     }
 
 

@@ -80,6 +80,7 @@ export default class AnterosPageControl extends Component {
 								key: lodash.uniqueId(),
 								active: active,
 								id: child.props.id,
+								style: child.props.style,
 								onTabClick: child.props.onTabClick,
 								onPageChange: _this.props.onPageChange
 							},
@@ -253,7 +254,7 @@ export class AnterosTabContent extends Component {
 			className += " active";
 		}
 		return (
-			<div className={className} id={this.props.id} role="tabpanel">
+			<div className={className} id={this.props.id} role="tabpanel" style={this.props.style}>
 				{this.props.children}
 			</div>
 		);
