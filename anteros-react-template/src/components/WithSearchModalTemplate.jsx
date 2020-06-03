@@ -598,7 +598,6 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                                 disabled={
                                                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                                 }
-                                                warning
                                                 secondary
                                                 onButtonClick={this.onButtonSearch}
                                             >

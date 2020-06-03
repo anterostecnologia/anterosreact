@@ -38,8 +38,7 @@ export default class AnterosImage extends Component {
             scale = (this.props.zoomScale ? this.props.zoomScale : 1);
         }
 
-        let className = (this.props.className ? this.props.className : "");
-        className = AnterosUtils.buildClassNames(
+        let className = AnterosUtils.buildClassNames(this.props.className,
             (this.props.rounded ? "anterosimg-rounded" : ""),
             (this.props.thumbnail ? "anterosimg-thumbnail" : ""),
             (this.props.circle ? "anterosimg-circle" : ""),
