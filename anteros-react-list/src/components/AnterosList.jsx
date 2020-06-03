@@ -145,6 +145,9 @@ export default class AnterosList extends Component {
             // if (!record.hasOwnProperty(_this.props.dataFieldText) || (!record[_this.props.dataFieldText])) {
             //     throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para a Lista.");
             // }
+            if (!record) {
+                return null;
+            }
             let active = (record.active == undefined ? false : record.active);
             if (_this.state.activeIndex >= 0) {
                 active = false;

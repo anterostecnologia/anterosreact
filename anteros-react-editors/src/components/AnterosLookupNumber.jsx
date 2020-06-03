@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'script-loader!bootstrap-maxlength/bootstrap-maxlength.min.js'
+import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";

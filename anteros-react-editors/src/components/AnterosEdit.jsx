@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import 'script-loader!bootstrap-maxlength/bootstrap-maxlength.min.js'
+import React, { Component } from 'react';
+import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
-import {buildGridClassNames, columnProps} from "anteros-react-layout";
-import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
+import { AnterosUtils } from "anteros-react-core";
+import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import PropTypes from 'prop-types';
-import {AnterosBaseInputControl} from 'anteros-react-containers';
+import { AnterosBaseInputControl } from 'anteros-react-containers';
 import AnterosFeedback from './AnterosFeedback';
 
 export default class AnterosEdit extends AnterosBaseInputControl {
@@ -46,7 +46,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
             .bind(this);
     }
 
-    get componentName(){
+    get componentName() {
         return "AnterosEdit";
     }
 
@@ -58,9 +58,9 @@ export default class AnterosEdit extends AnterosBaseInputControl {
             if (!value) {
                 value = '';
             }
-            this.setState({value: value});
+            this.setState({ value: value });
         } else {
-            this.setState({value: nextProps.value});
+            this.setState({ value: nextProps.value });
         }
     }
 
@@ -68,7 +68,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         this._componentDidMount();
         let _this = this;
         if (this.props.maxLength > 0) {
-            $(this.input).maxlength({alwaysShow: true, warningClass: "label label-input-success", limitReachedClass: "label label-input-danger"});
+            $(this.input).maxlength({ alwaysShow: true, warningClass: "label label-input-success", limitReachedClass: "label label-input-danger" });
         }
 
         if (this.props.dataSource) {
@@ -109,7 +109,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         if (!value) {
             value = '';
         }
-        this.setState({value: value});
+        this.setState({ value: value });
     }
 
     handleChange(event) {
@@ -119,9 +119,9 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                 .dataSource
                 .setFieldByName(this.props.dataField, event.target.value);
         } else {
-            this.setState({value: event.target.value});
+            this.setState({ value: event.target.value });
         }
-        
+
         if (this.props.onChange) {
             this
                 .props
@@ -189,8 +189,8 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         return children;
     }
 
-    setFocus(value){
-        if (value){
+    setFocus(value) {
+        if (value) {
             this.inputRef.current.focus();
         } else {
             this.inputRef.current.blur();
@@ -199,7 +199,7 @@ export default class AnterosEdit extends AnterosBaseInputControl {
 
     render() {
         let readOnly = this.props.readOnly;
-        let {required, minLength, maxLength, pattern} = this.props;
+        let { required, minLength, maxLength, pattern } = this.props;
         if (this.props.dataSource && !readOnly) {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
         }
@@ -226,60 +226,60 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                     onClick={this.onButtonClick}
                     className={this.props.icon}
                     style={{
-                    color: this.props.iconColor
-                }}></i>
+                        color: this.props.iconColor
+                    }}></i>
             );
         }
 
         let classNameAddOn = AnterosUtils.buildClassNames("input-group-addon", (this.props.primary || this.props.fullPrimary
             ? "btn btn-primary"
             : ""), (this.props.success || this.props.fullSucces
-            ? "btn btn-success"
-            : ""), (this.props.info || this.props.fullInfo
-            ? "btn btn-info"
-            : ""), (this.props.danger || this.props.fullDanger
-            ? "btn btn-danger"
-            : ""), (this.props.warning || this.props.fullWarning
-            ? "btn btn-warning"
-            : ""), (this.props.secondary || this.props.fullSecondary
-            ? "btn btn-secondary"
-            : ""), (this.props.default || this.props.fullDefault
-            ? ""
-            : ""));
+                ? "btn btn-success"
+                : ""), (this.props.info || this.props.fullInfo
+                    ? "btn btn-info"
+                    : ""), (this.props.danger || this.props.fullDanger
+                        ? "btn btn-danger"
+                        : ""), (this.props.warning || this.props.fullWarning
+                            ? "btn btn-warning"
+                            : ""), (this.props.secondary || this.props.fullSecondary
+                                ? "btn btn-secondary"
+                                : ""), (this.props.default || this.props.fullDefault
+                                    ? ""
+                                    : ""));
 
-        let classNameInput = AnterosUtils.buildClassNames((colClasses.length > 0 || icon
+        let classNameInput = AnterosUtils.buildClassNames((colClasses.length > 0 || icon || this.props.onlyInput
             ? "form-control"
             : ""), (this.props.classNameInput
-            ? this.props.classNameInput
-            : ""), (this.props.fullPrimary
-            ? "btn-primary"
-            : ""), (this.props.fullSucces
-            ? "btn-success"
-            : ""), (this.props.fullInfo
-            ? "btn-info"
-            : ""), (this.props.fullDanger
-            ? "btn-danger"
-            : ""), (this.props.fullWarning
-            ? "btn-warning"
-            : ""), (this.props.fullSecondary
-            ? "btn-secondary"
-            : ""), (this.props.fullDefault
-            ? ""
-            : ""));
+                ? this.props.classNameInput
+                : ""), (this.props.fullPrimary
+                    ? "btn-primary"
+                    : ""), (this.props.fullSucces
+                        ? "btn-success"
+                        : ""), (this.props.fullInfo
+                            ? "btn-info"
+                            : ""), (this.props.fullDanger
+                                ? "btn-danger"
+                                : ""), (this.props.fullWarning
+                                    ? "btn-warning"
+                                    : ""), (this.props.fullSecondary
+                                        ? "btn-secondary"
+                                        : ""), (this.props.fullDefault
+                                            ? ""
+                                            : ""));
 
         if (this.props.icon) {
             return (
                 <div
                     className={className}
                     style={{
-                    ...this.props.style,
-                    width: width
-                }}
+                        ...this.props.style,
+                        width: width
+                    }}
                     ref={ref => this.divInput = ref}>
                     <input
                         disabled={(this.props.disabled
-                        ? true
-                        : false)}
+                            ? true
+                            : false)}
                         id={this.idEdit}
                         required={required}
                         minLength={minLength}
@@ -295,24 +295,20 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                         onKeyPress={this.onKeyPress}
                         readOnly={readOnly}
                         maxLength={this.props.maxLength}
-                        placeholder={this.props.placeHolder}/>
-                    <div className={classNameAddOn} style={{height: '38px', width:'38px', ...this.props.styleButton}} onClick={this.props.onButtonClick}>
-                        <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick}/></span>
+                        placeholder={this.props.placeHolder} />
+                    <div className={classNameAddOn} style={{ height: '38px', width: '38px', ...this.props.styleButton }} onClick={this.props.onButtonClick}>
+                        <span>{icon}<img src={this.props.image} onClick={this.props.onButtonClick} /></span>
                     </div>
                     {this.displayErrorMessage()}
                     {this.displaySuccessMessage()}
                 </div>
             );
         } else {
-            const edit = <div
-                // className="input-group"
-                style={{
-                width: this.props.width
-            }}>
+            const edit = this.props.onlyInput ? (
                 <input
                     disabled={(this.props.disabled
-                    ? true
-                    : false)}
+                        ? true
+                        : false)}
                     id={this.idEdit}
                     ref={this.inputRef}
                     type="text"
@@ -321,11 +317,11 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                     pattern={pattern}
                     value={this.state.value}
                     style={{
-                    ...this.props.style,
-                    width: (this.props.width
-                        ? "100%"
-                        : null)
-                }}
+                        ...this.props.style,
+                        width: (this.props.width
+                            ? "100%"
+                            : null)
+                    }}
                     className={classNameInput}
                     onFocus={this.props.onFocus}
                     readOnly={readOnly}
@@ -334,9 +330,42 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                     onChange={this.handleChange}
                     onBlur={this.handleBlur}
                     maxLength={this.props.maxLength}
-                    placeholder={this.props.placeHolder}/> {this.displayErrorMessage()}
-                {this.displaySuccessMessage()}
-            </div>;
+                    placeholder={this.props.placeHolder} />
+            ) : (
+                    <div
+                        // className="input-group"
+                        style={{
+                            width: this.props.width
+                        }}>
+                        <input
+                            disabled={(this.props.disabled
+                                ? true
+                                : false)}
+                            id={this.idEdit}
+                            ref={this.inputRef}
+                            type="text"
+                            required={required}
+                            minLength={minLength}
+                            pattern={pattern}
+                            value={this.state.value}
+                            style={{
+                                ...this.props.style,
+                                width: (this.props.width
+                                    ? "100%"
+                                    : null)
+                            }}
+                            className={classNameInput}
+                            onFocus={this.props.onFocus}
+                            readOnly={readOnly}
+                            onKeyDown={this.onKeyDown}
+                            onKeyPress={this.onKeyPress}
+                            onChange={this.handleChange}
+                            onBlur={this.handleBlur}
+                            maxLength={this.props.maxLength}
+                            placeholder={this.props.placeHolder} /> {this.displayErrorMessage()}
+                        {this.displaySuccessMessage()}
+                    </div>
+                );
             if (colClasses.length > 0) {
                 return (
                     <div className={AnterosUtils.buildClassNames(colClasses)}>
@@ -376,11 +405,13 @@ AnterosEdit.propTypes = {
     styleButton: PropTypes.object,
     readOnly: PropTypes.bool.isRequired,
     classNameInput: PropTypes.string,
-    pattern: PropTypes.string
+    pattern: PropTypes.string,
+    onlyInput: PropTypes.bool
 };
 
 AnterosEdit.defaultProps = {
     value: '',
     placeHolder: "",
-    readOnly: false
+    readOnly: false,
+    onlyInput: false,
 }
