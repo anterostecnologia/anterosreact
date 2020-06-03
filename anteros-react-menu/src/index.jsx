@@ -9,6 +9,7 @@ import {AnterosMegaMenu, AnterosMegaMenuItem} from './components/AnterosMegaMenu
 
 export {
     AnterosAccordion, AnterosAccordionItem, AnterosMenu,AnterosNavigatorBar,AnterosNavigatorBarItem, AnterosNavigatorBarLink, 
-    AnterosNavigatorBarBrand, AnterosNavigatorBarToggler, AnterosMenuItem, AnterosNavigator, AnterosNavigatorLink, AnterosNavigatorLinkDropdown,
+    AnterosNavigatorBarBrand, AnterosNavigatorBarToggler, AnterosMenuItem, 
+    AnterosNavigator, AnterosNavigatorLink, AnterosNavigatorLinkDropdown,
     AnterosMegaMenu, AnterosMegaMenuItem
 };

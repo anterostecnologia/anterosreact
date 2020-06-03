@@ -8,7 +8,7 @@ import {
     dataSourceConstants, DATASOURCE_EVENTS
 } from 'anteros-react-datasource';
 import { autoBind } from 'anteros-react-core';
-import { processErrorMessage, processDetailErrorMessage } from 'anteros-react-core';
+import { processErrorMessage, processDetailErrorMessage, AnterosSweetAlert } from 'anteros-react-core';
 
 const defaultValues = {
     withInternalDatasource: false,
@@ -198,7 +198,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
                     ) {
                         let _this = this;
-                        let result = this.onBeforeOk();
+                        let result = this.onBeforeOk(event);
                         if (result instanceof Promise){    
                             result.then(function (response) {
                                 _this.setState({ ..._this.state, alertIsOpen: false, alertMessage: '' });

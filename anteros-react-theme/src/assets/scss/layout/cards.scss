@@ -346,7 +346,7 @@
 
 
 .card-block-without-scroll {
-	padding: 15px;
+	padding: 10px;
 }
 
 .card-block-without-scroll .tab-content {
@@ -356,13 +356,13 @@
 
 @media (min-width: 1200px) {
 	.card-block-without-scroll {
-		padding: 20px;
+		padding: 10px;
 	}
 }
 
 @media (max-width: 767px) {
 	.card-block-without-scroll {
-		padding: 10px;
+		padding: 4px;
 	}
 }
 

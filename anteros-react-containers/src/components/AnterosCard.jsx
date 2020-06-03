@@ -222,7 +222,7 @@ export class AnterosCardGroup extends Component {
         return 'AnterosCardGroup';
     }
     render() {
-        return (<div className="card-group">{this.props.children}</div>);
+        return (<div className="card-group" style={{...this.props.style}}>{this.props.children}</div>);
     }
 }
 
@@ -231,7 +231,7 @@ export class AnterosCardDeck extends Component {
         return 'AnterosCardDeck';
     }
     render() {
-        return (<div className="card-deck">{this.props.children}</div>);
+        return (<div className="card-deck" style={{...this.props.style}}>{this.props.children}</div>);
     }
 }
 

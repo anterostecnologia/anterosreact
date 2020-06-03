@@ -51,6 +51,12 @@ export class AnterosQueryBuilder extends React.Component {
         }
     }
 
+    clearFilter = () => {
+        if (this.props.onClearFilter) {
+            this.props.onClearFilter(this);
+        }
+    }
+
     getQuickFields() {
         let result = [];
         this.getFields(this.props).forEach(function (field) {
@@ -252,7 +258,14 @@ export class AnterosQueryBuilder extends React.Component {
                     <AnterosButton
                         primary
                         icon="fal fa-filter"
+                        visible={this.props.showToggleButton}
                         onClick={this.toggleExpandedFilter}
+                    />
+                    <AnterosButton
+                        primary
+                        icon="far fa-times"
+                        visible={this.props.showClearButton}
+                        onClick={this.clearFilter}
                     />
                 </div>
                 <div style={{
@@ -279,6 +292,17 @@ export class AnterosQueryBuilder extends React.Component {
             </div >
         )
     }
+}
+
+AnterosQueryBuilder.propTypes = {
+    showClearButton: PropTypes.bool.isRequired,
+    showToggleButton: PropTypes.bool.isRequired,
+    onClearFilter: PropTypes.func
+}
+
+AnterosQueryBuilder.defaultProps = {
+    showClearButton: false,
+    showToggleButton: true
 }
 
 
