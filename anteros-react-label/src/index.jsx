@@ -5,6 +5,7 @@ import AnterosStatusMark from './components/AnterosStatusMark';
 import AnterosText from './components/AnterosText';
 import AnterosTruncateText from './components/AnterosTruncateText';
 import AnterosUserAvatar from './components/AnterosUserAvatar';
+import AnterosTags from './components/AnterosTags';
 import AnterosAvatar, {RedirectSource, GoogleSource, InstagramSource, ValueSource,
     SrcSource, SkypeSource, IconSource, GravatarSource, GithubSource, FacebookSource,
     InternalState, getRandomColor, parseSize, defaultInitials, setGroupedTimeout,
@@ -16,5 +17,5 @@ export {
     AnterosAvatar, RedirectSource, GoogleSource, InstagramSource, ValueSource,
         SrcSource, SkypeSource, IconSource, GravatarSource, GithubSource, FacebookSource,
         InternalState, getRandomColor, parseSize, defaultInitials, setGroupedTimeout,
-        withConfig, ConfigProvider, cache, createAvatarComponent,AnterosUserAvatar
+        withConfig, ConfigProvider, cache, createAvatarComponent,AnterosUserAvatar,AnterosTags
 };

@@ -23,12 +23,17 @@ class AnterosPanel extends Component {
             (this.props.className ? this.props.className : ""),
             (this.props.cardInverse ? "panel-inverse" : ""), colClasses, this.props.className);
 
-        let style = { ...this.props.style, height: this.props.height, width: this.props.width, minHeight: this.props.minHeight, minWidth: this.props.minWidth };    
-        if (!this.props.border){
-            style = {...style, border:0, boxShadow:"none"};
+        let style = { height: this.props.height, width: this.props.width, minHeight: this.props.minHeight, minWidth: this.props.minWidth, ...this.props.style };
+        if (!this.props.border) {
+            style = { ...style, border: 0, boxShadow: "none" };
         }
         return (
-            <div id={this.props.id} className={className} style={style} onClick={this.onPanelClick}>
+            <div id={this.props.id}
+                className={className}
+                style={style}
+                onMouseOver={this.props.onMouseOver}
+                onMouseOut={this.props.onMouseOut}
+                onClick={this.onPanelClick}>
                 {this.props.children}
             </div>
         )
@@ -56,7 +61,9 @@ AnterosPanel.propTypes = {
     large: columnProps,
     extraLarge: columnProps,
     border: PropTypes.bool,
-    onPanelClick : PropTypes.func
+    onPanelClick: PropTypes.func,
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func
 };
 
 AnterosPanel.defaultProps = {

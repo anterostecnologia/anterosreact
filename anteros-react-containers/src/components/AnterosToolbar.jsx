@@ -43,7 +43,7 @@ export class AnterosToolbarGroup extends Component {
         }
 
         return (
-            <AnterosCol style={{display: 'inline-flex', justifyContent: justify, alignItems: 'center', height:height, width:width}}>
+            <AnterosCol className={this.props.colSize} style={{display: 'inline-flex', justifyContent: justify, alignItems: 'center', height:height, width:width}}>
                 {children}
             </AnterosCol>
         );
@@ -52,11 +52,13 @@ export class AnterosToolbarGroup extends Component {
 
 AnterosToolbarGroup.propTypes = {
     justifyContent: PropTypes.oneOf(['start', 'center', 'end']),
-    height: PropTypes.string
+    height: PropTypes.string,
+    colSize: PropTypes.string
 }
 
 AnterosToolbarGroup.defaultProps = {
     justifyContent: 'start',
-    height:'100%'
+    height:'100%',
+    colSize: 'col'
 }
 

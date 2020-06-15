@@ -808,6 +808,26 @@ class AnterosLocalDatasource extends AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
 
+    replace(record) {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
+            throw new AnterosDatasourceError('Registro já está sendo editado.');
+        }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+        }
+
+        if (!this.data) {
+            this.data = [];
+        }
+
+        this.data[this.getRecno()] = record;
+        this.currentRecord = record;
+        this.totalRecords = this.data.length;
+        this.grandTotalRecords = this.data.length;
+        this.currentRecno = this.data.length - 1;
+        this.dispatchEvent(dataSourceEvents.AFTER_POST);
+    }
+
     appendFirst(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
@@ -932,6 +952,26 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.currentRecno = this.data.length - 1;
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
+    }
+
+    replace(record) {
+        if (this.getState() == dataSourceConstants.DS_EDIT) {
+            throw new AnterosDatasourceError('Registro já está sendo editado.');
+        }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+        }
+
+        if (!this.data) {
+            this.data = [];
+        }
+
+        this.data[this.getRecno()] = record;
+        this.currentRecord = record;
+        this.totalRecords = this.data.length;
+        this.grandTotalRecords = this.data.length;
+        this.currentRecno = this.data.length - 1;
+        this.dispatchEvent(dataSourceEvents.AFTER_POST);
     }
 
     post(callback) {

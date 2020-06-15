@@ -17,10 +17,18 @@ export default class AnterosImage extends Component {
     }
 
     onMouseOver(event) {
+        if (this.props.onMouseOver){
+            this.props.onMouseOver(event, this);
+        }
+
         this.setState({ hover: true });
     }
 
     onMouseOut(event) {
+        if (this.props.onMouseOut){
+            this.props.onMouseOut(event, this);
+        }
+
         this.setState({ hover: false });
     }
 
@@ -30,8 +38,7 @@ export default class AnterosImage extends Component {
             scale = (this.props.zoomScale ? this.props.zoomScale : 1);
         }
 
-        let className = (this.props.className ? this.props.className : "");
-        className = AnterosUtils.buildClassNames(
+        let className = AnterosUtils.buildClassNames(this.props.className,
             (this.props.rounded ? "anterosimg-rounded" : ""),
             (this.props.thumbnail ? "anterosimg-thumbnail" : ""),
             (this.props.circle ? "anterosimg-circle" : ""),
@@ -195,7 +202,9 @@ AnterosImage.propTypes = {
     danger: PropTypes.bool,
     info: PropTypes.bool,
     warning: PropTypes.bool,
-    success: PropTypes.bool
+    success: PropTypes.bool,
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func
 }
 
 

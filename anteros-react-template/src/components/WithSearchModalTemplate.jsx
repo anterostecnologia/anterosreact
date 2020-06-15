@@ -10,6 +10,7 @@ import { AnterosPagination } from 'anteros-react-navigation';
 import { AnterosAlert } from 'anteros-react-notification';
 import { AnterosDataTable } from 'anteros-react-table';
 import { AnterosButton } from 'anteros-react-buttons';
+import { AnterosTags } from 'anteros-react-label';
 
 const defaultValues = {
     openDataSourceFilter: true,
@@ -18,7 +19,9 @@ const defaultValues = {
     withFilter: true,
     fieldsToForceLazy: '',
     modalSize: 'semifull',
-    defaultSortFields: ''
+    defaultSortFields: '',
+    labelField: 'id',
+    cumulativeSelection: false
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
@@ -391,6 +394,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
 
             onSelectRecord(row, data, tableId) {
                 this.props.selectedRecords.push(this.dataSource.getCurrentRecord());
+                if (loadingProps.cumulativeSelection)
+                this.setState({...this.state, update: Math.random()});
             }
 
             onUnSelectRecord(row, data, tableId) {
@@ -401,6 +406,18 @@ export default function WithSearchModalTemplate(_loadingProps) {
                         this.props.selectedRecords.splice(i, 1);
                     }
                 }
+                if (loadingProps.cumulativeSelection)
+                this.setState({...this.state, update: Math.random()});
+            }
+
+            handleDelete(i) {
+                this.props.selectedRecords.splice(i, 1);
+                this.setState({...this.state, update:Math.random()});
+            }
+
+            onClear(){
+                this.props.selectedRecords.splice(0, this.props.selectedRecords.length);
+                this.setState({...this.state, update:Math.random()});
             }
 
             onSelectAllRecords(records, tableId) {
@@ -409,10 +426,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
                 records.forEach(function buscaObjetos(element) {
                     _this.props.selectedRecords.push(element);
                 });
+                if (loadingProps.cumulativeSelection)
+                this.setState({...this.state, update: Math.random()});
             }
 
             onUnSelectAllRecords(tableId) {
                 this.props.selectedRecords.splice(0, this.props.selectedRecords.length);
+                if (loadingProps.cumulativeSelection)
+                this.setState({...this.state, update: Math.random()});
             }
 
             onButtonSearch(event) {
@@ -573,15 +594,17 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                         <div>
                                             <AnterosButton
                                                 id="btnSelecionar"
-                                                icon="fa fa-bolt"
+                                                icon="fa fa-sync"
                                                 disabled={
                                                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                                 }
-                                                warning
+                                                secondary
                                                 onButtonClick={this.onButtonSearch}
                                             >
-                                                Selecionar
-                                        </AnterosButton>
+                                                Sem filtro
+                                            </AnterosButton>
+                                            {loadingProps.cumulativeSelection?<AnterosTags addTags={false} tags={this.props.selectedRecords} labelField={loadingProps.labelField}
+                                                handleDelete={this.handleDelete} onClear={this.onClear} />:null}
                                         </div>
                                         {this.state.filterExpanded ? (
                                             <AnterosDataTable
@@ -665,7 +688,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                             </AnterosRow>
                             <WrappedComponent {...this.props} dataSource={this.dataSource} />
                         </div>
-                    </AnterosModal>
+                    </AnterosModal >
                 );
             }
         }

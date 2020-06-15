@@ -485,7 +485,7 @@ export default class AnterosModal extends React.Component {
             : ""), this.props.className, {
             [`modal-${this.props.size}`]: this.props.size
         }), this.props.cssModule)}
-        style={{marginTop:100}}
+        
             role="document"
             ref={(c) => {
                 this._dialog = c;
