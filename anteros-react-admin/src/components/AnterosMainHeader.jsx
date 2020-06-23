@@ -133,7 +133,7 @@ export default class AnterosMainHeader extends Component {
           </AnterosMediaQuery> : null}
         </AnterosToolbarGroup>
 
-        <AnterosToolbarGroup justifyContent="center">
+        <AnterosToolbarGroup justifyContent="center" colSize="col-sm-2">
           {toolbarCenter}
         </AnterosToolbarGroup>
 

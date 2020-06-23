@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import React from 'react'
 import lodash from 'lodash'
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
@@ -13,7 +12,7 @@ var trigger_event = function( type, el ) {
     el.dispatchEvent( e );
 };
 
-export default class AnterosMultiSelect extends React.Component {
+class AnterosMultiSelect extends React.Component {
     constructor(props) {
         super(props)
         this.buildChildrensFromDataSource = this
@@ -177,7 +176,7 @@ export default class AnterosMultiSelect extends React.Component {
                 label: (record.label
                     ? record.label
                     : record[_this.props.dataFieldText]),
-                text: record[_this.props.dataFieldText],
+                value: record[_this.props.dataFieldText],
                 subText: record.subText,
                 group: record.group,
                 divider: record.divider,
@@ -216,6 +215,7 @@ export default class AnterosMultiSelect extends React.Component {
                 label: (child.props
                     ? child.props.label
                     : ''),
+                value: child.props.value,    
                 divider: (child.props
                     ? child.props.divider
                     : ''),
@@ -317,14 +317,11 @@ export default class AnterosMultiSelect extends React.Component {
 }
 
 AnterosMultiSelect.propTypes = {
-    dataSource: React
-        .PropTypes
+    dataSource: PropTypes
         .oneOfType([
-            React
-                .PropTypes
+            PropTypes
                 .instanceOf(AnterosLocalDatasource),
-            React
-                .PropTypes
+            PropTypes
                 .instanceOf(AnterosRemoteDatasource)
         ]),
     dataField: PropTypes.string,
@@ -346,14 +343,12 @@ AnterosMultiSelect.propTypes = {
     medium: columnProps,
     large: columnProps,
     extraLarge: columnProps,
-    dataSourceSelect : React
-    .PropTypes
+    dataSourceSelect : 
+    PropTypes
     .oneOfType([
-        React
-            .PropTypes
+        PropTypes
             .instanceOf(AnterosLocalDatasource),
-        React
-            .PropTypes
+        PropTypes
             .instanceOf(AnterosRemoteDatasource)
     ]),
     dataFieldText: PropTypes.string,
@@ -377,7 +372,7 @@ AnterosMultiSelect.defaultProps = {
     dataFieldText: 'text'
 };
 
-export class AnterosMultiSelectOption extends React.Component {
+class AnterosMultiSelectOption extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -398,7 +393,8 @@ export class AnterosMultiSelectOption extends React.Component {
             content,
             subText,
             className,
-            label
+            label,
+            value
         } = this.props;
 
         if (group) {
@@ -417,9 +413,10 @@ export class AnterosMultiSelectOption extends React.Component {
                     disabled={disabled}
                     data-content={content}
                     data-icon={icon}
+                    value={value}
                     style={style}
                     className={className}>
-                    {children}
+                    {label}
                 </option>
             );
         }
@@ -447,3 +444,5 @@ AnterosMultiSelectOption.defaultProps = {
     success: false,
     warning: false
 };
+
+export {AnterosMultiSelect, AnterosMultiSelectOption};

@@ -162,6 +162,7 @@ export default class AnterosImage extends Component {
                 className={AnterosUtils.buildClassNames(className,"img-status-mark")}
                 src={this.props.src}
                 style={style}
+                onDoubleClick={this.props.onDoubleClick}
                 onMouseOut={this.onMouseOut}
                 onMouseOver={this.onMouseOver}/>
                 {this.props.children}            
@@ -204,7 +205,8 @@ AnterosImage.propTypes = {
     warning: PropTypes.bool,
     success: PropTypes.bool,
     onMouseOver: PropTypes.func,
-    onMouseOut: PropTypes.func
+    onMouseOut: PropTypes.func,
+    onDoubleClick: PropTypes.func
 }
 
 

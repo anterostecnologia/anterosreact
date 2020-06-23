@@ -182,9 +182,9 @@ export default function WithFormModalTemplate(_loadingProps) {
                     return this.getCustomButtons();
                 } else {
                     return (<Fragment>
-                        <AnterosButton success id="btnOK" onClick={this.onClick}>
+                        {this.dataSource.getState() !== 'dsBrowse'?<AnterosButton success id="btnOK" onClick={this.onClick}>
                             OK
-                        </AnterosButton>{' '}
+                        </AnterosButton>:null}{' '}
                                     <AnterosButton danger id="btnCancel" onClick={this.onClick}>
                                         Cancela
                         </AnterosButton>
@@ -222,7 +222,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         this.props.onClickOk(event, this.props.selectedRecords);
                     }                    
                 } else if (button.props.id == "btnCancel") {
-                    if (this.dataSource) {
+                    if (this.dataSource && this.dataSource.getState() !== 'dsBrowse') {
                         this.dataSource.cancel();
                     }
                     this.props.onClickCancel(event);

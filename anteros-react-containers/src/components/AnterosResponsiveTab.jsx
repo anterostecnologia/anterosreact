@@ -33,10 +33,11 @@ class AnterosResponsiveTabs extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         const { selectedTabKey, blockWidth, showMoreWidth } = this.state;
-        const { items, transform, showMore, showInkBar, allowRemove, removeActiveOnly } = this.props;
+        const { items, transform, showMore, showInkBar, allowRemove, removeActiveOnly, children } = this.props;
 
         return (
             items !== nextProps.items ||
+            children !== nextProps.children ||
             nextProps.transform !== transform ||
             nextProps.showMore !== showMore ||
             nextProps.showInkBar !== showInkBar ||
@@ -149,6 +150,7 @@ class AnterosResponsiveTabs extends Component {
                         title: child.props.title,
                         caption: child.props.caption,
                         key: child.props.id,
+                        id: child.props.id,
                         content: child.props.children,
                         disabled: child.props.disabled,
                         tabClassName: child.props.tabClassName,
@@ -368,7 +370,10 @@ class AnterosResponsiveTabs extends Component {
         const tabsClasses = classNames('AnterosTab_tabs', tabsWrapperClass, { AnterosTab_accordion: isCollapsed });
 
         return (
-            <div className={containerClasses} ref={e => (this.tabsWrapper = e)} onKeyDown={this.onKeyDown}>
+            <div className={containerClasses} 
+                style={this.props.style}
+            ref={e => (this.tabsWrapper = e)} 
+            onKeyDown={this.onKeyDown}>
                 <div className="AnterosTab_container_tabs">
                     <div className={tabsClasses}>
                         {tabsVisible.reduce((result, tab) => {

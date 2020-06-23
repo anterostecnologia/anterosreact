@@ -13,6 +13,9 @@ import {
 import updateInputWidth, { getFontShorthand } from 'update-input-width';
 import getUserLocale from 'get-user-locale';
 import {AnterosClock} from "anteros-react-calendar";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { AnterosDateUtils, autoBind } from 'anteros-react-core';
+
 
 const baseClassName = 'react-time-picker';
 const outsideActionEvents = ['mousedown', 'focusin', 'touchstart'];
@@ -1187,9 +1190,31 @@ export default class AnterosTimePicker extends PureComponent {
         return null;
     }
 
-    state = {};
+    constructor(props){
+        super(props);
+        if (this.props.dataSource) {
+            let value = this.props.dataSource.fieldByName(this.props.dataField);
+            if (!value) {
+                value = '';
+            }
+            this.state = { value: value };
+        } else {
+            this.state = { value: this.props.value };
+        }
+        autoBind(this);
+    }
+
 
     componentDidMount() {
+        if (this.props.dataSource) {
+            this.props.dataSource.addEventListener(
+                [dataSourceEvents.AFTER_CLOSE,
+                dataSourceEvents.AFTER_OPEN,
+                dataSourceEvents.AFTER_GOTO_PAGE,
+                dataSourceEvents.AFTER_CANCEL,
+                dataSourceEvents.AFTER_SCROLL], this.onDatasourceEvent);
+            this.props.dataSource.addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+        }
         this.handleOutsideActionListeners();
     }
 
@@ -1205,6 +1230,35 @@ export default class AnterosTimePicker extends PureComponent {
 
     componentWillUnmount() {
         this.handleOutsideActionListeners(false);
+        if ((this.props.dataSource)) {
+            this.props.dataSource.removeEventListener(
+                [dataSourceEvents.AFTER_CLOSE,
+                dataSourceEvents.AFTER_OPEN,
+                dataSourceEvents.AFTER_GOTO_PAGE,
+                dataSourceEvents.AFTER_CANCEL,
+                dataSourceEvents.AFTER_SCROLL], this.onDatasourceEvent);
+            this.props.dataSource.removeEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+        }
+    }
+
+    onDatasourceEvent(event, error) {
+        let value = this.props.dataSource.fieldByName(this.props.dataField);
+        if (!value) {
+            value = '';
+        }
+        this.setState({ value: value });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.dataSource) {
+            let value = nextProps.dataSource.fieldByName(nextProps.dataField);
+            if (!value) {
+                value = '';
+            }
+            this.setState({ value: value });
+        } else {
+            this.setState({ value: nextProps.value });
+        }
     }
 
     get eventProps() {
@@ -1225,8 +1279,19 @@ export default class AnterosTimePicker extends PureComponent {
             this.closeClock();
         }
 
+        this.setState({ value });
+        if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
+            this.props.dataSource.setFieldByName(this.props.dataField, value);
+        }
+
         if (onChange) {
             onChange(value);
+        }
+    }
+
+    onBlur(event) {
+        if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
+            this.props.dataSource.setFieldByName(this.props.dataField, this.state.value);
         }
     }
 
@@ -1265,7 +1330,12 @@ export default class AnterosTimePicker extends PureComponent {
 
     stopPropagation = event => event.stopPropagation();
 
-    clear = () => this.onChange(null);
+    clear() {
+        this.onChange(null);
+        if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
+            this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+        }
+    }
 
     handleOutsideActionListeners(shouldListen) {
         const { isOpen } = this.state;
@@ -1303,7 +1373,7 @@ export default class AnterosTimePicker extends PureComponent {
             value,
         } = this.props;
 
-        const [valueFrom] = [].concat(value);
+        const [valueFrom] = [].concat(this.state.value);
 
         const ariaLabelProps = {
             amPmAriaLabel,
@@ -1410,7 +1480,7 @@ export default class AnterosTimePicker extends PureComponent {
         const { isOpen } = this.state;
 
         return (
-            <div
+            <div onBlur={this.onBlur}
                 className={mergeClassNames(
                     baseClassName,
                     `${baseClassName}--${isOpen ? 'open' : 'closed'}`,
@@ -1478,6 +1548,11 @@ const isValue = PropTypes.oneOfType([
 ]);
 
 AnterosTimePicker.propTypes = {
+    dataSource: PropTypes.oneOfType([
+        PropTypes.instanceOf(AnterosLocalDatasource),
+        PropTypes.instanceOf(AnterosRemoteDatasource)
+    ]),
+    dataField: PropTypes.string,
     amPmAriaLabel: PropTypes.string,
     autoFocus: PropTypes.bool,
     className: PropTypes.oneOfType([

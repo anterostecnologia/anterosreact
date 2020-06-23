@@ -163,7 +163,7 @@ export default class AnterosTextArea extends React.Component {
 
         let textArea = <textarea maxLength={this.props.maxLenght > 0 ? this.props.maxLenght : ""}
             id={this.idTextArea}
-            placeholder={this.placeHolder}
+            placeholder={this.props.placeHolder}
             disabled={(this.props.disabled ? true : false)}
             style={{ ...this.props.style, width: this.props.width, height: this.props.height }}
             ref={ref => this.input = ref}
@@ -203,6 +203,7 @@ AnterosTextArea.propTypes = {
     extraLarge: columnProps,
     width: PropTypes.string,
     height: PropTypes.string,
+    style: PropTypes.object,
     disableBase64Convertion: PropTypes.bool.isRequired
 };
 

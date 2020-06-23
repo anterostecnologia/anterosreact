@@ -339,6 +339,17 @@ export default class AnterosImagePicker extends React.Component {
                 style={{ display: 'none' }}
               />
             </div>
+            <AnterosButton
+              style={{position:'absolute',top:'10px', right:0, zIndex:99}}
+              icon="fal fa-edit"
+              id="btnEditImg"
+              small
+              secondary
+              circle
+              visible={!this.props.disabled}
+              onButtonClick={this.onButtonClick}
+              hint="Editar a imagem"
+            />
             <AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
@@ -354,14 +365,6 @@ export default class AnterosImagePicker extends React.Component {
               ref={this.AnterosImagePickerEdicaoRef}
             />
           </div>
-          <AnterosButton
-            secondary
-            id="btnEditImg"
-            icon="fal fa-image"
-            visible={!this.props.disabled}
-            onButtonClick={this.onButtonClick}
-            caption="Editar a imagem"
-          />
         </div>
       );
     } else {
@@ -397,6 +400,16 @@ export default class AnterosImagePicker extends React.Component {
               ref="input"
               style={{ display: 'none' }}
             />
+            <AnterosButton
+              style={{position:'absolute',top:'10px', right:0, zIndex:99}}
+              icon="fal fa-edit"
+              small
+              secondary
+              circle
+              visible={!this.props.disabled}
+              onButtonClick={this.onButtonClick}
+              hint="Editar a imagem"
+            />
             <AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
@@ -412,13 +425,6 @@ export default class AnterosImagePicker extends React.Component {
               ref={this.AnterosImagePickerEdicaoRef}
             />
           </div>
-          <AnterosButton
-            secondary
-            icon="fal fa-image"
-            visible={!this.props.disabled}
-            onButtonClick={this.onButtonClick}
-            caption="Editar a imagem"
-          />
         </div>
       );
     }
@@ -1015,7 +1021,7 @@ class AnterosNavigator extends Component {
     if (this.props.children) {
       let _this = this;
       let arrChildren = React.Children.toArray(this.props.children);
-      arrChildren.forEach(function(child) {
+      arrChildren.forEach(function (child) {
         let active = child.props.active;
         if (_this.state.active) {
           active = false;
