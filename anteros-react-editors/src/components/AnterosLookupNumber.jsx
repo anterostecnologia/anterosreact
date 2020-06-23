@@ -89,7 +89,7 @@ export default class AnterosLookupNumber extends React.Component {
         this.setState({ value: value });
         
         if (this.props.onChange) {
-            this.props.onChange(event);
+            this.props.onChange(event, value);
         }
     }
 
