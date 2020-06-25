@@ -20,6 +20,7 @@ import AnterosScrollbars from './components/AnterosScrollbars';
 import AnterosScrollHorizontal from './components/AnterosScrollHorizontal';
 import {AnterosResponsiveTabs, AnterosResponsiveTab, TabHeaderActions} from './components/AnterosResponsiveTab';
 // import AnterosMainFooter from './components/AnterosMainFooter';
+import {AnterosSectionRightSide} from './components/AnterosSectionRightSide';
 
 
 export {
@@ -28,7 +29,7 @@ export {
     AnterosMainContainer,  Breadcrumbs, BreadcrumbsItem, PageHeaderActions,
     AnterosModal, ModalActions, AnterosPageControl, AnterosTabLink, AnterosTabContent,
     AnterosTab, AnterosDivider, AnterosPanel,AnterosSplitter,AnterosContainer,
-    AnterosStepWizard, AnterosFormSteps, AnterosFormStep, AnterosFlexBox,AnterosCollapse,
+    AnterosSectionRightSide, AnterosStepWizard, AnterosFormSteps, AnterosFormStep, AnterosFlexBox,AnterosCollapse,
     AnterosCarousel, AnterosCarouselPreviousButton, AnterosCarouselNextButton, AnterosCarouselPagingDots,
     AnterosFullBackground,  AnterosToolbar, AnterosToolbarGroup, AnterosStepFooter, AnterosStepHeader,
     AnterosScrollbars, AnterosScrollHorizontal, AnterosResponsiveTabs, AnterosResponsiveTab, TabHeaderActions

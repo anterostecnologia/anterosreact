@@ -5,22 +5,22 @@ import PropTypes from 'prop-types';
 import { AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "anteros-react-datasource";
 
 const DATASOURCE_EVENTS = [dataSourceEvents.AFTER_CLOSE,
-    dataSourceEvents.AFTER_CANCEL,
-    dataSourceEvents.AFTER_POST,
-    dataSourceEvents.AFTER_EDIT,
-    dataSourceEvents.AFTER_INSERT,
-    dataSourceEvents.AFTER_OPEN,
-    dataSourceEvents.AFTER_SCROLL,
-    dataSourceEvents.AFTER_GOTO_PAGE,
-    dataSourceEvents.AFTER_DELETE];
+dataSourceEvents.AFTER_CANCEL,
+dataSourceEvents.AFTER_POST,
+dataSourceEvents.AFTER_EDIT,
+dataSourceEvents.AFTER_INSERT,
+dataSourceEvents.AFTER_OPEN,
+dataSourceEvents.AFTER_SCROLL,
+dataSourceEvents.AFTER_GOTO_PAGE,
+dataSourceEvents.AFTER_DELETE];
 
 export default class AnterosList extends Component {
     constructor(props) {
         super(props);
-        this.state = { activeIndex: this.props.activeIndex };
+        this.state = { activeIndex: this.props.activeIndex, filter: this.props.filter };
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.numberOfItens = 0;
-        this.idList = this.props.id ? this.props.id: lodash.uniqueId('list');
+        this.idList = this.props.id ? this.props.id : lodash.uniqueId('list');
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.rebuildChildrens = this.rebuildChildrens.bind(this);
         this.buildChildrensFromDataSource = this.buildChildrensFromDataSource.bind(this);
@@ -38,7 +38,7 @@ export default class AnterosList extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ activeIndex: nextProps.activeIndex });
+        this.setState({ activeIndex: nextProps.activeIndex, filter: nextProps.filter });
     }
 
     componentWillUnmount() {
@@ -50,11 +50,11 @@ export default class AnterosList extends Component {
     onDatasourceEventList(event, error) {
         if (event == dataSourceEvents.AFTER_SCROLL) {
             if (this.props.onSelectListItem && !this.props.dataSource.isEmpty()) {
-                this.setState({activeIndex: this.props.dataSource.getRecno()})
+                this.setState({ activeIndex: this.props.dataSource.getRecno() })
                 this.props.onSelectListItem(this.props.dataSource.getRecno(), this.props.dataSource.getCurrentRecord());
             }
         } else {
-            this.setState({activeIndex: this.props.dataSource.getRecno()})
+            this.setState({ activeIndex: this.props.dataSource.getRecno() })
             if (this.props.onSelectListItem && !this.props.dataSource.isEmpty()) {
                 this.props.onSelectListItem(this.props.dataSource.getRecno(), this.props.dataSource.getCurrentRecord());
             }
@@ -63,11 +63,11 @@ export default class AnterosList extends Component {
 
     handleSelectItem(index, data) {
         this.setState({ activeIndex: index });
-        if (this.props.dataSource && (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource)){
+        if (this.props.dataSource && (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource)) {
             this.props.dataSource.gotoRecordByData(data);
-        } else if (this.props.onSelectListItem){
-            this.props.onSelectListItem(index,data);
-        }        
+        } else if (this.props.onSelectListItem) {
+            this.props.onSelectListItem(index, data);
+        }
     }
 
     handleKeyDown(event) {
@@ -77,13 +77,13 @@ export default class AnterosList extends Component {
                 let index = this.state.activeIndex;
                 if (index - 1 >= 0) {
                     this.setState({ activeIndex: index - 1 });
-                    this.handleSelectItem(index - 1, this.getRecordDataFromChildren(index-1));
+                    this.handleSelectItem(index - 1, this.getRecordDataFromChildren(index - 1));
                 }
             } else if ((event.keyCode == 40) || (event.keyCode == 39)) {
                 let index = this.state.activeIndex;
-                if (index + 1 < this.numberOfItens){
+                if (index + 1 < this.numberOfItens) {
                     this.setState({ activeIndex: index + 1 });
-                    this.handleSelectItem(index + 1, this.getRecordDataFromChildren(index+1));
+                    this.handleSelectItem(index + 1, this.getRecordDataFromChildren(index + 1));
                 }
             } else if (event.keyCode == 33) {
                 this.setState((prevState, props) => {
@@ -129,7 +129,7 @@ export default class AnterosList extends Component {
 
     buildChildrensFromDataSource() {
         let sourceData = this.props.dataSource;
-        if (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource){
+        if (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource) {
             sourceData = this.props.dataSource.getData();
         }
         if (!(sourceData.constructor === Array)) {
@@ -148,92 +148,106 @@ export default class AnterosList extends Component {
             if (!record) {
                 return null;
             }
-            let active = (record.active == undefined ? false : record.active);
-            if (_this.state.activeIndex >= 0) {
-                active = false;
-                if (_this.state.activeIndex == index) {
-                    active = true;
+            let cnt = true;
+            if (this.state.filter && _this.props.dataFieldText) {
+                if (record[_this.props.dataFieldText]) {
+                    if (!(record[_this.props.dataFieldText].includes(this.state.filter))) {
+                        cnt = false;
+                    }
                 }
-            } else if (record.active) {
-                _this.state.activeIndex = index;
+            }
+            if (this.props.onFilter){
+                cnt = this.props.onFilter(record);
             }
 
-            var { component, key, id, ...rest } = this.props;            
-            if (component) {
-                let DynamicComponent = component;
-                let compProps = {};
-                if (component.hasOwnProperty("component")){
-                    DynamicComponent = component.component;
-                }
-                if (component.hasOwnProperty("props")){
-                    compProps = component.props;
-                }
-
-                let newId = record[_this.props.dataFieldId];
-                if (!newId){
-                    newId = _this.idList+"_"+index;
+            if (cnt) {
+                let active = (record.active == undefined ? false : record.active);
+                if (_this.state.activeIndex >= 0) {
+                    active = false;
+                    if (_this.state.activeIndex == index) {
+                        active = true;
+                    }
+                } else if (record.active) {
+                    _this.state.activeIndex = index;
                 }
 
-                let newKey = _this.idList+"_"+index;
-                
-                children.push(React.createElement(DynamicComponent,
-                    {
+                var { component, key, id, ...rest } = this.props;
+                if (component) {
+                    let DynamicComponent = component;
+                    let compProps = {};
+                    if (component.hasOwnProperty("component")) {
+                        DynamicComponent = component.component;
+                    }
+                    if (component.hasOwnProperty("props")) {
+                        compProps = component.props;
+                    }
+
+                    let newId = record[_this.props.dataFieldId];
+                    if (!newId) {
+                        newId = _this.idList + "_" + index;
+                    }
+
+                    let newKey = _this.idList + "_" + index;
+
+                    children.push(React.createElement(DynamicComponent,
+                        {
+                            key: newKey,
+                            id: newId,
+                            active: active,
+                            index: index,
+                            handleSelectItem: _this.handleSelectItem,
+                            recordData: record, ...compProps, ...rest
+                        }));
+                } else {
+                    let newId = record[_this.props.dataFieldId];
+                    if (!newId) {
+                        newId = _this.idList + "_" + index;
+                    }
+                    let newKey = _this.idList + "_" + index;
+                    children.push(React.createElement(AnterosListItem, {
                         key: newKey,
+                        disabled: record.disabled,
                         id: newId,
-                        active: active,
                         index: index,
+                        active: active,
+                        success: record.success,
+                        warning: record.warning,
+                        danger: record.danger,
+                        info: record.info,
+                        alignRight: (record.alignRight == undefined ? _this.props.alignRight : record.alignRight),
+                        alignLeft: (record.alignLeft == undefined ? _this.props.alignLeft : record.alignLeft),
+                        alignCenter: (record.alignCenter == undefined ? _this.props.alignCenter : record.alignCenter),
+                        justify: (record.justify == undefined ? _this.props.justify : record.justify),
+                        activeBackColor: (record.activeBackColor == undefined ? _this.props.activeBackColor : record.activeBackColor),
+                        activeColor: (record.activeColor == undefined ? _this.props.activeColor : record.activeColor),
+                        backgroundColor: (record.backgroundColor == undefined ? _this.props.backgroundColor : record.backgroundColor),
+                        color: (record.color == undefined ? _this.props.color : record.color),
+                        imageCircle: record.imageCircle,
+                        imageHeight: record.imageHeight,
+                        imageWidth: record.imageWidth,
+                        icon: record.icon,
+                        image: record.image,
+                        onMouseOver: _this.props.onMouseOver,
+                        onMouseOut: _this.props.onMouseOut,
+                        caption: record[this.props.dataFieldText],
                         handleSelectItem: _this.handleSelectItem,
-                        recordData: record, ...compProps,  ...rest
+                        onSelectListItem: (record.onSelectListItem == undefined ? _this.props.onSelectListItem : record.onSelectListItem),
+                        href: record.href,
+                        showBorder: (record.showBorder == undefined ? _this.props.showBorder : record.showBorder),
+                        ownerId: (_this.props.id ? _this.props.id : _this.idList)
                     }));
-            } else {
-                let newId = record[_this.props.dataFieldId];
-                if (!newId){
-                    newId = _this.idList+"_"+index;
                 }
-                let newKey = _this.idList+"_"+index;
-                children.push(React.createElement(AnterosListItem, {
-                    key: newKey,
-                    disabled: record.disabled,
-                    id: newId,
-                    index: index,
-                    active: active,
-                    success: record.success,
-                    warning: record.warning,
-                    danger: record.danger,
-                    info: record.info,
-                    alignRight: (record.alignRight == undefined ? _this.props.alignRight : record.alignRight),
-                    alignLeft: (record.alignLeft == undefined ? _this.props.alignLeft : record.alignLeft),
-                    alignCenter: (record.alignCenter == undefined ? _this.props.alignCenter : record.alignCenter),
-                    justify: (record.justify == undefined ? _this.props.justify : record.justify),
-                    activeBackColor: (record.activeBackColor == undefined ? _this.props.activeBackColor : record.activeBackColor),
-                    activeColor: (record.activeColor == undefined ? _this.props.activeColor : record.activeColor),
-                    backgroundColor: (record.backgroundColor == undefined ? _this.props.backgroundColor : record.backgroundColor),
-                    color: (record.color == undefined ? _this.props.color : record.color),
-                    imageCircle: record.imageCircle,
-                    imageHeight: record.imageHeight,
-                    imageWidth: record.imageWidth,
-                    icon: record.icon,
-                    image: record.image,
-                    onMouseOver: _this.props.onMouseOver,
-                    onMouseOut: _this.props.onMouseOut,
-                    caption: record[this.props.dataFieldText],
-                    handleSelectItem: _this.handleSelectItem,
-                    onSelectListItem: (record.onSelectListItem == undefined ? _this.props.onSelectListItem : record.onSelectListItem),
-                    href: record.href,
-                    showBorder: (record.showBorder == undefined ? _this.props.showBorder : record.showBorder),
-                    ownerId: (_this.props.id ? _this.props.id : _this.idList)
-                }));
+                index++;
             }
-            index++;
         });
         this.numberOfItens = index;
         return children;
     }
 
-    getRecordDataFromChildren(index){
+    getRecordDataFromChildren(index) {
         let result;
         this.rebuildedChildrens.map(item => {
-            if (item.props.index === index){
+            if (item.props.index === index) {
                 result = item.props.recordData;
             }
         });
@@ -329,9 +343,10 @@ export default class AnterosList extends Component {
             this.rebuildedChildrens = this.rebuildChildrens();
         }
 
-        return (<div id={this.idList} ref={ref => this.list = ref} tabIndex={-1} 
-        className={this.props.showBorder ? "list-group-container" : ""} 
-        onKeyDown={this.handleKeyDown} style={{ width: this.props.width, height: this.props.height, ...this.props.style }}>
+        return (<div id={this.idList} ref={ref => this.list = ref} tabIndex={-1}
+            className={this.props.showBorder ? "list-group-container" : ""}
+            onKeyDown={this.handleKeyDown}
+            style={{ width: this.props.width, height: this.props.height, ...this.props.style }}>
             <ul className="list-group" style={{ flexDirection: this.props.horizontal ? "row" : "column", ...this.props.listStyle }} >
                 {this.rebuildedChildrens}
             </ul>
@@ -363,7 +378,7 @@ export class AnterosListItem extends Component {
         }
     }
 
-    static get componentName(){
+    static get componentName() {
         return 'AnterosListItem';
     }
 
@@ -461,14 +476,16 @@ AnterosList.propTypes = {
     activeIndex: PropTypes.number,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
-    id : PropTypes.string
+    style: PropTypes.object,
+    id: PropTypes.string
 };
 
 AnterosList.defaultProps = {
     showBorder: true,
     dataFieldText: 'text',
     dataFieldId: 'id',
-    activeIndex: 0
+    activeIndex: 0,
+    style: {}
 }
 
 

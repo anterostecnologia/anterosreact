@@ -339,6 +339,9 @@ class AnterosDatasource {
     }
 
     isEmptyField(fieldName) {
+        if (!fieldName) {
+            throw new AnterosDatasourceError('Nome do campo não pode ser nulo.');
+        }
         return this.fieldByName(fieldName) === undefined || this.fieldByName(fieldName) === '';
     }
 
@@ -387,6 +390,11 @@ class AnterosDatasource {
         if (this.getState() == dataSourceConstants.DS_BROWSE) {
             throw new AnterosDatasourceError('Registro não está sendo inserido ou editado.');
         }
+
+        if (!fieldName) {
+            throw new AnterosDatasourceError('Nome do campo não pode ser nulo.');
+        }
+
         let newValue = value;
         if (value instanceof Date) {
             newValue = AnterosDateUtils.formatDate(value, Anteros.dataSourceDatetimeFormat);

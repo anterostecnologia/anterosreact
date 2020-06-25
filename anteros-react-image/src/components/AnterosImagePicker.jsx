@@ -388,7 +388,7 @@ export default class AnterosImagePicker extends React.Component {
               style={{
                 ...this.props.style,
                 height: this.props.height,
-                border: '1px solid silver'
+                width: this.props.width
               }}
               onDoubleClick={this.onDoubleClickImage}
             />
@@ -403,6 +403,7 @@ export default class AnterosImagePicker extends React.Component {
             <AnterosButton
               style={{position:'absolute',top:'10px', right:0, zIndex:99}}
               icon="fal fa-edit"
+              id={"btnEditImg"}
               small
               secondary
               circle

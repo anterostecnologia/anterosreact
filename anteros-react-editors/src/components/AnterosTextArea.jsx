@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
+import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import PropTypes from 'prop-types';
@@ -36,7 +36,7 @@ export default class AnterosTextArea extends React.Component {
         this.insertText = this.insertText.bind(this);
     }
 
-    get componentName(){
+    get componentName() {
         return "AnterosTextArea";
     }
 
@@ -110,16 +110,16 @@ export default class AnterosTextArea extends React.Component {
             sel.text = text;
         }
         // Microsoft Edge
-        else if(window.navigator.userAgent.indexOf("Edge") > -1) {
-          var startPos = myField.selectionStart; 
-          var endPos = myField.selectionEnd; 
-    
-          myField.value = myField.value.substring(0, startPos)+ text 
-                 + myField.value.substring(endPos, myField.value.length); 
-    
-          var pos = startPos + text.length;
-          myField.focus();
-          myField.setSelectionRange(pos, pos);
+        else if (window.navigator.userAgent.indexOf("Edge") > -1) {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+
+            myField.value = myField.value.substring(0, startPos) + text
+                + myField.value.substring(endPos, myField.value.length);
+
+            var pos = startPos + text.length;
+            myField.focus();
+            myField.setSelectionRange(pos, pos);
         }
         //MOZILLA and others
         else if (myField.selectionStart || myField.selectionStart == '0') {
@@ -131,7 +131,65 @@ export default class AnterosTextArea extends React.Component {
         } else {
             myField.value += text;
         }
+
+        if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
+            if (this.props.disableBase64Convertion) {
+                this.props.dataSource.setFieldByName(this.props.dataField, myField.value);
+            } else {
+                this.props.dataSource.setFieldByName(this.props.dataField, btoa(myField.value));
+            }
+        } else {
+            this.setState({ value: myField.value });
+        }
     }
+
+    getInputSelection() {
+        this.input.focus();
+        var start = 0, end = 0, normalizedValue, range,
+            textInputRange, len, endRange;
+
+        if (typeof this.input.selectionStart == "number" && typeof this.input.selectionEnd == "number") {
+            start = this.input.selectionStart;
+            end = this.input.selectionEnd;
+        } else {
+            range = document.selection.createRange();
+
+            if (range && range.parentElement() == el) {
+                len = this.input.value.length;
+                normalizedValue = this.input.value.replace(/\r\n/g, "\n");
+
+                // Create a working TextRange that lives only in the input
+                textInputRange = this.input.createTextRange();
+                textInputRange.moveToBookmark(range.getBookmark());
+
+                // Check if the start and end of the selection are at the very end
+                // of the input, since moveStart/moveEnd doesn't return what we want
+                // in those cases
+                endRange = this.input.createTextRange();
+                endRange.collapse(false);
+
+                if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+                    start = end = len;
+                } else {
+                    start = -textInputRange.moveStart("character", -len);
+                    start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+                    if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+                        end = len;
+                    } else {
+                        end = -textInputRange.moveEnd("character", -len);
+                        end += normalizedValue.slice(0, end).split("\n").length - 1;
+                    }
+                }
+            }
+        }
+        return {
+            start: start,
+            end: end
+        };
+    }
+
+
 
     handleChange(event) {
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
@@ -170,6 +228,7 @@ export default class AnterosTextArea extends React.Component {
             value={this.state.value}
             className={className}
             rows={this.props.rows}
+            autofocus
             readOnly={readOnly}
             onChange={this.handleChange}
         />;

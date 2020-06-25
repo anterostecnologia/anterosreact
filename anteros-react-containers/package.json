@@ -21,6 +21,7 @@
     "@babel/preset-react": "^7.0.0",
     "anteros-react-buttons": "^1.0.9",
     "anteros-react-core": "^1.0.7",
+    "anteros-react-image": "^1.0.6",
     "anteros-react-layout": "^1.0.9",
     "anteros-react-menu": "^1.0.6",
     "babel": "^6.23.0",
