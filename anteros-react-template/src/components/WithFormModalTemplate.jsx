@@ -63,8 +63,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                     alertMessage: '',
                     detailMessage: undefined,
                     modalOpen: '',
-                    modalCallback: null,
-                    selectedRecords: []
+                    modalCallback: null
                 };
             }
             createMainDataSource() {
