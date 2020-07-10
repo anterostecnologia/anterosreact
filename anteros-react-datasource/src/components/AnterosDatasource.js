@@ -75,6 +75,7 @@ class AnterosDatasource {
         this.getGrandTotalRecords = this.getGrandTotalRecords.bind(this);
         this.getSizeOfPage = this.getSizeOfPage.bind(this);
         this.goToPage = this.goToPage.bind(this);
+        this.goNextPage = this.goNextPage.bind(this);
         this.isEmpty = this.isEmpty.bind(this);
         this.isEOF = this.isEOF.bind(this);
         this.isBOF = this.isBOF.bind(this);
@@ -145,8 +146,8 @@ class AnterosDatasource {
         this._enableListeners = true;
 
         this.dataSourceName = name;
-        if (!name){
-            this.dataSourceName = "ds"+Math.random();
+        if (!name) {
+            this.dataSourceName = "ds" + Math.random();
         }
     }
 
@@ -209,6 +210,10 @@ class AnterosDatasource {
 
     goToPage(page) {
         this.currentPage = page;
+    }
+
+    goNextPage() {
+        this.currentPage = this.currentPage + 1;
     }
 
     getGrandTotalRecords() {
@@ -1062,7 +1067,23 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.executeAjax(ajaxPageConfig, dataSourceEvents.AFTER_GOTO_PAGE);
     }
 
-    executeAjax(ajaxConfig, event, callback) {
+    goNextPage() {
+        if (!this.ajaxPageConfigHandler) {
+            let error = "Para buscar dados paginados remotamente é necessário configurar 'setAjaxPageConfigHandler'";
+            this.dispatchEvent(dataSourceEvents.ON_ERROR, error);
+            throw new AnterosDatasourceError(error);
+        }
+        this.dispatchEvent(dataSourceEvents.BEFORE_GOTO_PAGE);
+        let ajaxPageConfig = this.ajaxPageConfigHandler(this.currentPage + 1);
+        let _this = this;
+        this.executeAjax(ajaxPageConfig, dataSourceEvents.AFTER_GOTO_PAGE, function (error) {
+            if (!error) {
+                _this.currentPage = _this.currentPage + 1;
+            }
+        }, true);
+    }
+
+    executeAjax(ajaxConfig, event, callback, accumulated) {
         let _this = this;
         this.executed = false;
         axios((ajaxConfig ? ajaxConfig : this.ajaxConfig)).then(function (response) {
@@ -1092,10 +1113,23 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                     _this.data = [];
                 } else {
                     if (AnterosUtils.isArray(temp))
-                        _this.data = temp;
+                        if (accumulated === true) {
+                            _this.data.concat(temp);
+                        } else {
+                            _this.data = temp;
+                        }
                     else {
-                        _this.data = [];
-                        _this.data.push(temp);
+                        if (accumulated === true) {
+                            if (!_this.data) {
+                                _this.data = [];
+                                _this.data.push(temp);
+                            } else {
+                                _this.data.push(temp);
+                            }
+                        } {
+                            _this.data = [];
+                            _this.data.push(temp);
+                        }
                     }
                 }
             } else {
@@ -1104,10 +1138,23 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                     _this.data = [];
                 } else {
                     if (AnterosUtils.isArray(temp))
-                        _this.data = temp;
+                        if (accumulated === true) {
+                            _this.data.concat(temp);
+                        } else {
+                            _this.data = temp;
+                        }
                     else {
-                        _this.data = [];
-                        _this.data.push(temp);
+                        if (accumulated === true) {
+                            if (!_this.data) {
+                                _this.data = [];
+                                _this.data.push(temp);
+                            } else {
+                                _this.data.push(temp);
+                            }
+                        } {
+                            _this.data = [];
+                            _this.data.push(temp);
+                        }
                     }
                 }
                 _this.totalRecords = _this.data.length;

@@ -309,6 +309,10 @@ export default function WithFormTemplate(_loadingProps) {
         this.setState({ ...this.state, ...newState });
       }
 
+      getOwnerForm(){
+        return this.owner;
+      }
+
       render() {
         return (
           <AnterosCard
@@ -366,6 +370,7 @@ export default function WithFormTemplate(_loadingProps) {
                   loadingProps={loadingProps}
                   onButtonClick={this.onButtonClick}
                   user={this.props.user}
+                  ref={ref => (this.owner = ref)}
                   update={this.update}
                   setDatasource={this.props.setDatasource}
                   setFilter={this.props.setFilter}

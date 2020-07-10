@@ -404,7 +404,7 @@ export class AnterosMegaMenuItem extends Component {
         <div className='mmenu-caption mmenu-list-item-text' style={this.props.style}
           data-placement={this.props.hintPosition}
           data-balloon-pos={this.props.hintPosition} aria-label={this.props.hint}>
-          <i className={`${this.props.icon} mmenu-item-icone mmenu-icon`}></i>
+          {this.props.icon?<i className={`${this.props.icon} mmenu-item-icone mmenu-icon`}></i>:<img src={this.props.image} className={`mmenu-item-icone mmenu-icon`}></img>}
           {this.context.menuOpened ?
             <AnterosText truncate={true} text={this.props.caption} style={{ cursor: 'pointer', paddingLeft: "5px" }} />
             : null}

@@ -339,8 +339,8 @@ export default class AnterosImagePicker extends React.Component {
                 style={{ display: 'none' }}
               />
             </div>
-            <AnterosButton
-              style={{position:'absolute',top:'10px', right:0, zIndex:99}}
+            {!this.props.readOnly?<AnterosButton
+              style={{position:'absolute',top:'10px', left:'20px', zIndex:99}}
               icon="fal fa-edit"
               id="btnEditImg"
               small
@@ -349,8 +349,8 @@ export default class AnterosImagePicker extends React.Component {
               visible={!this.props.disabled}
               onButtonClick={this.onButtonClick}
               hint="Editar a imagem"
-            />
-            <AnterosImagePickerEdicao
+            />:null}
+            {!this.props.readOnly?<AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
               showCloseButton={this.props.showCloseButton}
@@ -363,7 +363,7 @@ export default class AnterosImagePicker extends React.Component {
               captureWidth={this.props.captureWidth}
               captureHeight={this.props.captureHeight}
               ref={this.AnterosImagePickerEdicaoRef}
-            />
+            />:null}
           </div>
         </div>
       );
@@ -400,8 +400,8 @@ export default class AnterosImagePicker extends React.Component {
               ref="input"
               style={{ display: 'none' }}
             />
-            <AnterosButton
-              style={{position:'absolute',top:'10px', right:0, zIndex:99}}
+            {!this.props.readOnly?<AnterosButton
+              style={{position:'absolute',top:'10px', left:'20px', zIndex:99}}
               icon="fal fa-edit"
               id={"btnEditImg"}
               small
@@ -410,8 +410,8 @@ export default class AnterosImagePicker extends React.Component {
               visible={!this.props.disabled}
               onButtonClick={this.onButtonClick}
               hint="Editar a imagem"
-            />
-            <AnterosImagePickerEdicao
+            />:null}
+            {!this.props.readOnly?<AnterosImagePickerEdicao
               id={this.idImage + '_modal'}
               isOpen={this.state.modal}
               showCloseButton={this.props.showCloseButton}
@@ -424,7 +424,7 @@ export default class AnterosImagePicker extends React.Component {
               captureWidth={this.props.captureWidth}
               captureHeight={this.props.captureHeight}
               ref={this.AnterosImagePickerEdicaoRef}
-            />
+            />:null}
           </div>
         </div>
       );

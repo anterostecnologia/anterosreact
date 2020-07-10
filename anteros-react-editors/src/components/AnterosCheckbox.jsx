@@ -163,7 +163,7 @@ class AnterosCheckbox extends Component {
 					...this.props.style
 				}}
 			>
-				<label style={{ margin: "0" }}>
+				<label style={{ margin: "0", ...this.props.labelStyle }}>
 					<input
 						className={className}
 						id={id ? id : this.idCheckbox}
@@ -232,7 +232,8 @@ AnterosCheckbox.propTypes = {
 	icon: PropTypes.string,
 	iconColor: PropTypes.string,
 	image: PropTypes.string,
-	readOnly: PropTypes.bool
+	readOnly: PropTypes.bool,
+	labelStyle: PropTypes.object
 };
 
 AnterosCheckbox.defaultProps = {

@@ -56,7 +56,7 @@ export default class AnterosBadge extends Component {
 
         let style = { ...this.props.style };
         if (this.props.backgroundColor) {
-            style = { backgroundColor: this.props.backgroundColor };
+            style = { ...style, backgroundColor: this.props.backgroundColor };
         }
         if (this.props.color) {
             style = { ...style, color: this.props.color };

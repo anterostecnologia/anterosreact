@@ -49,7 +49,7 @@ export default class AnterosLookupCombobox extends AnterosCombobox {
 		let _value = "";
 		if (props.dataSource) {
 			_value = props.dataSource.fieldByName(props.dataField);
-			if (_value) {
+			if (_value && !this.props.simpleValue) {
 				if (typeof props.lookupDataFieldText === "function") {
 					_value = props.lookupDataFieldText(
 						props.dataSource.getCurrentRecord()
@@ -72,10 +72,15 @@ export default class AnterosLookupCombobox extends AnterosCombobox {
 				})
 			) {
 				if (this.props.dataSource) {
+					if (!this.props.simpleValue){
 					this.props.dataSource.setFieldByName(
 						this.props.dataField,
 						this.props.lookupDataSource.getCurrentRecord()
 					);
+					} else {
+						this.props.dataSource.setFieldByName(
+							this.props.dataField,value);
+					}
 				}
 			}
 		} else {
@@ -146,9 +151,11 @@ AnterosLookupCombobox.propTypes = {
 		PropTypes.instanceOf(AnterosRemoteDatasource)
 	]).isRequired,
 	lookupDataFieldText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
-	lookupDataFieldId: PropTypes.string.isRequired
+	lookupDataFieldId: PropTypes.string.isRequired,
+	simpleValue: PropTypes.bool.isRequired
 };
 
 AnterosLookupCombobox.defaultProps = {
-	...AnterosCombobox.defaultProps
+	...AnterosCombobox.defaultProps,
+	simpleValue: false
 };

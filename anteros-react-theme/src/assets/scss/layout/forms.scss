@@ -1,7 +1,7 @@
 /*********
 ***  Forms
 *********/
-input, 
+input,
 textarea {
 	outline: none;
 }
@@ -57,9 +57,9 @@ textarea {
 
 /* Input groups */
 .input-group {
-	
 
-	span.input-group-addon { 
+
+	span.input-group-addon {
 		font-style: italic;
 		border: none;
 		border-radius: 0;
@@ -75,17 +75,17 @@ textarea {
 	}
 }
 
-label, 
+label,
 .control-label {
 	font-weight: 400;
-}	
+}
 
 .form-control.underlined {
 	padding-left: 0;
 	padding-right: 0;
 	border-radius: 0;
 	border: none;
- 	border-radius: 0;
+	border-radius: 0;
 	box-shadow: none;
 	border-bottom: 1px solid $color-divider;
 
@@ -119,98 +119,98 @@ label,
 }
 
 .form-control.boxed {
-    border-radius: 0;
-    box-shadow: none;
-    
-    &:focus {
-    	border: 1px solid $color-primary;
-    }
+	border-radius: 0;
+	box-shadow: none;
+
+	&:focus {
+		border: 1px solid $color-primary;
+	}
 }
 
 .radio,
 .checkbox {
 	display: none;
 
-	& + span {
+	&+span {
 		padding: 0;
 		padding-right: 10px;
 	}
 
-	& + span:before {
+	&+span:before {
 		font-family: "Font Awesome 5 Pro";
 		font-size: 21px;
 		display: inline-block;
 		vertical-align: middle;
-		letter-spacing: 10px; 
+		letter-spacing: 10px;
 		color: darken($color-divider, 5%);
 	}
 
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-primary;
 	}
 
-	&:disabled + span:before {
+	&:disabled+span:before {
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
 
-	&:checked:disabled  + span:before {
+	&:checked:disabled+span:before {
 		color: darken($color-divider, 5%);
 	}
 }
 
 .checkbox-primary {
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-primary;
 	}
 }
 
 .checkbox-success {
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-success;
 	}
 }
 
 .checkbox-info {
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-info;
 	}
 }
 
 .checkbox-danger {
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-danger;
 	}
 }
 
 .checkbox-warning {
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-warning;
 	}
 }
 
 .checkbox-secondary {
-	&:checked + span:before {
+	&:checked+span:before {
 		color: $color-secondary;
 	}
 }
 
 .checkbox {
 
-	& + span:before {
+	&+span:before {
 		content: "\f0c8";
 	}
 
-	&:checked + span:before {
+	&:checked+span:before {
 		content: "\f14a";
 	}
 
 	&.rounded {
-		& + span:before {
+		&+span:before {
 			content: "\f111";
 		}
 
-		&:checked + span:before {
+		&:checked+span:before {
 			content: "\f058";
 		}
 	}
@@ -218,20 +218,20 @@ label,
 
 .radio {
 
-	& + span:before {
+	&+span:before {
 		content: "\f111";
 	}
 
-	&:checked + span:before {
+	&:checked+span:before {
 		content: "\f192";
 	}
 
 	&.squared {
-		& + span:before {
+		&+span:before {
 			content: "\f0c8";
 		}
 
-		&:checked + span:before {
+		&:checked+span:before {
 			content: "\f14a";
 		}
 	}
@@ -246,17 +246,19 @@ label,
 		color: darken($color-divider, 5%);
 	}
 
-	&:-moz-placeholder { /* Firefox 18- */
+	&:-moz-placeholder {
+		/* Firefox 18- */
 		font-style: italic;
 		color: $color-divider;
 	}
 
-	&::-moz-placeholder {  /* Firefox 19+ */
+	&::-moz-placeholder {
+		/* Firefox 19+ */
 		font-style: italic;
 		color: $color-divider;
 	}
 
-	&:-ms-input-placeholder {  
+	&:-ms-input-placeholder {
 		font-style: italic;
 		color: $color-divider;
 	}
@@ -264,23 +266,34 @@ label,
 
 
 legend {
-  font-size: 0.99rem;
-  display: block;
-  margin-bottom: 1.5rem;
-  position: relative;
-  color: $color-primary }
-  legend span {
-    padding: 0px 0.5rem 0 0;
-    background-color: #fff;
-    display: inline-block;
-    z-index: 2;
-    position: relative; }
-  legend:before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    height: 1px;
-    top: 50%;
-    background-color: rgba(0, 0, 0, 0.1);
-    z-index: 1; }
+	font-size: 0.99rem;
+	display: block;
+	margin-bottom: 1.5rem;
+	position: relative;
+	color: $color-primary
+}
+
+legend span {
+	padding: 0px 0.5rem 0 0;
+	background-color: #fff;
+	display: inline-block;
+	z-index: 2;
+	position: relative;
+}
+
+legend:before {
+	content: "";
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	height: 1px;
+	top: 50%;
+	background-color: rgba(0, 0, 0, 0.1);
+	z-index: 1;
+}
+
+
+
+.input-group-btn {
+	height: 38px;
+}

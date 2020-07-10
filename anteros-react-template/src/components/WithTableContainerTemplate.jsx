@@ -908,6 +908,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                 state={this.state}
                                 user={this.props.user}
                                 history={this.props.history}
+                                ownerTemplate={this}
                                 dataSource={this.dataSource}
                             />
                         </AnterosBlockUi>

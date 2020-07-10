@@ -133,7 +133,7 @@ export default class AnterosLookupEdit extends React.Component {
                         _this.input.focus();
                     });
                 } else {
-                    _this.props.dataSource.setFieldByName(_this.props.dataField, newData);
+                    _this.props.dataSource.setFieldByName(_this.props.dataField, "");
                 }
             }
         } else {
