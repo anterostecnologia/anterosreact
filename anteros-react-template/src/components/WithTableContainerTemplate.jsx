@@ -320,7 +320,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 this.onResize(
                     this.card.getCardBlockWidth(),
                     this.card.getCardBlockHeight()
-                  );
+                );
 
                 if (this.dataSource) {
                     if (this.table1) {
@@ -547,7 +547,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 setTimeout(() => {
                     if (this.state.newHeight !== undefined && this.state.width !== undefined) {
                         if (this.table1) {
-                            this.table1.resize(this.state.width-360, this.state.newHeight);
+                            this.table1.resize(this.state.width - 360, this.state.newHeight);
                         }
                         if (this.table2) {
                             this.table2.resize("100%", this.state.newHeight);
@@ -702,10 +702,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
             }
 
             onResize(width, height) {
-                let newHeight = height - 120;   
+                let newHeight = height - 120;
 
                 if (this.table1) {
-                    this.table1.resize(width-350, newHeight);
+                    this.table1.resize(width - 350, newHeight);
                 }
                 if (this.table2) {
                     this.table2.resize("100%", newHeight);
@@ -719,220 +719,225 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
 
             render() {
-                return (
-                    <AnterosCard
-                        caption={loadingProps.caption}
-                        className="versatil-card-full"
-                        withScroll={false}
-                        styleBlock={{
-                            height: 'calc(100% - 120px)'
-                        }}
-                        ref={ref => (this.card = ref)}
-                    >
-                        <AnterosResizeDetector
-                            handleWidth
-                            handleHeight
-                            onResize={this.onResize}
-                        />
-                        <AnterosAlert
-                            danger
-                            fill
-                            isOpen={this.state.alertIsOpen}
-                            autoCloseInterval={15000}
-                            onClose={this.onCloseAlert}
-                        >
-                            {this.state.alertMessage}
-                        </AnterosAlert>
-                        <HeaderActions>
-                            <AnterosButton
-                                id="btnClose"
-                                onButtonClick={this.onButtonClick}
-                                route={loadingProps.routes.close}
-                                visible={loadingProps.routes.close !== undefined}
-                                icon="fa fa-times"
-                                small
-                                circle
-                                disabled={
-                                    this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                }
-                            />
-                        </HeaderActions>
-                        <AnterosBlockUi
-                            tagStyle={{
-                                height: this.state.filterExpanded ? '100%' : 'auto'
-                            }}
-                            styleBlockMessage={{
-                                border: '2px solid white',
-                                width: '200px',
-                                backgroundColor: '#8BC34A',
-                                borderRadius: '8px',
-                                color: 'white'
-                            }}
-                            styleOverlay={{
-                                opacity: 0.1,
-                                backgroundColor: 'black'
-                            }}
-                            tag="div"
-                            blocking={this.state.loading}
-                            message={loadingProps.messageLoading}
-                            loader={
-                                <AnterosLoader active type="ball-pulse" color="#02a17c" />
-                            }
-                        >
-                            {loadingProps.withFilter ? (
-                                <div style={{
-                                    display: 'flex',
-                                    flexFlow: 'row nowrap',
-                                    justifyContent: 'space-between',
-                                    width: 'calc(100%)',
-                                    height: 'calc(100%)'
-                                }}>
-                                    <div style={{
-                                        width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
-                                    }}>
-                                        <UserActions
-                                            dataSource={this.dataSource}
-                                            onButtonClick={this.onButtonClick}
-                                            onButtonSearch={this.onButtonSearch}
-                                            routes={loadingProps.routes}
-                                            allowRemove={loadingProps.disableRemove ? false : true}
-                                            labelButtonAdd={loadingProps.labelButtonAdd}
-                                            labelButtonEdit={loadingProps.labelButtonEdit}
-                                            labelButtonRemove={loadingProps.labelButtonRemove}
-                                            labelButtonSelect={loadingProps.labelButtonSelect}
-                                            positionUserActions={this.positionUserActions}
-                                            userActions={
-                                                this.hasUserActions ? this.getUserActions() : null
-                                            }
-                                        />
-                                        {this.state.filterExpanded ? (
-                                            <AnterosDataTable
-                                                id={'table' + loadingProps.viewName}
-                                                height={'200px'}
-                                                ref={ref => (this.table1 = ref)}
-                                                dataSource={this.dataSource}
-                                                width="100%"
-                                                enablePaging={false}
-                                                enableSearching={false}
-                                                showExportButtons={false}
-                                                onDoubleClick={this.onDoubleClickTable}
-                                                onSelectRecord={this.handleOnSelectRecord}
-                                                onUnSelectRecord={this.handleOnUnselectRecord}
-                                                onSelectAllRecords={this.handleOnSelectAllRecords}
-                                                onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                                            >
-                                                {this.getColumns()}
-                                            </AnterosDataTable>
-                                        ) : null}
-                                    </div>
-                                    <AnterosQueryBuilder
-                                        zIndex={50}
-                                        query={this.props.query}
-                                        sort={this.props.sort}
-                                        id={loadingProps.filtroDispositivos}
-                                        formName={loadingProps.viewName}
-                                        ref={this.filterRef}
-                                        activeSortIndex={this.props.activeSortIndex}
-                                        dataSource={this.dsFilter}
-                                        activeFilter={this.props.activeFilter}
-                                        onSaveFilter={this.onSaveFilter}
-                                        onSelectActiveFilter={this.onSelectActiveFilter}
-                                        onQueryChange={this.onQueryChange}
-                                        onSortChange={this.onSortChange}
-                                        onQuickFilter={this.onQuickFilter}
-                                        quickFilterText={this.props.quickFilterText}
-                                        quickFilterWidth={
-                                            loadingProps.quickFilterWidth
-                                                ? loadingProps.quickFilterWidth
-                                                : '30%'
-                                        }
-                                        height="170px"
-                                        allowSort={true}
-                                        disabled={
-                                            this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                        }
-                                        onSearchButtonClick={this.onSearchButtonClick}
-                                        onToggleExpandedFilter={this.onToggleExpandedFilter}
-                                    >
-                                        {this.getFieldsFilter()}
-                                    </AnterosQueryBuilder>
-                                </div>
-                            ) : (
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'flex-start'
-                                        }}
-                                    >
-                                        <UserActions
-                                            dataSource={this.dataSource}
-                                            onButtonClick={this.onButtonClick}
-                                            onButtonSearch={this.onButtonSearch}
-                                            routes={loadingProps.routes}
-                                            allowRemove={loadingProps.disableRemove ? false : true}
-                                            labelButtonAdd={loadingProps.labelButtonAdd}
-                                            labelButtonEdit={loadingProps.labelButtonEdit}
-                                            labelButtonRemove={loadingProps.labelButtonRemove}
-                                            labelButtonSelect={loadingProps.labelButtonSelect}
-                                            positionUserActions={this.positionUserActions}
-                                            userActions={
-                                                this.hasUserActions ? this.getUserActions() : null
-                                            }
-                                        />
-                                    </div>
-                                )}
+                const modals = WrappedComponent.prototype.hasOwnProperty('getModals') ? this.getModals() : null;
 
-                            {!this.state.filterExpanded ? (
-                                <AnterosDataTable
-                                    id={'table' + loadingProps.viewName}
-                                    height={'200px'}
-                                    ref={ref => (this.table2 = ref)}
-                                    dataSource={this.dataSource}
-                                    width="100%"
-                                    enablePaging={false}
-                                    enableSearching={false}
-                                    showExportButtons={false}
-                                    onDoubleClick={this.onDoubleClickTable}
-                                    onSelectRecord={this.handleOnSelectRecord}
-                                    onUnSelectRecord={this.handleOnUnselectRecord}
-                                    onSelectAllRecords={this.handleOnSelectAllRecords}
-                                    onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                                >
-                                    {this.getColumns()}
-                                </AnterosDataTable>
-                            ) : null}
-                            <WrappedComponent
-                                {...this.props}
-                                ref={ref => (this.wrappedRef = ref)}
-                                state={this.state}
-                                user={this.props.user}
-                                history={this.props.history}
-                                ownerTemplate={this}
-                                dataSource={this.dataSource}
+                return (
+                    <Fragment>
+                        <AnterosCard
+                            caption={loadingProps.caption}
+                            className="versatil-card-full"
+                            withScroll={false}
+                            styleBlock={{
+                                height: 'calc(100% - 120px)'
+                            }}
+                            ref={ref => (this.card = ref)}
+                        >
+                            <AnterosResizeDetector
+                                handleWidth
+                                handleHeight
+                                onResize={this.onResize}
                             />
-                        </AnterosBlockUi>
-                        <FooterActions className="versatil-card-footer">
-                            <AnterosRow>
-                                <AnterosCol medium={4}>
-                                    <AnterosLabel
-                                        caption={`Total ${
-                                            loadingProps.caption
-                                            } ${this.dataSource.getGrandTotalRecords()}`}
-                                    />
-                                </AnterosCol>
-                                <AnterosCol medium={8}>
-                                    <AnterosPagination
-                                        horizontalEnd
+                            <AnterosAlert
+                                danger
+                                fill
+                                isOpen={this.state.alertIsOpen}
+                                autoCloseInterval={15000}
+                                onClose={this.onCloseAlert}
+                            >
+                                {this.state.alertMessage}
+                            </AnterosAlert>
+                            <HeaderActions>
+                                <AnterosButton
+                                    id="btnClose"
+                                    onButtonClick={this.onButtonClick}
+                                    route={loadingProps.routes.close}
+                                    visible={loadingProps.routes.close !== undefined}
+                                    icon="fa fa-times"
+                                    small
+                                    circle
+                                    disabled={
+                                        this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                                    }
+                                />
+                            </HeaderActions>
+                            <AnterosBlockUi
+                                tagStyle={{
+                                    height: this.state.filterExpanded ? '100%' : 'auto'
+                                }}
+                                styleBlockMessage={{
+                                    border: '2px solid white',
+                                    width: '200px',
+                                    backgroundColor: '#8BC34A',
+                                    borderRadius: '8px',
+                                    color: 'white'
+                                }}
+                                styleOverlay={{
+                                    opacity: 0.1,
+                                    backgroundColor: 'black'
+                                }}
+                                tag="div"
+                                blocking={this.state.loading}
+                                message={loadingProps.messageLoading}
+                                loader={
+                                    <AnterosLoader active type="ball-pulse" color="#02a17c" />
+                                }
+                            >
+                                {loadingProps.withFilter ? (
+                                    <div style={{
+                                        display: 'flex',
+                                        flexFlow: 'row nowrap',
+                                        justifyContent: 'space-between',
+                                        width: 'calc(100%)',
+                                        height: 'calc(100%)'
+                                    }}>
+                                        <div style={{
+                                            width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
+                                        }}>
+                                            <UserActions
+                                                dataSource={this.dataSource}
+                                                onButtonClick={this.onButtonClick}
+                                                onButtonSearch={this.onButtonSearch}
+                                                routes={loadingProps.routes}
+                                                allowRemove={loadingProps.disableRemove ? false : true}
+                                                labelButtonAdd={loadingProps.labelButtonAdd}
+                                                labelButtonEdit={loadingProps.labelButtonEdit}
+                                                labelButtonRemove={loadingProps.labelButtonRemove}
+                                                labelButtonSelect={loadingProps.labelButtonSelect}
+                                                positionUserActions={this.positionUserActions}
+                                                userActions={
+                                                    this.hasUserActions ? this.getUserActions() : null
+                                                }
+                                            />
+                                            {this.state.filterExpanded ? (
+                                                <AnterosDataTable
+                                                    id={'table' + loadingProps.viewName}
+                                                    height={'200px'}
+                                                    ref={ref => (this.table1 = ref)}
+                                                    dataSource={this.dataSource}
+                                                    width="100%"
+                                                    enablePaging={false}
+                                                    enableSearching={false}
+                                                    showExportButtons={false}
+                                                    onDoubleClick={this.onDoubleClickTable}
+                                                    onSelectRecord={this.handleOnSelectRecord}
+                                                    onUnSelectRecord={this.handleOnUnselectRecord}
+                                                    onSelectAllRecords={this.handleOnSelectAllRecords}
+                                                    onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                                                >
+                                                    {this.getColumns()}
+                                                </AnterosDataTable>
+                                            ) : null}
+                                        </div>
+                                        <AnterosQueryBuilder
+                                            zIndex={50}
+                                            query={this.props.query}
+                                            sort={this.props.sort}
+                                            id={loadingProps.filtroDispositivos}
+                                            formName={loadingProps.viewName}
+                                            ref={this.filterRef}
+                                            activeSortIndex={this.props.activeSortIndex}
+                                            dataSource={this.dsFilter}
+                                            activeFilter={this.props.activeFilter}
+                                            onSaveFilter={this.onSaveFilter}
+                                            onSelectActiveFilter={this.onSelectActiveFilter}
+                                            onQueryChange={this.onQueryChange}
+                                            onSortChange={this.onSortChange}
+                                            onQuickFilter={this.onQuickFilter}
+                                            quickFilterText={this.props.quickFilterText}
+                                            quickFilterWidth={
+                                                loadingProps.quickFilterWidth
+                                                    ? loadingProps.quickFilterWidth
+                                                    : '30%'
+                                            }
+                                            height="170px"
+                                            allowSort={true}
+                                            disabled={
+                                                this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                                            }
+                                            onSearchButtonClick={this.onSearchButtonClick}
+                                            onToggleExpandedFilter={this.onToggleExpandedFilter}
+                                        >
+                                            {this.getFieldsFilter()}
+                                        </AnterosQueryBuilder>
+                                    </div>
+                                ) : (
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'flex-start'
+                                            }}
+                                        >
+                                            <UserActions
+                                                dataSource={this.dataSource}
+                                                onButtonClick={this.onButtonClick}
+                                                onButtonSearch={this.onButtonSearch}
+                                                routes={loadingProps.routes}
+                                                allowRemove={loadingProps.disableRemove ? false : true}
+                                                labelButtonAdd={loadingProps.labelButtonAdd}
+                                                labelButtonEdit={loadingProps.labelButtonEdit}
+                                                labelButtonRemove={loadingProps.labelButtonRemove}
+                                                labelButtonSelect={loadingProps.labelButtonSelect}
+                                                positionUserActions={this.positionUserActions}
+                                                userActions={
+                                                    this.hasUserActions ? this.getUserActions() : null
+                                                }
+                                            />
+                                        </div>
+                                    )}
+
+                                {!this.state.filterExpanded ? (
+                                    <AnterosDataTable
+                                        id={'table' + loadingProps.viewName}
+                                        height={'200px'}
+                                        ref={ref => (this.table2 = ref)}
                                         dataSource={this.dataSource}
-                                        visiblePages={3}
-                                        onBeforePageChanged={this.onBeforePageChanged}
-                                        onPageChanged={this.handlePageChanged}
-                                    />
-                                </AnterosCol>
-                            </AnterosRow>
-                        </FooterActions>
-                    </AnterosCard >
+                                        width="100%"
+                                        enablePaging={false}
+                                        enableSearching={false}
+                                        showExportButtons={false}
+                                        onDoubleClick={this.onDoubleClickTable}
+                                        onSelectRecord={this.handleOnSelectRecord}
+                                        onUnSelectRecord={this.handleOnUnselectRecord}
+                                        onSelectAllRecords={this.handleOnSelectAllRecords}
+                                        onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                                    >
+                                        {this.getColumns()}
+                                    </AnterosDataTable>
+                                ) : null}
+                                <WrappedComponent
+                                    {...this.props}
+                                    ref={ref => (this.wrappedRef = ref)}
+                                    state={this.state}
+                                    user={this.props.user}
+                                    ownerTemplate={this}
+                                    history={this.props.history}
+                                    dataSource={this.dataSource}
+                                />
+                            </AnterosBlockUi>
+                            <FooterActions className="versatil-card-footer">
+                                <AnterosRow>
+                                    <AnterosCol medium={4}>
+                                        <AnterosLabel
+                                            caption={`Total ${
+                                                loadingProps.caption
+                                                } ${this.dataSource.getGrandTotalRecords()}`}
+                                        />
+                                    </AnterosCol>
+                                    <AnterosCol medium={8}>
+                                        <AnterosPagination
+                                            horizontalEnd
+                                            dataSource={this.dataSource}
+                                            visiblePages={3}
+                                            onBeforePageChanged={this.onBeforePageChanged}
+                                            onPageChanged={this.handlePageChanged}
+                                        />
+                                    </AnterosCol>
+                                </AnterosRow>
+                            </FooterActions>
+                        </AnterosCard>
+                        {modals}
+                    </Fragment>
                 );
             }
         }
