@@ -292,6 +292,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 if (this.table1) {
                     this.table1.refreshData();
                 }
+                
                 if (this.table2) {
                     this.table2.refreshData();
                 }
