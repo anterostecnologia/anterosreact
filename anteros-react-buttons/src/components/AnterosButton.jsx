@@ -206,7 +206,7 @@ export default class AnterosButton extends Component {
             className += " collapsed";
         }
 
-        let icon;
+        let icon = null;
         if (customIcon) {
             icon = (
                 <i
@@ -258,37 +258,35 @@ export default class AnterosButton extends Component {
                 {image}
                 {this.props.useColsAndRows ?
                     <Fragment>
-                        {
-                            this.props.caption ? (
-                                <Fragment>
-                                    <AnterosRow>
-                                        <AnterosCol small={1}>
-                                            {icon}
-                                        </AnterosCol>
-                                        <AnterosCol small={10} >
-                                            <span style={this.props.captionStyle ? this.props.captionStyle : { paddingLeft: "4px" }}>{this.props.caption}</span>
+                        <AnterosRow horizontalCenter verticalCenter>
+                            {this.props.iconAsCaption ? null :
+                                <AnterosCol small={1}>
+                                    {icon}
+                                </AnterosCol>
+                            }
+                            <AnterosCol small={this.props.iconAsCaption ? 12 : 10} >
+                                {
+                                    this.props.caption && !this.props.iconAsCaption ? (
+                                        <span style={this.props.captionStyle ? this.props.captionStyle : { paddingLeft: "4px" }}>{this.props.caption}</span>
+                                    ) : <Fragment>
                                             {
-                                                this.props.subCaption ?
+                                                this.props.iconAsCaption ?
                                                     <Fragment>
-                                                        <br />
-                                                        <span style={this.props.subCaptionStyle ? this.props.subCaptionStyle : { paddingLeft: "4px" }}>{this.props.subCaption}</span>
-                                                    </Fragment>
-                                                    : null
+                                                        {icon}
+                                                    </Fragment> : null
                                             }
-                                        </AnterosCol>
-                                    </AnterosRow>
-                                </Fragment>
-                            ) : <Fragment>
-                                    {
-                                        this.props.subCaption ?
-                                            <Fragment>
-                                                <br />
-                                                <span style={this.props.subCaptionStyle ? this.props.subCaptionStyle : { paddingLeft: "4px" }}>{this.props.subCaption}</span>
-                                            </Fragment>
-                                            : null
-                                    }
-                                </Fragment>
-                        }
+                                        </Fragment>
+                                }
+                                {
+                                    this.props.subCaption ?
+                                        <Fragment>
+                                            <br />
+                                            <span style={this.props.subCaptionStyle ? this.props.subCaptionStyle : { paddingLeft: "4px" }}>{this.props.subCaption}</span>
+                                        </Fragment>
+                                        : null
+                                }
+                            </AnterosCol>
+                        </AnterosRow>
                     </Fragment>
                     :
                     <Fragment>
@@ -352,6 +350,8 @@ AnterosButton.propTypes = {
     dropdown: PropTypes.bool,
     /** Ícone do botão */
     icon: PropTypes.string,
+    /** Usar Ícone como legenda */
+    iconAsCaption: PropTypes.bool,
     /** Cor do Ícone do botão */
     iconColor: PropTypes.string,
     /** Tamanho do ícone */
@@ -426,6 +426,7 @@ AnterosButton.defaultProps = {
     subCaption: undefined,
     subcCaptionStyle: undefined,
     useColsAndRows: false,
+    iconAsCaption: false,
     hintPosition: "up",
     inline: true,
     visible: true
