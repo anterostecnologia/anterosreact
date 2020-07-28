@@ -29,7 +29,7 @@ export default class AnterosButtonGroup extends Component {
         }
 
         let className = AnterosUtils.buildClassNames("btn-group", (this.props.large ? "btn-group-lg" : ""), (this.props.small ? "btn-group-sm" : ""));
-        return (<div className={className}>
+        return (<div className={className} style={this.props.style}>
             {children}
         </div>);
     }
