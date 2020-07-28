@@ -294,6 +294,16 @@ export default class AnterosButton extends Component {
                             this.props.caption ? (
                                 <Fragment>
                                     <span style={this.props.captionStyle ? this.props.captionStyle : { paddingLeft: "4px" }}>{this.props.caption}</span>
+                                    <Fragment>
+                                        {
+                                            this.props.subCaption ?
+                                                <Fragment>
+                                                    <br />
+                                                    <span style={this.props.subCaptionStyle ? this.props.subCaptionStyle : { paddingLeft: "4px" }}>{this.props.subCaption}</span>
+                                                </Fragment>
+                                                : null
+                                        }
+                                    </Fragment>
                                 </Fragment>
                             ) : null
                         }
