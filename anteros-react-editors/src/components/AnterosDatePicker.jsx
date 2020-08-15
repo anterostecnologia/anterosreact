@@ -384,6 +384,7 @@ export default class AnterosDatePicker extends Component {
             dayPlaceholder,
             disableCalendar,
             disabled,
+            format,
             locale,
             maxDate,
             maxDetail,
@@ -451,7 +452,7 @@ export default class AnterosDatePicker extends Component {
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
                     disabled={disabled}
-                    // format={format}
+                    format={format}
                     isCalendarOpen={isOpen}
                     locale={locale}
                     maxDate={maxDate}
@@ -604,7 +605,7 @@ AnterosDatePicker.defaultProps = {
     width: "auto",
     primary: true,
     showLeadingZeros: false,
-    format: 'DD/MM/YYYY',
+    format: 'd/M/y',
 };
 
 const isValue = PropTypes.oneOfType([
