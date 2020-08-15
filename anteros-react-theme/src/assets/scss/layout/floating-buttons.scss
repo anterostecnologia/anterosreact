@@ -2,7 +2,7 @@
 ***  Floating button
 *********/
 .fab-menu {
-    position: relative;
+    position: absolute;
     display: inline-block;
     white-space: nowrap;
     padding: 0;
@@ -180,8 +180,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -9px;
-    margin-left: -9px;
+    margin-top: -8px;
+    margin-left: -8px;
 }
 
 .fab-menu-btn:focus, .fab-menu-btn:hover, .fab-menu[data-fab-state=open] .fab-menu-btn,
@@ -189,28 +189,28 @@
     box-shadow: 0 3px 6px rgba(0, 0, 0, .16), 0 3px 6px rgba(0, 0, 0, .23)
 }
 
-.fab-icon-close, .fab-icon-open {
+.fab-iiconn-close, .fab-iiconn-open {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
     -webkit-transition: all ease-in-out .3s;
     transition: all ease-in-out .3s
 }
 
-.fab-menu[data-fab-state=open] .fab-icon-close, .fab-menu[data-fab-state=open] .fab-icon-open,
-.fab-menu[data-fab-toggle=hover]:hover .fab-icon-close, .fab-menu[data-fab-toggle=hover]:hover .fab-icon-open {
+.fab-menu[data-fab-state=open] .fab-iiconn-close, .fab-menu[data-fab-state=open] .fab-iiconn-open,
+.fab-menu[data-fab-toggle=hover]:hover .fab-iiconn-close, .fab-menu[data-fab-toggle=hover]:hover .fab-iiconn-open {
     -webkit-transform: rotate(0);
     transform: rotate(0)
 }
 
-.fab-menu[data-fab-state=open] .fab-icon-open, .fab-menu[data-fab-toggle=hover]:hover .fab-icon-open {
+.fab-menu[data-fab-state=open] .fab-iiconn-open, .fab-menu[data-fab-toggle=hover]:hover .fab-iiconn-open {
     opacity: 0
 }
 
-.fab-icon-close {
+.fab-iiconn-close {
     opacity: 0
 }
 
-.fab-menu[data-fab-state=open] .fab-icon-close, .fab-menu[data-fab-toggle=hover]:hover .fab-icon-close {
+.fab-menu[data-fab-state=open] .fab-iiconn-close, .fab-menu[data-fab-toggle=hover]:hover .fab-iiconn-close {
     opacity: 1
 }
 

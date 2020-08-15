@@ -18,7 +18,8 @@ const defaultProps = {
   menuHorizontal: false, showInputSearch: true, showUserBlock: true,
   layoutReducerName: 'layoutReducer',
   logoSmall : undefined,
-  withoutScroll: true
+  withoutScroll: true,
+  toolbarIconColor: 'white'
 };
 
 export default function WithMainLayoutTemplate(_loadingProps) {
@@ -190,6 +191,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               logoNormal={logo}
               onSetOpenSidebar={this.onSetOpen}
               sidebarOpen={this.state.sidebarOpen}
+              toolbarIconColor={loadingProps.toolbarIconColor}
               showInputSearch={loadingProps.showInputSearch}
               userName={
                 this.props.authenticated ? this.props.user.profile.name : ''
@@ -221,7 +223,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             {horizontal ? (
               <AnterosMainMenu>
                 {MainMenu ? (
-                  <MainMenu onChangeMenuFormat={this.onChangeMenuFormat} horizontal={true} visible={this.isMainMenuVisible()} />
+                  <MainMenu user={this.props.user} onChangeMenuFormat={this.onChangeMenuFormat} horizontal={true} visible={this.isMainMenuVisible()} />
                 ) : null}
               </AnterosMainMenu>
             ) : (
@@ -252,7 +254,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                     ) : null}
                   </AnterosUserBlock> : null}
                   {MainMenu ? (
-                    <MainMenu onExpandMenu={this.onExpandMenu} onCollapseMenu={this.onCollapseMenu} onChangeMenuFormat={this.onChangeMenuFormat} withoutUserBlock={!loadingProps.showUserBlock} onSelectMenuItem={this.onSelectMenuItem} visible={this.isMainMenuVisible()} />
+                    <MainMenu user={this.props.user} onExpandMenu={this.onExpandMenu} onCollapseMenu={this.onCollapseMenu} onChangeMenuFormat={this.onChangeMenuFormat} withoutUserBlock={!loadingProps.showUserBlock} onSelectMenuItem={this.onSelectMenuItem} visible={this.isMainMenuVisible()} />
                   ) : null}
                 </AnterosSidebarContent>
               )}

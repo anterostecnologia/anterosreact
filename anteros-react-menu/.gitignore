@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+package-lock.json
 
 # Zip
 *.zip
