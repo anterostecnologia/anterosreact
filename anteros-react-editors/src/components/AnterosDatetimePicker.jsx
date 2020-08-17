@@ -2,7 +2,7 @@ import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
-import {AnterosCalendar} from 'anteros-react-calendar';
+import { AnterosCalendar } from 'anteros-react-calendar';
 import Fit from 'react-fit';
 import { DayInput, MonthInput, MonthSelect, YearInput } from './AnterosDatePicker';
 import { Hour12Input, Hour24Input, MinuteInput, SecondInput, AmPm } from './AnterosTimePicker';
@@ -673,7 +673,7 @@ export class DateTimeInput extends PureComponent {
 
         const processedValue = (() => {
             if (!value) {
-                return null; 
+                return null;
             }
 
             const [valueDate, valueTime] = value.split('T');
@@ -1280,13 +1280,15 @@ export default class AnterosDateTimePicker extends Component {
     }
 
     toggleCalendar() {
-        this.setState(prevState => ({
-            isCalendarOpen: !prevState.isCalendarOpen,
-            isClockOpen: false,
-        }));
+        if (!this.props.disabled) {
+            this.setState(prevState => ({
+                isCalendarOpen: !prevState.isCalendarOpen,
+                isClockOpen: false,
+            }));
+        }
     }
 
-    closeWidgets(){
+    closeWidgets() {
         this.setState((prevState) => {
             if (!prevState.isCalendarOpen && !prevState.isClockOpen) {
                 return null;
@@ -1299,7 +1301,7 @@ export default class AnterosDateTimePicker extends Component {
         });
     }
 
-    stopPropagation(event){
+    stopPropagation(event) {
         event.stopPropagation();
     }
 
@@ -1400,6 +1402,14 @@ export default class AnterosDateTimePicker extends Component {
             (this.props.fullSecondary ? "btn-secondary" : ""),
             (this.props.fullDefault ? "" : ""));
 
+        let style = this.props.style;
+        if (disabled) {
+            style = {
+                ...style, backgroundColor: '#e9ecef !important',
+                opacity: 1
+            };
+        }
+
         return (
             <div className={`${baseClassName}__wrapper`}>
                 <DateTimeInput
@@ -1408,6 +1418,7 @@ export default class AnterosDateTimePicker extends Component {
                     autoFocus={autoFocus}
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
+                    style={style}
                     disabled={disabled}
                     // format={format}
                     isWidgetOpen={isCalendarOpen || isClockOpen}

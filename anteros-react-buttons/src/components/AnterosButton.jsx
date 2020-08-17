@@ -198,17 +198,7 @@ export default class AnterosButton extends Component {
             className += " dropdown-toggle";
         }
 
-    let image;
-    if (this.props.image) {
-      image = (
-        <img
-          data-user={this.props.dataUser}
-          style={{width: this.props.imageWidth, height: this.props.imageHeight}}
-          onClick={this.onClick}
-          src={this.props.image}
-        />
-      );
-    }
+
         if (this.props.collapseContent) {
             dataToggle = "collapse";
             ariaExpanded = "true";
@@ -234,6 +224,7 @@ export default class AnterosButton extends Component {
             image = (
                 <img
                     data-user={this.props.dataUser}
+                    style={{ width: this.props.imageWidth, height: this.props.imageHeight }}
                     onClick={this.onClick}
                     src={this.props.image}
                 />
@@ -331,127 +322,6 @@ export default class AnterosButton extends Component {
 }
 
 AnterosButton.propTypes = {
-  /** Permite desabilitar o uso do componente */
-  disabled: PropTypes.bool,
-  /** Transforma o botão no formato oval */
-  oval: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em sucess */
-  success: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em info */
-  info: PropTypes.bool,
-  /** Transforma o botão num link */
-  link: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em warning */
-  warning: PropTypes.bool,
-  /** Muda o tamanho do botão para o maior */
-  large: PropTypes.bool,
-  /** Muda o tamanho do botão para o menor */
-  small: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em primary */
-  primary: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em danger */
-  danger: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em secondary */
-  secondary: PropTypes.bool,
-  /** Troca a cor do componente para o definido no tema em default */
-  default: PropTypes.bool,
-  /** Troca o lado esquerdo do botão para o formato de pilula */
-  pillLeft: PropTypes.bool,
-  /** Troca o lado direito do botão para o formato de pilula */
-  pillRight: PropTypes.bool,
-  pullRight: PropTypes.bool,
-  block: PropTypes.bool,
-  /** Cor de fundo do botão */
-  backgroundColor: PropTypes.string,
-  /** Cor da borda do botão */
-  borderColor: PropTypes.string,
-  /** Cor do botão */
-  color: PropTypes.string,
-  /** Indica se o botão vai ser dropdown */
-  dropdown: PropTypes.bool,
-  /** Ícone do botão */
-  icon: PropTypes.string,
-  /** Cor do Ícone do botão */
-  iconColor: PropTypes.string,
-  /** Tamanho do ícone */
-  iconSize: PropTypes.string,
-  /** Estilo do ícone */
-  iconStyle: PropTypes.object,
-  /** Imagem a ser usada no botão */
-  image: PropTypes.string,
-  imageWidth: PropTypes.any,
-  imageHeight: PropTypes.any,
-  /** Utilizar AnterosCol e AnterosRow */
-  useColsAndRows: PropTypes.bool,
-  /** Título do botão */
-  caption: PropTypes.string,
-  /** Estilo do título do botão */
-  captionStyle: PropTypes.object,
-  /** subtítulo do botão */
-  subCaption: PropTypes.string,
-  /** Estilo do subtítulo do botão */
-  subCaptionStyle: PropTypes.object,
-  /** Evento onclick no botão */
-  onButtonClick: PropTypes.func,
-  /** Dica do botão */
-  hint: PropTypes.string,
-  /** Posição da dica(hint) no botão */
-  hintPosition: PropTypes.oneOf(["up", "right", "left", "down"]),
-  /** Transforma o botão no estilo Facebook */
-  facebook: PropTypes.bool,
-  /** Transforma o botão no estilo Twitter */
-  twitter: PropTypes.bool,
-  /** Transforma o botão no estilo Google Plus */
-  googlePlus: PropTypes.bool,
-  /** Transforma o botão no estiloe Linkedin */
-  linkedin: PropTypes.bool,
-  /** Transforma o botão no estiloe Instagram */
-  instagram: PropTypes.bool,
-  /** Transforma o botão no estiloe Pinterest */
-  pinterest: PropTypes.bool,
-  /** Transforma o botão no estiloe Dribbble */
-  dribbble: PropTypes.bool,
-  /** Transforma o botão no estiloe youtube */
-  youtube: PropTypes.bool,
-  inline: PropTypes.bool,
-  dataUser: PropTypes.string,
-  route: PropTypes.string,
-  visible: PropTypes.bool.isRequired,
-  collapseContent: PropTypes.string
-};
-
-AnterosButton.defaultProps = {
-  disabled: false,
-  oval: false,
-  success: false,
-  warning: false,
-  info: false,
-  large: false,
-  small: false,
-  primary: false,
-  danger: false,
-  secondary: false,
-  pillLeft: false,
-  pillRight: false,
-  pullRight: false,
-  block: false,
-  backgroundColor: undefined,
-  borderColor: undefined,
-  color: undefined,
-  dropdown: false,
-  icon: undefined,
-  iconStyle: {},
-  image: undefined,
-  caption: undefined,
-  captionStyle: undefined,
-  subCaption: undefined,
-  subcCaptionStyle: undefined,
-  useColsAndRows: false,
-  hintPosition: "up",
-  inline: true,
-  visible: true,
-  imageWidth: undefined,
-  imageHeight: undefined,
     /** Permite desabilitar o uso do componente */
     disabled: PropTypes.bool,
     /** Transforma o botão no formato oval */
@@ -492,8 +362,6 @@ AnterosButton.defaultProps = {
     dropdown: PropTypes.bool,
     /** Ícone do botão */
     icon: PropTypes.string,
-    /** Usar Ícone como legenda */
-    iconAsCaption: PropTypes.bool,
     /** Cor do Ícone do botão */
     iconColor: PropTypes.string,
     /** Tamanho do ícone */
@@ -502,6 +370,8 @@ AnterosButton.defaultProps = {
     iconStyle: PropTypes.object,
     /** Imagem a ser usada no botão */
     image: PropTypes.string,
+    imageWidth: PropTypes.any,
+    imageHeight: PropTypes.any,
     /** Utilizar AnterosCol e AnterosRow */
     useColsAndRows: PropTypes.bool,
     /** Título do botão */
@@ -571,5 +441,7 @@ AnterosButton.defaultProps = {
     iconAsCaption: false,
     hintPosition: "up",
     inline: true,
-    visible: true
+    visible: true,
+    imageWidth: undefined,
+    imageHeight: undefined
 };
