@@ -115,7 +115,7 @@ export default class AnterosMainHeader extends Component {
               medium
               icon="fal fa-bars"
               iconSize="24px"
-              color="white"
+              color={this.props.toolbarIconColor}
               onButtonClick={this.toggleSidebar}
               hintPosition="bottom"
             />
@@ -124,7 +124,7 @@ export default class AnterosMainHeader extends Component {
             medium
             icon="fab fa-buromobelexperte"
             iconSize="24px"
-            color="white"
+            color={this.props.toolbarIconColor}
             hintPosition="bottom"
           />
 
@@ -174,11 +174,13 @@ export default class AnterosMainHeader extends Component {
 }
 
 AnterosMainHeader.propTypes = {
-  showInputSearch: PropTypes.bool.isRequired
+  showInputSearch: PropTypes.bool.isRequired,
+  toolbarIconColor: PropTypes.any
 }
 
 AnterosMainHeader.defaultPropTypes = {
-  showInputSearch: true
+  showInputSearch: true,
+  toolbarIconColor: 'white'
 }
 
 export class UserActions extends Component {

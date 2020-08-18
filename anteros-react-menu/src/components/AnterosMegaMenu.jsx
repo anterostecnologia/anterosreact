@@ -392,6 +392,9 @@ export class AnterosMegaMenuItem extends Component {
   }
 
   render() {
+    if (this.props.visible===false){
+      return (null);
+    }
     const children = React.Children.toArray(this.props.children);
     let className = 'mmenu-item';
     if (this.context.selectedMainItem === this || this.context.selectedSubItem === this) {
@@ -429,13 +432,15 @@ AnterosMegaMenuItem.contextTypes = {
   selectedSubItem: PropTypes.object,
   menuOpened: PropTypes.bool,
   onClickFavorite: PropTypes.func,
-  favorites: PropTypes.array
+  favorites: PropTypes.array,
+  visible: PropTypes.bool.isRequired
 };
 
 AnterosMegaMenuItem.propTypes = {
   hint: PropTypes.string,
   /** Posição da dica(hint) no botão */
   hintPosition: PropTypes.oneOf(["up", "right", "left", "down"]),
+  visible: true
 };
 
 AnterosMegaMenuItem.defaultProps = {

@@ -35,7 +35,8 @@ const defaultValues = {
     messageLoading: 'Por favor aguarde...',
     withFilter: true,
     fieldsToForceLazy: '',
-    defaultSortFields: ''
+    defaultSortFields: '',
+    version: 'v1'
 };
 
 export default function WithMasonryContainerTemplate(_loadingProps) {
@@ -189,7 +190,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
 
             createDataSourceFilter() {
                 this.dsFilter = new AnterosRemoteDatasource();
-                AnterosQueryBuilderData.configureDatasource(this.dsFilter);
+                AnterosQueryBuilderData.configureDatasource(this.dsFilter, loadingProps.version);
             }
 
             getUser() {
@@ -234,7 +235,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         this.dsFilter.open(
                             AnterosQueryBuilderData.getFilters(
                                 loadingProps.viewName,
-                                loadingProps.filterName
+                                loadingProps.filterName,
+                                loadingProps.version
                             )
                         );
                     }

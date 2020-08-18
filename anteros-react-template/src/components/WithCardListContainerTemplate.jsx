@@ -21,7 +21,8 @@ const defaultValues = {
     messageLoading: 'Carregando, por favor aguarde...',
     withFilter: true,
     fieldsToForceLazy: '',
-    defaultSortFields: ''
+    defaultSortFields: '',
+    version: 'v1'
 };
 
 export default function WithCardListContainerTemplate(_loadingProps) {
@@ -185,7 +186,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
 
             createDataSourceFilter() {
                 this.dsFilter = new AnterosRemoteDatasource();
-                AnterosQueryBuilderData.configureDatasource(this.dsFilter);
+                AnterosQueryBuilderData.configureDatasource(this.dsFilter, loadingProps.version);
             }
 
             getSortFields() {
@@ -315,7 +316,8 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                         this.dsFilter.open(
                             AnterosQueryBuilderData.getFilters(
                                 loadingProps.viewName,
-                                loadingProps.filterName
+                                loadingProps.filterName,
+                                loadingProps.version
                             )
                         );
                     }

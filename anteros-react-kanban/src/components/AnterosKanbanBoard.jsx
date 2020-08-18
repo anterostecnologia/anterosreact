@@ -202,7 +202,9 @@ AnterosKanbanColumn.propTypes = {
     opacity: PropTypes.string,
     fontColorTitle: PropTypes.string,
     centerTitle: PropTypes.bool,
-    width: PropTypes.string    
+    width: PropTypes.string,
+    backgroundColor: PropTypes.string
+
 }
 
 

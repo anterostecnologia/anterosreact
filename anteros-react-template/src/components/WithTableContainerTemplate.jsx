@@ -20,7 +20,8 @@ const defaultValues = {
     withFilter: true,
     fieldsToForceLazy: '',
     defaultSortFields: '',
-    layoutReducerName: 'layoutReducer'
+    layoutReducerName: 'layoutReducer',
+    version: 'v1'
 };
 
 export default function WithTableContainerTemplate(_loadingProps) {
@@ -192,7 +193,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
             createDataSourceFilter() {
                 this.dsFilter = new AnterosRemoteDatasource();
-                AnterosQueryBuilderData.configureDatasource(this.dsFilter);
+                AnterosQueryBuilderData.configureDatasource(this.dsFilter, loadingProps.version);
             }
 
             getDispatch() {
@@ -261,7 +262,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
                         this.dsFilter.open(
                             AnterosQueryBuilderData.getFilters(
                                 loadingProps.viewName,
-                                loadingProps.filterName
+                                loadingProps.filterName,
+                                loadingProps.version
                             )
                         );
                     }
@@ -588,7 +590,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
                             filter.toJSON(),
                             page,
                             loadingProps.pageSize,
-                            this.getSortFields()
+                            this.getSortFields(),
+                            this.getUser()
                         );
                     }
                 } else if (loadingProps.withFilter && this.filterRef && this.filterRef.current) {

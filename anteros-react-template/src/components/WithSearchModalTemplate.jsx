@@ -21,7 +21,8 @@ const defaultValues = {
     modalSize: 'semifull',
     defaultSortFields: '',
     labelField: 'id',
-    cumulativeSelection: false
+    cumulativeSelection: false,
+    version: 'v1'
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
@@ -152,7 +153,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             }
             createDataSourceFilter() {
                 this.dsFilter = new AnterosRemoteDatasource();
-                AnterosQueryBuilderData.configureDatasource(this.dsFilter);
+                AnterosQueryBuilderData.configureDatasource(this.dsFilter, loadingProps.version);
             }
 
             getUser() {
@@ -241,7 +242,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
                             this.dsFilter.open(
                                 AnterosQueryBuilderData.getFilters(
                                     loadingProps.viewName,
-                                    loadingProps.filterName
+                                    loadingProps.filterName,
+                                    loadingProps.version
                                 )
                             );
                         }

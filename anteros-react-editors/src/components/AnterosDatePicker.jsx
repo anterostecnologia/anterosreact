@@ -355,6 +355,7 @@ export default class AnterosDatePicker extends Component {
     }
 
     toggleCalendar() {
+        if (!this.props.disabled)
         this.setState(prevState => ({ isOpen: !prevState.isOpen }));
     }
 
@@ -447,6 +448,12 @@ export default class AnterosDatePicker extends Component {
             (this.props.fullSecondary ? "btn-secondary" : ""),
             (this.props.fullDefault ? "" : ""));
 
+        let style = this.props.style;
+        if (disabled){
+            style = {...style, backgroundColor: '#e9ecef !important', 
+                opacity: 1};
+        }
+
         return (
             <div className={`${baseClassName}__wrapper`}>
                 <DateInput
@@ -455,6 +462,7 @@ export default class AnterosDatePicker extends Component {
                     autoFocus={autoFocus}
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
+                    style={style}
                     disabled={disabled}
                     format={format}
                     isCalendarOpen={isOpen}

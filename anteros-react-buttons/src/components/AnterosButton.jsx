@@ -198,6 +198,7 @@ export default class AnterosButton extends Component {
             className += " dropdown-toggle";
         }
 
+
         if (this.props.collapseContent) {
             dataToggle = "collapse";
             ariaExpanded = "true";
@@ -223,6 +224,7 @@ export default class AnterosButton extends Component {
             image = (
                 <img
                     data-user={this.props.dataUser}
+                    style={{ width: this.props.imageWidth, height: this.props.imageHeight }}
                     onClick={this.onClick}
                     src={this.props.image}
                 />
@@ -360,8 +362,6 @@ AnterosButton.propTypes = {
     dropdown: PropTypes.bool,
     /** Ícone do botão */
     icon: PropTypes.string,
-    /** Usar Ícone como legenda */
-    iconAsCaption: PropTypes.bool,
     /** Cor do Ícone do botão */
     iconColor: PropTypes.string,
     /** Tamanho do ícone */
@@ -370,6 +370,8 @@ AnterosButton.propTypes = {
     iconStyle: PropTypes.object,
     /** Imagem a ser usada no botão */
     image: PropTypes.string,
+    imageWidth: PropTypes.any,
+    imageHeight: PropTypes.any,
     /** Utilizar AnterosCol e AnterosRow */
     useColsAndRows: PropTypes.bool,
     /** Título do botão */
@@ -439,5 +441,7 @@ AnterosButton.defaultProps = {
     iconAsCaption: false,
     hintPosition: "up",
     inline: true,
-    visible: true
+    visible: true,
+    imageWidth: undefined,
+    imageHeight: undefined
 };

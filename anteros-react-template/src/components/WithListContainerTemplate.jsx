@@ -77,7 +77,7 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
 
             createDataSourceFilter() {
                 this.dsFilter = new AnterosRemoteDatasource();
-                AnterosQueryBuilderData.configureDatasource(this.dsFilter);
+                AnterosQueryBuilderData.configureDatasource(this.dsFilter, loadingProps.version);
             }
 
             createMainDataSource() {
@@ -124,7 +124,8 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
                         this.dsFilter.open(
                             AnterosQueryBuilderData.getFilters(
                                 loadingProps.viewName,
-                                loadingProps.filterName
+                                loadingProps.filterName,
+                                loadingProps.version
                             )
                         );
                     }
