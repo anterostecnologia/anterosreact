@@ -309,6 +309,10 @@ export default class AnterosDatePicker extends Component {
         }
 
         this.setState({ value });
+        
+        if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
+            this.props.dataSource.setFieldByName(this.props.dataField, value);
+        }
 
         if (onChange) {
             onChange(value);
