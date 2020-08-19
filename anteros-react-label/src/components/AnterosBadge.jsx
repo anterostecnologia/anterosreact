@@ -148,6 +148,7 @@ export default class AnterosBadge extends Component {
                 style.color = undefined;
             }
         }  
+        style = {...style, display:'flex', alignItems:'center'};
        
         return (<span style={style} onClick={this.onClick} className={className}>{this.props.caption}</span>);
     }
