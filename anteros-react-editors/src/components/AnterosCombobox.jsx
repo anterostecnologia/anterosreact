@@ -602,7 +602,7 @@ class Value extends React.Component {
 	}
 
 	renderRemoveIcon () {
-		if (this.props.disabled || !this.props.onRemove) return;
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) || !this.props.onRemove) return;
 		return (
 			<span className="Select-value-icon"
 				aria-hidden="true"
@@ -909,7 +909,7 @@ export default class AnterosCombobox extends React.Component {
 	handleMouseDown (event) {
 		// if the event was triggered by a mousedown and not the primary
 		// button, or if the component is disabled, ignore it.
-		if (this.props.disabled || (event.type === 'mousedown' && event.button !== 0)) {
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) || (event.type === 'mousedown' && event.button !== 0)) {
 			return;
 		}
 
@@ -978,7 +978,7 @@ export default class AnterosCombobox extends React.Component {
 	handleMouseDownOnArrow (event) {
 		// if the event was triggered by a mousedown and not the primary
 		// button, or if the component is disabled, ignore it.
-		if (this.props.disabled || (event.type === 'mousedown' && event.button !== 0)) {
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) || (event.type === 'mousedown' && event.button !== 0)) {
 			return;
 		}
 
@@ -999,7 +999,7 @@ export default class AnterosCombobox extends React.Component {
 	handleMouseDownOnMenu (event) {
 		// if the event was triggered by a mousedown and not the primary
 		// button, or if the component is disabled, ignore it.
-		if (this.props.disabled || (event.type === 'mousedown' && event.button !== 0)) {
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) || (event.type === 'mousedown' && event.button !== 0)) {
 			return;
 		}
 
@@ -1027,7 +1027,7 @@ export default class AnterosCombobox extends React.Component {
 	}
 
 	handleInputFocus (event) {
-		if (this.props.disabled) return;
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))) return;
 
 		let toOpen = this.state.isOpen || this._openAfterFocus || this.props.openOnFocus;
 		toOpen = this._focusAfterClear ? false : toOpen;  //if focus happens after clear values, don't open dropdown yet.
@@ -1107,7 +1107,7 @@ export default class AnterosCombobox extends React.Component {
 	}
 
 	handleKeyDown (event) {
-		if (this.props.disabled) return;
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))) return;
 
 		if (typeof this.props.onInputKeyDown === 'function') {
 			this.props.onInputKeyDown(event);
@@ -1541,7 +1541,7 @@ export default class AnterosCombobox extends React.Component {
 			return valueArray.map((value, i) => {
 				return (
 					<ValueComponent
-						disabled={this.props.disabled || value.clearableValue === false}
+						disabled={(this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) || value.clearableValue === false}
 						id={this._instancePrefix + '-value-' + i}
 						instancePrefix={this._instancePrefix}
 						key={`value-${i}-${value[this.props.valueKey]}`}
@@ -1559,7 +1559,7 @@ export default class AnterosCombobox extends React.Component {
 			if (isOpen) onClick = null;
 			return (
 				<ValueComponent
-					disabled={this.props.disabled}
+					disabled={(this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))}
 					id={this._instancePrefix + '-value-item'}
 					instancePrefix={this._instancePrefix}
 					onClick={onClick}
@@ -1579,7 +1579,7 @@ export default class AnterosCombobox extends React.Component {
 		const ariaOwns = classNames({
 			[this._instancePrefix + '-list']: isOpen,
 			[this._instancePrefix + '-backspace-remove-message']: this.props.multi
-				&& !this.props.disabled
+				&& !(this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))
 				&& this.state.isFocused
 				&& !this.state.inputValue
 		});
@@ -1615,7 +1615,7 @@ export default class AnterosCombobox extends React.Component {
 			return this.props.inputRenderer(inputProps);
 		}
 
-		if (this.props.disabled || !this.props.searchable) {
+		if ((this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) || !this.props.searchable) {
 			const { ...divProps } = this.props.inputProps;
 
 			const ariaOwns = classNames({
@@ -1628,7 +1628,7 @@ export default class AnterosCombobox extends React.Component {
 					aria-expanded={isOpen}
 					aria-owns={ariaOwns}
 					aria-activedescendant={isOpen ? this._instancePrefix + '-option-' + focusedOptionIndex : this._instancePrefix + '-value'}
-					aria-disabled={'' + this.props.disabled}
+					aria-disabled={'' + (this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))}
 					aria-label={this.props['aria-label']}
 					aria-labelledby={this.props['aria-labelledby']}
 					className={className}
@@ -1662,7 +1662,7 @@ export default class AnterosCombobox extends React.Component {
 		const valueArray = this.getValueArray(value);
 		if (!this.props.clearable
 			|| !valueArray.length
-			|| this.props.disabled
+			|| (this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))
 			|| this.props.isLoading) return;
 		const ariaLabel = this.props.multi ? this.props.clearAllText : this.props.clearValueText;
 		const clear = this.props.clearRenderer();
@@ -1839,7 +1839,7 @@ export default class AnterosCombobox extends React.Component {
 			let value = valueArray.map(i => stringifyValue(i[this.props.valueKey])).join(this.props.delimiter);
 			return (
 				<input
-					disabled={this.props.disabled}
+					disabled={(this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))}
 					name={this.props.name}
 					ref={ref => this.value = ref}
 					type="hidden"
@@ -1849,7 +1849,7 @@ export default class AnterosCombobox extends React.Component {
 		}
 		return valueArray.map((item, index) => (
 			<input
-				disabled={this.props.disabled}
+				disabled={(this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse')))}
 				key={'hidden.' + index}
 				name={this.props.name}
 				ref={'value' + index}
@@ -1954,7 +1954,7 @@ export default class AnterosCombobox extends React.Component {
 		let className = classNames('Select', this.props.className, {
 			'has-value': valueArray.length,
 			'is-clearable': this.props.clearable,
-			'is-disabled': this.props.disabled,
+			'is-disabled': (this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))),
 			'is-focused': this.state.isFocused,
 			'is-loading': this.props.isLoading,
 			'is-open': isOpen,
@@ -1967,7 +1967,7 @@ export default class AnterosCombobox extends React.Component {
 
 		let removeMessage = null;
 		if (this.props.multi &&
-			!this.props.disabled &&
+			!(this.props.disabled || (this.props.dataSource && (this.props.dataSource.getState() === 'dsBrowse'))) &&
 			valueArray.length &&
 			!this.state.inputValue &&
 			this.state.isFocused &&

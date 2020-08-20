@@ -309,7 +309,7 @@ export default class AnterosDatePicker extends Component {
         }
 
         this.setState({ value });
-        
+
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
             this.props.dataSource.setFieldByName(this.props.dataField, value);
         }
@@ -356,7 +356,7 @@ export default class AnterosDatePicker extends Component {
 
     toggleCalendar() {
         if (!this.props.disabled)
-        this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+            this.setState(prevState => ({ isOpen: !prevState.isOpen }));
     }
 
     stopPropagation(event) {
@@ -431,6 +431,7 @@ export default class AnterosDatePicker extends Component {
             readOnly = (this.props.dataSource.getState() === 'dsBrowse');
         }
         let classNameAddOn = AnterosUtils.buildClassNames("input-group-addon",
+            (disabled || readOnly ? "disabled" : ""),
             (this.props.primary || this.props.fullPrimary ? "btn btn-primary" : ""),
             (this.props.success || this.props.fullSucces ? "btn btn-success" : ""),
             (this.props.info || this.props.fullInfo ? "btn btn-info" : ""),
@@ -449,9 +450,11 @@ export default class AnterosDatePicker extends Component {
             (this.props.fullDefault ? "" : ""));
 
         let style = this.props.style;
-        if (disabled){
-            style = {...style, backgroundColor: '#e9ecef !important', 
-                opacity: 1};
+        if (disabled || readOnly) {
+            style = {
+                ...style, backgroundColor: '#e9ecef !important',
+                opacity: 1
+            };
         }
 
         return (
@@ -463,7 +466,7 @@ export default class AnterosDatePicker extends Component {
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
                     style={style}
-                    disabled={disabled}
+                    disabled={disabled || readOnly}
                     format={format}
                     isCalendarOpen={isOpen}
                     locale={locale}
@@ -481,7 +484,7 @@ export default class AnterosDatePicker extends Component {
                     <button
                         aria-label={clearAriaLabel}
                         className={`${baseClassName}__clear-button ${baseClassName}__button`}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
                         onClick={this.clear}
                         onFocus={this.stopPropagation}
                         type="button"
@@ -489,11 +492,11 @@ export default class AnterosDatePicker extends Component {
                         {clearIcon}
                     </button>
                 )}
-                {calendarIcon !== null && !disableCalendar && (
+                {calendarIcon !== null && (!disableCalendar || !readOnly) && (
                     <div className={classNameAddOn} onBlur={this.resetValue}
                         onClick={this.toggleCalendar}
                         onFocus={this.stopPropagation}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
                         style={{ margin: 0, height: '38px', width: '38px' }}>
                         <span><i className={icon} /><img alt="" src={this.props.image} /></span></div>
                 )}
@@ -505,7 +508,12 @@ export default class AnterosDatePicker extends Component {
         const { disableCalendar } = this.props;
         const { isOpen } = this.state;
 
-        if (isOpen === null || disableCalendar) {
+        let readOnly = this.props.readOnly;
+        if (this.props.dataSource && !readOnly) {
+            readOnly = (this.props.dataSource.getState() === 'dsBrowse');
+        }
+
+        if (isOpen === null || disableCalendar || readOnly) {
             return null;
         }
 
@@ -876,6 +884,7 @@ export function YearInput({
     minDate,
     placeholder = '    ',
     valueType,
+    disabled,
     ...otherProps
 }) {
     const maxYear = safeMin(275760, maxDate && getYear(maxDate));
@@ -896,6 +905,7 @@ export function YearInput({
             name="year"
             placeholder={placeholder}
             step={yearStep}
+            disabled={disabled}
             {...otherProps}
         />
     );
@@ -1009,6 +1019,7 @@ export function MonthSelect({
     short,
     value,
     year,
+    disabled,
     ...otherProps
 }) {
     function isSameYear(date) {
@@ -1035,6 +1046,7 @@ export function MonthSelect({
                 }
             }}
             value={value !== null ? value : ''}
+            disabled={disabled}
             {...otherProps}
         >
             {!value && (
@@ -1082,6 +1094,7 @@ export function MonthInput({
     maxDate,
     minDate,
     year,
+    disabled,
     ...otherProps
 }) {
     function isSameYear(date) {
@@ -1096,6 +1109,7 @@ export function MonthInput({
             max={maxMonth}
             min={minMonth}
             name="month"
+            disabled={disabled}
             {...otherProps}
         />
     );
@@ -1206,6 +1220,7 @@ export function DayInput({
     minDate,
     month,
     year,
+    disabled,
     ...otherProps
 }) {
     const currentMonthMaxDays = (() => {
@@ -1228,6 +1243,7 @@ export function DayInput({
             max={maxDay}
             min={minDay}
             name="day"
+            disabled={disabled}
             {...otherProps}
         />
     );
