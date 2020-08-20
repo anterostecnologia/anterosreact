@@ -169,7 +169,7 @@ export class AnterosFloatingButtonItem extends Component {
     }
 
     onClick(event) {
-        event.preventDefault();
+        event.stopPropagation();
         if (this.props.handleClick) {
             this.props.handleClick(event);
         }
