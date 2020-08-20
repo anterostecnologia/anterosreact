@@ -24,6 +24,13 @@ AnterosUserMenu.propTypes = {
 AnterosUserMenu.defaultProps = {};
 
 export class AnterosUserAction extends Component {
+
+    onClick(evt) {
+        if (this.props.isAction && this.props.onClick) {
+            this.props.onClick()
+        }
+    }
+
   render() {
     return (
       <li>
@@ -31,6 +38,7 @@ export class AnterosUserAction extends Component {
           to={{
             pathname: this.props.userActionPath
           }}
+          onClick={this.onClick}
         >
           {this.props.children}
         </Link>
@@ -40,5 +48,11 @@ export class AnterosUserAction extends Component {
 }
 
 AnterosUserAction.propTypes = {
-  userActionPath: PropTypes.string
+  userActionPath: PropTypes.string,
+  isAction: PropTypes.bool,
+  onClick: PropTypes.func
+};
+
+AnterosUserAction.defaultProps = {
+    isAction: false
 };
