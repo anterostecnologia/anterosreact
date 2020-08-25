@@ -98,7 +98,7 @@ export default class AnterosFlexBox extends React.Component {
             style = { ...style, width: this.props.width };
         }
 
-        return (<DynamicComponent style={style} className={this.props.className} id={this.props.id}>
+        return (<DynamicComponent onClick={this.props.onClick} style={style} className={this.props.className} id={this.props.id}>
             {this.props.children}
         </DynamicComponent>);
     }
