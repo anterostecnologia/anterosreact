@@ -71,36 +71,41 @@ export default class AnterosList extends Component {
     }
 
     handleKeyDown(event) {
-        event.preventDefault();
         if (this.state.activeIndex >= 0 && this.numberOfItens > 0) {
             if ((event.keyCode == 38) || (event.keyCode == 37)) {
+                event.preventDefault();
                 let index = this.state.activeIndex;
                 if (index - 1 >= 0) {
                     this.setState({ activeIndex: index - 1 });
                     this.handleSelectItem(index - 1, this.getRecordDataFromChildren(index - 1));
                 }
             } else if ((event.keyCode == 40) || (event.keyCode == 39)) {
+                event.preventDefault();
                 let index = this.state.activeIndex;
                 if (index + 1 < this.numberOfItens) {
                     this.setState({ activeIndex: index + 1 });
                     this.handleSelectItem(index + 1, this.getRecordDataFromChildren(index + 1));
                 }
             } else if (event.keyCode == 33) {
+                event.preventDefault();
                 this.setState((prevState, props) => {
                     return { activeIndex: (prevState.activeIndex - 5 >= 0 ? prevState.activeIndex - 5 : 0) };
                 })
                 this.handleSelectItem(this.state.activeIndex, this.getRecordDataFromChildren(this.state.activeIndex));
             } else if (event.keyCode == 34) {
+                event.preventDefault();
                 this.setState((prevState, props) => {
                     return { activeIndex: (prevState.activeIndex + 5 < this.numberOfItens ? prevState.activeIndex + 5 : this.numberOfItens - 1) };
                 })
                 this.handleSelectItem(this.state.activeIndex, this.getRecordDataFromChildren(this.state.activeIndex));
             } else if (event.keyCode == 36) {
+                event.preventDefault();
                 this.setState((prevState, props) => {
                     return { activeIndex: 0 };
                 })
                 this.handleSelectItem(0, this.getRecordDataFromChildren(0));
             } else if (event.keyCode == 35) {
+                event.preventDefault();
                 this.setState((prevState, props) => {
                     return { activeIndex: this.numberOfItens - 1 };
                 })
@@ -195,6 +200,7 @@ export default class AnterosList extends Component {
                             id: newId,
                             active: active,
                             index: index,
+                            dataSource: _this.props.dataSource,
                             handleSelectItem: _this.handleSelectItem,
                             recordData: record, ...compProps, ...rest
                         }));
@@ -281,6 +287,7 @@ export default class AnterosList extends Component {
                 id: child.props.id,
                 index: index,
                 active: active,
+                dataSource: _this.props.dataSource,
                 success: child.props.success,
                 warning: child.props.warning,
                 danger: child.props.danger,

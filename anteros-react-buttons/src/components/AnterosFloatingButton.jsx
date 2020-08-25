@@ -234,13 +234,19 @@ export class AnterosFloatingButtonItem extends Component {
                 classNameRef += "-outline";
             }
         }
+
+        if (this.props.disabled){
+            classNameRef += " disabled";
+        }
         return (<li>
             <div title={this.props.hint}
                 data-placement={this.props.hintPosition}
                 data-balloon-pos={this.props.hintPosition}
                 aria-label={this.props.hint}
             >
-                <a id={this.props.id ? this.props.id : this.idItemRef} key={this.props.id ? this.props.id : this.idItemRef} style={{ backgroundColor: this.props.backgroundColor }}
+                <a id={this.props.id ? this.props.id : this.idItemRef}
+                    key={this.props.id ? this.props.id : this.idItemRef}
+                    style={{ backgroundColor: this.props.backgroundColor }}
                     href="#" className={classNameRef} onClick={this.onClick}>
                     {this.props.icon ? <i className={this.props.icon} style={{ color: this.props.color }} onClick={this.onClick} /> : null}
                     <img src={this.props.image} className="img-responsive" style={{ width: this.props.imageWidth, height: this.props.height }} onClick={this.onClick} />
@@ -266,9 +272,11 @@ AnterosFloatingButtonItem.propTypes = {
     danger: PropTypes.bool,
     secondary: PropTypes.bool,
     info: PropTypes.bool,
-    onButtonClick: PropTypes.func
+    onButtonClick: PropTypes.func,
+    disabled: PropTypes.bool.isRequired
 };
 
 AnterosFloatingButtonItem.defaultProps = {
-    hintPosition: "left"
+    hintPosition: "left",
+    disabled: false,
 };
