@@ -707,11 +707,17 @@ class AnterosDatasource {
                 if (listener.event == event) {
                     if (fieldName) {
                         if (listener.fieldName) {
-                            if (listener.fieldName.startsWith(fieldName)) {
-                                listener.dispatch(event, error, fieldName);
+                            let fields = [];
+                            if (Array.isArray(listener.fieldName)){
+                                fields = listener.fieldName;
+                            } else {
+                                fields.push(listener.fieldName);
                             }
-                        } else {
-                            listener.dispatch(event, error, fieldName);
+                            fields.forEach((item)=>{
+                                if (item.includes(fieldName)) {
+                                    listener.dispatch(event, error, fieldName);
+                                }   
+                            });                                                 
                         }
 
                     } else {
