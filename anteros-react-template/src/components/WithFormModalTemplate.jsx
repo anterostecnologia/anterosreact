@@ -125,6 +125,20 @@ export default function WithFormModalTemplate(_loadingProps) {
                 }
             }
 
+            convertMessage(alertMessage){
+                if (alertMessage.constructor === Array) {
+                  let result = [];
+                  alertMessage.forEach((item, index) => {
+                    result.push(<span style={{
+                       whiteSpace: "pre"
+                    }} key={index}>{item + "\n"}</span>);
+                  });
+                  return result;
+                } else {
+                  return alertMessage; 
+                }
+              }
+
 
             onDatasourceEvent(event, error) {
                 let loading = this.state.loading;
@@ -149,7 +163,7 @@ export default function WithFormModalTemplate(_loadingProps) {
 
                 if (event === dataSourceEvents.ON_ERROR) {
                     if (error) {
-                        var result = processErrorMessage(error);
+                        var result = this.convertMessage(processErrorMessage(error));
                         var debugMessage = processDetailErrorMessage(error);
                         this.setState({
                             ...this.state,
@@ -192,11 +206,11 @@ export default function WithFormModalTemplate(_loadingProps) {
             }
 
             onClick(event, button) {
+                let _this = this;
                 if (button.props.id === "btnOK") {
                     if (
                         WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
-                    ) {
-                        let _this = this;
+                    ) {                        
                         let result = this.onBeforeOk(event);
                         if (result instanceof Promise){    
                             result.then(function (response) {
@@ -210,15 +224,37 @@ export default function WithFormModalTemplate(_loadingProps) {
                             });
                         } else if (result) {
                             if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
-                                this.dataSource.post();
+                                this.dataSource.post(error => {
+                                    if (!error) {
+                                      if (
+                                        WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
+                                        true
+                                      ) {
+                                        if (!_this.onAfterSave()) {
+                                          return;
+                                        }
+                                      }
+                                      _this.props.onClickOk(event, _this.props.selectedRecords);
+                                    }
+                                  });
                             }
-                            this.props.onClickOk(event, this.props.selectedRecords);
                         }
                     } else {
                         if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
-                            this.dataSource.post();
-                        }
-                        this.props.onClickOk(event, this.props.selectedRecords);
+                            this.dataSource.post(error => {
+                                if (!error) {
+                                  if (
+                                    WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
+                                    true
+                                  ) {
+                                    if (!_this.onAfterSave()) {
+                                      return;
+                                    }
+                                  }
+                                  _this.props.onClickOk(event, _this.props.selectedRecords);
+                                }
+                              });
+                        }                        
                     }                    
                 } else if (button.props.id == "btnCancel") {
                     if (this.dataSource && this.dataSource.getState() !== 'dsBrowse') {

@@ -22,6 +22,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
             .bind(this);
         this.handleBlur = this.handleBlur.bind(this);    
         this.handleChange = this.handleChange.bind(this);
+        this.updateComponent = this.updateComponent.bind(this);
         if (this.props.dataSource) {
             let value = this
                 .props
@@ -44,6 +45,7 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
     }
 
     componentWillReceiveProps(nextProps) {
+        this.updateComponent(nextProps);
         if (nextProps.dataSource) {
             let value = nextProps
                 .dataSource
@@ -61,9 +63,27 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
         this._componentDidMount();
         let _this = this;
 
-        if (this.props.maskPattern == 'cnpj') {
+        this.updateComponent(this.props);
+
+        if (this.props.dataSource) {
+            this
+                .props
+                .dataSource
+                .addEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_OPEN, dataSourceEvents.AFTER_GOTO_PAGE, dataSourceEvents.AFTER_CANCEL, dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+        }
+    }
+
+    updateComponent(props){
+        let _this = this;
+        if (props.maskPattern == 'cnpj') {
             $(this.inputRef.current).inputmask('99.999.999/9999-99', {
-                "alias": this.props.placeHolder,
+                "alias": props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
                     _this.onChangeValue(value);
@@ -77,9 +97,9 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                     _this.onChangeValue(value);
                 }
             });
-        } else if (this.props.maskPattern == 'cpf') {
+        } else if (props.maskPattern == 'cpf') {
             $(this.inputRef.current).inputmask('999.999.999-99', {
-                "alias": this.props.placeHolder,
+                "alias": props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
                     _this.onChangeValue(value);
@@ -93,9 +113,9 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                     _this.onChangeValue(value);
                 }
             });
-        } else if (this.props.maskPattern == 'cep') {
+        } else if (props.maskPattern == 'cep') {
             $(this.inputRef.current).inputmask('99999-999', {
-                "alias": this.props.placeHolder,
+                "alias": props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
                     _this.onChangeValue(value);
@@ -109,9 +129,9 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                     _this.onChangeValue(value);
                 }
             });
-        } else if (this.props.maskPattern == 'placa') {
+        } else if (props.maskPattern == 'placa') {
             $(this.inputRef.current).inputmask('AAA-****', {
-                "alias": this.props.placeHolder,
+                "alias": props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
                     _this.onChangeValue(value);
@@ -125,13 +145,13 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                     _this.onChangeValue(value);
                 }
             });
-        } else if (this.props.maskPattern == 'fone') {
+        } else if (props.maskPattern == 'fone') {
             $(this.inputRef.current).inputmask({
                 mask: [
                     "(99) 9999-9999", "(99) 99999-9999"
                 ],
                 keepStatic: true,
-                "alias": this.props.placeHolder,
+                "alias": props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
                     _this.onChangeValue(value);
@@ -146,8 +166,8 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                 }
             });
         } else {
-            $(this.inputRef.current).inputmask(this.props.mask, {
-                "alias": this.props.placeHolder,
+            $(this.inputRef.current).inputmask(props.mask, {
+                "alias": props.placeHolder,
                 "onincomplete": function () {
                     let value = $(_this.inputRef.current).inputmask('unmaskedvalue');
                     _this.onChangeValue(value);
@@ -161,19 +181,6 @@ export default class AnterosMaskEdit extends AnterosBaseInputControl {
                     _this.onChangeValue(value);
                 }
             });
-        }
-
-        if (this.props.dataSource) {
-            this
-                .props
-                .dataSource
-                .addEventListener([
-                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_OPEN, dataSourceEvents.AFTER_GOTO_PAGE, dataSourceEvents.AFTER_CANCEL, dataSourceEvents.AFTER_SCROLL
-                ], this.onDatasourceEvent);
-            this
-                .props
-                .dataSource
-                .addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
         }
     }
 

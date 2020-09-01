@@ -80,7 +80,7 @@ export default function WithFormTemplate(_loadingProps) {
     };
   };
 
-
+  
 
   return WrappedComponent => {
     class FormView extends WrappedComponent {
@@ -127,6 +127,20 @@ export default function WithFormTemplate(_loadingProps) {
           saving: false,
           messageLoader: loadingProps.messageSaving
         };
+      }
+
+      convertMessage(alertMessage){
+        if (alertMessage.constructor === Array) {
+          let result = [];
+          alertMessage.forEach((item, index) => {
+            result.push(<span style={{
+               whiteSpace: "pre"
+            }} key={index}>{item + "\n"}</span>);
+          });
+          return result;
+        } else {
+          return alertMessage; 
+        }
       }
 
 
@@ -183,7 +197,7 @@ export default function WithFormTemplate(_loadingProps) {
               });
               _this.props.dataSource.post(error => {
                 if (error) {
-                  var result = processErrorMessage(error);
+                  var result = _this.convertMessage(processErrorMessage(error));
                   var debugMessage = processDetailErrorMessage(error);
                   _this.setState({
                     ..._this.state,
@@ -309,7 +323,7 @@ export default function WithFormTemplate(_loadingProps) {
         this.setState({ ...this.state, ...newState });
       }
 
-      getOwnerForm(){
+      getOwnerForm() {
         return this.owner;
       }
 

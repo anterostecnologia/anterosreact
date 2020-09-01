@@ -320,7 +320,7 @@ export default class AnterosImagePicker extends React.Component {
                     >
                         <div
                             className={className}
-                            style={{ border: 0, height: this.props.height }}
+                            style={{ border: 0, height: this.props.height, padding: 0, width: this.props.width, marginLeft: '16px' }}
                             id={this.idImage}
                         >
                             <img
@@ -329,9 +329,8 @@ export default class AnterosImagePicker extends React.Component {
                                 }
                                 style={{
                                     ...this.props.style,
-                                    width: this.props.width,
-                                    height: this.props.height,
-                                    border: '1px solid silver'
+                                    width: '100%',
+                                    height: '100%'
                                 }}
                                 onDoubleClick={this.onDoubleClickImage}
                             />
@@ -346,7 +345,7 @@ export default class AnterosImagePicker extends React.Component {
                             />
                         </div>
                         {!readOnly ? <AnterosButton
-                            style={{ position: 'absolute', top: '10px', left: '20px', zIndex: 99 }}
+                            style={{ position: 'absolute', top: '10px', left: '30px', zIndex: 99 }}
                             icon="fal fa-edit"
                             id="btnEditImg"
                             small

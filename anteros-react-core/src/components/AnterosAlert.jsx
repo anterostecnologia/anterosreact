@@ -29,7 +29,7 @@ export class AnterosAlert extends Component {
 		}
 	}
 
-	componentDidMount() {}
+	componentDidMount() { }
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({ isOpen: nextProps.isOpen });
@@ -61,6 +61,22 @@ export class AnterosAlert extends Component {
 				this.timerTimeout = autoCloseInterval;
 			}
 		}
+	}
+
+	buildItens() {
+		let children = React.toChildren(this.props.children);
+		let result = [];
+		children.forEach((item) => {
+			if (item.constructor === Array) {
+				item.map(function (it, i) {
+					return (<span style={{
+						whiteSpace: "pre"
+					}} key={i}>{it + "\n"}</span>);
+				});
+			} else {
+				result.push(item);
+			}
+		})
 	}
 
 	render() {
@@ -169,7 +185,7 @@ export class AnterosAlert extends Component {
 								<img src={this.props.image} />
 							</div>
 						) : null}
-						{this.props.children}
+						{this.buildItens()}
 					</div>
 				) : null}
 			</CSSTransitionGroup>

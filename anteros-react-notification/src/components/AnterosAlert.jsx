@@ -78,6 +78,8 @@ export class AnterosAlert extends Component {
     }
   }
 
+  
+
   render() {
     if (this.state.isOpen) {
       this.setupTimer(this.props.autoCloseInterval, this.props.onClose);
@@ -189,15 +191,7 @@ export class AnterosAlert extends Component {
                 <img src={this.props.image} />
               </div>
             ) : null}{" "}
-            {this.props.children && this.props.children.constructor === Array
-              ? this.props.children.map((item, i) => {
-                  return (
-                    <span style={{ whiteSpace: "pre" }} key={i}>
-                      {item + "\n"}
-                    </span>
-                  );
-                })
-              : this.props.children}
+            {this.props.children}
           </div>
         ) : null}
       </ReactCSSTransitionGroup>
