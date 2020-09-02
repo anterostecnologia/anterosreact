@@ -62,6 +62,7 @@ export default class AnterosDataTable extends Component {
 		this.renderCpf = this.renderCpf.bind(this);
 		this.renderCnpj = this.renderCnpj.bind(this);
 		this.renderDetails = this.renderDetails.bind(this);
+		this.renderMemo = this.renderMemo.bind(this);
 		this.getColumnByIndex = this.getColumnByIndex.bind(this);
 		this.renderBoolean = this.renderBoolean.bind(this);
 		this.renderCheckBoxSelect = this.renderCheckBoxSelect.bind(this);
@@ -334,6 +335,14 @@ export default class AnterosDataTable extends Component {
 				width={width}
 			/>
 		);
+	}
+
+	renderMemo(data, type, full, meta) {
+		let memoSrc = data;
+		if (this.isBase64(data)) {
+			memoSrc = atob(data);
+		}
+		return memoSrc;
 	}
 
 	isUrl(string) {
@@ -988,82 +997,86 @@ export default class AnterosDataTable extends Component {
 		let arrChildren = React.Children.toArray(columns);
 		let _this = this;
 		arrChildren.forEach(function (column) {
-			let className = "";
+			if (column.props.visible) {
+				let className = "";
 
-			if (column.props.align == "right" || column.props.alignRight) {
-				className += " dataTable_cell_align_right";
-			} else if (column.props.align == "center" || column.props.alignCenter) {
-				className += " dataTable_cell_align_center";
+				if (column.props.align == "right" || column.props.alignRight) {
+					className += " dataTable_cell_align_right";
+				} else if (column.props.align == "center" || column.props.alignCenter) {
+					className += " dataTable_cell_align_center";
+				}
+				className +=
+					" " +
+					(column.props.cellRowClassName ? column.props.cellRowClassName : "");
+
+				if (column.props.titleAlign == "right" || column.props.titleAlignRight) {
+					className += " dataTable_title_align_right";
+				} else if (
+					column.props.titleAlign == "center" ||
+					column.props.titleAlignCenter
+				) {
+					className += " dataTable_title_align_center";
+				}
+				className +=
+					" " +
+					(column.props.cellHeaderClassName
+						? column.props.cellHeaderClassName
+						: "");
+
+				let customRender = null;
+				let type = "string";
+				if (column.props.dataType == "image") {
+					customRender = _this.renderImage;
+				} else if (column.props.dataType == "number") {
+					if (column.props.maskFormatNumber) customRender = _this.renderNumber;
+					type = "number";
+					className += " dataTable_value_align_right";
+				} else if (column.props.dataType == "date") {
+					customRender = _this.renderDate;
+					type = "customdate";
+				} else if (column.props.dataType == "date_time") {
+					customRender = _this.renderDateTime;
+					type = "customdate_time";
+				} else if (column.props.dataType == "time") {
+					customRender = _this.renderTime;
+					type = "customtime";
+				} else if (column.props.dataType == "code") {
+					customRender = _this.renderCode;
+					type = "customcode";
+				} else if (column.props.dataType == "cep") {
+					customRender = _this.renderCep;
+				} else if (column.props.dataType == "fone") {
+					customRender = _this.renderFone;
+				} else if (column.props.dataType == "placa") {
+					customRender = _this.renderPlaca;
+				} else if (column.props.dataType == "cpf") {
+					customRender = _this.renderCpf;
+				} else if (column.props.dataType == "cnpj") {
+					customRender = _this.renderCnpj;
+				} else if (column.props.dataType == "boolean") {
+					customRender = _this.renderBoolean;
+				} else if (column.props.dataType == "audio") {
+					customRender = _this.renderAudio;
+				} else if (column.props.dataType == "memo") {
+					customRender = _this.renderMemo;
+				}
+
+				if (column.props.render) {
+					customRender = column.props.render;
+				}
+
+				result.push({
+					title: column.props.title,
+					data: column.props.dataField,
+					width: column.props.width,
+					className: className,
+					orderable: column.props.orderable,
+					searchable: column.props.searchable,
+					render: customRender,
+					type: type,
+					defaultContent: column.props.defaultContent
+				});
 			}
-			className +=
-				" " +
-				(column.props.cellRowClassName ? column.props.cellRowClassName : "");
-
-			if (column.props.titleAlign == "right" || column.props.titleAlignRight) {
-				className += " dataTable_title_align_right";
-			} else if (
-				column.props.titleAlign == "center" ||
-				column.props.titleAlignCenter
-			) {
-				className += " dataTable_title_align_center";
-			}
-			className +=
-				" " +
-				(column.props.cellHeaderClassName
-					? column.props.cellHeaderClassName
-					: "");
-
-			let customRender = null;
-			let type = "string";
-			if (column.props.dataType == "image") {
-				customRender = _this.renderImage;
-			} else if (column.props.dataType == "number") {
-				if (column.props.maskFormatNumber) customRender = _this.renderNumber;
-				type = "number";
-				className += " dataTable_value_align_right";
-			} else if (column.props.dataType == "date") {
-				customRender = _this.renderDate;
-				type = "customdate";
-			} else if (column.props.dataType == "date_time") {
-				customRender = _this.renderDateTime;
-				type = "customdate_time";
-			} else if (column.props.dataType == "time") {
-				customRender = _this.renderTime;
-				type = "customtime";
-			} else if (column.props.dataType == "code") {
-				customRender = _this.renderCode;
-				type = "customcode";
-			} else if (column.props.dataType == "cep") {
-				customRender = _this.renderCep;
-			} else if (column.props.dataType == "fone") {
-				customRender = _this.renderFone;
-			} else if (column.props.dataType == "placa") {
-				customRender = _this.renderPlaca;
-			} else if (column.props.dataType == "cpf") {
-				customRender = _this.renderCpf;
-			} else if (column.props.dataType == "cnpj") {
-				customRender = _this.renderCnpj;
-			} else if (column.props.dataType == "boolean") {
-				customRender = _this.renderBoolean;
-			} else if (column.props.dataType == "audio") {
-				customRender = _this.renderAudio;
-			}
-
-			if (column.props.render) {
-				customRender = column.props.render;
-			}
-
-			result.push({
-				title: column.props.title,
-				data: column.props.dataField,
-				width: column.props.width,
-				className: className,
-				orderable: column.props.orderable,
-				searchable: column.props.searchable,
-				render: customRender,
-				type: type,
-				defaultContent: column.props.defaultContent
-			});
 		});
 		return result;
 	}
@@ -1382,7 +1395,8 @@ AnterosDataTableColumn.propTypes = {
 		"placa",
 		"cpf",
 		"cnpj",
-		"audio"
+		"audio",
+		"memo"
 	]).isRequired,
 	maskFormatNumber: PropTypes.string,
 	title: PropTypes.string.isRequired,
