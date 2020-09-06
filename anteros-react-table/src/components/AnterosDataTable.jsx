@@ -112,7 +112,7 @@ export default class AnterosDataTable extends Component {
 
 	getColumnByIndex(index) {
 		let columns = this.getColumns();
-		let i;
+		let i;		
 		for (i = 0; i < columns.length; i++) {
 			if (i == index) return columns[i];
 		}
@@ -1104,6 +1104,7 @@ export default class AnterosDataTable extends Component {
 				cellHeaderClassName: "details-control",
 				orderable: false,
 				searchable: false,
+				visible: true,
 				width: "30px"
 			});
 			arrChildren = [detailsColumn, ...arrChildren];
@@ -1121,7 +1122,8 @@ export default class AnterosDataTable extends Component {
 				orderable: false,
 				searchable: false,
 				cellHeaderClassName: "dt-body-center",
-				width: "30px"
+				width: "30px",
+				visible: true
 			});
 			arrChildren = [checkBoxColumn, ...arrChildren];
 		}
@@ -1132,6 +1134,7 @@ export default class AnterosDataTable extends Component {
 				arrColumns.forEach(function (childColumn) {
 					if (
 						childColumn.type &&
+						childColumn.props.visible &&
 						childColumn.type.componentName === "AnterosDataTableColumn"
 					) {
 						result.push(childColumn);
@@ -1139,6 +1142,7 @@ export default class AnterosDataTable extends Component {
 				});
 			} else if (
 				child.type &&
+				child.props.visible &&
 				child.type.componentName === "AnterosDataTableColumn"
 			) {
 				result.push(child);

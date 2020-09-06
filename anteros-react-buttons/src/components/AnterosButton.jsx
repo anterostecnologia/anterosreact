@@ -439,7 +439,7 @@ AnterosButton.defaultProps = {
     subcCaptionStyle: undefined,
     useColsAndRows: false,
     iconAsCaption: false,
-    hintPosition: "up",
+    hintPosition: "down",
     inline: true,
     visible: true,
     imageWidth: undefined,
