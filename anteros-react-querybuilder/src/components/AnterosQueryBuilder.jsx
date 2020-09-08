@@ -253,6 +253,8 @@ export class AnterosQueryBuilder extends React.Component {
                     <AnterosButton
                         primary
                         icon="fal fa-search"
+                        hint="Filtrar"
+                        hintPosition="down"
                         onClick={this.onSearchClick}
                     />
                     <AnterosButton
@@ -264,6 +266,8 @@ export class AnterosQueryBuilder extends React.Component {
                     <AnterosButton
                         primary
                         icon="far fa-times"
+                        hint="Limpar filtro"
+                        hintPosition="down"
                         visible={this.props.showClearButton}
                         onClick={this.clearFilter}
                     />
@@ -349,8 +353,8 @@ class AnterosDetailFilter extends React.Component {
             <AnterosText fontWeight="bold" text="Filtros salvos" />
             <AnterosList height="105px" />
             <div className="filter-apply">
-                <AnterosButton id="btnApply" success icon="far fa-filter" caption="Aplicar" />
-                <AnterosButton id="btnSave" primary icon="far fa-save" caption="Salvar" />
+                <AnterosButton id="btnApply" hint="Aplicar filtro" success icon="far fa-filter" caption="Aplicar" />
+                <AnterosButton id="btnSave" hint="Salvar filtro" primary icon="far fa-save" caption="Salvar" />
             </div>
             <AnterosCheckbox style={{ color: 'crimson' }}
                 value="Avançado"

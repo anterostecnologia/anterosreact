@@ -19,6 +19,8 @@ const defaultProps = {
   layoutReducerName: 'layoutReducer',
   logoSmall : undefined,
   withoutScroll: true,
+  avatarWidth: '42px',
+	avatarHeight: '42px',
   toolbarIconColor: 'white'
 };
 
@@ -197,6 +199,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                 this.props.authenticated ? this.props.user.profile.name : ''
               }
               email={this.props.authenticated ? this.props.user.profile.email : ''}
+              avatarWidth= {loadingProps.avatarWidth}
+	            avatarHeight= {loadingProps.avatarHeight}
               avatar={
                 this.props.authenticated
                   ? this.props.user.profile.avatar

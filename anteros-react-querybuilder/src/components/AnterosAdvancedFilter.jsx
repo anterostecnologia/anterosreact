@@ -649,6 +649,7 @@ class AnterosAdvancedFilter extends Component {
                                                 circle
                                                 small
                                                 link
+                                                hint="Para baixo"
                                                 icon="fa fa-arrow-down"
                                                 onClick={this.onSortDown}
                                             />
@@ -657,6 +658,7 @@ class AnterosAdvancedFilter extends Component {
                                                 circle
                                                 small
                                                 link
+                                                hint="Para cima"                                                
                                                 icon="fa fa-arrow-up"
                                                 onClick={this.onSortUp}
                                             />
