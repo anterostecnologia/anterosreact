@@ -49,7 +49,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             activeSortIndex,
             activeFilter,
             quickFilterText,
-            needUpdateView=false,
+            needUpdateView = false,
             user;
         let reducer = state[loadingProps.reducerName];
         if (reducer) {
@@ -83,6 +83,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         return {
             setDatasource: dataSource => {
                 dispatch(loadingProps.actions.setDatasource(dataSource));
+            },
+            hideTour: () => {
+                dispatch({ type: "HIDE_TOUR" });
             },
             setFilter: (
                 activeFilter,
@@ -270,13 +273,14 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         this.dataSource.setAjaxPageConfigHandler(null);
                     }
                 }
+                this.props.hideTour();
             }
 
             componentWillReceiveProps(nextProps) {
                 this.onResize(
                     this.card.getCardBlockWidth(),
                     this.card.getCardBlockHeight()
-                  );
+                );
             }
 
             onQueryChange(query) {
@@ -600,7 +604,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 })
             }
 
-            onResize(width, height){
+            onResize(width, height) {
                 this.setState({
                     ...this.state,
                     contentHeight: height - 60
@@ -707,8 +711,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                                             }
                                             small
                                             secondary
-                                            hint="Atualizar sem filtro"
-                                            caption="Sem filtro"
+                                            hint="Atualizar"
+                                            caption="Atualizar"
                                             className="versatil-btn-selecionar"
                                             onButtonClick={this.onButtonSearch}
                                         />{' '}

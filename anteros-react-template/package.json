@@ -63,6 +63,7 @@
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "react": "^16.11.0",
+    "react-addons-shallow-compare": "^15.6.2",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.1",
     "react-transition-group": "^2.2.1",

@@ -9,7 +9,7 @@ export default class AnterosInputSearch extends Component {
     return (
       <AnterosForm inline>
         <AnterosFormGroup row={false}>
-          <AnterosEdit small={10} placeHolder={this.props.placeHolder} />
+          <AnterosEdit small={10} placeHolder={this.props.placeHolder} style={{width: '100%'}} />
           <AnterosButton
             color="white"
             icon="fal fa-search"

@@ -603,7 +603,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
                                                 secondary
                                                 onButtonClick={this.onButtonSearch}
                                             >
-                                                Sem filtro
+                                                Atualizar
                                             </AnterosButton>
                                             {loadingProps.cumulativeSelection?<AnterosTags addTags={false} tags={this.props.selectedRecords} labelField={loadingProps.labelField}
                                                 handleDelete={this.handleDelete} onClear={this.onClear} />:null}

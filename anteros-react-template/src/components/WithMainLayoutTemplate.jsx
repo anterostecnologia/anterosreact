@@ -13,14 +13,15 @@ import {
 import { AnterosNotificationContainer } from 'anteros-react-notification';
 import { connect } from 'react-redux';
 import { autoBind, AnterosError } from 'anteros-react-core';
+import shallowCompare from 'react-addons-shallow-compare';
 
 const defaultProps = {
   menuHorizontal: false, showInputSearch: true, showUserBlock: true,
   layoutReducerName: 'layoutReducer',
-  logoSmall : undefined,
+  logoSmall: undefined,
   withoutScroll: true,
   avatarWidth: '42px',
-	avatarHeight: '42px',
+  avatarHeight: '42px',
   toolbarIconColor: 'white'
 };
 
@@ -36,6 +37,9 @@ export default function WithMainLayoutTemplate(_loadingProps) {
 
   const mapDispatchToProps = (dispatch) => {
     return {
+      showTour: () => {
+        dispatch({ type: "SHOW_TOUR" });
+      },
       setNeedUpdateView: () => {
         dispatch({ type: 'SET_NEED_UPDATEVIEW', payload: { needUpdateView: true } });
       }
@@ -111,7 +115,22 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         autoBind(this);
       }
 
-      componentWil
+      shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+      }
+
+      componentWillReceiveProps(nextProps) {
+        let element = document.getElementById("_divRenderPageMainLayout");
+        if (element){
+          element.style.height = "auto";
+          setTimeout(()=>{
+            element.style.height = "calc(100vh - 60px)";
+            this.setState({ ...this.state, update: Math.random() });
+          },200);          
+        } else {
+          this.setState({ ...this.state, update: Math.random() });
+        }        
+      }
 
       onSelectMenuItem(menuItem) {
         this.props.history.push(menuItem.props.route);
@@ -175,7 +194,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         }
 
         let logo = loadingProps.logo;
-        if (!this.state.menuOpened && loadingProps.logoSmall && !this.state.sidebarOpen){
+        if (!this.state.menuOpened && loadingProps.logoSmall && !this.state.sidebarOpen) {
           logo = loadingProps.logoSmall;
         }
         return (
@@ -199,8 +218,8 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                 this.props.authenticated ? this.props.user.profile.name : ''
               }
               email={this.props.authenticated ? this.props.user.profile.email : ''}
-              avatarWidth= {loadingProps.avatarWidth}
-	            avatarHeight= {loadingProps.avatarHeight}
+              avatarWidth={loadingProps.avatarWidth}
+              avatarHeight={loadingProps.avatarHeight}
               avatar={
                 this.props.authenticated
                   ? this.props.user.profile.avatar

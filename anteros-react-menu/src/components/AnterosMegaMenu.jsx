@@ -362,7 +362,7 @@ export class SubMenuView extends Component {
 export class AnterosMegaMenuItem extends Component {
   constructor(props, context) {
     super(props)
-    this.idItem = lodash.uniqueId("li");
+    this.idItem = this.props.id?this.props.id:lodash.uniqueId("li");
     autoBind(this);
   }
 

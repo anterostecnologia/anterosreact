@@ -37,6 +37,9 @@ export default function WithFormTemplate(_loadingProps) {
         setDatasource: dataSource => {
           dispatch(loadingProps.actions.setDatasource(dataSource));
         },
+        hideTour: () => {
+          dispatch({ type: "HIDE_TOUR" });
+        },
         setFilter: (
           activeFilter,
           query,
@@ -80,7 +83,7 @@ export default function WithFormTemplate(_loadingProps) {
     };
   };
 
-  
+
 
   return WrappedComponent => {
     class FormView extends WrappedComponent {
@@ -129,17 +132,17 @@ export default function WithFormTemplate(_loadingProps) {
         };
       }
 
-      convertMessage(alertMessage){
+      convertMessage(alertMessage) {
         if (alertMessage.constructor === Array) {
           let result = [];
           alertMessage.forEach((item, index) => {
             result.push(<span style={{
-               whiteSpace: "pre"
+              whiteSpace: "pre"
             }} key={index}>{item + "\n"}</span>);
           });
           return result;
         } else {
-          return alertMessage; 
+          return alertMessage;
         }
       }
 
@@ -317,6 +320,7 @@ export default function WithFormTemplate(_loadingProps) {
         if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
         }
+        this.props.hideTour();
       }
 
       update(newState) {

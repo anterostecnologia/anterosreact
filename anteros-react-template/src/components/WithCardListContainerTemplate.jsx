@@ -68,6 +68,9 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                 setDatasource: dataSource => {
                     dispatch(loadingProps.actions.setDatasource(dataSource));
                 },
+                hideTour: () => {
+                    dispatch({ type: "HIDE_TOUR" });
+                },
                 setDatasourceEdicao: dataSource => {
                     dispatch(loadingProps.actions.setDatasourceEdicao(dataSource));
                 },
@@ -364,6 +367,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                     );
                     this.dataSourceEdicao.setAjaxPageConfigHandler(null);
                 }
+                this.props.hideTour();
             }
 
             onQueryChange(query) {
@@ -969,12 +973,12 @@ class UserActions extends Component {
                     caption={
                         this.props.labelButtonSelect
                             ? this.props.labelButtonSelect
-                            : 'Sem filtro'
+                            : 'Atualizar'
                     }
                     hint={
                         this.props.labelButtonSelect
                             ? this.props.labelButtonSelect
-                            : 'Atualizar sem filtro'
+                            : 'Atualizar'
                     }
                     className="versatil-btn-selecionar"
                     onButtonClick={this.props.onButtonSearch}

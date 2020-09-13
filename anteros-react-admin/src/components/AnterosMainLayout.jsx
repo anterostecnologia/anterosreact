@@ -68,12 +68,12 @@ export default class AnterosMainLayout extends Component {
 
   renderPage() {
     if (this.props.withoutScroll) {
-      return (<div
+      return (<div id="_divRenderPageMainLayout"
         style={{
           position: 'relative',
           overflow: 'hidden',
           width: '100%',
-          height: 'calc(100vh - 60px)'
+          height: 'calc(100vh + -60px)'
         }}
       >
         <div className="app-page-content">

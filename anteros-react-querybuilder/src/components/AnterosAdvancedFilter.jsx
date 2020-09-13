@@ -717,7 +717,7 @@ AnterosAdvancedFilter.defaultProps = {
     allowSort: true,
     disabled: false,
     horizontal: true,
-    width: '800px',
+    width: '100%',
     border: '1px solid silver'
 };
 

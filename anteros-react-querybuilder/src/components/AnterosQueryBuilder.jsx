@@ -9,7 +9,7 @@ import { AnterosCalendar } from 'anteros-react-calendar';
 import { AnterosButton } from 'anteros-react-buttons';
 import { AnterosText } from 'anteros-react-label';
 import { AnterosList } from 'anteros-react-list';
-
+import shallowCompare from 'react-addons-shallow-compare';
 import { AnterosAdvancedFilter, FilterField, FilterFieldValue, FilterFields } from './AnterosAdvancedFilter';
 
 export class AnterosQueryBuilder extends React.Component {
@@ -41,6 +41,24 @@ export class AnterosQueryBuilder extends React.Component {
             expandedFilter: this.props.expandedFilter,
         };
         autoBind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            ...this.state,
+            filterName: nextProps.activeFilter
+                ? nextProps.activeFilter.filterName
+                : this.state.filterName,
+            recordFilter: nextProps.activeFilter,
+            activeSortIndex: nextProps.activeSortIndex,
+            quickFilterText: nextProps.quickFilterText,
+            showAdvancedFilter: nextProps.showAdvancedFilter,
+            expandedFilter: nextProps.expandedFilter
+        });
     }
 
     toggleExpandedFilter = () => {
@@ -174,6 +192,7 @@ export class AnterosQueryBuilder extends React.Component {
         }
     }
 
+
     onClickOkCalendar = (event, startDate, endDate) => {
         this.setState({ ...this.state, quickFilterText: '' });
         if (this.props.onSelectDateRange) {
@@ -209,7 +228,7 @@ export class AnterosQueryBuilder extends React.Component {
         this.setState({ selectedFields }, () => this.onSearchClick())
     }
 
-    getQuickFilterText(){
+    getQuickFilterText() {
         return this.state.quickFilterText;
     }
 
@@ -217,7 +236,7 @@ export class AnterosQueryBuilder extends React.Component {
         const heightFilter = this.state.expandedFilter ? "calc(100%)" : '0px'
         return (
             <div style={{
-                width: 350,
+                width: '100%',
                 height: heightFilter,
                 backgroundColor: 'white',
                 border: this.state.expandedFilter ? '1px solid #cfd8dc' : '1px solid transparent',
@@ -233,7 +252,7 @@ export class AnterosQueryBuilder extends React.Component {
                 overflow: this.state.expandedFilter ? 'hidden auto' : 'unset'
             }}>
                 <div style={{
-                    padding: 3, width: 348, height: 51,
+                    padding: 3, width: '100%', height: 51,
                     display: "flex", flexFlow: 'row nowrap', alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: 'white',
@@ -241,7 +260,7 @@ export class AnterosQueryBuilder extends React.Component {
                 }}>
                     <AnterosEdit
                         onChange={this.onChangeQuickFilter}
-                        width={"70%"}
+                        width={"100%"}
                         onKeyDown={this.handleQuickFilter}
                         value={this.state.quickFilterText}
                         placeHolder={this.props.placeHolder}
@@ -289,6 +308,8 @@ export class AnterosQueryBuilder extends React.Component {
                         selectedOptions={this.getQuickFields()}
                         selectedFields={this.state.selectedFields}
                         onChangeFields={this.onChangeFields}
+                        onApplyFilter={this.onApplyFilter}
+                        onSaveFilter={this.onSaveFilter}
                     >
                         {this.props.children}
                     </AnterosDetailFilter>
@@ -346,6 +367,14 @@ class AnterosDetailFilter extends React.Component {
         this.setState({ checked });
     }
 
+    onQueryChange(query){
+        
+    }
+    onSortChange(sort, activeIndex){
+        
+    }
+
+
 
     render() {
         let fieldsFilter = this.convertQueryFields(this.props.children);
@@ -363,7 +392,12 @@ class AnterosDetailFilter extends React.Component {
                 valueUnchecked={false}
                 onCheckboxChange={this.onChange} />
             {this.state.checked ?
-                <AnterosAdvancedFilter width={350} horizontal={false} border={"none"}>
+                <AnterosAdvancedFilter
+                    onQueryChange= {this.onQueryChange}
+                    onSortChange = {this.onSortChange}
+                    width={'100%'}
+                    horizontal={false}
+                    border={"none"}>
                     <FilterFields>
                         {fieldsFilter}
                     </FilterFields>
