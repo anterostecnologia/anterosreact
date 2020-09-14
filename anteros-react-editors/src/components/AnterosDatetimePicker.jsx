@@ -9,7 +9,7 @@ import { Hour12Input, Hour24Input, MinuteInput, SecondInput, AmPm } from './Ante
 import {
     getYear,
     getMonthHuman,
-    getDate,
+    getDate, 
     getHours,
     getMinutes,
     getSeconds,
@@ -1077,7 +1077,7 @@ DateTimeInput.propTypes = {
     yearPlaceholder: PropTypes.string,
 };
 
-export default class AnterosDateTimePicker extends Component {
+export default class AnterosDatetimePicker extends Component {
     constructor(props) {
         super(props);
         if (this.props.dataSource) {
@@ -1601,7 +1601,7 @@ const ClearIcon = (
     </svg>
 );
 
-AnterosDateTimePicker.defaultProps = {
+AnterosDatetimePicker.defaultProps = {
     calendarIcon: CalendarIcon,
     clearIcon: ClearIcon,
     closeWidgets: true,
@@ -1615,7 +1615,7 @@ AnterosDateTimePicker.defaultProps = {
 };
 
 
-AnterosDateTimePicker.propTypes = {
+AnterosDatetimePicker.propTypes = {
     dataSource: PropTypes.oneOfType([
         PropTypes.instanceOf(AnterosLocalDatasource),
         PropTypes.instanceOf(AnterosRemoteDatasource)

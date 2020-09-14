@@ -233,8 +233,10 @@ export default class AnterosLookupEdit extends React.Component {
                     disabled={(this.props.disabled ? true : false)}
                     id={this.idEdit} ref={ref => this.input = ref}
                     type="text" value={this.state?this.state.value:''}
-                    style={{margin: 0}} 
+                    style={{...this.props.style, margin: 0}} 
                     className={classNameInput}
+                    data-balloon-pos={this.props.hintPosition}
+                    aria-label={this.props.hint}
                     onChange={this.handleChange}
                     onKeyDown={this.onKeyDown}
                     onKeyPress={this.onKeyPress}
@@ -251,6 +253,8 @@ export default class AnterosLookupEdit extends React.Component {
                 type="text" value={this.state?this.state.value:''}
                 style={{ ...this.props.style, width: this.props.width }}
                 className={classNameInput}
+                data-balloon-pos={this.props.hintPosition}
+                aria-label={this.props.hint}
                 readOnly={readOnly}
                 onKeyDown={this.onKeyDown}
                 onKeyPress={this.onKeyPress}

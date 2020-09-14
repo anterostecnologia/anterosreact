@@ -250,6 +250,8 @@ export default class AnterosLookupNumber extends React.Component {
                     type="text" value={this.state.value}
                     style={{ textAlign:'right', margin: 0 }}
                     className={classNameInput}
+                    data-balloon-pos={this.props.hintPosition}
+                    aria-label={this.props.hint}
                     onChange={this.handleChange}
                     onKeyDown={this.onKeyDown}
                     onKeyPress={this.onKeyPress}
@@ -266,7 +268,8 @@ export default class AnterosLookupNumber extends React.Component {
                 type="text" value={this.state.value}
                 style={{ ...this.props.style, width: this.props.width, textAlign:'right', margin: 0 }}
                 className={classNameInput}
-
+                data-balloon-pos={this.props.hintPosition}
+                aria-label={this.props.hint}
                 readOnly={readOnly}
                 onKeyDown={this.onKeyDown}
                 onKeyPress={this.onKeyPress}

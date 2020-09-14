@@ -5,8 +5,8 @@ import AnterosClockPicker from './components/AnterosClockPicker';
 import AnterosColorPicker from './components/AnterosColorPicker';
 import AnterosDatePicker from './components/AnterosDatePicker';
 import AnterosDateRangePicker from './components/AnterosDateRangePicker';
-import AnterosDateTimePicker from "./components/AnterosDateTimePicker";
-import AnterosDateTimeRangePicker from "./components/AnterosDateTimeRangePicker";
+import AnterosDatetimePicker from "./components/AnterosDatetimePicker";
+import AnterosDatetimeRangePicker from "./components/AnterosDatetimeRangePicker";
 import AnterosTimePicker from "./components/AnterosTimePicker";
 import AnterosEdit from './components/AnterosEdit';
 import AnterosEmojiArea from './components/AnterosEmojiArea';
@@ -39,8 +39,8 @@ export {
     AnterosEmojiArea, AnterosMaskEdit, AnterosNumber,AnterosPassword,
     AnterosRadioGroup, AnterosRadio, AnterosSelect, AnterosSelectOption,
     AnterosTagsInput, AnterosTextArea, AnterosTimePicker, AnterosLookupEdit,
-    AnterosLookupNumber, AnterosLookupCombobox, AnterosDateTimeRangePicker,
+    AnterosLookupNumber, AnterosLookupCombobox, AnterosDatetimeRangePicker,
     AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,
     AnterosFeedback, AnterosIpAddressEdit, AnterosInputMask,
-    AnterosCep,AnterosCheckboxList,AnterosDropdownSelect, AnterosDateTimePicker, AnterosInputTag
+    AnterosCep,AnterosCheckboxList,AnterosDropdownSelect, AnterosDatetimePicker, AnterosInputTag
 };

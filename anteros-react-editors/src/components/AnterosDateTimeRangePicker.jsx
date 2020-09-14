@@ -4,7 +4,7 @@ import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
 import { AnterosCalendar, AnterosClock } from 'anteros-react-calendar';
 import Fit from 'react-fit';
-import { DateTimeInput } from './AnterosDateTimePicker';
+import { DateTimeInput } from './AnterosDatetimePicker';
 import {  columnProps } from "anteros-react-layout";
 import { AnterosUtils } from 'anteros-react-core';
 /**
@@ -62,7 +62,7 @@ const allViews = ['hour', 'minute', 'second'];
 const baseClassName = 'react-datetimerange-picker';
 const outsideActionEvents = ['mousedown', 'focusin', 'touchstart'];
 
-export default class AnterosDateTimeRangePicker extends PureComponent {
+export default class AnterosDatetimeRangePicker extends PureComponent {
     static getDerivedStateFromProps(nextProps, prevState) {
         const nextState = {};
 
@@ -551,7 +551,7 @@ const ClearIcon = (
     </svg>
 );
 
-AnterosDateTimeRangePicker.defaultProps = {
+AnterosDatetimeRangePicker.defaultProps = {
     calendarIcon: CalendarIcon,
     clearIcon: ClearIcon,
     closeWidgets: true,
@@ -568,7 +568,7 @@ const isValue = PropTypes.oneOfType([
     PropTypes.instanceOf(Date),
 ]);
 
-AnterosDateTimeRangePicker.propTypes = {
+AnterosDatetimeRangePicker.propTypes = {
     amPmAriaLabel: PropTypes.string,
     autoFocus: PropTypes.bool,
     calendarAriaLabel: PropTypes.string,

@@ -566,14 +566,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
             onDoubleClickTable(data) {
                 if (WrappedComponent.prototype.hasOwnProperty('onCustomDoubleClick') === true) {
                     this.onCustomDoubleClick(data);
-                } else if (loadingProps.routes.edit) {
-
-                    if (WrappedComponent.prototype.hasOwnProperty('onCustomView') === true) {
-                        this.onCustomView(button.props.route);
-                        return;
-                    } else {
-                        this.props.history.push(loadingProps.routes.edit);
-                    }
                 }
             }
 
@@ -932,7 +924,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                                 } ${this.dataSource.getGrandTotalRecords()}`}
                                         />
                                     </AnterosCol>
-                                    <AnterosCol medium={8}>
+                                    <AnterosCol medium={7}>
                                         <AnterosPagination
                                             horizontalEnd
                                             dataSource={this.dataSource}
