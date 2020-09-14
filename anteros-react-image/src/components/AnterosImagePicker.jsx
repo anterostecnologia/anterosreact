@@ -367,6 +367,7 @@ export default class AnterosImagePicker extends React.Component {
                             dataSource={this.dsImage}
                             dataField={'editedImg'}
                             minSize={this.props.minSize}
+                            accept={this.props.accept}
                             captureWidth={this.props.captureWidth}
                             captureHeight={this.props.captureHeight}
                             ref={this.AnterosImagePickerEdicaoRef}
@@ -430,6 +431,7 @@ export default class AnterosImagePicker extends React.Component {
                             dataSource={this.dsImage}
                             dataField={'editedImg'}
                             minSize={this.props.minSize}
+                            accept={this.props.accept}
                             captureWidth={this.props.captureWidth}
                             captureHeight={this.props.captureHeight}
                             ref={this.AnterosImagePickerEdicaoRef}
@@ -603,6 +605,7 @@ class AnterosImagePickerEdicao extends Component {
                     minSize={this.props.minSize}
                     width={this.props.captureWidth}
                     height={this.props.captureHeight}
+                    accept={this.props.accept}
                     ref={this.imageContentRef}
                 />
                 <AnterosRow horizontalEnd>
@@ -913,6 +916,7 @@ class ImageContent extends Component {
                                     onSubmit={this.handleSubmit}
                                     maxFiles={1}
                                     inputContent="Arraste aqui uma imagem ou clique para procurar"
+                                    accept={this.props.accept}
                                     submitButtonDisabled={true}
                                 />
                             </AnterosTab>
