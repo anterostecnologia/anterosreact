@@ -476,7 +476,7 @@ a.mytooltip {
 
 
 :root {
-  --balloon-border-radius: 2px;
+  --balloon-border-radius: 8px;
   --balloon-color: #{$balloon-bg};
   --balloon-text-color: #fff;
   --balloon-font-size: #{$balloon-base-size};

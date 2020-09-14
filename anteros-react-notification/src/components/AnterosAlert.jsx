@@ -12,6 +12,7 @@ export class AnterosAlert extends Component {
   constructor(props) {
     super(props);
     this.onClose = this.onClose.bind(this);
+    this.buildItens = this.buildItens.bind(this);
     this.state = {
       isOpen: props.isOpen
     };
@@ -31,7 +32,7 @@ export class AnterosAlert extends Component {
     }
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ isOpen: nextProps.isOpen });
@@ -77,6 +78,21 @@ export class AnterosAlert extends Component {
       }
     }
   }
+
+  buildItens() {
+    if (!Array.isArray(this.props.children)) {
+      return this.props.children;
+    }
+    let result = [];
+    this.props.children.forEach((item, index) => {
+      result.push(<span style={{
+        whiteSpace: "pre"
+      }} key={index}>{item + "\n"}</span>);
+    })
+    return result;
+  }
+
+
 
   render() {
     if (this.state.isOpen) {
@@ -151,6 +167,8 @@ export class AnterosAlert extends Component {
       className += " alert-icon";
     }
 
+
+
     return (
       <ReactCSSTransitionGroup
         component={FirstChild}
@@ -189,15 +207,7 @@ export class AnterosAlert extends Component {
                 <img src={this.props.image} />
               </div>
             ) : null}{" "}
-            {this.props.children && this.props.children.constructor === Array
-              ? this.props.children.map((item, i) => {
-                  return (
-                    <span style={{ whiteSpace: "pre" }} key={i}>
-                      {item + "\n"}
-                    </span>
-                  );
-                })
-              : this.props.children}
+            {this.buildItens()}
           </div>
         ) : null}
       </ReactCSSTransitionGroup>

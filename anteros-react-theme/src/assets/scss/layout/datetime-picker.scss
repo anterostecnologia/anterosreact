@@ -91,7 +91,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 2;
+    z-index: 3;
   }
   .react-date-picker__calendar--closed {
     display: none;
@@ -279,7 +279,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 1;
+    z-index: 3;
   }
   .react-datetime-picker__calendar--closed,
   .react-datetime-picker__clock--closed {
@@ -483,7 +483,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 1;
+    z-index: 3;
   }
   .react-time-picker__clock--closed {
     display: none;

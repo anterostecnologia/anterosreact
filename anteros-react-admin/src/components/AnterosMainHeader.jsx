@@ -152,9 +152,10 @@ export default class AnterosMainHeader extends Component {
                     ? 'data:image;base64,' + imgUser
                     : imgUser
                 }
-                circle
-                width="42px"
-                height="42px"
+                circle={this.props.avatarWidth===this.props.avatarHeight}
+                rounded={this.props.avatarWidth!==this.props.avatarHeight}
+                width={this.props.avatarWidth}
+                height={this.props.avatarHeight}
               />
               <AnterosText text={this.props.userName} fontSize="12px"/>
             </AnterosAdvancedDropdownToggle>

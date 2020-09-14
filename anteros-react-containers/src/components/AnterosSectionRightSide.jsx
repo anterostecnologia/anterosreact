@@ -15,19 +15,23 @@ class AnterosSectionRightSide extends Component {
     }
 
     render() {
-        let right = '-360px';
+        let right = this.props.width*-1;
         if (this.state.opened) {
-            right = '0';
+            right = 0;
         }
         return (
-            <div className="Helper_themeHelper__34XlU" style={{ width: this.props.width, right, top: this.props.top, bottom: this.props.bottom }}>
+            <div className="Helper_themeHelper__34XlU" 
+                style={{ 
+                    width: this.props.width+"px", 
+                    right, top: this.props.top, 
+                    bottom: this.props.bottom }}>
                 <div className="react-joyride">
                 </div>
                 <div className="Helper_themeHelperBtn__1y8_u helper-button"
                     onClick={this.onClickHelperButton} >
                     <div className="Helper_themeHelperSpinner__3vmZJ text-white">
-                        <i className={this.props.icon}
-                            aria-hidden="true" style={{
+                        <i className={this.props.icon} 
+                            aria-hidden="true" style={{ color: this.props.color,
                                 paddingRight: "4px",
                             }}></i>
                     </div>
@@ -47,8 +51,9 @@ AnterosSectionRightSide.propTypes = {
     top: PropTypes.any,
     bottom: PropTypes.any,
     icon: PropTypes.string,
+    color: PropTypes.string,
     backgroundColor: PropTypes.string.isRequired,
-    width: PropTypes.any.isRequired
+    width: PropTypes.number.isRequired
 }
 
 AnterosSectionRightSide.defaultProps = {
@@ -56,7 +61,8 @@ AnterosSectionRightSide.defaultProps = {
     bottom: '5px',
     backgroundColor: '#eceff1',
     icon: 'fad fa-filter',
-    width: '370px'
+    color: 'white',
+    width: 370
 }
 
 export { AnterosSectionRightSide };

@@ -591,10 +591,10 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                                                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
                                                 }
                                                 secondary
-                                                hint="Atualizar sem filtro"
+                                                hint="Atualizar"
                                                 onButtonClick={this.onButtonSearch}
                                             >
-                                                Sem filtro
+                                                Atualizar
                                             </AnterosButton>
                                         </div>
 

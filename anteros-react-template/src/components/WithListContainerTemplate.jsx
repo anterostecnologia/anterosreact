@@ -31,6 +31,9 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
             setDatasource: dataSource => {
                 dispatch(loadingProps.actions.setDatasource(dataSource));
             },
+            hideTour: () => {
+                dispatch({ type: "HIDE_TOUR" });
+            },
             setFilter: (
                 activeFilter,
                 query,
@@ -162,6 +165,7 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
                 if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
                     this.onWillUnmount();
                 }
+                this.props.hideTour();
             }
 
 
@@ -480,8 +484,8 @@ export default function WithListContainerTemplate(loadingProps, ViewItem) {
                                         }
                                         small
                                         secondary
-                                        hint="Atualizar sem filtro"
-                                        caption="Sem filtro"
+                                        hint="Atualizar"
+                                        caption="Atualizar"
                                         className="versatil-btn-selecionar"
                                         onButtonClick={this.onButtonSearch}
                                     />

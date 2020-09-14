@@ -71,6 +71,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
             setDatasource: dataSource => {
                 dispatch(loadingProps.actions.setDatasource(dataSource));
             },
+            hideTour: () => {
+                dispatch({ type: "HIDE_TOUR" });
+            },
             setFilter: (
                 activeFilter,
                 query,
@@ -294,7 +297,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 if (this.table1) {
                     this.table1.refreshData();
                 }
-                
+
                 if (this.table2) {
                     this.table2.refreshData();
                 }
@@ -318,6 +321,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
                     this.onWillUnmount();
                 }
+                this.props.hideTour();
             }
             componentWillReceiveProps(nextProps) {
                 this.onResize(
@@ -600,7 +604,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                         this.filterRef.current.getQuickFilterText() !== ''
                     ) {
                         if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
-                            return this.onFindMultipleFields(this.props.quickFilterText, fiethis.filterRef.current.getQuickFilterFields(), page, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy);
+                            return this.onFindMultipleFields(this.props.quickFilterText, this.filterRef.current.getQuickFilterFields(), page, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy);
                         } else {
                             return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
                                 loadingProps.resource,
@@ -836,7 +840,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                             zIndex={50}
                                             query={this.props.query}
                                             sort={this.props.sort}
-                                            id={loadingProps.filtroDispositivos}
+                                            id={loadingProps.filterName}
                                             formName={loadingProps.viewName}
                                             ref={this.filterRef}
                                             activeSortIndex={this.props.activeSortIndex}
@@ -1056,12 +1060,12 @@ class UserActions extends Component {
                     caption={
                         this.props.labelButtonSelect
                             ? this.props.labelButtonSelect
-                            : 'Sem filtro'
+                            : 'Atualizar'
                     }
                     hint={
                         this.props.labelButtonSelect
                             ? this.props.labelButtonSelect
-                            : 'Atualizar sem filtro'
+                            : 'Atualizar'
                     }
                     secondary
                     className="versatil-btn-selecionar"

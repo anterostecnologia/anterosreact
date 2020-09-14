@@ -95,6 +95,20 @@ class AnterosNumber extends Component {
 
 
     componentDidMount() {
+        if (this.props.dataSource) {
+            this
+                .props
+                .dataSource
+                .addEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_OPEN, dataSourceEvents.AFTER_GOTO_PAGE, dataSourceEvents.AFTER_CANCEL, dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .addEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+        }
+
+
         let node = ReactDOM.findDOMNode(this.theInput);
         let selectionEnd = Math.min(node.selectionEnd, this.theInput.value.length - this.props.suffix.length);
         let selectionStart = Math.min(node.selectionStart, selectionEnd);
@@ -139,6 +153,20 @@ class AnterosNumber extends Component {
         this.inputSelectionEnd = selectionEnd;
     }
 
+    componentWillUnmount(){
+        if ((this.props.dataSource)) {
+            this
+                .props
+                .dataSource
+                .removeEventListener([
+                    dataSourceEvents.AFTER_CLOSE, dataSourceEvents.AFTER_OPEN, dataSourceEvents.AFTER_GOTO_PAGE, dataSourceEvents.AFTER_CANCEL, dataSourceEvents.AFTER_SCROLL
+                ], this.onDatasourceEvent);
+            this
+                .props
+                .dataSource
+                .removeEventListener(dataSourceEvents.DATA_FIELD_CHANGED, this.onDatasourceEvent, this.props.dataField);
+        }
+    }
 
     handleChange(event) {
         event.preventDefault();

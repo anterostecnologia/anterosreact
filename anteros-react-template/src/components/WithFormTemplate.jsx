@@ -37,6 +37,9 @@ export default function WithFormTemplate(_loadingProps) {
         setDatasource: dataSource => {
           dispatch(loadingProps.actions.setDatasource(dataSource));
         },
+        hideTour: () => {
+          dispatch({ type: "HIDE_TOUR" });
+        },
         setFilter: (
           activeFilter,
           query,
@@ -129,6 +132,20 @@ export default function WithFormTemplate(_loadingProps) {
         };
       }
 
+      convertMessage(alertMessage) {
+        if (alertMessage.constructor === Array) {
+          let result = [];
+          alertMessage.forEach((item, index) => {
+            result.push(<span style={{
+              whiteSpace: "pre"
+            }} key={index}>{item + "\n"}</span>);
+          });
+          return result;
+        } else {
+          return alertMessage;
+        }
+      }
+
 
       onButtonClick(event, button) {
         let _this = this;
@@ -183,7 +200,7 @@ export default function WithFormTemplate(_loadingProps) {
               });
               _this.props.dataSource.post(error => {
                 if (error) {
-                  var result = processErrorMessage(error);
+                  var result = _this.convertMessage(processErrorMessage(error));
                   var debugMessage = processDetailErrorMessage(error);
                   _this.setState({
                     ..._this.state,
@@ -303,13 +320,14 @@ export default function WithFormTemplate(_loadingProps) {
         if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
           this.onWillUnmount();
         }
+        this.props.hideTour();
       }
 
       update(newState) {
         this.setState({ ...this.state, ...newState });
       }
 
-      getOwnerForm(){
+      getOwnerForm() {
         return this.owner;
       }
 

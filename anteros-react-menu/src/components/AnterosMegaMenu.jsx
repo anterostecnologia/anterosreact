@@ -362,7 +362,7 @@ export class SubMenuView extends Component {
 export class AnterosMegaMenuItem extends Component {
   constructor(props, context) {
     super(props)
-    this.idItem = lodash.uniqueId("li");
+    this.idItem = this.props.id?this.props.id:lodash.uniqueId("li");
     autoBind(this);
   }
 
@@ -391,11 +391,22 @@ export class AnterosMegaMenuItem extends Component {
     return favorite;
   }
 
+  getCountVisibleChildren(children){
+    let result = 0;
+    children.forEach(function(item){
+      if (item.props.visible){
+        result++;
+      }
+    });
+    return result;
+  }
+
   render() {
     if (this.props.visible===false){
       return (null);
     }
     const children = React.Children.toArray(this.props.children);
+    const itensCount = this.getCountVisibleChildren(children);
     let className = 'mmenu-item';
     if (this.context.selectedMainItem === this || this.context.selectedSubItem === this) {
       className = 'mmenu-item-selected';
@@ -412,12 +423,12 @@ export class AnterosMegaMenuItem extends Component {
             <AnterosText truncate={true} text={this.props.caption} style={{ cursor: 'pointer', paddingLeft: "5px" }} />
             : null}
         </div>
-        {children.length > 0 && this.context.menuOpened ?
+        {itensCount > 0 && this.context.menuOpened ?
           <div className='mmenu-count-arrow' >
-            <span className='mmenu-count-children' >{children.length}</span>
+            <span className='mmenu-count-children' >{itensCount}</span>
             <i className='mmenu-icon-chevron fa fa-chevron-right' />
           </div> : null}
-        {children.length === 0 && this.context.menuOpened ?
+        {itensCount === 0 && this.context.menuOpened ?
           <div tabIndex="-1" className='mmenu-favorite' data-placement={this.props.hintPosition}
             data-balloon-pos={this.props.hintPosition} aria-label={this.props.hint}>
             <i className={classNameSelected} style={selected} onClick={this.onClickFavorite} />
