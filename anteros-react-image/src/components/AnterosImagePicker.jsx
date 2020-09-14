@@ -337,6 +337,7 @@ export default class AnterosImagePicker extends React.Component {
                             <input
                                 id={this.idImage + '_input'}
                                 type="file"
+                                accept={this.props.accept}
                                 className="imageUpload"
                                 onChange={this.onSelect}
                                 ref="input"
@@ -366,6 +367,7 @@ export default class AnterosImagePicker extends React.Component {
                             dataSource={this.dsImage}
                             dataField={'editedImg'}
                             minSize={this.props.minSize}
+                            accept={this.props.accept}
                             captureWidth={this.props.captureWidth}
                             captureHeight={this.props.captureHeight}
                             ref={this.AnterosImagePickerEdicaoRef}
@@ -401,6 +403,7 @@ export default class AnterosImagePicker extends React.Component {
                         <input
                             id={this.idImage + '_input'}
                             type="file"
+                            accept={this.props.accept}
                             className="imageUpload"
                             onChange={this.onSelect}
                             ref="input"
@@ -428,6 +431,7 @@ export default class AnterosImagePicker extends React.Component {
                             dataSource={this.dsImage}
                             dataField={'editedImg'}
                             minSize={this.props.minSize}
+                            accept={this.props.accept}
                             captureWidth={this.props.captureWidth}
                             captureHeight={this.props.captureHeight}
                             ref={this.AnterosImagePickerEdicaoRef}
@@ -519,7 +523,8 @@ AnterosImagePicker.propTypes = {
     extraLarge: columnProps,
     captureWidth: PropTypes.number.isRequired,
     captureHeight: PropTypes.number.isRequired,
-    showCloseButton: PropTypes.bool
+    showCloseButton: PropTypes.bool,
+    accept: PropTypes.string.isRequired
 };
 
 AnterosImagePicker.defaultProps = {
@@ -530,7 +535,8 @@ AnterosImagePicker.defaultProps = {
     disabled: false,
     captureWidth: 480,
     captureHeight: 270,
-    showCloseButton: false
+    showCloseButton: false,
+    accept: 'image/png, image/jpeg'
 };
 
 class AnterosImagePickerEdicao extends Component {
@@ -599,6 +605,7 @@ class AnterosImagePickerEdicao extends Component {
                     minSize={this.props.minSize}
                     width={this.props.captureWidth}
                     height={this.props.captureHeight}
+                    accept={this.props.accept}
                     ref={this.imageContentRef}
                 />
                 <AnterosRow horizontalEnd>
@@ -909,6 +916,7 @@ class ImageContent extends Component {
                                     onSubmit={this.handleSubmit}
                                     maxFiles={1}
                                     inputContent="Arraste aqui uma imagem ou clique para procurar"
+                                    accept={this.props.accept}
                                     submitButtonDisabled={true}
                                 />
                             </AnterosTab>
