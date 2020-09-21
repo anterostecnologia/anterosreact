@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-dropzone",
-  "version": "1.0.5",
+  "version": "2.0.5",
   "description": "Anteros components for React - Dropzone",
   "main": "lib/anteros-react-dropzone.js",
   "scripts": {

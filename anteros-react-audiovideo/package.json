@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-audiovideo",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Anteros components for React - Audio/video",
   "main": "lib/anteros-react-audiovideo.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-notification",
-  "version": "1.0.6",
+  "version": "2.0.6",
   "description": "Anteros components for React - Notifications",
   "main": "lib/anteros-react-notification.js",
   "scripts": {

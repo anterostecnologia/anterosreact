@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-gridgallery",
-  "version": "1.0.5",
+  "version": "2.0.5",
   "description": "Anteros components for React - Grid gallery",
   "main": "lib/anteros-react-gridgallery.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-label",
-  "version": "1.0.5",
+  "version": "2.0.5",
   "description": "Anteros components for React - Label",
   "main": "lib/anteros-react-label.js",
   "scripts": {

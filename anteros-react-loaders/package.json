@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-loaders",
-  "version": "1.0.1",
+  "version": "2.0.1",
   "description": "Anteros components for React - Loaders",
   "main": "lib/anteros-react-loaders.js",
   "scripts": {

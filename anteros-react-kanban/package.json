@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-kanban",
-  "version": "1.0.6",
+  "version": "2.0.6",
   "description": "Anteros components for React - Kanban",
   "main": "lib/anteros-react-kanban.js",
   "scripts": {

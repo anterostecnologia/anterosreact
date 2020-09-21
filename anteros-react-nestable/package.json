@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-nestable",
-  "version": "1.0.5",
+  "version": "2.0.5",
   "description": "Anteros components for React - Nestable",
   "main": "lib/anteros-react-nestable.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-buttons",
-  "version": "1.0.9",
+  "version": "2.0.9",
   "description": "Documentação",
   "scripts": {
     "styleguide": "styleguidist server",

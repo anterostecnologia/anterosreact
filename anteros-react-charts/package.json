@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-charts",
-  "version": "1.0.7",
+  "version": "2.0.7",
   "description": "Anteros components for React - Charts",
   "main": "lib/anteros-react-charts.js",
   "scripts": {

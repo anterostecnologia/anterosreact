@@ -1,6 +1,6 @@
 {
   "name": "anteros-react-collections",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Anteros collections for React",
   "main": "lib/anteros-react-collections.js",
   "scripts": {
