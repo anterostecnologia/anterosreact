@@ -4,7 +4,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-buttons
@@ -13,7 +13,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-charts
@@ -22,7 +22,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-menu
@@ -31,7 +31,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-layout
@@ -40,7 +40,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-containers
@@ -49,7 +49,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force 
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force 
 cd ..
 
 cd anteros-react-datasource
@@ -58,7 +58,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-dashboard
@@ -67,7 +67,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-dropzone
@@ -76,7 +76,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 
 cd anteros-react-editors
 npm install
@@ -84,7 +84,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-gridgallery
@@ -93,7 +93,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-image
@@ -102,7 +102,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-kanban
@@ -111,7 +111,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-label
@@ -120,7 +120,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-list
@@ -129,7 +129,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-loaders
@@ -138,7 +138,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-maps
@@ -155,7 +155,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-misc
@@ -164,7 +164,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-navigation
@@ -173,7 +173,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-nestable
@@ -182,7 +182,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-notification
@@ -191,7 +191,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-pivottable
@@ -200,7 +200,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-querybuilder
@@ -209,7 +209,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-security
@@ -218,7 +218,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-table
@@ -227,7 +227,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-theme
@@ -236,7 +236,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-treeview
@@ -245,7 +245,7 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
 
 cd anteros-react-admin
@@ -254,5 +254,5 @@ npm run dev
 npm run build
 npm pack
 npm unpublish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
-npm publish --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
+ npm publish --access public --registry npm --registry http://vps4657.publiccloud.com.br:4873 --force
 cd ..
