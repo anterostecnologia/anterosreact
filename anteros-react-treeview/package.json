@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-treeview",
+  "name": "@anterostecnologia/anteros-react-treeview",
   "version": "2.0.5",
   "description": "Anteros components for React - Treeview",
   "main": "lib/anteros-react-treeview.js",

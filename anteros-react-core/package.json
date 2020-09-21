@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-core",
+  "name": "@anterostecnologia/anteros-react-core",
   "version": "2.0.7",
   "description": "Anteros components for React - Core",
   "main": "lib/anteros-react-core.js",

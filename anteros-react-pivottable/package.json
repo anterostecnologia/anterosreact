@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-pivottable",
+  "name": "@anterostecnologia/anteros-react-pivottable",
   "version": "2.0.6",
   "description": "Anteros components for React - Pivot table",
   "main": "lib/anteros-react-pivottable.js",

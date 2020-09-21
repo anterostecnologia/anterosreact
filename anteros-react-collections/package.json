@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-collections",
+  "name": "@anterostecnologia/anteros-react-collections",
   "version": "2.0.0",
   "description": "Anteros collections for React",
   "main": "lib/anteros-react-collections.js",

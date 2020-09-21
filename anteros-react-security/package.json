@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-security",
+  "name": "@anterostecnologia/anteros-react-security",
   "version": "2.0.5",
   "description": "Anteros components for React - Security",
   "main": "lib/anteros-react-security.js",

@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-calendar",
+  "name": "@anterostecnologia/anteros-react-calendar",
   "version": "2.0.7",
   "description": "Anteros components for React - Calendar",
   "main": "lib/anteros-react-calendar.js",

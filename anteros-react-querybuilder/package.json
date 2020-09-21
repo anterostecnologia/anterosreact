@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-querybuilder",
+  "name": "@anterostecnologia/anteros-react-querybuilder",
   "version": "2.0.8",
   "description": "Anteros components for React - Query Builder",
   "main": "lib/anteros-react-querybuilder.js",

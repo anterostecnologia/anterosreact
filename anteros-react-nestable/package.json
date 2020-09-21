@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-nestable",
+  "name": "@anterostecnologia/anteros-react-nestable",
   "version": "2.0.5",
   "description": "Anteros components for React - Nestable",
   "main": "lib/anteros-react-nestable.js",

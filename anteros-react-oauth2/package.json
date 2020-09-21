@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-oauth2",
+  "name": "@anterostecnologia/anteros-react-oauth2",
   "version": "2.0.0",
   "description": "Anteros OAuth2 for React",
   "main": "lib/anteros-react-pauth2.js",

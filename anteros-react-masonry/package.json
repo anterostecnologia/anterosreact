@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-masonry",
+  "name": "@anterostecnologia/anteros-react-masonry",
   "version": "2.0.6",
   "description": "Anteros components for React - Masonry",
   "main": "lib/anteros-react-masonry.js",

@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-maps",
+  "name": "@anterostecnologia/anteros-react-maps",
   "version": "2.0.6",
   "description": "Anteros components for React - Maps",
   "main": "lib/anteros-react-maps.js",

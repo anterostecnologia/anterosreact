@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-buttons",
+  "name": "@anterostecnologia/anteros-react-buttons",
   "version": "2.0.9",
   "description": "Anteros components for React - Buttons",
   "main": "lib/anteros-react-buttons.js",

@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-list",
+  "name": "@anterostecnologia/anteros-react-list",
   "version": "2.0.5",
   "description": "Anteros components for React - List",
   "main": "lib/anteros-react-list.js",

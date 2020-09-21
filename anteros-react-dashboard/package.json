@@ -1,5 +1,5 @@
 {
-  "name": "anteros-react-dashboard",
+  "name": "@anterostecnologia/anteros-react-dashboard",
   "version": "2.0.5",
   "description": "Anteros components for React - Dashboard",
   "main": "lib/anteros-react-dashboard.js",
