@@ -629,7 +629,7 @@ class AnterosDatasource {
         if (this.isBOF()) {
             throw new AnterosDatasourceError('Inicio do Datasource encontrado.');
         }
-        if (this.isBOF()) {
+        if (this.isEOF()) {
             throw new AnterosDatasourceError('Fim do Datasource encontrado.');
         }
         if (this.getState() == dataSourceConstants.DS_EDIT) {
@@ -647,6 +647,8 @@ class AnterosDatasource {
         this.currentRecord = cloneDeep(this.currentRecord);
         this.dispatchEvent(dataSourceEvents.AFTER_EDIT);
     }
+
+    
 
     _validatePost() {
         if (this.dsState == dataSourceConstants.DS_BROWSE) {
@@ -1167,6 +1169,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                 _this.grandTotalRecords = _this.data.length;
             }
             _this.executed = true;
+            _this.dsState = dataSourceConstants.DS_BROWSE;
             _this.first();
             _this.dispatchEvent(event);
             if (callback) {

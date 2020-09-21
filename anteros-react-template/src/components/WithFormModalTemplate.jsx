@@ -216,9 +216,18 @@ export default function WithFormModalTemplate(_loadingProps) {
                             result.then(function (response) {
                                 _this.setState({ ..._this.state, alertIsOpen: false, alertMessage: '' });
                                 if (_this.dataSource && _this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
-                                    _this.dataSource.post();
+                                    if (!error) {
+                                        if (
+                                          WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
+                                          true
+                                        ) {
+                                          if (!_this.onAfterSave()) {
+                                            return;
+                                          }
+                                        }
+                                        _this.props.onClickOk(event, _this.props.selectedRecords);
+                                      }
                                 }
-                                _this.props.onClickOk(event, _this.props.selectedRecords);
                             }).catch(function (error) {
                                 _this.setState({ ..._this.state, alertIsOpen: true, alertMessage: processErrorMessage(error) });
                             });
@@ -317,7 +326,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                             {this.getButtons()}
                         </ModalActions>
                         <div>
-                            <WrappedComponent {...this.props} dataSource={this.dataSource} />
+                            <WrappedComponent {...this.props} dataSource={this.dataSource} ownerTemplate={this}/>
                         </div>
                     </AnterosModal>
                 );

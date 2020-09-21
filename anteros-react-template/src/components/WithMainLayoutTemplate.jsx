@@ -121,15 +121,15 @@ export default function WithMainLayoutTemplate(_loadingProps) {
 
       componentWillReceiveProps(nextProps) {
         let element = document.getElementById("_divRenderPageMainLayout");
-        if (element){
+        if (element) {
           element.style.height = "auto";
-          setTimeout(()=>{
+          setTimeout(() => {
             element.style.height = "calc(100vh - 60px)";
             this.setState({ ...this.state, update: Math.random() });
-          },200);          
+          }, 200);
         } else {
           this.setState({ ...this.state, update: Math.random() });
-        }        
+        }
       }
 
       onSelectMenuItem(menuItem) {
@@ -181,6 +181,40 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         }
       }
 
+      getAvatar() {
+        if (this.props.user.profile.avatar) {
+          if (this.isBase64(this.props.user.profile.avatar)) {
+            if (this.isUrl(atob(this.props.user.profile.avatar))) {
+              return atob(this.props.user.profile.avatar)
+            } else {
+              return 'data:image;base64,' + this.props.user.profile.avatar;
+            }
+          } else {
+            return this.props.user.profile.avatar
+          }
+        }
+        else {
+          return loadingProps.defaultAvatar
+        }
+      }
+
+      isBase64(str) {
+        try {
+          return btoa(atob(str)) === str;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      isUrl(string) {
+        try {
+          new URL(string);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+
       render() {
         const horizontal = loadingProps.menuHorizontal;
         const Actions = this.getUserActions();
@@ -222,10 +256,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               avatarHeight={loadingProps.avatarHeight}
               avatar={
                 this.props.authenticated
-                  ? this.props.user.profile.avatar
-                    ? this.props.user.profile.avatar
-                    : loadingProps.defaultAvatar
-                  : loadingProps.defaultAvatar
+                  ? this.getAvatar() : null
               }
             >
               {Actions ? (
@@ -284,6 +315,14 @@ export default function WithMainLayoutTemplate(_loadingProps) {
 
             <AnterosMainContent>
               {Switch}
+              <WrappedComponent
+                {...this.props}
+                ref={ref => (this.wrappedRef = ref)}
+                state={this.state}
+                user={this.props.user}
+                ownerTemplate={this}
+                history={this.props.history}
+              />
             </AnterosMainContent>
             {this.props.children}
           </AnterosMainLayout>
