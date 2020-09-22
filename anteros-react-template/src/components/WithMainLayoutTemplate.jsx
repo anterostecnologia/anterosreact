@@ -119,6 +119,12 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         return shallowCompare(this, nextProps, nextState);
       }
 
+      componentDidMount() {
+        if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
+          this.onDidMount();
+        }
+      }
+
       componentWillReceiveProps(nextProps) {
         let element = document.getElementById("_divRenderPageMainLayout");
         if (element) {
