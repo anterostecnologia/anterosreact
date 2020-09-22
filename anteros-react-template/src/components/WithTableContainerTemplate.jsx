@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import { AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants, DATASOURCE_EVENTS } from 'anteros-react-datasource';
-import { AnterosSweetAlert, AnterosError, autoBind, processErrorMessage, AnterosResizeDetector } from 'anteros-react-core';
-import { AnterosQueryBuilder, AnterosFilterDSL, AnterosQueryBuilderData } from 'anteros-react-querybuilder';
-import { AnterosCard, HeaderActions, FooterActions } from 'anteros-react-containers';
-import { AnterosBlockUi, AnterosLoader } from 'anteros-react-loaders';
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
-import { AnterosPagination } from 'anteros-react-navigation';
-import { AnterosAlert } from 'anteros-react-notification';
-import { AnterosDataTable } from 'anteros-react-table';
-import { AnterosButton } from 'anteros-react-buttons';
-import { AnterosLabel } from 'anteros-react-label';
+import { AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants, DATASOURCE_EVENTS } from '@anterostecnologia/anteros-react-datasource';
+import { AnterosSweetAlert, AnterosError, autoBind, processErrorMessage, AnterosResizeDetector } from '@anterostecnologia/anteros-react-core';
+import { AnterosQueryBuilder, AnterosFilterDSL, AnterosQueryBuilderData } from '@anterostecnologia/anteros-react-querybuilder';
+import { AnterosCard, HeaderActions, FooterActions } from '@anterostecnologia/anteros-react-containers';
+import { AnterosBlockUi, AnterosLoader } from '@anterostecnologia/anteros-react-loaders';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
+import { AnterosPagination } from '@anterostecnologia/anteros-react-navigation';
+import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
+import { AnterosDataTable } from '@anterostecnologia/anteros-react-table';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
+import { AnterosLabel } from '@anterostecnologia/anteros-react-label';
 
 const defaultValues = {
     openDataSourceFilter: true,

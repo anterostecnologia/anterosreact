@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { autoBind, AnterosClickOutside } from 'anteros-react-core'
-import { AnterosText } from 'anteros-react-label';
-import { AnterosIcon } from 'anteros-react-image';
+import { autoBind, AnterosClickOutside } from '@anterostecnologia/anteros-react-core'
+import { AnterosText } from '@anterostecnologia/anteros-react-label';
+import { AnterosIcon } from '@anterostecnologia/anteros-react-image';
 import lodash from 'lodash';
 import { AnterosScrollbars } from 'anteros-react-containers';
 

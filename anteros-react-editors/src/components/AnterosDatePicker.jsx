@@ -2,8 +2,8 @@ import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
-import { AnterosCalendar } from 'anteros-react-calendar';
-import { AnterosDateUtils, autoBind } from 'anteros-react-core';
+import { AnterosCalendar } from '@anterostecnologia/anteros-react-calendar';
+import { AnterosDateUtils, autoBind } from '@anterostecnologia/anteros-react-core';
 import Fit from 'react-fit';
 import {
     getYear, getMonthHuman, getDate, getDaysInMonth,
@@ -28,7 +28,7 @@ import getUserLocale from 'get-user-locale';
 import updateInputWidth, { getFontShorthand } from 'update-input-width';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosUtils } from 'anteros-react-core';
+import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 
 const defaultMinDate = new Date(-8.64e15);
 const defaultMaxDate = new Date(8.64e15);

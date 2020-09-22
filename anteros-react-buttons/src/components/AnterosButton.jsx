@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import lodash from "lodash";
 import { AnterosFloater } from "anteros-react-core";
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
 
 
 /**

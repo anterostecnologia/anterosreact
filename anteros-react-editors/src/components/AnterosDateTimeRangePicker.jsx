@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
-import { AnterosCalendar, AnterosClock } from 'anteros-react-calendar';
+import { AnterosCalendar, AnterosClock } from '@anterostecnologia/anteros-react-calendar';
 import Fit from 'react-fit';
 import { DateTimeInput } from './AnterosDatetimePicker';
 import {  columnProps } from "anteros-react-layout";
-import { AnterosUtils } from 'anteros-react-core';
+import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 /**
  * Calls a function, if it's defined, with specified arguments
  * @param {Function} fn

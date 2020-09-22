@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { AnterosModal, ModalActions } from 'anteros-react-containers';
-import { AnterosAlert } from 'anteros-react-notification';
-import { AnterosButton } from 'anteros-react-buttons';
+import { AnterosModal, ModalActions } from '@anterostecnologia/anteros-react-containers';
+import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import {
   AnterosRemoteDatasource,
   dataSourceEvents,
   dataSourceConstants, DATASOURCE_EVENTS
-} from 'anteros-react-datasource';
-import { autoBind } from 'anteros-react-core';
-import { processErrorMessage } from 'anteros-react-core';
+} from '@anterostecnologia/anteros-react-datasource';
+import { autoBind } from '@anterostecnologia/anteros-react-core';
+import { processErrorMessage } from '@anterostecnologia/anteros-react-core';
 
 const defaultValues = {
   withDatasource: false,

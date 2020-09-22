@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { AnterosText } from 'anteros-react-label'
-import { AnterosRow, AnterosCol } from 'anteros-react-layout'
-import { AnterosCard } from 'anteros-react-containers'
+import { AnterosText } from '@anterostecnologia/anteros-react-label'
+import { AnterosRow, AnterosCol } from '@anterostecnologia/anteros-react-layout'
+import { AnterosCard } from '@anterostecnologia/anteros-react-containers'
 import PropTypes from 'prop-types'
 
 

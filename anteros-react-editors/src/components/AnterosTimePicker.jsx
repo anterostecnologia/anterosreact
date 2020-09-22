@@ -14,7 +14,7 @@ import updateInputWidth, { getFontShorthand } from 'update-input-width';
 import getUserLocale from 'get-user-locale';
 import {AnterosClock} from "anteros-react-calendar";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosDateUtils, autoBind } from 'anteros-react-core';
+import { AnterosDateUtils, autoBind } from '@anterostecnologia/anteros-react-core';
 
 
 const baseClassName = 'react-time-picker';

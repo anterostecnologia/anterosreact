@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { AnterosRemoteDatasource, dataSourceEvents, DATASOURCE_EVENTS, dataSourceConstants } from 'anteros-react-datasource';
-import { AnterosQueryBuilder, AnterosQueryBuilderData, AnterosFilterDSL } from 'anteros-react-querybuilder';
-import { autoBind, processErrorMessage, AnterosError } from 'anteros-react-core';
-import { AnterosModal, ModalActions } from 'anteros-react-containers';
-import { AnterosRow, AnterosCol } from 'anteros-react-layout';
-import { AnterosPagination } from 'anteros-react-navigation';
-import { AnterosAlert } from 'anteros-react-notification';
-import { AnterosDataTable } from 'anteros-react-table';
-import { AnterosButton } from 'anteros-react-buttons';
-import { AnterosTags } from 'anteros-react-label';
+import { AnterosRemoteDatasource, dataSourceEvents, DATASOURCE_EVENTS, dataSourceConstants } from '@anterostecnologia/anteros-react-datasource';
+import { AnterosQueryBuilder, AnterosQueryBuilderData, AnterosFilterDSL } from '@anterostecnologia/anteros-react-querybuilder';
+import { autoBind, processErrorMessage, AnterosError } from '@anterostecnologia/anteros-react-core';
+import { AnterosModal, ModalActions } from '@anterostecnologia/anteros-react-containers';
+import { AnterosRow, AnterosCol } from '@anterostecnologia/anteros-react-layout';
+import { AnterosPagination } from '@anterostecnologia/anteros-react-navigation';
+import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
+import { AnterosDataTable } from '@anterostecnologia/anteros-react-table';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
+import { AnterosTags } from '@anterostecnologia/anteros-react-label';
 
 const defaultValues = {
     openDataSourceFilter: true,

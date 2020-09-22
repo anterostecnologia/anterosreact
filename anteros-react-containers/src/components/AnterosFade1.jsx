@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import  { Transition } from 'react-transition-group';
-import {AnterosUtils} from 'anteros-react-core';
+import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 
 const tagPropType = PropTypes.oneOfType([
     PropTypes.func,

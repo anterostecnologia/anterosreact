@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AnterosUtils, If, Then, Else} from 'anteros-react-core';
+import {AnterosUtils, If, Then, Else} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
 import AnterosPortal from './AnterosPortal';
 import AnterosFade1 from './AnterosFade1';

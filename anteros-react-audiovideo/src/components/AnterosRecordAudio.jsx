@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import { AnterosButton } from 'anteros-react-buttons';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import { AnterosModal, AnterosDivider } from "anteros-react-containers";
 import { AnterosStatistic } from "anteros-react-dashboard";
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
 import { boundClass, AnterosSweetAlert } from "anteros-react-core";
 import AnterosAudioPlayer from './AnterosAudioPlayer';
-import { AnterosUtils } from 'anteros-react-core';
-import { buildGridClassNames, columnProps } from 'anteros-react-layout';
+import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
+import { buildGridClassNames, columnProps } from '@anterostecnologia/anteros-react-layout';
 import AnterosAudioSpectrum from './AnterosAudioSpectrum';
 import PropTypes from 'prop-types';
 import {
     AnterosLocalDatasource,
     AnterosRemoteDatasource,
     dataSourceEvents
-} from 'anteros-react-datasource';
+} from '@anterostecnologia/anteros-react-datasource';
 
 
 @boundClass

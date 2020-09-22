@@ -5,7 +5,7 @@ import { AnterosUtils } from "anteros-react-core";
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
 import PropTypes from 'prop-types';
-import { AnterosBaseInputControl } from 'anteros-react-containers';
+import { AnterosBaseInputControl } from '@anterostecnologia/anteros-react-containers';
 import AnterosFeedback from './AnterosFeedback';
 
 export default class AnterosEdit extends AnterosBaseInputControl {

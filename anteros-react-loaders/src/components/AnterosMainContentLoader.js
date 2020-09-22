@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import {AnterosCol, AnterosRow} from 'anteros-react-layout';
+import {AnterosCol, AnterosRow} from '@anterostecnologia/anteros-react-layout';
 import PropTypes from 'prop-types';
 
 import AnterosWidgetLoader from './AnterosWidgetLoader';

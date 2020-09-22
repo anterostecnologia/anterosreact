@@ -1,6 +1,6 @@
 import React from 'react';
 import {findDOMNode} from 'react-dom';
-import {autoBind} from 'anteros-react-core';
+import {autoBind} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
 
 

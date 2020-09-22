@@ -1,18 +1,18 @@
 import React from 'react';
-import { AnterosSweetAlert, AnterosError } from 'anteros-react-core';
+import { AnterosSweetAlert, AnterosError } from '@anterostecnologia/anteros-react-core';
 import {
   AnterosCard,
   HeaderActions,
   AnterosForm
-} from 'anteros-react-containers';
-import { AnterosAlert } from 'anteros-react-notification';
-import { AnterosButton } from 'anteros-react-buttons';
+} from '@anterostecnologia/anteros-react-containers';
+import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import { connect } from 'react-redux';
-import { processErrorMessage, processDetailErrorMessage } from 'anteros-react-core';
-import { dataSourceConstants } from 'anteros-react-datasource';
-import { autoBind } from 'anteros-react-core';
-import { AnterosBlockUi } from 'anteros-react-loaders';
-import { AnterosLoader } from 'anteros-react-loaders';
+import { processErrorMessage, processDetailErrorMessage } from '@anterostecnologia/anteros-react-core';
+import { dataSourceConstants } from '@anterostecnologia/anteros-react-datasource';
+import { autoBind } from '@anterostecnologia/anteros-react-core';
+import { AnterosBlockUi } from '@anterostecnologia/anteros-react-loaders';
+import { AnterosLoader } from '@anterostecnologia/anteros-react-loaders';
 
 const defaultValues = { messageSaving: 'Aguarde... salvando.', forceRefresh: true };
 

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React,{Component} from 'react';
-import {AnterosUtils} from 'anteros-react-core';
+import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 
 const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
 const ROOT = 'linear-progress';

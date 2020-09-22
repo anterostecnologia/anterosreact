@@ -2,7 +2,7 @@ import {
   Anteros,
   AnterosStringUtils,
   AnterosDateUtils
-} from 'anteros-react-core';
+} from '@anterostecnologia/anteros-react-core';
 
 export const Operator = {
   IS: 'IS',

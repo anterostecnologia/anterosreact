@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import lodash from 'lodash';
-import { autoBind, AnterosResizeDetector } from 'anteros-react-core';
+import { autoBind, AnterosResizeDetector } from '@anterostecnologia/anteros-react-core';
 
 const tabPrefix = 'tab-';
 const panelPrefix = 'panel-';

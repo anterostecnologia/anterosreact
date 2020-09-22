@@ -1,4 +1,4 @@
-import { AnterosJacksonParser } from 'anteros-react-core';
+import { AnterosJacksonParser } from '@anterostecnologia/anteros-react-core';
 
 export class AnterosQueryBuilderData {
   static getSaveFilterConfig(filter, version='v1') {

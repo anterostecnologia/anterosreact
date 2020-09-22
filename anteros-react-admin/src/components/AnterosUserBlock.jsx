@@ -4,9 +4,9 @@ import {
   AnterosAdvancedDropdown,
   AnterosAdvancedDropdownToggle,
   AnterosAdvancedDropdownMenu
-} from 'anteros-react-buttons';
+} from '@anterostecnologia/anteros-react-buttons';
 import AnterosUserMenu from './AnterosUserMenu';
-import {  AnterosImage } from 'anteros-react-image';
+import {  AnterosImage } from '@anterostecnologia/anteros-react-image';
 
 function isBase64(str) {
   try {
