@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import {AnterosUtils} from 'anteros-react-core';
+import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 
 export default class AnterosContainer extends Component {
     constructor(props){

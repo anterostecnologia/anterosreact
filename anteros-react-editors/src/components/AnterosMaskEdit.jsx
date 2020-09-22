@@ -6,7 +6,7 @@ import {AnterosUtils} from "anteros-react-core";
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import 'script-loader!jquery.inputmask/dist/jquery.inputmask.bundle.js';
 import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
-import {AnterosBaseInputControl} from 'anteros-react-containers';
+import {AnterosBaseInputControl} from '@anterostecnologia/anteros-react-containers';
 
 export default class AnterosMaskEdit extends AnterosBaseInputControl {
 

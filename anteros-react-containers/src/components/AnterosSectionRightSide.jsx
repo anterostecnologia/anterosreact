@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { autoBind } from 'anteros-react-core';
+import { autoBind } from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
 
 

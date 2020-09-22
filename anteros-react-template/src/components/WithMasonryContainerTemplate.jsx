@@ -1,33 +1,33 @@
 import React from 'react';
-import { autoBind } from 'anteros-react-core';
+import { autoBind } from '@anterostecnologia/anteros-react-core';
 import {
     AnterosRemoteDatasource,
     dataSourceEvents,
     DATASOURCE_EVENTS,
     dataSourceConstants
-} from 'anteros-react-datasource';
-import { AnterosSweetAlert, AnterosError } from 'anteros-react-core';
+} from '@anterostecnologia/anteros-react-datasource';
+import { AnterosSweetAlert, AnterosError } from '@anterostecnologia/anteros-react-core';
 import { connect } from 'react-redux';
-import { processErrorMessage } from 'anteros-react-core';
+import { processErrorMessage } from '@anterostecnologia/anteros-react-core';
 import {
     AnterosFilterDSL,
     AnterosQueryBuilderData
-} from 'anteros-react-querybuilder';
-import { AnterosButton } from 'anteros-react-buttons';
+} from '@anterostecnologia/anteros-react-querybuilder';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import {
     AnterosCard,
     HeaderActions,
     FooterActions
-} from 'anteros-react-containers';
-import { AnterosAlert } from 'anteros-react-notification';
-import { AnterosResizeDetector } from 'anteros-react-core';
-import { AnterosBlockUi } from 'anteros-react-loaders';
-import { AnterosLoader } from 'anteros-react-loaders';
-import { AnterosQueryBuilder } from 'anteros-react-querybuilder';
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
-import { AnterosLabel } from 'anteros-react-label';
-import { AnterosPagination } from 'anteros-react-navigation';
-import { AnterosMasonry } from 'anteros-react-masonry';
+} from '@anterostecnologia/anteros-react-containers';
+import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
+import { AnterosResizeDetector } from '@anterostecnologia/anteros-react-core';
+import { AnterosBlockUi } from '@anterostecnologia/anteros-react-loaders';
+import { AnterosLoader } from '@anterostecnologia/anteros-react-loaders';
+import { AnterosQueryBuilder } from '@anterostecnologia/anteros-react-querybuilder';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
+import { AnterosLabel } from '@anterostecnologia/anteros-react-label';
+import { AnterosPagination } from '@anterostecnologia/anteros-react-navigation';
+import { AnterosMasonry } from '@anterostecnologia/anteros-react-masonry';
 
 const defaultValues = {
     openDataSourceFilter: true,

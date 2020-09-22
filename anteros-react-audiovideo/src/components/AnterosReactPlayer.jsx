@@ -2,7 +2,7 @@ import React, { Component, isValidElement } from 'react'
 import PropTypes from 'prop-types'
 import loadScript from 'load-script'
 import merge from 'deepmerge'
-import {boundClass} from 'anteros-react-core';
+import {boundClass} from '@anterostecnologia/anteros-react-core';
 
 const SUPPORTED_PROPS = Object.keys(propTypes)
 const SEEK_ON_PLAY_EXPIRY = 5000

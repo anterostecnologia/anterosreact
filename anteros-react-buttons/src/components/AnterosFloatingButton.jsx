@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
 import AnterosDropdownMenu from './AnterosDropdownMenu';
-import { AnterosBadge, AnterosStatusMark } from 'anteros-react-label';
+import { AnterosBadge, AnterosStatusMark } from '@anterostecnologia/anteros-react-label';
 
 export class AnterosFloatingButton extends Component {
     constructor(props) {

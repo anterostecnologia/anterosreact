@@ -1,24 +1,24 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import lodash from 'lodash';
-import { AnterosUtils, AnterosSweetAlert } from 'anteros-react-core';
-import { buildGridClassNames, columnProps } from 'anteros-react-layout';
+import { AnterosUtils, AnterosSweetAlert } from '@anterostecnologia/anteros-react-core';
+import { buildGridClassNames, columnProps } from '@anterostecnologia/anteros-react-layout';
 import {
     AnterosLocalDatasource,
     AnterosRemoteDatasource,
     dataSourceEvents,
     dataSourceConstants
-} from 'anteros-react-datasource';
+} from '@anterostecnologia/anteros-react-datasource';
 import PropTypes from 'prop-types';
-import { AnterosButton } from 'anteros-react-buttons';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import {
     AnterosModal,
     AnterosPageControl,
     AnterosTab,
     PageHeaderActions
 } from 'anteros-react-containers';
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
-import { AnterosDropzone } from 'anteros-react-dropzone';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
+import { AnterosDropzone } from '@anterostecnologia/anteros-react-dropzone';
 import AnterosWebcam from './AnterosWebcam';
 import AnterosImageCropper from './AnterosImageCropper';
 

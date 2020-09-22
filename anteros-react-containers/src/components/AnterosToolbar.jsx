@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import {AnterosRow, AnterosCol} from 'anteros-react-layout';
+import {AnterosRow, AnterosCol} from '@anterostecnologia/anteros-react-layout';
 
 export default class AnterosToolbar extends Component {
     constructor(props){

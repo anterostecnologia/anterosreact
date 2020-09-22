@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { AnterosCard } from 'anteros-react-containers'
-import { AnterosRow, AnterosCol } from 'anteros-react-layout'
-import { AnterosText } from 'anteros-react-label'
+import { AnterosCard } from '@anterostecnologia/anteros-react-containers'
+import { AnterosRow, AnterosCol } from '@anterostecnologia/anteros-react-layout'
+import { AnterosText } from '@anterostecnologia/anteros-react-label'
 import PropTypes from 'prop-types'
-import { AnterosChart} from 'anteros-react-charts'
+import { AnterosChart} from '@anterostecnologia/anteros-react-charts'
 
 
   const options = {

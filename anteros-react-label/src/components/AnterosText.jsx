@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { AnterosUtils, AnterosStringMask, AnterosDateUtils, Anteros } from 'anteros-react-core';
+import { AnterosUtils, AnterosStringMask, AnterosDateUtils, Anteros } from '@anterostecnologia/anteros-react-core';
 
 
 /* MASK

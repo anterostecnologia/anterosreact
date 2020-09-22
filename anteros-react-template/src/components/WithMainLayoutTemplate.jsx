@@ -9,10 +9,10 @@ import {
   UserActions,
   ToolbarEnd,
   ToolbarCenter
-} from 'anteros-react-admin';
-import { AnterosNotificationContainer } from 'anteros-react-notification';
+} from '@anterostecnologia/anteros-react-admin';
+import { AnterosNotificationContainer } from '@anterostecnologia/anteros-react-notification';
 import { connect } from 'react-redux';
-import { autoBind, AnterosError } from 'anteros-react-core';
+import { autoBind, AnterosError } from '@anterostecnologia/anteros-react-core';
 import shallowCompare from 'react-addons-shallow-compare';
 
 const defaultProps = {

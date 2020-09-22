@@ -6,7 +6,7 @@ import {AnterosUtils} from "anteros-react-core";
 import {buildGridClassNames, columnProps} from "anteros-react-layout";
 import 'script-loader!jquery.maskedinput/src/jquery.maskedinput.js';
 import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
-import {AnterosBaseInputControl} from 'anteros-react-containers';
+import {AnterosBaseInputControl} from '@anterostecnologia/anteros-react-containers';
 
 export default class AnterosIpAddressEdit extends AnterosBaseInputControl {
 

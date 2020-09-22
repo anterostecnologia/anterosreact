@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import lodash from "lodash";
-import { loadScript } from 'anteros-react-core';
+import { loadScript } from '@anterostecnologia/anteros-react-core';
 import MarkerClustererPlus from "marker-clusterer-plus";
 
 

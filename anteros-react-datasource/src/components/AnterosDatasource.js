@@ -7,7 +7,7 @@ import {
     AnterosDatasourceError,
     Anteros,
     AnterosObjectUtils
-} from 'anteros-react-core';
+} from '@anterostecnologia/anteros-react-core';
 import axios from 'axios';
 import {
     cloneDeep,

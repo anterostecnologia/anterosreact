@@ -159,14 +159,14 @@ npm run build
 npm pack
 npm publish --access public
 cd ..
-cd anteros-react-image*
+cd anteros-react-image
 npm install
 npm run dev
 npm run build
 npm pack
 npm publish --access public
 cd ..
-cd anteros-react-menu*
+cd anteros-react-menu
 npm install
 npm run dev
 npm run build

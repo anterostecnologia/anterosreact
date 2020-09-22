@@ -1,5 +1,5 @@
 import React from 'react';
-import {AnterosUtils} from 'anteros-react-core';
+import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/TransitionGroup';
 

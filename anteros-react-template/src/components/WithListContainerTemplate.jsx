@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { autoBind, processErrorMessage, AnterosResizeDetector, AnterosSweetAlert, AnterosJacksonParser, AnterosError } from 'anteros-react-core';
-import { AnterosQueryBuilderData, AnterosQueryBuilder, AnterosFilterDSL } from 'anteros-react-querybuilder';
-import { AnterosRemoteDatasource, DATASOURCE_EVENTS, dataSourceEvents } from 'anteros-react-datasource';
-import { AnterosCard, HeaderActions, FooterActions } from 'anteros-react-containers';
-import { AnterosBlockUi, AnterosLoader } from 'anteros-react-loaders';
-import { AnterosCol, AnterosRow } from 'anteros-react-layout';
-import { AnterosPagination } from 'anteros-react-navigation';
-import { AnterosAlert } from 'anteros-react-notification';
-import { AnterosMasonry } from 'anteros-react-masonry';
-import { AnterosButton } from 'anteros-react-buttons';
-import { AnterosLabel } from 'anteros-react-label';
+import { autoBind, processErrorMessage, AnterosResizeDetector, AnterosSweetAlert, AnterosJacksonParser, AnterosError } from '@anterostecnologia/anteros-react-core';
+import { AnterosQueryBuilderData, AnterosQueryBuilder, AnterosFilterDSL } from '@anterostecnologia/anteros-react-querybuilder';
+import { AnterosRemoteDatasource, DATASOURCE_EVENTS, dataSourceEvents } from '@anterostecnologia/anteros-react-datasource';
+import { AnterosCard, HeaderActions, FooterActions } from '@anterostecnologia/anteros-react-containers';
+import { AnterosBlockUi, AnterosLoader } from '@anterostecnologia/anteros-react-loaders';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
+import { AnterosPagination } from '@anterostecnologia/anteros-react-navigation';
+import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
+import { AnterosMasonry } from '@anterostecnologia/anteros-react-masonry';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
+import { AnterosLabel } from '@anterostecnologia/anteros-react-label';
 
 export default function WithListContainerTemplate(loadingProps, ViewItem) {
     const mapStateToProps = state => {

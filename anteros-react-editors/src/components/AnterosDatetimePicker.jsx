@@ -2,7 +2,7 @@ import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
-import { AnterosCalendar } from 'anteros-react-calendar';
+import { AnterosCalendar } from '@anterostecnologia/anteros-react-calendar';
 import Fit from 'react-fit';
 import { DayInput, MonthInput, MonthSelect, YearInput } from './AnterosDatePicker';
 import { Hour12Input, Hour24Input, MinuteInput, SecondInput, AmPm } from './AnterosTimePicker';
@@ -20,11 +20,11 @@ import {
     getISOLocalDate,
     getISOLocalDateTime,
 } from '@wojtekmaj/date-utils';
-import { AnterosClock } from 'anteros-react-calendar';
+import { AnterosClock } from '@anterostecnologia/anteros-react-calendar';
 import getUserLocale from 'get-user-locale';
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosUtils, AnterosDateUtils, autoBind } from 'anteros-react-core';
+import { AnterosUtils, AnterosDateUtils, autoBind } from '@anterostecnologia/anteros-react-core';
 
 const allViews = ['hour', 'minute', 'second'];
 const baseClassName = 'react-datetime-picker';

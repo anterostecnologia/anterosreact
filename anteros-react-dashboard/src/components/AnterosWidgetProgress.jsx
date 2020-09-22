@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { AnterosCard } from 'anteros-react-containers'
-import { AnterosRow, AnterosCol } from 'anteros-react-layout'
-import { AnterosIcon } from 'anteros-react-image'
-import { AnterosText } from 'anteros-react-label'
-import { AnterosProgressBar } from 'anteros-react-misc'
+import { AnterosCard } from '@anterostecnologia/anteros-react-containers'
+import { AnterosRow, AnterosCol } from '@anterostecnologia/anteros-react-layout'
+import { AnterosIcon } from '@anterostecnologia/anteros-react-image'
+import { AnterosText } from '@anterostecnologia/anteros-react-label'
+import { AnterosProgressBar } from '@anterostecnologia/anteros-react-misc'
 import PropTypes from 'prop-types'
 
 

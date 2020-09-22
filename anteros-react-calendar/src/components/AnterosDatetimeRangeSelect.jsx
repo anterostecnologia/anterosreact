@@ -3,9 +3,9 @@ import Fragment from 'react-dot-fragment';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
-import { AnterosIcon } from 'anteros-react-image';
-import { AnterosInputGroup, AnterosInputGroupAddOn } from 'anteros-react-containers';
-import { AnterosLabel } from 'anteros-react-label';
+import { AnterosIcon } from '@anterostecnologia/anteros-react-image';
+import { AnterosInputGroup, AnterosInputGroupAddOn } from '@anterostecnologia/anteros-react-containers';
+import { AnterosLabel } from '@anterostecnologia/anteros-react-label';
 export const mobileBreakPoint = 680;
 import { findDOMNode } from 'react-dom';
 

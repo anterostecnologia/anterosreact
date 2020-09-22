@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
 import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource } from 'anteros-react-datasource';
+import { AnterosLocalDatasource, AnterosRemoteDatasource } from '@anterostecnologia/anteros-react-datasource';
 
 export default class AnterosInputTag extends Component {
     constructor(props) {

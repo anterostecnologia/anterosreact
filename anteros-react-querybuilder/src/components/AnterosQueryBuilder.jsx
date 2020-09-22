@@ -3,12 +3,12 @@ import moment from 'moment'
 import PropTypes from "prop-types";
 
 import { AnterosError, autoBind } from "anteros-react-core";
-import { AnterosEdit, AnterosCheckbox } from 'anteros-react-editors';
-import { AnterosFormGroup } from 'anteros-react-containers';
-import { AnterosCalendar } from 'anteros-react-calendar';
-import { AnterosButton } from 'anteros-react-buttons';
-import { AnterosText } from 'anteros-react-label';
-import { AnterosList } from 'anteros-react-list';
+import { AnterosEdit, AnterosCheckbox } from '@anterostecnologia/anteros-react-editors';
+import { AnterosFormGroup } from '@anterostecnologia/anteros-react-containers';
+import { AnterosCalendar } from '@anterostecnologia/anteros-react-calendar';
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
+import { AnterosText } from '@anterostecnologia/anteros-react-label';
+import { AnterosList } from '@anterostecnologia/anteros-react-list';
 import shallowCompare from 'react-addons-shallow-compare';
 import { AnterosAdvancedFilter, FilterField, FilterFieldValue, FilterFields } from './AnterosAdvancedFilter';
 

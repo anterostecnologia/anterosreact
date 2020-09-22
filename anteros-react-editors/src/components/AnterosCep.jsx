@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {autoBind} from 'anteros-react-core';
+import {autoBind} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
 import AnterosMaskEdit  from './AnterosMaskEdit';
 import {
   AnterosRemoteDatasource,
   AnterosLocalDatasource
-} from 'anteros-react-datasource';
-import { buildGridClassNames, columnProps } from 'anteros-react-layout';
+} from '@anterostecnologia/anteros-react-datasource';
+import { buildGridClassNames, columnProps } from '@anterostecnologia/anteros-react-layout';
 
 export default class AnterosCep extends Component {
   constructor(props) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { AnterosPopperManager } from 'anteros-react-notification';
-import {AnterosUtils} from 'anteros-react-core';
+import { AnterosPopperManager } from '@anterostecnologia/anteros-react-notification';
+import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 
 
 const keyCodes = {

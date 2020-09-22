@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { AnterosUtils } from 'anteros-react-core';
+import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 import { Link } from 'react-router-dom';
-import {AnterosScrollbars} from "anteros-react-containers";
+import {AnterosScrollbars} from "@anterostecnologia/anteros-react-containers";
 
 const $ = window.$;
 

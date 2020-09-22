@@ -5,7 +5,7 @@ import {CSSTransitionGroup} from "react-transition-group";
 import { DndProvider, DropTarget, DragSource } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import windowSize from "react-window-size";
-import {autoBind} from 'anteros-react-core';
+import {autoBind} from '@anterostecnologia/anteros-react-core';
 
 
 class AnterosDashboard extends Component {
