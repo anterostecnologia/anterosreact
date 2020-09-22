@@ -5,7 +5,7 @@ import {
   AnterosMenu,
   AnterosNavigatorLink,
   AnterosNavigatorLinkDropdown
-} from "anteros-react-menu";
+} from "@anterostecnologia/anteros-react-menu";
 
 export default class AnterosHeader extends Component {
   constructor(props) {

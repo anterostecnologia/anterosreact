@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment'
 import PropTypes from "prop-types";
 
-import { AnterosError, autoBind } from "anteros-react-core";
+import { AnterosError, autoBind } from "@anterostecnologia/anteros-react-core";
 import { AnterosEdit, AnterosCheckbox } from '@anterostecnologia/anteros-react-editors';
 import { AnterosFormGroup } from '@anterostecnologia/anteros-react-containers';
 import { AnterosCalendar } from '@anterostecnologia/anteros-react-calendar';

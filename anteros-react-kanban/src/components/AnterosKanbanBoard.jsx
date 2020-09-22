@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import { DragDropContext, DragLayer, DropTarget, DragSource } from 'react-dnd';
 import HTML5Backend, { getEmptyImage } from 'react-dnd-html5-backend';
-import { AnterosDatasource, AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { AnterosDatasource, AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import AnterosKanbanCardsContainer from './AnterosKanbanCardsContainer';
 import AnterosKanbanCustomDragLayer from './AnterosKanbanCustomDragLayer';
 import PropTypes from 'prop-types';

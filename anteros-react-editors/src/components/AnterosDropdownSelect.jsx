@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { AnterosClickOutside } from "anteros-react-core";
+import { AnterosClickOutside } from "@anterostecnologia/anteros-react-core";
 
 const LIB_NAME = 'anteros-dropdown-select';
 

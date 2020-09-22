@@ -26,8 +26,8 @@ import {
 } from '@wojtekmaj/date-utils';
 import getUserLocale from 'get-user-locale';
 import updateInputWidth, { getFontShorthand } from 'update-input-width';
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 
 const defaultMinDate = new Date(-8.64e15);

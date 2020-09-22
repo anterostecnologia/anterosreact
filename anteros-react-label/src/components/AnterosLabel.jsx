@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {AnterosUtils} from "anteros-react-core";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
 import PropTypes from 'prop-types';
 
 export default class AnterosLabel extends Component {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
-import { AnterosError, AnterosUtils } from "anteros-react-core";
+import { AnterosError, AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
-import { AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { AnterosRemoteDatasource, AnterosLocalDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 
 const DATASOURCE_EVENTS = [dataSourceEvents.AFTER_CLOSE,
 dataSourceEvents.AFTER_CANCEL,

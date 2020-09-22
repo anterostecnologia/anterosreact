@@ -5,7 +5,7 @@ import mergeClassNames from 'merge-class-names';
 import { AnterosCalendar, AnterosClock } from '@anterostecnologia/anteros-react-calendar';
 import Fit from 'react-fit';
 import { DateTimeInput } from './AnterosDatetimePicker';
-import {  columnProps } from "anteros-react-layout";
+import {  columnProps } from "@anterostecnologia/anteros-react-layout";
 import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 /**
  * Calls a function, if it's defined, with specified arguments

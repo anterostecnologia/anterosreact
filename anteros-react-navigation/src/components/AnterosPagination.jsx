@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { AnterosError } from "anteros-react-core";
-import { AnterosDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { AnterosError } from "@anterostecnologia/anteros-react-core";
+import { AnterosDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 
 const BASE_SHIFT = 0;
 const TITLE_SHIFT = 1;

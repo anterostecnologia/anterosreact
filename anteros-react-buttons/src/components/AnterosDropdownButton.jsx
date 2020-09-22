@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AnterosButton from "./AnterosButton";
 import lodash from "lodash";
 import PropTypes from "prop-types";
-import { AnterosClickOutside } from "anteros-react-core";
+import { AnterosClickOutside } from "@anterostecnologia/anteros-react-core";
 
 export default class AnterosDropdownButton extends Component {
     constructor(props) {

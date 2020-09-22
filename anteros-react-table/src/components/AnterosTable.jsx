@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import lodash from 'lodash';
-import { AnterosError, AnterosUtils, AnterosDateUtils, AnterosStringMask } from "anteros-react-core";
+import { AnterosError, AnterosUtils, AnterosDateUtils, AnterosStringMask } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
 
 export default class AnterosTable extends Component {

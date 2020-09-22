@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import lodash from 'lodash';
-import {buildGridClassNames, columnProps} from "anteros-react-layout";
-import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
-import {AnterosError, AnterosUtils} from "anteros-react-core";
+import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
+import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "@anterostecnologia/anteros-react-datasource";
+import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
 
 const trim = str => str.replace(/^\s+|\s+$/g, '');
 

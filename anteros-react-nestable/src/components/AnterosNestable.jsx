@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AnterosUtils } from "anteros-react-core";
+import { AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import update from 'react-addons-update';
 import PropTypes from 'prop-types';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'script-loader!jquery-asSpinner/dist/jquery-asSpinner.min.js'
 import lodash from "lodash";
-import { If, Then, Else, AnterosUtils } from "anteros-react-core";
+import { If, Then, Else, AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
 
 export default class AnterosSpinner extends Component {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
-import { If, Then, AnterosUtils } from "anteros-react-core";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import { If, Then, AnterosUtils } from "@anterostecnologia/anteros-react-core";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
 import PropTypes from 'prop-types';
 
 

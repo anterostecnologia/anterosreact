@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosJacksonParser,AnterosStringUtils,AnterosObjectUtils, AnterosUtils } from "anteros-react-core";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
+import { AnterosJacksonParser,AnterosStringUtils,AnterosObjectUtils, AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {boundClass} from "anteros-react-core";
+import {boundClass} from "@anterostecnologia/anteros-react-core";
 
 @boundClass
 class AnterosAudioSpectrum extends Component {

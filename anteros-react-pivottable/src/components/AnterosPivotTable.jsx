@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import lodash from "lodash";
 import PropTypes from 'prop-types';
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import 'script-loader!./AnterosPivot';
 import 'script-loader!./AnterosPivotGChart';
 

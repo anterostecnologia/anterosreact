@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import lodash from "lodash";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
-import { AnterosUtils } from "anteros-react-core";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
+import { AnterosUtils } from "@anterostecnologia/anteros-react-core";
 
 
 Number.parseFloat = parseFloat;

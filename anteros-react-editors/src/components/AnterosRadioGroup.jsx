@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {AnterosError, AnterosUtils} from "anteros-react-core";
-import {buildGridClassNames, columnProps} from "anteros-react-layout";
+import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import PropTypes from 'prop-types';
 import {dataSourceEvents} from '@anterostecnologia/anteros-react-datasource';
 

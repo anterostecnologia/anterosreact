@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import lodash from "lodash";
-import { AnterosUtils} from "anteros-react-core";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import { AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
 
 
 export default class AnterosBoxInfo extends Component {

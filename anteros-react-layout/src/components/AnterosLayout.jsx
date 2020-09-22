@@ -1,5 +1,5 @@
 // import lodash from 'lodash'; import React, {Component} from 'react'; import
-// PropTypes from 'prop-types'; import {AnterosUtils} from "anteros-react-core";
+// PropTypes from 'prop-types'; import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
 // const colWidths = ['xs', 'sm', 'md', 'lg', 'xl']; const stringOrNumberProp =
 // PropTypes.oneOfType([PropTypes.number, PropTypes.string]); export const
 // columnProps = PropTypes.oneOfType([     PropTypes.bool, PropTypes.number,
@@ -121,7 +121,7 @@
 import lodash from 'lodash';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {AnterosUtils} from "anteros-react-core";
+import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
 
 const colWidths = ['xs', 'sm', 'md', 'lg', 'xl'];
 const stringOrNumberProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);

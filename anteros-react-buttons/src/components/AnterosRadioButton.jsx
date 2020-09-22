@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import lodash from 'lodash';
-import {AnterosUtils} from "anteros-react-core";
+import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
 
 export class AnterosRadioButton extends Component {
     constructor(props) {

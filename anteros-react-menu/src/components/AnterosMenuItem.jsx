@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { AnterosError } from "anteros-react-core";
+import { AnterosError } from "@anterostecnologia/anteros-react-core";
 
 
 export default class AnterosMenuItem extends Component {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import 'script-loader!bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import PropTypes from 'prop-types';
 
 export default class AnterosColorPicker extends React.Component {

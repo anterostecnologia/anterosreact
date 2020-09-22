@@ -5,7 +5,7 @@ import mergeClassNames from 'merge-class-names';
 import {AnterosCalendar} from '@anterostecnologia/anteros-react-calendar';
 import Fit from 'react-fit';
 import { DateInput } from './AnterosDatePicker';
-import { columnProps } from "anteros-react-layout";
+import { columnProps } from "@anterostecnologia/anteros-react-layout";
 import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 const baseClassName = 'react-daterange-picker';
 const outsideActionEvents = ['mousedown', 'focusin', 'touchstart'];

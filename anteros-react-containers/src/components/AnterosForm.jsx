@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { If, Then, AnterosError } from "anteros-react-core";
+import { If, Then, AnterosError } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
 import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
 import { AnterosButton, AnterosDropdownButton } from '@anterostecnologia/anteros-react-buttons';
 
 export class AnterosBaseInputControl extends React.Component {

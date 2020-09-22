@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { AnterosScrollbars } from "anteros-react-containers";
-import { AnterosUtils } from "anteros-react-core";
+import { AnterosScrollbars } from "@anterostecnologia/anteros-react-containers";
+import { AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import AnterosSidebarLayout from "./AnterosSidebarLayout";
 import {
   AnterosSidebarLoader,
   AnterosHeaderLoader
-} from "anteros-react-loaders";
+} from "@anterostecnologia/anteros-react-loaders";
 const $ = window.$;
 
 export default class AnterosMainLayout extends Component {

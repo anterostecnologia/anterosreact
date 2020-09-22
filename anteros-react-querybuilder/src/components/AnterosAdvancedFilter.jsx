@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import uniqueId from "uuid/v4";
 import lodash from "lodash";
 
-import { AnterosCheckbox, AnterosCombobox, AnterosComboboxOption, AnterosDatePicker, AnterosDatetimePicker, AnterosDateRangePicker, AnterosEdit, AnterosTimePicker } from "anteros-react-editors";
-import { AnterosButton, AnterosRadioButton, AnterosRadioButtonItem } from "anteros-react-buttons";
-import { AnterosError, AnterosObjectUtils, AnterosUtils, If, Then } from "anteros-react-core";
-import { autoBind, AnterosStringUtils } from "anteros-react-core";
-import { AnterosCol, AnterosRow } from "anteros-react-layout";
-import { AnterosLabel } from "anteros-react-label";
-import { AnterosList } from "anteros-react-list";
+import { AnterosCheckbox, AnterosCombobox, AnterosComboboxOption, AnterosDatePicker, AnterosDatetimePicker, AnterosDateRangePicker, AnterosEdit, AnterosTimePicker } from "@anterostecnologia/anteros-react-editors";
+import { AnterosButton, AnterosRadioButton, AnterosRadioButtonItem } from "@anterostecnologia/anteros-react-buttons";
+import { AnterosError, AnterosObjectUtils, AnterosUtils, If, Then } from "@anterostecnologia/anteros-react-core";
+import { autoBind, AnterosStringUtils } from "@anterostecnologia/anteros-react-core";
+import { AnterosCol, AnterosRow } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
+import { AnterosList } from "@anterostecnologia/anteros-react-list";
 
 class AnterosAdvancedFilter extends Component {
 

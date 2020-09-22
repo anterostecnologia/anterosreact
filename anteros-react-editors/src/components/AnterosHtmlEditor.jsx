@@ -18,9 +18,9 @@ const DIRECT_PASSTHROUGH_EVENTS = [
 const PSEUDO_HIDDEN = { position: 'absolute', left: -200, top: -200, height: 0 };
 
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource"
+import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource"
 
 function isBase64(str) {
     try {

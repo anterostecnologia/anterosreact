@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {AnterosDateUtils} from "anteros-react-core";
+import {AnterosDateUtils} from "@anterostecnologia/anteros-react-core";
 
 export default class AnterosIdleTimer extends Component {
 

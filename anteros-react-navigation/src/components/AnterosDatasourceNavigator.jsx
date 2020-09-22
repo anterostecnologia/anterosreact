@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {AnterosButton, AnterosButtonGroup} from "anteros-react-buttons";
-import { AnterosEdit } from "anteros-react-editors";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import {AnterosButton, AnterosButtonGroup} from "@anterostecnologia/anteros-react-buttons";
+import { AnterosEdit } from "@anterostecnologia/anteros-react-editors";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import PropTypes from 'prop-types';
 
 

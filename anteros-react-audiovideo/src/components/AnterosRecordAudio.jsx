@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
-import { AnterosModal, AnterosDivider } from "anteros-react-containers";
-import { AnterosStatistic } from "anteros-react-dashboard";
+import { AnterosModal, AnterosDivider } from "@anterostecnologia/anteros-react-containers";
+import { AnterosStatistic } from "@anterostecnologia/anteros-react-dashboard";
 import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
-import { boundClass, AnterosSweetAlert } from "anteros-react-core";
+import { boundClass, AnterosSweetAlert } from "@anterostecnologia/anteros-react-core";
 import AnterosAudioPlayer from './AnterosAudioPlayer';
 import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 import { buildGridClassNames, columnProps } from '@anterostecnologia/anteros-react-layout';

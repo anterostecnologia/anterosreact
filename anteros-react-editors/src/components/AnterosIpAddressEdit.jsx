@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {AnterosError} from "anteros-react-core";
+import {AnterosError} from "@anterostecnologia/anteros-react-core";
 import lodash from "lodash";
-import {AnterosUtils} from "anteros-react-core";
-import {buildGridClassNames, columnProps} from "anteros-react-layout";
+import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import 'script-loader!jquery.maskedinput/src/jquery.maskedinput.js';
-import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
+import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "@anterostecnologia/anteros-react-datasource";
 import {AnterosBaseInputControl} from '@anterostecnologia/anteros-react-containers';
 
 export default class AnterosIpAddressEdit extends AnterosBaseInputControl {

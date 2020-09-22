@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import './AnterosImage.css';
-import { If, Then, Else, AnterosUtils } from "anteros-react-core";
+import { If, Then, Else, AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
 
 

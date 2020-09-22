@@ -5,15 +5,15 @@ import {
   AnterosAdvancedDropdown,
   AnterosAdvancedDropdownMenu,
   AnterosAdvancedDropdownToggle
-} from "anteros-react-buttons";
-import { AnterosText } from "anteros-react-label";
+} from "@anterostecnologia/anteros-react-buttons";
+import { AnterosText } from "@anterostecnologia/anteros-react-label";
 import AnterosMediaQuery from "./AnterosMediaQuery";
-import { AnterosToolbar, AnterosToolbarGroup } from "anteros-react-containers";
+import { AnterosToolbar, AnterosToolbarGroup } from "@anterostecnologia/anteros-react-containers";
 import { Link } from "react-router-dom";
-import { AnterosInputSearch } from "anteros-react-querybuilder";
-import { AnterosImage } from "anteros-react-image";
+import { AnterosInputSearch } from "@anterostecnologia/anteros-react-querybuilder";
+import { AnterosImage } from "@anterostecnologia/anteros-react-image";
 import AnterosUserMenu from "./AnterosUserMenu";
-import { autoBind } from "anteros-react-core";
+import { autoBind } from "@anterostecnologia/anteros-react-core";
 
 function isBase64(str) {
   try {

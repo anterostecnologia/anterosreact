@@ -21,13 +21,13 @@ import {
 	AnterosDateUtils,
 	Anteros,
 	AnterosStringMask
-} from "anteros-react-core";
+} from "@anterostecnologia/anteros-react-core";
 import {
 	AnterosDatasource,
 	AnterosRemoteDatasource,
 	AnterosLocalDatasource,
 	dataSourceEvents
-} from "anteros-react-datasource";
+} from "@anterostecnologia/anteros-react-datasource";
 import PropTypes from "prop-types";
 const uuidv4 = require('uuid/v4');
 

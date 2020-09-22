@@ -12,8 +12,8 @@ import {
 } from '@wojtekmaj/date-utils';
 import updateInputWidth, { getFontShorthand } from 'update-input-width';
 import getUserLocale from 'get-user-locale';
-import {AnterosClock} from "anteros-react-calendar";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import {AnterosClock} from "@anterostecnologia/anteros-react-calendar";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import { AnterosDateUtils, autoBind } from '@anterostecnologia/anteros-react-core';
 
 

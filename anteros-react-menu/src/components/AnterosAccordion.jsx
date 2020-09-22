@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AnterosError } from "anteros-react-core";
+import { AnterosError } from "@anterostecnologia/anteros-react-core";
 import PropTypes from 'prop-types';
 
 export default class AnterosAccordion extends Component {

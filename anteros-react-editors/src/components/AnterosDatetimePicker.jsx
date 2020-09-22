@@ -22,8 +22,8 @@ import {
 } from '@wojtekmaj/date-utils';
 import { AnterosClock } from '@anterostecnologia/anteros-react-calendar';
 import getUserLocale from 'get-user-locale';
-import { buildGridClassNames, columnProps } from "anteros-react-layout";
-import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "anteros-react-datasource";
+import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
+import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import { AnterosUtils, AnterosDateUtils, autoBind } from '@anterostecnologia/anteros-react-core';
 
 const allViews = ['hour', 'minute', 'second'];

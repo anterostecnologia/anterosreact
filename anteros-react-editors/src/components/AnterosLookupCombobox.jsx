@@ -3,9 +3,9 @@ import {
 	AnterosLocalDatasource,
 	AnterosRemoteDatasource,
 	dataSourceEvents
-} from "anteros-react-datasource";
+} from "@anterostecnologia/anteros-react-datasource";
 import PropTypes from "prop-types";
-import { AnterosError } from "anteros-react-core";
+import { AnterosError } from "@anterostecnologia/anteros-react-core";
 
 export default class AnterosLookupCombobox extends AnterosCombobox {
 	constructor(props) {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import lodash from "lodash";
-import { AnterosError } from "anteros-react-core";
+import { AnterosError } from "@anterostecnologia/anteros-react-core";
 import PropTypes from "prop-types";
 
 export default class AnterosPageControl extends Component {

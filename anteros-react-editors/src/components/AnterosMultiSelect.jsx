@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import lodash from 'lodash'
-import {buildGridClassNames, columnProps} from "anteros-react-layout";
-import {AnterosError, AnterosUtils} from "anteros-react-core";
-import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "anteros-react-datasource";
+import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
+import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
+import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "@anterostecnologia/anteros-react-datasource";
 var multi = require('./AnterosMultiSelect.js');
 
 var trigger_event = function( type, el ) {
