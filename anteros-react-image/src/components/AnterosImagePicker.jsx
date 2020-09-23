@@ -16,7 +16,7 @@ import {
     AnterosPageControl,
     AnterosTab,
     PageHeaderActions
-} from 'anteros-react-containers';
+} from '@anterostecnologia/anteros-react-containers';
 import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
 import { AnterosDropzone } from '@anterostecnologia/anteros-react-dropzone';
 import AnterosWebcam from './AnterosWebcam';
