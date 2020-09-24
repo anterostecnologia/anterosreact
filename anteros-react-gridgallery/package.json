@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-gridgallery",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Anteros components for React - Grid gallery",
-  "main": "lib/anteros-react-gridgallery.js",
+  "main": "lib/@anterostecnologia/anteros-react-gridgallery.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

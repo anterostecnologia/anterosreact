@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-audiovideo",
-  "version": "2.0.1",
+  "version": "2.0.12",
   "description": "Anteros components for React - Audio/video",
-  "main": "lib/anteros-react-audiovideo.js",
+  "main": "lib/@anterostecnologia/anteros-react-audiovideo.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

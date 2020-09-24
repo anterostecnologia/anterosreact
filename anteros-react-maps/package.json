@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-maps",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Anteros components for React - Maps",
-  "main": "lib/anteros-react-maps.js",
+  "main": "lib/@anterostecnologia/anteros-react-maps.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

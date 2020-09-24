@@ -1,45 +1,45 @@
-# cd anteros-react-core
-# npm install
-# npm run dev
-# npm run build
-# npm pack
-# npm publish --access public
-# cd ..
-# cd anteros-react-collections
-# npm install
-# npm run dev
-# npm run build
-# npm pack
-# npm publish --access public
-# cd ..
-#cd anteros-react-dropzone
-# npm install
-# npm run dev
-# npm run build
-# npm pack
-# npm publish --access public
-# cd ..
-# cd anteros-react-oauth2
-# npm install
-# npm run dev
-# npm run build
-# npm pack
-# npm publish --access public
-# cd ..
-# cd anteros-react-theme
-# npm install
-# npm run dev
-# npm run build
-# npm pack
-# npm publish --access public
-# cd ..
-# cd anteros-react-designeditor
-# npm install
-# npm run dev
-# npm run build
-# npm pack
-# npm publish --access public
-# cd ..
+cd anteros-react-core
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
+cd anteros-react-collections
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
+cd anteros-react-dropzone
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
+cd anteros-react-oauth2
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
+cd anteros-react-theme
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
+cd anteros-react-designeditor
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
 cd anteros-react-charts
 npm install
 npm run dev
@@ -230,6 +230,13 @@ npm pack
 npm publish --access public
 cd ..
 cd anteros-react-admin
+npm install
+npm run dev
+npm run build
+npm pack
+npm publish --access public
+cd ..
+cd anteros-react-template
 npm install
 npm run dev
 npm run build

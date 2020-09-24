@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-dropzone",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Anteros components for React - Dropzone",
-  "main": "lib/anteros-react-dropzone.js",
+  "main": "lib/@anterostecnologia/anteros-react-dropzone.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

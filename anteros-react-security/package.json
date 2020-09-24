@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-security",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Anteros components for React - Security",
-  "main": "lib/anteros-react-security.js",
+  "main": "lib/@anterostecnologia/anteros-react-security.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

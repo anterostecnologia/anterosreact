@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-dashboard",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Anteros components for React - Dashboard",
-  "main": "lib/anteros-react-dashboard.js",
+  "main": "lib/@anterostecnologia/anteros-react-dashboard.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

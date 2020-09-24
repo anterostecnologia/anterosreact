@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-layout",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "Anteros components for React - Layout",
-  "main": "lib/anteros-react-layout.js",
+  "main": "lib/@anterostecnologia/anteros-react-layout.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

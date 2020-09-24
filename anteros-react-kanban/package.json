@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-kanban",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Anteros components for React - Kanban",
-  "main": "lib/anteros-react-kanban.js",
+  "main": "lib/@anterostecnologia/anteros-react-kanban.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",

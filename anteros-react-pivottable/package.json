@@ -1,8 +1,8 @@
 {
   "name": "@anterostecnologia/anteros-react-pivottable",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Anteros components for React - Pivot table",
-  "main": "lib/anteros-react-pivottable.js",
+  "main": "lib/@anterostecnologia/anteros-react-pivottable.js",
   "scripts": {
     "build": "webpack --progress --colors --env build",
     "dev": "webpack --progress --colors --env dev",
