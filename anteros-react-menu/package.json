@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-menu",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Anteros components for React - Menu",
   "main": "lib/anteros-react-menu.js",
   "scripts": {
@@ -18,9 +18,9 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "anteros-react-containers": "^1.0.9",
+    "@anterostecnologia/anteros-react-containers": "^2.0.9",
     "@anterostecnologia/anteros-react-core": "^2.0.7",
-    "@anterostecnologia/anteros-react-image": "^2.0.6",
+    "@anterostecnologia/anteros-react-image": "^2.0.7",
     "@anterostecnologia/anteros-react-label": "^2.0.5",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",

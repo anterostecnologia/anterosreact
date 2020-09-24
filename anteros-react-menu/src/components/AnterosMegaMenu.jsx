@@ -4,7 +4,7 @@ import { autoBind, AnterosClickOutside } from '@anterostecnologia/anteros-react-
 import { AnterosText } from '@anterostecnologia/anteros-react-label';
 import { AnterosIcon } from '@anterostecnologia/anteros-react-image';
 import lodash from 'lodash';
-import { AnterosScrollbars } from 'anteros-react-containers';
+import { AnterosScrollbars } from '@anterostecnologia/anteros-react-containers';
 
 export class AnterosMegaMenu extends Component {
   constructor(props) {
