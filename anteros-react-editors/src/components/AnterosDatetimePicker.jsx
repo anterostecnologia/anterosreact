@@ -1385,6 +1385,7 @@ export default class AnterosDatetimePicker extends Component {
             readOnly = (this.props.dataSource.getState() === 'dsBrowse');
         }
         let classNameAddOn = AnterosUtils.buildClassNames("input-group-addon",
+            (disabled || readOnly ? "disabled" : ""),
             (this.props.primary || this.props.fullPrimary ? "btn btn-primary" : ""),
             (this.props.success || this.props.fullSucces ? "btn btn-success" : ""),
             (this.props.info || this.props.fullInfo ? "btn btn-info" : ""),
@@ -1403,7 +1404,7 @@ export default class AnterosDatetimePicker extends Component {
             (this.props.fullDefault ? "" : ""));
 
         let style = this.props.style;
-        if (disabled) {
+        if (disabled || readOnly) {
             style = {
                 ...style, backgroundColor: '#e9ecef !important',
                 opacity: 1
@@ -1419,7 +1420,7 @@ export default class AnterosDatetimePicker extends Component {
                     className={`${baseClassName}__inputGroup`}
                     classNameInput={classNameInput}
                     style={style}
-                    disabled={disabled}
+                    disabled={disabled || readOnly}
                     // format={format}
                     isWidgetOpen={isCalendarOpen || isClockOpen}
                     locale={locale}
@@ -1437,7 +1438,7 @@ export default class AnterosDatetimePicker extends Component {
                     <button
                         aria-label={clearAriaLabel}
                         className={`${baseClassName}__clear-button ${baseClassName}__button`}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
                         onClick={this.clear}
                         onFocus={this.stopPropagation}
                         type="button"
@@ -1448,7 +1449,7 @@ export default class AnterosDatetimePicker extends Component {
                 {calendarIcon !== null && !disableCalendar && (
                     <div className={classNameAddOn} onBlur={this.resetValue}
                         onClick={this.toggleCalendar}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
                         onFocus={this.stopPropagation}
                         style={{ margin: 0, height: '38px', width: '38px' }}>
                         <span><i className={icon} /><img alt="" src={this.props.image} /></span></div>
@@ -1543,13 +1544,18 @@ export default class AnterosDatetimePicker extends Component {
             width = "";
         }
 
+        let readOnly = this.props.readOnly;
+        if (this.props.dataSource && !readOnly) {
+            readOnly = (this.props.dataSource.getState() === 'dsBrowse');
+        }
+
         return (
             <div className={className} onBlur={this.onBlur}>
                 <div
                     className={mergeClassNames(
                         baseClassName,
                         `${baseClassName}--${isCalendarOpen || isClockOpen ? 'open' : 'closed'}`,
-                        `${baseClassName}--${disabled ? 'disabled' : 'enabled'}`,
+                        `${baseClassName}--${(disabled || readOnly) ? 'disabled' : 'enabled'}`,
                     )}
                     {...this.eventProps}
                     style={{ width: width }}
@@ -1645,6 +1651,7 @@ AnterosDatetimePicker.propTypes = {
     disableCalendar: PropTypes.bool,
     disableClock: PropTypes.bool,
     disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
     format: PropTypes.string,
     hourAriaLabel: PropTypes.string,
     hourPlaceholder: PropTypes.string,
