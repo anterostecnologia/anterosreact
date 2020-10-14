@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 const parentStyles = {
     overflow: 'hidden',
-    position: 'relative'
+    position: 'relative',
+    border: 0
 }
 
 const defaultStyles = {
@@ -224,7 +225,7 @@ class AnterosStarRating extends Component {
                         <label className={classNameLabel}>{this.props.label}</label>
                     </Then>
                 </If>
-                <div className={className} style={parentStyles}>
+                <div className={className} style={{...parentStyles, ...this.props.style}}>
                     {this.state.config.half ?
                         this.renderHalfStarStyleElement() : ''}
                     {this.renderStars()}

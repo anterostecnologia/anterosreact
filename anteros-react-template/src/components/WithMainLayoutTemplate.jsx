@@ -221,7 +221,16 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         }
       }
 
+      isItemAccessible(item){
+        return true;
+      }
+
       render() {
+        let fItemMenu = this.isItemAccessible;
+        if (
+          WrappedComponent.prototype.hasOwnProperty('isMenuItemAccessible')===true) {
+            fItemMenu = this.isMenuItemAccessible;
+          }
         const horizontal = loadingProps.menuHorizontal;
         const Actions = this.getUserActions();
         const ToolbarCenterContent = this.getToolbarCenterContent();
@@ -283,7 +292,10 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             {horizontal ? (
               <AnterosMainMenu>
                 {MainMenu ? (
-                  <MainMenu user={this.props.user} onChangeMenuFormat={this.onChangeMenuFormat} horizontal={true} visible={this.isMainMenuVisible()} />
+                  <MainMenu user={this.props.user}                   
+                  onChangeMenuFormat={this.onChangeMenuFormat} 
+                  isMenuItemAccessible={fItemMenu}
+                  horizontal={true} visible={this.isMainMenuVisible()} />
                 ) : null}
               </AnterosMainMenu>
             ) : (
@@ -314,7 +326,14 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                     ) : null}
                   </AnterosUserBlock> : null}
                   {MainMenu ? (
-                    <MainMenu user={this.props.user} onExpandMenu={this.onExpandMenu} onCollapseMenu={this.onCollapseMenu} onChangeMenuFormat={this.onChangeMenuFormat} withoutUserBlock={!loadingProps.showUserBlock} onSelectMenuItem={this.onSelectMenuItem} visible={this.isMainMenuVisible()} />
+                    <MainMenu user={this.props.user} 
+                    onExpandMenu={this.onExpandMenu} 
+                    isMenuItemAccessible={fItemMenu}
+                    onCollapseMenu={this.onCollapseMenu} 
+                    onChangeMenuFormat={this.onChangeMenuFormat}
+                    withoutUserBlock={!loadingProps.showUserBlock} 
+                    onSelectMenuItem={this.onSelectMenuItem} 
+                    visible={this.isMainMenuVisible()} />
                   ) : null}
                 </AnterosSidebarContent>
               )}

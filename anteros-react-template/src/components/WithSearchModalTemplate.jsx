@@ -131,7 +131,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
                     ) === true
                 ) {
                     this.dataSource = this.onCreateDatasource();
-                    this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+                    if (this.dataSource instanceof AnterosRemoteDatasource){
+                        this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+                    }
                     this.dataSource.addEventListener(
                         DATASOURCE_EVENTS,
                         this.onDatasourceEvent
@@ -182,7 +184,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
                     });
                 }
 
-                this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+                if (this.dataSource instanceof AnterosRemoteDatasource){
+                    this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+                }
                 this.dataSource.addEventListener(
                     DATASOURCE_EVENTS,
                     this.onDatasourceEvent
@@ -277,7 +281,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
                         DATASOURCE_EVENTS,
                         this.onDatasourceEvent
                     );
-                    this.dataSource.setAjaxPageConfigHandler(null);
+                    if (this.dataSource instanceof AnterosRemoteDatasource){
+                        this.dataSource.setAjaxPageConfigHandler(null);
+                    }
                 }
                 if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
                     this.onWillUnmount();
