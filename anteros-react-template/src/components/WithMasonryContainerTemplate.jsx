@@ -488,9 +488,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         loadingProps.pageSize, this.getUser(), loadingProps.fieldsToForceLazy
                     );
                 } else {
-                    if (
-                        this.filterRef.getQuickFilterText() &&
-                        this.filterRef.getQuickFilterText() !== ''
+                    if (this.filterRef &&
+                        this.filterRef.current.getQuickFilterText() &&
+                        this.filterRef.current.getQuickFilterText() !== ''
                     ) {
                         return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
                             loadingProps.resource,

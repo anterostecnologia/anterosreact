@@ -1233,7 +1233,11 @@ export default class AnterosDatetimePicker extends Component {
 
     onBlur(event) {
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
-            this.props.dataSource.setFieldByName(this.props.dataField, this.state.value);
+            if (this.state.value === 0 || this.state.value === '0' || this.state.value === null){
+                this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+            } else {
+                this.props.dataSource.setFieldByName(this.props.dataField, this.state.value);
+            }
         }
     }
 

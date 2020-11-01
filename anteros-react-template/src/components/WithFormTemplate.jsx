@@ -390,6 +390,7 @@ export default function WithFormTemplate(_loadingProps) {
                   user={this.props.user}
                   ref={ref => (this.owner = ref)}
                   update={this.update}
+                  ownerTemplate={this}
                   setDatasource={this.props.setDatasource}
                   setFilter={this.props.setFilter}
                 />

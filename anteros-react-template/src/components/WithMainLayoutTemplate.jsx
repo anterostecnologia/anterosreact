@@ -237,6 +237,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         const ToolbarEndContent = this.getToolbarEndContent();
         const MainMenu = this.getMainMenu();
         const Switch = this.getSwitch();
+        const rightToolbar = this.getRightToolbar();
         let style = { width: "350px" };
         if (!this.state.menuOpened) {
           style = { width: "60px" };
@@ -350,6 +351,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               />
             </AnterosMainContent>
             {this.props.children}
+            {rightToolbar}
           </AnterosMainLayout>
         );
       }
