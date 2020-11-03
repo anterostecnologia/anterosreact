@@ -186,6 +186,7 @@ export default class AnterosMainLayout extends Component {
 
   render() {
     let {
+      rightSidebar,
       sidebarOpen,
       onSetOpenSidebar,
       rtlLayout,
@@ -208,6 +209,7 @@ export default class AnterosMainLayout extends Component {
             pullRight={rtlLayout}
             menuOpened={this.props.menuOpened}
             visible={this.props.sidebarVisible}
+            hasRightSidebar={rightSidebar !== undefined}
             onSetOpen={onSetOpenSidebar}
             styles={{ content: { overflowY: "" } }}
             contentClassName={AnterosUtils.buildClassNames({
@@ -222,6 +224,7 @@ export default class AnterosMainLayout extends Component {
               </div>
             </div>
           </AnterosSidebarLayout>
+          {rightSidebar}
         </div>
       </div>
     );

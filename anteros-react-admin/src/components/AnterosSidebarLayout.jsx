@@ -229,6 +229,10 @@ export default class AnterosSidebarLayout extends Component {
       }
     }
 
+    if (this.props.hasRightSidebar){
+      rootProps.style.right = '70px';
+    }
+
     if (isTouching) {
       const percentage = this.touchSidebarWidth() / this.state.sidebarWidth;
       if (this.props.pullRight) {
@@ -329,6 +333,7 @@ AnterosSidebarLayout.propTypes = {
   touchHandleWidth: PropTypes.number,
   pullRight: PropTypes.bool,
   shadow: PropTypes.bool,
+  hasRightSidebar: PropTypes.bool,
   dragToggleDistance: PropTypes.number,
   onSetOpen: PropTypes.func,
   defaultSidebarWidth: PropTypes.number,
@@ -340,6 +345,7 @@ AnterosSidebarLayout.defaultProps = {
   transitions: true,
   touch: true,
   touchHandleWidth: 20,
+  hasRightSidebar: false,
   pullRight: false,
   shadow: false,
   dragToggleDistance: 30,

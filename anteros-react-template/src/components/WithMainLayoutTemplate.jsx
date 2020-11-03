@@ -237,7 +237,11 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         const ToolbarEndContent = this.getToolbarEndContent();
         const MainMenu = this.getMainMenu();
         const Switch = this.getSwitch();
-        const rightToolbar = this.getRightToolbar();
+        let rightSidebar;
+        if (
+          WrappedComponent.prototype.hasOwnProperty('getRightSidebar')===true) {
+            rightSidebar = this.getRightSidebar();
+        }
         let style = { width: "350px" };
         if (!this.state.menuOpened) {
           style = { width: "60px" };
@@ -254,6 +258,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             sidebarVisible={this.isSideBarVisible()}
             withoutScroll={loadingProps.withoutScroll}
             menuOpened={this.state.menuOpened}
+            rightSidebar={rightSidebar}
             horizontalMenu={horizontal}
           >
             <AnterosNotificationContainer />
@@ -351,7 +356,6 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               />
             </AnterosMainContent>
             {this.props.children}
-            {rightToolbar}
           </AnterosMainLayout>
         );
       }
