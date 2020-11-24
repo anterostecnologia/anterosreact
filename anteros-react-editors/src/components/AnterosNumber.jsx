@@ -14,7 +14,7 @@ class AnterosNumber extends Component {
         super(props);
         this.prepareProps = this.prepareProps.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.onBlur = this.handleBlur.bind(this);
+        this.handleOnBlur = this.handleOnBlur.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.state = this.prepareProps(this.props);
@@ -192,7 +192,7 @@ class AnterosNumber extends Component {
         });
     }
 
-    handleBlur(event) {
+    handleOnBlur(event) {
         if (this.props.onBlur) {
             this.props.onBlur(event);
         }
@@ -260,7 +260,7 @@ class AnterosNumber extends Component {
             value={this.state.maskedValue}
             readOnly={readOnly}
             onChange={this.handleChange}
-            onBlur={this.handleBlur}
+            onBlur={this.handleOnBlur}
             onFocus={this.handleFocus}
             onMouseUp={this.handleFocus}
             onKeyPress={this.onKeyPress}
