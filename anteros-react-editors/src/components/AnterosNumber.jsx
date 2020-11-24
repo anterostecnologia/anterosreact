@@ -14,7 +14,7 @@ class AnterosNumber extends Component {
         super(props);
         this.prepareProps = this.prepareProps.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.onBlur = this.onBlur.bind(this);
+        this.onBlur = this.handleBlur.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.state = this.prepareProps(this.props);
