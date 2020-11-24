@@ -14,6 +14,7 @@ class AnterosNumber extends Component {
         super(props);
         this.prepareProps = this.prepareProps.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.onBlur = this.onBlur.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.state = this.prepareProps(this.props);
@@ -23,7 +24,7 @@ class AnterosNumber extends Component {
         this.idNumber = lodash.uniqueId("number");
     }
 
-    get componentName(){
+    get componentName() {
         return "AnterosNumber";
     }
 
@@ -34,6 +35,7 @@ class AnterosNumber extends Component {
     prepareProps(props) {
         let customProps = { ...props };
         delete customProps.onChangeValue;
+        delete customProps.onBlur;
         delete customProps.value;
         delete customProps.decimalSeparator;
         delete customProps.thousandSeparator;
@@ -153,7 +155,7 @@ class AnterosNumber extends Component {
         this.inputSelectionEnd = selectionEnd;
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         if ((this.props.dataSource)) {
             this
                 .props
@@ -188,6 +190,12 @@ class AnterosNumber extends Component {
         this.setState({ maskedValue, value }, () => {
             this.props.onChangeValue(event, maskedValue, value);
         });
+    }
+
+    handleBlur(event) {
+        if (this.props.onBlur) {
+            this.props.onBlur(event);
+        }
     }
 
 
@@ -252,6 +260,7 @@ class AnterosNumber extends Component {
             value={this.state.maskedValue}
             readOnly={readOnly}
             onChange={this.handleChange}
+            onBlur={this.handleBlur}
             onFocus={this.handleFocus}
             onMouseUp={this.handleFocus}
             onKeyPress={this.onKeyPress}
@@ -259,7 +268,7 @@ class AnterosNumber extends Component {
         />);
 
         if (colClasses.length > 0) {
-            return (<div style={{...this.props.divStyle}} className={AnterosUtils.buildClassNames(colClasses)}>
+            return (<div style={{ ...this.props.divStyle }} className={AnterosUtils.buildClassNames(colClasses)}>
                 {number}
             </div>);
         } else {
@@ -284,6 +293,7 @@ AnterosNumber.propTypes = {
     style: PropTypes.object,
     readOnly: PropTypes.bool.isRequired,
     onChangeValue: PropTypes.func,
+    onBlur: PropTypes.func,
     onKeyPress: PropTypes.func,
     onFocus: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -310,7 +320,7 @@ AnterosNumber.defaultProps = {
     prefix: '',
     suffix: '',
     readOnly: false,
-    integer : false
+    integer: false
 };
 
 
