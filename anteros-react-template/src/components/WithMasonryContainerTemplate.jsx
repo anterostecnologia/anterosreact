@@ -36,7 +36,8 @@ const defaultValues = {
     withFilter: true,
     fieldsToForceLazy: '',
     defaultSortFields: '',
-    version: 'v1'
+    version: 'v1',
+    fieldId: 'id'
 };
 
 export default function WithMasonryContainerTemplate(_loadingProps) {
@@ -361,7 +362,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                 this.setState({
                     ...this.state,
                     selectedItem:
-                        this.state.selectedItem && item.id === this.state.selectedItem.id
+                        this.state.selectedItem && item[loadingProps.fieldId] === this.state.selectedItem[loadingProps.fieldId]
                             ? null
                             : item
                 });
@@ -423,15 +424,15 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                     }
                 } else if (button.props.id === 'btnEdit') {
                     if (WrappedComponent.prototype.hasOwnProperty('onCustomEdit') === true) {
-                        this.dataSource.locate({ id: button.props.idRecord });
+                        this.dataSource.locate({ [loadingProps.fieldId]: button.props.idRecord });
                         this.onCustomEdit(button.props.route);
                         return;
                     } else {
-                        this.dataSource.locate({ id: button.props.idRecord });
+                        this.dataSource.locate({ [loadingProps.fieldId]: button.props.idRecord });
                         this.dataSource.edit();
                     }
                 } else if (button.props.id === 'btnRemove') {
-                    this.dataSource.locate({ id: button.props.idRecord });
+                    this.dataSource.locate({ [loadingProps.fieldId]: button.props.idRecord });
                     let _this = this;
                     AnterosSweetAlert({
                         title: 'Deseja remover ?',
@@ -565,6 +566,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
             }
 
             createItems() {
+                let itemsProps = {};
+                if (WrappedComponent.prototype.hasOwnProperty('getItemsProps') === true) {
+                    itemsProps = this.getItemsProps();
+                }
                 let ViewItem = this.getViewItem();
                 let result = [];
                 for (var i = 0; i < this.dataSource.getData().length; i++) {
@@ -573,15 +578,16 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         <ViewItem
                             selected={
                                 this.state.selectedItem
-                                    ? this.state.selectedItem.id === r.id
+                                    ? this.state.selectedItem[loadingProps.fieldId] === r[loadingProps.fieldId]
                                     : false
                             }
                             onSelectedItem={this.onSelectedItem}
-                            key={r.id}
+                            key={r[loadingProps.fieldId]}
                             record={r}
                             dispatch={this.props.dispatch}
                             history={this.props.history}
                             onButtonClick={this.onButtonClick}
+                            {...itemsProps}
                         />
                     );
                 }
@@ -817,6 +823,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                                 user={this.props.user}
                                 dataSource={this.dataSource}
                                 onClickOk={this.onClickOk}
+                                ownerTemplate={this}
                                 onClickCancel={this.onClickCancel}
                                 history={this.props.history}
                             />
