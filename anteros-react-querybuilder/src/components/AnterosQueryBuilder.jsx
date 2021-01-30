@@ -63,7 +63,7 @@ export class AnterosQueryBuilder extends React.Component {
 
     toggleExpandedFilter = () => {
         let newExpandedFilter = !this.state.expandedFilter;
-        this.setState({ expandedFilter: newExpandedFilter })
+        this.setState({ ...this.state, expandedFilter: newExpandedFilter })
         if (this.props.onToggleExpandedFilter) {
             this.props.onToggleExpandedFilter(newExpandedFilter);
         }

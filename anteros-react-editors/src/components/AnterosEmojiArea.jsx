@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import * as React from 'react';
 import 'script-loader!emojionearea/dist/emojionearea.min.js'
 import lodash from "lodash";
 import {If, Then, AnterosUtils} from "@anterostecnologia/anteros-react-core";

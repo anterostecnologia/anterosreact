@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import { createElement, Children, Component } from 'react';
 import lodash from 'lodash'
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
@@ -12,7 +12,7 @@ var trigger_event = function( type, el ) {
     el.dispatchEvent( e );
 };
 
-class AnterosMultiSelect extends React.Component {
+class AnterosMultiSelect extends Component {
     constructor(props) {
         super(props)
         this.buildChildrensFromDataSource = this
@@ -171,7 +171,7 @@ class AnterosMultiSelect extends React.Component {
                 throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para o MultiSelect.");
             }
 
-            children.push(React.createElement(AnterosMultiSelectOption, {
+            children.push(createElement(AnterosMultiSelectOption, {
                 key: record[_this.props.dataFieldId] + "_" + index,
                 label: (record.label
                     ? record.label
@@ -204,11 +204,10 @@ class AnterosMultiSelect extends React.Component {
         let children = [];
         let index = 0;
         let _this = this;
-        let arrChildren = React
-            .Children
+        let arrChildren = Children
             .toArray(this.props.children);
         arrChildren.forEach(function (child) {
-            children.push(React.createElement(AnterosMultiSelectOption, {
+            children.push(createElement(AnterosMultiSelectOption, {
                 key: (_this.props.id
                     ? _this.props.id + "_" + index
                     : _this.idSelect + "_" + index),
@@ -372,7 +371,7 @@ AnterosMultiSelect.defaultProps = {
     dataFieldText: 'text'
 };
 
-class AnterosMultiSelectOption extends React.Component {
+class AnterosMultiSelectOption extends Component {
     constructor(props) {
         super(props);
         this.state = {

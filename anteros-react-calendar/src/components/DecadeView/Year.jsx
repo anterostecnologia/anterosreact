@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { getYearStart, getYearEnd } from '@wojtekmaj/date-utils';
 import {Tile} from '../AnterosCalendar';

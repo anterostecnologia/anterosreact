@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Children, cloneElement, Component } from 'react';
 
 export default class AnterosDropdownMenu extends Component {
     constructor(props)
@@ -13,10 +13,10 @@ export default class AnterosDropdownMenu extends Component {
     buildChildren(children) {
         let result = [];
         let _this = this;
-        let arrChildren = React.Children.toArray(children);
+        let arrChildren = Children.toArray(children);
         arrChildren.forEach(function (child) {
             if (child.type && (child.type.componentName === 'AnterosDropdownMenuItem')) {
-                result.push(React.cloneElement(child, {onClickItem: _this.props.onClickItem}));
+                result.push(cloneElement(child, {onClickItem: _this.props.onClickItem}));
             } else {
                 result.push(child);
             }

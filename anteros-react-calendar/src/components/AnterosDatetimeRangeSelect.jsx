@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import Fragment from 'react-dot-fragment';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -490,7 +490,7 @@ const darkTheme = {
     color: white,
 };
 
-class DateField extends React.Component {
+class DateField extends Component {
     constructor(props) {
         super(props);
 
@@ -549,7 +549,7 @@ DateField.propTypes = {
     darkMode: PropTypes.bool,
 };
 
-class ActiveNotifier extends React.Component {
+class ActiveNotifier extends Component {
     getDotDiv(text, style, id) {
         return (
             <div className="activeNotifier" id={id}>
@@ -597,7 +597,7 @@ ActiveNotifier.propTypes = {
     local: PropTypes.object,
 };
 
-class ApplyCancelButtons extends React.Component {
+class ApplyCancelButtons extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -792,7 +792,7 @@ ApplyCancelButtons.propTypes = {
 
 
 
-class MonthYearSelector extends React.Component {
+class MonthYearSelector extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -917,7 +917,7 @@ MonthYearSelector.propTypes = {
     darkMode: PropTypes.bool,
 };
 
-class Cell extends React.Component {
+class Cell extends Component {
     constructor(props) {
         super(props);
         this.state = { style: {} };
@@ -1206,7 +1206,7 @@ Cell.propTypes = {
     darkMode: PropTypes.bool,
 };
 
-class CalendarRow extends React.Component {
+class CalendarRow extends Component {
     generateCells() {
         let cells = [];
         let daysSize = this.props.rowDays.length;
@@ -1264,7 +1264,7 @@ CalendarRow.propTypes = {
 };
 
 
-class CalendarRows extends React.Component {
+class CalendarRows extends Component {
     generateDays() {
         let calendarRows = [];
         for (let i = 0; i < 6; i++) {
@@ -1320,7 +1320,7 @@ CalendarRows.propTypes = {
     darkMode: PropTypes.bool,
 };
 
-class CalendarHeader extends React.Component {
+class CalendarHeader extends Component {
     mapHeaderToDiv(headers) {
         let className = getCalendarGridHeaderClassName();
         return headers.map(function (header, i) {
@@ -1339,7 +1339,7 @@ class CalendarHeader extends React.Component {
     }
 }
 
-class Calendar extends React.Component {
+class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -1535,7 +1535,7 @@ Calendar.propTypes = {
     darkMode: PropTypes.bool,
 };
 
-class RangeButton extends React.Component {
+class RangeButton extends Component {
     constructor(props) {
         super(props);
 
@@ -1705,7 +1705,7 @@ RangeButton.propTypes = {
     style: PropTypes.object,
 };
 
-class Ranges extends React.Component {
+class Ranges extends Component {
     constructor(props) {
         super(props);
 
@@ -1792,7 +1792,7 @@ Ranges.propTypes = {
     forceMobileMode: PropTypes.bool,
 };
 
-class DatePicker extends React.Component {
+class DatePicker extends Component {
     render() {
         //If button property present display buttons
         let buttons;
@@ -1892,7 +1892,7 @@ DatePicker.propTypes = {
     standalone: PropTypes.bool,
 };
 
-class TimeField extends React.Component {
+class TimeField extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -2019,7 +2019,7 @@ TimeField.propTypes = {
     darkMode: PropTypes.bool,
 };
 
-class DateTimeRangePicker extends React.Component {
+class DateTimeRangePicker extends Component {
     constructor(props) {
         super(props);
         let ranges = {};
@@ -2496,7 +2496,7 @@ DateTimeRangePicker.propTypes = {
 };
 
 
-class AnterosDatetimeRangeSelect extends React.Component {
+class AnterosDatetimeRangeSelect extends Component {
     constructor(props) {
         super(props);
         this.state = {

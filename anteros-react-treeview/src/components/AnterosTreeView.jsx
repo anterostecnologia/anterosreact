@@ -54,7 +54,7 @@ class AnterosTreeView extends Component {
       let newNode = {
         id: childNode.id,
         nodes: this.setNodeDetails(childNode),
-        parentNode: node,
+        parentNode,
         isleaf: childNode.isleaf ? childNode.isleaf : false,
         state: {
           selected: childNode.state ? !!childNode.state.selected : false,
@@ -219,7 +219,7 @@ class AnterosTreeView extends Component {
     }
 
     let node = this.findNodeById(this.state.dataSource, id);
-    this.setState(() => ({ dataSource: this.state.dataSource, focused: node }));
+    this.setState(() => ({ dataSource: this.state.dataSource, focused }));
 
     if (this.props.onFocusedNode) {
       this.props.onFocusedNode(node);
@@ -263,7 +263,7 @@ class AnterosTreeView extends Component {
     let newNode = {
       text: text,
       state: { selected: false, expanded: false },
-      parentNode: node,
+      parentNode,
       id: this.nodesQuantity++
     };
 
@@ -379,8 +379,8 @@ class AnterosTreeView extends Component {
           throw new AnterosError("Foi encontrado um nó da arvore sem um ID. Nó " + node.text);
         }
         children.push(React.createElement(AnterosTreeNode, {
-          node: node,
-          key: node.id,
+          node,
+          key.id,
           level: 1,
           visible: true,
           onSelectedStatusChanged: _this.nodeSelected,
@@ -565,8 +565,8 @@ export class AnterosTreeNode extends React.Component {
       }
       else {
         style = {
-          color: node.color || options.color,
-          backgroundColor: node.backColor || options.backColor
+          color.color || options.color,
+          backgroundColor.backColor || options.backColor
         };
       }
 
@@ -628,8 +628,8 @@ export class AnterosTreeNode extends React.Component {
       node.nodes.forEach(function (node) {
         node.visible = _this.state.expanded && _this.props.visible;
         children.push(React.createElement(AnterosTreeNode, {
-          node: node,
-          key: node.id,
+          node,
+          key.id,
           level: _this.props.level + 1,
           visible: _this.state.expanded && _this.props.visible,
           onSelectedStatusChanged: _this.props.onSelectedStatusChanged,

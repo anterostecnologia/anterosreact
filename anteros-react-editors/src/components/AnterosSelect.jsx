@@ -1,4 +1,4 @@
-import React from 'react'
+import { createElement, Children, Component } from 'react';
 import 'script-loader!bootstrap-select/dist/js/bootstrap-select.min.js'
 import lodash from 'lodash';
 import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
@@ -7,7 +7,7 @@ import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } fro
 import PropTypes from 'prop-types';
 
 
-export default class AnterosSelect extends React.Component {
+export default class AnterosSelect extends Component {
     constructor(props) {
         super(props);
         this.onChangeSelect = this.onChangeSelect.bind(this);
@@ -132,7 +132,7 @@ export default class AnterosSelect extends React.Component {
                 throw new AnterosError("Foi encontrado um registro sem o texto no dataSource passado para o Select.");
             }
 
-            children.push(React.createElement(AnterosSelectOption, {
+            children.push(createElement(AnterosSelectOption, {
                 key: record[_this.props.dataFieldId] + "_" + index,
                 label: (record.label ? record.label : record[_this.props.dataFieldText]),
                 text: record[_this.props.dataFieldText],
@@ -162,9 +162,9 @@ export default class AnterosSelect extends React.Component {
         let children = [];
         let index = 0;
         let _this = this;
-        let arrChildren = React.Children.toArray(this.props.children);
+        let arrChildren = Children.toArray(this.props.children);
         arrChildren.forEach(function (child) {
-            children.push(React.createElement(AnterosSelectOption, {
+            children.push(createElement(AnterosSelectOption, {
                 key: (_this.props.id ? _this.props.id + "_" + index : _this.idSelect + "_" + index),
                 label: child.props.label,
                 subText: child.props.subText,
@@ -323,7 +323,7 @@ AnterosSelect.defaultProps = {
 
 
 
-export class AnterosSelectOption extends React.Component {
+export class AnterosSelectOption extends Component {
     constructor(props) {
         super(props);
     }

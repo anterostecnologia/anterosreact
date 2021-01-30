@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import {autoBind} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
 import AnterosMaskEdit  from './AnterosMaskEdit';

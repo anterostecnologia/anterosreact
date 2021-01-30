@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { cloneElement, Children, Component } from 'react';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
 import AnterosDropdownMenu from './AnterosDropdownMenu';
@@ -37,7 +37,7 @@ export class AnterosFloatingButton extends Component {
     }
 
     renderChild(child, index) {
-        return React.cloneElement(child,
+        return cloneElement(child,
             { handleClick: (this.props.autoClose ? this.onClick : undefined), index: index, key: index });
     }
 
@@ -102,23 +102,25 @@ export class AnterosFloatingButton extends Component {
         }
 
 
-        return (<ul id={this.props.id ? this.props.id : this.idFButton}
-            className={className}
-            style={this.props.style}
-            data-fab-toggle={this.props.openMode} data-fab-state={this.state.open ? "open" : "close"}>
-            <li>
-                <a href="#" id={this.idLink} className={classNameRef}
-                    style={{ backgroundColor: this.props.backgroundColor }}
-                    onClick={this.onClick}>
-                    <i style={{ color: this.props.color }} id={this.idIconOpen} className={"fab-iiconn-open " + this.props.iconOpen}></i>
-                    <i style={{ color: this.props.color }} id={this.idIconClose} className={"fab-iiconn-close " + this.props.iconClose}></i>
-                </a>
+        return (
+            <ul id={this.props.id ? this.props.id : this.idFButton}
+                className={className}
+                style={this.props.style}
+                data-fab-toggle={this.props.openMode} data-fab-state={this.state.open ? "open" : "close"}>
+                <li>
+                    <a href="#" id={this.idLink} className={classNameRef}
+                        style={{ backgroundColor: this.props.backgroundColor }}
+                        onClick={this.onClick}>
+                        <i style={{ color: this.props.color }} id={this.idIconOpen} className={"fab-iiconn-open " + this.props.iconOpen}></i>
+                        <i style={{ color: this.props.color }} id={this.idIconClose} className={"fab-iiconn-close " + this.props.iconClose}></i>
+                    </a>
 
-                {this.props.children ? <ul className="fab-menu-inner">
-                    {React.Children.toArray(this.props.children).map((c, i) => (this.renderChild(c, i)))}
-                </ul> : null}
-            </li>
-        </ul>)
+                    {this.props.children ? <ul className="fab-menu-inner">
+                        {Children.toArray(this.props.children).map((c, i) => (this.renderChild(c, i)))}
+                    </ul> : null}
+                </li>
+            </ul>
+        );
     }
 }
 
@@ -184,7 +186,7 @@ export class AnterosFloatingButtonItem extends Component {
         let mark;
         if (this.props.children) {
             let _this = this;
-            let arrChildren = React.Children.toArray(this.props.children);
+            let arrChildren = Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
                 if (child.type && (child.type.componentName === 'AnterosDropdownMenu')) {
                     menuDropDown = child;

@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { getUserLocale } from 'get-user-locale';
 import {AnterosIcon} from "@anterostecnologia/anteros-react-image";

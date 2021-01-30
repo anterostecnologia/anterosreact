@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 import { AnterosPopper } from '@anterostecnologia/anteros-react-notification';
@@ -61,16 +60,16 @@ AnterosAdvancedDropdownMenu.propTypes = {
     cssModule: PropTypes.object,
     persist: PropTypes.bool,
   };
-  
-  AnterosAdvancedDropdownMenu.defaultProps = {
-    tag: 'div',
-    flip: true,
-  };
-  
-  AnterosAdvancedDropdownMenu.contextTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    direction: PropTypes.oneOf(['up', 'down', 'left', 'right']).isRequired,
-    inNavbar: PropTypes.bool.isRequired,
-  };
 
-  export default AnterosAdvancedDropdownMenu;
+AnterosAdvancedDropdownMenu.defaultProps = {
+  tag: 'div',
+  flip: true,
+};
+
+AnterosAdvancedDropdownMenu.contextTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  direction: PropTypes.oneOf(['up', 'down', 'left', 'right']).isRequired,
+  inNavbar: PropTypes.bool.isRequired,
+};
+
+export default AnterosAdvancedDropdownMenu;

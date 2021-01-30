@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Children, cloneElement, Component } from "react";
 import AnterosButton from "./AnterosButton";
 import lodash from "lodash";
 import PropTypes from "prop-types";
@@ -30,11 +30,11 @@ export default class AnterosDropdownButton extends Component {
     buildChildren(children) {
         let result = [];
         let _this = this;
-        let arrChildren = React.Children.toArray(children);
+        let arrChildren = Children.toArray(children);
         arrChildren.forEach(function (child) {
             if (child.type && child.type.componentName === "AnterosDropdownMenu") {
                 result.push(
-                    React.cloneElement(child, { onClickItem: _this.onClickItem })
+                    cloneElement(child, { onClickItem: _this.onClickItem })
                 );
             } else {
                 result.push(child);

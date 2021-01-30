@@ -905,7 +905,7 @@
       derivers: derivers,
       locales: locales,
       naturalSort: naturalSort,
-      numberFormat: numberFormat,
+      numberFormatFormat,
       sortAs: sortAs,
       PivotData: PivotData
     };

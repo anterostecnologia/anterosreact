@@ -1,4 +1,4 @@
-import React from 'react';
+import { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { AnterosPopperManager } from '@anterostecnologia/anteros-react-notification';
@@ -23,7 +23,7 @@ function omit(obj, omitKeys) {
     return result;
   }
 
-export default class AnterosAdvancedDropdown extends React.Component {
+export default class AnterosAdvancedDropdown extends Component {
   constructor(props) {
     super(props);
 
@@ -174,7 +174,7 @@ export default class AnterosAdvancedDropdown extends React.Component {
 
     let subItemIsActive = false;
     if (setActiveFromChild) {
-      React.Children.map(this.props.children[1].props.children,
+      Children.map(this.props.children[1].props.children,
         (dropdownItem) => {
           if (dropdownItem.props.active) subItemIsActive = true;
         }
@@ -237,7 +237,7 @@ AnterosAdvancedDropdown.propTypes = {
     inNavbar: PropTypes.bool.isRequired,
   };
 
-export class AnterosAdvancedDropdownItem extends React.Component {
+export class AnterosAdvancedDropdownItem extends Component {
   constructor(props) {
     super(props);
 

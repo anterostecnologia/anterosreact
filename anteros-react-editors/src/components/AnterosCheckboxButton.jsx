@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Children, cloneElement, Component } from 'react';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,7 @@ export default class AnterosCheckboxButton extends Component {
         this.state = {
         }
 
-        let arrChildren = React.Children.toArray(this.props.children);
+        let arrChildren = Children.toArray(this.props.children);
         let _this = this;
         arrChildren.forEach(function (child, index) {
             _this.state = { ..._this.state, [index]: child.props.checked };
@@ -26,10 +26,10 @@ export default class AnterosCheckboxButton extends Component {
 
     render() {
         let newChildren = [];
-        let arrChildren = React.Children.toArray(this.props.children);
+        let arrChildren = Children.toArray(this.props.children);
         let _this = this;
         arrChildren.forEach(function (child, index) {
-            newChildren.push(React.cloneElement(child, {
+            newChildren.push(cloneElement(child, {
                 checked: _this.state[index], onChange: _this.toggleCheckboxChange, index: index,
                 success: _this.props.success,
                 info: _this.props.info,
