@@ -835,6 +835,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                                             id={loadingProps.filterName}
                                             formName={loadingProps.viewName}
                                             ref={this.filterRef}
+                                            expandedFilter={this.state.filterExpanded}
                                             activeSortIndex={this.props.activeSortIndex}
                                             dataSource={this.dsFilter}
                                             activeFilter={this.props.activeFilter}

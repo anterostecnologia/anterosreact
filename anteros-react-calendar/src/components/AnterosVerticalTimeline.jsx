@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -68,7 +68,7 @@ AnterosVerticalTimeline.defaultProps = {
 
 /* Classe AnterosVerticalTimeLineElement **/
 
-class AnterosVerticalTimelineElement extends React.Component {
+class AnterosVerticalTimelineElement extends Component {
   constructor(props) {
     super(props);
     this.onVisibilitySensorChange = this.onVisibilitySensorChange.bind(this);

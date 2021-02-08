@@ -1,7 +1,7 @@
 import AutosizeInput from 'react-input-autosize';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import lodash from 'lodash';
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
@@ -356,7 +356,7 @@ const handleRequired = (value, multi) => {
 };
 
 
-class Dropdown extends React.Component {
+class Dropdown extends Component {
   render () {
     // This component adds no markup
     return this.props.children;
@@ -369,7 +369,7 @@ Dropdown.propTypes = {
 
 
 
-class Option extends React.Component {
+class Option extends Component {
 
 	constructor(props) {
 		super(props);
@@ -465,7 +465,7 @@ Option.propTypes = {
 };
 
 
-class OptionGroup extends React.Component {
+class OptionGroup extends Component {
 
 	constructor(props) {
 		super(props);
@@ -550,7 +550,7 @@ OptionGroup.propTypes = {
 
 
 
-class Value extends React.Component {
+class Value extends Component {
 
 	constructor(props) {
 		super(props);
@@ -651,7 +651,7 @@ Value.propTypes = {
 };
 
 
-export default class AnterosCombobox extends React.Component {
+export default class AnterosCombobox extends Component {
 	constructor (props) {
 		super(props);
 		[
@@ -1918,7 +1918,7 @@ export default class AnterosCombobox extends React.Component {
 
 
 	rebuildOptions(children) {
-		let _tempChildren = React.Children.toArray(children);
+		let _tempChildren = Children.toArray(children);
 		let result = [];
 		_tempChildren.forEach(function(child) {
 			if (child.type && child.type.componentName==='AnterosComboboxOption') {
@@ -2194,7 +2194,7 @@ AnterosCombobox.defaultProps = {
 
  
 
-export class AnterosComboboxOption extends React.Component {
+export class AnterosComboboxOption extends Component {
     constructor(props) {
         super(props);
 	}

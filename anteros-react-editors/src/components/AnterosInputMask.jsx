@@ -1,4 +1,4 @@
-import React from 'react';
+import { cloneElement, Component } from 'react';
 import {findDOMNode} from 'react-dom';
 import {autoBind} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';
@@ -206,7 +206,7 @@ function parseMask(mask, maskChar, formatChars) {
     };
 }
 
-export default class AnterosInputMask extends React.Component {
+export default class AnterosInputMask extends Component {
     
 
     constructor(props) {
@@ -792,7 +792,7 @@ export default class AnterosInputMask extends React.Component {
             }
         }
 
-        inputElement = React.cloneElement(inputElement, changedProps);
+        inputElement = cloneElement(inputElement, changedProps);
 
         return inputElement;
     }

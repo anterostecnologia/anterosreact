@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AnterosPopperTarget } from '@anterostecnologia/anteros-react-notification';
 import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 
 
-export default class AnterosAdvancedDropdownToggle extends React.Component {
+export default class AnterosAdvancedDropdownToggle extends Component {
   constructor(props) {
     super(props);
 

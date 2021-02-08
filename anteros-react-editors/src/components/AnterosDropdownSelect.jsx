@@ -1,5 +1,5 @@
 //https://sanusart.github.io/react-dropdown-select/api
-import React, { Component } from 'react';
+import { createRef, Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -208,7 +208,7 @@ const LoadingComponent = styled.div`
 
 
   class Item extends Component {
-    item = React.createRef();
+    item = createRef();
   
     componentDidUpdate() {
       if (this.props.state.cursor === this.props.itemIndex) {
@@ -305,7 +305,7 @@ const LoadingComponent = styled.div`
   
   
   class Input extends Component {
-    input = React.createRef();
+    input = createRef();
   
     componentDidUpdate(prevProps) {
       if (
@@ -451,7 +451,7 @@ const DropdownHandleComponent = styled.div`
       {props.dropdownRenderer ? (
         props.dropdownRenderer({ props, state, methods })
       ) : (
-        <React.Fragment>
+        <Fragment>
           {props.create && state.search && !valueExistInSelected(state.search, state.values, props) && (
             <AddNew
               className={`${LIB_NAME}-dropdown-add-new`}
@@ -481,7 +481,7 @@ const DropdownHandleComponent = styled.div`
                 />
               ))
           )}
-        </React.Fragment>
+        </Fragment>
       )}
     </DropDown>
   );
@@ -539,7 +539,7 @@ const Content = ({ props, state, methods }) => {
         {props.contentRenderer ? (
           props.contentRenderer({ props, state, methods })
         ) : (
-          <React.Fragment>
+          <Fragment>
             {props.multi
               ? state.values &&
                 state.values.map((item) => (
@@ -554,7 +554,7 @@ const Content = ({ props, state, methods }) => {
               : state.values &&
                 state.values.length > 0 && <span>{getByPath(state.values[0], props.labelField)}</span>}
             <Input props={props} methods={methods} state={state} />
-          </React.Fragment>
+          </Fragment>
         )}
       </ContentComponent>
     );
@@ -625,7 +625,7 @@ export default class AnterosDropdownSelect extends Component {
       safeString: this.safeString
     };
 
-    this.select = React.createRef();
+    this.select = createRef();
     this.dropdownRoot = typeof document !== 'undefined' && document.createElement('div');
   }
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import Months from './YearView/Months';
 import Years from './DecadeView/Years';
@@ -305,8 +305,8 @@ export function Flex({
             }}
             {...otherProps}
         >
-            {React.Children.map(children, (child, index) => (
-                React.cloneElement(
+            {Children.map(children, (child, index) => (
+                cloneElement(
                     child,
                     {
                         ...child.props,

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { createRef, Component } from "react";
 import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -160,7 +160,7 @@ class TagStore {
     }
 }
 
-var connectToStore = TagEditor => class extends Component {
+var connectToStore = TagEditor => (class extends Component {
     constructor() {
         super()
         this.state = { store: null }
@@ -199,12 +199,12 @@ var connectToStore = TagEditor => class extends Component {
     render() {
         return <TagEditor {...this.props} store={this.state.store} />
     }
-}
+})
 
 class Tag extends Component {
     constructor(props) {
         super(props)
-        this.inputRef = React.createRef()
+        this.inputRef = createRef()
     }
     componentDidMount() {
         var node = this.inputRef.current

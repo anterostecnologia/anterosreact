@@ -1443,7 +1443,7 @@ function toString() {
 
 function DOMLazyTree(node) {
   return {
-    node: node,
+    node,
     children: [],
     html: null,
     text: null,
@@ -9284,7 +9284,7 @@ class AnterosTreeView extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
       let newNode = {
         nodeId: id,
         nodes: this.setNodeId(childNode),
-        parentNode: node,
+        parentNode,
         state: {
           selected: childNode.state ? !!childNode.state.selected : false,
           expanded: childNode.state ? !!childNode.state.expanded : false
@@ -9390,7 +9390,7 @@ class AnterosTreeView extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
   nodeFocused(nodeId) {
     let node = this.findNodeById(this.state.data, nodeId);
-    this.setState({ data: this.state.data, focused: node });
+    this.setState({ data: this.state.data, focused });
     if (this.props.onClick) this.props.onClick(this.state.data, node);
   }
 
@@ -9422,7 +9422,7 @@ class AnterosTreeView extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
     let newNode = {
       text: text,
       state: { selected: false, expanded: false },
-      parentNode: node,
+      parentNode,
       nodeId: this.nodesQuantity++
     };
 
@@ -9513,8 +9513,8 @@ class AnterosTreeView extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
       data.forEach(function (node) {
         node.visible = true;
         children.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AnterosTreeNode, {
-          node: node,
-          key: node.nodeId,
+          node,
+          key.nodeId,
           level: 1,
           visible: true,
           onSelectedStatusChanged: _this.nodeSelected,
@@ -9663,8 +9663,8 @@ class AnterosTreeNode extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
         };
       } else {
         style = {
-          color: node.color || options.color,
-          backgroundColor: node.backColor || options.backColor
+          color.color || options.color,
+          backgroundColor.backColor || options.backColor
         };
       }
     }
@@ -9718,7 +9718,7 @@ class AnterosTreeNode extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
 
     let styleIcon;
     if (node.icon) {
-      styleIcon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: node.icon });
+      styleIcon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className.icon });
     }
 
     let children = [];
@@ -9727,8 +9727,8 @@ class AnterosTreeNode extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
       node.nodes.forEach(function (node) {
         node.visible = _this.state.expanded && _this.props.visible;
         children.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AnterosTreeNode, {
-          node: node,
-          key: node.nodeId,
+          node,
+          key.nodeId,
           level: _this.props.level + 1,
           visible: _this.state.expanded && _this.props.visible,
           onSelectedStatusChanged: _this.props.onSelectedStatusChanged,
@@ -9758,7 +9758,7 @@ class AnterosTreeNode extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
           'span',
           { style: styleFocused, className: 'anteros-treeview-item', onClick: this.toggleFocused },
           styleIcon,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: node.image }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src.image }),
           node.text
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -9777,7 +9777,7 @@ class AnterosTreeNode extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Comp
         'span',
         { style: styleFocused, className: 'anteros-treeview-item', onClick: this.toggleFocused },
         styleIcon,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: node.image }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src.image }),
         node.text
       )
     );
@@ -22406,7 +22406,7 @@ module.exports = __webpack_require__.p + "images/user.png";
      *
      * **Note:** This method can't reliably detect native functions in the presence
      * of the core-js package because core-js circumvents this kind of detection.
-     * Despite multiple requests, the core-js maintainer has made it clear: any
+     * Despite multiple requests, the core-js maintainer has made it clear
      * attempt to fix the detection will be obstructed. As a result, we're left
      * with little choice but to throw an error. Unfortunately, this also affects
      * packages, like [babel-polyfill](https://www.npmjs.com/package/babel-polyfill),
@@ -31370,10 +31370,10 @@ function ReactDOMContainerInfo(topLevelWrapper, node) {
   var info = {
     _topLevelWrapper: topLevelWrapper,
     _idCounter: 1,
-    _ownerDocument: node ? node.nodeType === DOC_NODE_TYPE ? node : node.ownerDocument : null,
-    _node: node,
-    _tag: node ? node.nodeName.toLowerCase() : null,
-    _namespaceURI: node ? node.namespaceURI : null
+    _ownerDocument ? node.nodeType === DOC_NODE_TYPE ? node .ownerDocument : null,
+    _node,
+    _tag ? node.nodeName.toLowerCase() : null,
+    _namespaceURI ? node.namespaceURI : null
   };
   if (false) {
     info._ancestorInfo = node ? validateDOMNesting.updatedAncestorInfo(null, info._tag, null) : null;
@@ -33176,7 +33176,7 @@ function makeRemove(child, node) {
     type: 'REMOVE_NODE',
     content: null,
     fromIndex: child._mountIndex,
-    fromNode: node,
+    fromNode,
     toIndex: null,
     afterNode: null
   };
@@ -34573,8 +34573,8 @@ var hasListener = false;
 function getSelection(node) {
   if ('selectionStart' in node && ReactInputSelection.hasSelectionCapabilities(node)) {
     return {
-      start: node.selectionStart,
-      end: node.selectionEnd
+      start.selectionStart,
+      end.selectionEnd
     };
   } else if (window.getSelection) {
     var selection = window.getSelection();
@@ -35960,7 +35960,7 @@ function getNodeForCharacterOffset(root, offset) {
 
       if (nodeStart <= offset && nodeEnd >= offset) {
         return {
-          node: node,
+          node,
           offset: offset - nodeStart
         };
       }

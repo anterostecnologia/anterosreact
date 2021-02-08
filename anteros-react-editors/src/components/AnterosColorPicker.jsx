@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import * as React from 'react';
 import 'script-loader!bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'
 import lodash from "lodash";
 import {AnterosUtils} from "@anterostecnologia/anteros-react-core";

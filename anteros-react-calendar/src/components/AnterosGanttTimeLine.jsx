@@ -1,4 +1,4 @@
-import React, {Component,PureComponent} from 'react'
+import { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import moment from  'moment'
 import './Header.css'

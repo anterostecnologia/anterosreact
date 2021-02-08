@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Payment from 'payment';
 
 
-export default class AnterosCreditCard extends React.Component {
+export default class AnterosCreditCard extends Component {
   constructor(props) {
     super(props);
 
@@ -53,7 +53,7 @@ export default class AnterosCreditCard extends React.Component {
     const { number, preview } = this.props;
 
     let maxLength = preview ? 19 : type.maxLength;
-    let nextNumber = typeof number === 'number' ? number.toString() : number.replace(/[A-Za-z]| /g, '');
+    let nextNumber = typeof number === 'number' ? number.toString() .replace(/[A-Za-z]| /g, '');
 
     if (isNaN(parseInt(nextNumber, 10)) && !preview) {
       nextNumber = '';

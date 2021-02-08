@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'merge-class-names';
 import { getHours, getMinutes, getSeconds } from '@wojtekmaj/date-utils';

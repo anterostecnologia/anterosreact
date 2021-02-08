@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {TileGroup} from '../AnterosCalendar';
 import Year from './Year';
 

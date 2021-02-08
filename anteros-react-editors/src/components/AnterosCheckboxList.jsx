@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { createElement, Children, Component } from "react";
 import lodash from "lodash";
 import { AnterosError, AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import PropTypes from "prop-types";
@@ -256,7 +256,7 @@ export default class AnterosCheckboxList extends Component {
 				}
 
 				children.push(
-					React.createElement(DynamicComponent, {
+					createElement(DynamicComponent, {
 						key: id,
 						id: id,
 						active: active,
@@ -275,7 +275,7 @@ export default class AnterosCheckboxList extends Component {
 					id = Math.random();
 				}
 				children.push(
-					React.createElement(AnterosCheckboxListItem, {
+					createElement(AnterosCheckboxListItem, {
 						key: id,
 						disabled: record.disabled,
 						id: id,
@@ -363,7 +363,7 @@ export default class AnterosCheckboxList extends Component {
 		let children = [];
 		let index = 0;
 		let _this = this;
-		let arrChildren = React.Children.toArray(this.props.children);
+		let arrChildren = Children.toArray(this.props.children);
 		arrChildren.forEach(function(child) {
 			if (
 				child.type &&
@@ -395,7 +395,7 @@ export default class AnterosCheckboxList extends Component {
 				});
 			}
 			children.push(
-				React.createElement(
+				createElement(
 					AnterosCheckboxListItem,
 					{
 						key: child.props.id,

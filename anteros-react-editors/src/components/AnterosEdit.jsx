@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Children, createElement, Component } from 'react';
 import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
 import { AnterosUtils } from "@anterostecnologia/anteros-react-core";
@@ -159,12 +159,11 @@ export default class AnterosEdit extends AnterosBaseInputControl {
         let children = [];
         let _this = this;
         if (this.props.children) {
-            let arrChildren = React
-                .Children
+            let arrChildren = Children
                 .toArray(this.props.children);
             arrChildren.forEach(function (child, index) {
                 if (child.type && child.type.componentName === 'AnterosFeedback') {
-                    children.push(React.createElement(AnterosFeedback, {
+                    children.push(createElement(AnterosFeedback, {
                         key: (_this.props.id
                             ? _this.props.id + "_" + index
                             : _this.idEdit + "_" + index),

@@ -249,8 +249,8 @@ function getSumScroll(node) {
     } else {
         const parent = getSumScroll(node.parentNode)
         return ({
-            scrollLeft: node.scrollLeft + parent.scrollLeft,
-            scrollTop: node.scrollTop + parent.scrollTop
+            scrollLeft.scrollLeft + parent.scrollLeft,
+            scrollTop.scrollTop + parent.scrollTop
         })
     }
 }
@@ -261,8 +261,8 @@ function getSumOffset(node) {
     } else {
         const parent = getSumOffset(node.offsetParent)
         return ({
-            offsetLeft: node.offsetLeft + parent.offsetLeft,
-            offsetTop: node.offsetTop + parent.offsetTop
+            offsetLeft.offsetLeft + parent.offsetLeft,
+            offsetTop.offsetTop + parent.offsetTop
         })
     }
 }
@@ -1319,7 +1319,7 @@ export default class AnterosCalendarTimeline extends Component {
     resizingItem(item, resizeTime, edge) {
         this.setState({
             resizingItem: item,
-            resizingEdge: edge,
+            resizingEdge,
             resizeTime: resizeTime
         });
         this.updatingItem({

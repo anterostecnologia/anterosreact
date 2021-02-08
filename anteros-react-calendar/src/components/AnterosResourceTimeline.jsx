@@ -1,4 +1,5 @@
-import React, { PureComponent, Component } from 'react';
+import { PureComponent, Component } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Grid, AutoSizer, defaultCellRangeRenderer } from 'react-virtualized';
@@ -31,7 +32,7 @@ class DefaultItemRenderer extends PureComponent {
             </span>
         );
     }
-};
+}
 
 /**
  * Default group (row) renderer class
@@ -50,7 +51,7 @@ class DefaultGroupRenderer extends PureComponent {
             </span>
         );
     }
-};
+}
 
 
 const timebarFormat = {

@@ -1,5 +1,4 @@
 import moment from "moment";
-import React from "react";
 import PropTypes from "prop-types";
 
 /**
@@ -10,7 +9,7 @@ import PropTypes from "prop-types";
  * @returns {Object} return object with key as date and values array in events for that date
  */
 
- 
+
 function getFormattedData(items) {
   const activities = {};
   items.forEach(({ date, text }, index) => {
@@ -95,12 +94,12 @@ function TimlineItem({ time, text, itemColor, itemTextColor, timeTextColor, circ
       </li>
     );
   }
-  
-  TimlineItem.defaultProps = {};
-  
-  TimlineItem.propTypes = {
-    time: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-  };
+
+TimlineItem.defaultProps = {};
+
+TimlineItem.propTypes = {
+  time: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
 export default AnterosTimeLine;

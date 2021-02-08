@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import { Component } from 'react';
+import * as React from 'react';
 var TimeSlider = require('./AnterosTimeSlider.js');
 import './timeslider.css';
 import lodash from "lodash";

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import lodash from "lodash";
 import 'script-loader!bootstrap-switch/dist/js/bootstrap-switch.min.js';
 import PropTypes from 'prop-types';

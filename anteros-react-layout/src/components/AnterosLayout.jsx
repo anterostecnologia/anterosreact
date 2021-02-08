@@ -5,8 +5,8 @@
 // columnProps = PropTypes.oneOfType([     PropTypes.bool, PropTypes.number,
 // PropTypes.string, PropTypes.shape({         size:
 // PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
-//      push: stringOrNumberProp,         pull: stringOrNumberProp,
-// offset: stringOrNumberProp     }) ]); export const getColumnSizeClass =
+//      pushProp,         pullProp,
+// offsetProp     }) ]); export const getColumnSizeClass =
 // (isXs, colWidth, colSize) => {     return `col-${colWidth}-${colSize}`; };
 // export const getColumnAlignClass = (horizontalAlign) => {     if
 // (horizontalAlign === 'start') {         return 'align-self-start';     } else
@@ -129,9 +129,9 @@ const stringOrNumberProp = PropTypes.oneOfType([PropTypes.number, PropTypes.stri
 export const columnProps = PropTypes.oneOfType([
     PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.shape({
         size: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
-        push: stringOrNumberProp,
-        pull: stringOrNumberProp,
-        offset: stringOrNumberProp
+        pushProp,
+        pullProp,
+        offsetProp
     })
 ]);
 

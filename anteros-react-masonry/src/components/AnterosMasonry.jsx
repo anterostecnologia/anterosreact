@@ -54,7 +54,7 @@ export default class AnterosMasonry extends React.Component {
 
     getCurrentDomChildren() {
         var node = this.masonryContainer;
-        var children = this.props.options.itemSelector ? node.querySelectorAll(this.props.options.itemSelector) : node.children;
+        var children = this.props.options.itemSelector ? node.querySelectorAll(this.props.options.itemSelector) .children;
         return Array.prototype.slice.call(children);
     }
 

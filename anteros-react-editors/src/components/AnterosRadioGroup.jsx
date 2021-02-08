@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import { cloneElement, Component } from 'react';
 import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import PropTypes from 'prop-types';
@@ -185,7 +185,7 @@ export default class AnterosRadioGroup extends Component {
             onRadioChange,
             ...rest
         } = this.props;
-        return React.cloneElement(child, {
+        return cloneElement(child, {
             horizontal,
             index,
             checked,
