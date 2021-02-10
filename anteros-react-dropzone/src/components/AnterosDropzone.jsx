@@ -204,7 +204,7 @@ class Preview extends React.PureComponent {
 					<span className="dropzone-previewFileNameError">{title}</span>
 					{status === "error_file_size" && (
 						<span>
-							{size < minSizeBytes ? "File too small" : "File too big"}
+							{size < minSizeBytes ? "Arquivo muito pequeno" : "Arquivo muito grande"}
 						</span>
 					)}
 					{status === "error_validation" && (
