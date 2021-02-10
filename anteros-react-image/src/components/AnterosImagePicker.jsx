@@ -46,6 +46,9 @@ let base64ImageFile = function (imageFile) {
 };
 
 function isBase64(str) {
+    if (!str){
+        return false;
+    }
     try {
         return btoa(atob(str)) === str;
     } catch (err) {
@@ -269,18 +272,21 @@ export default class AnterosImagePicker extends React.Component {
     }
 
     getValue() {
+        let imgSrc = null;
         if (this.state.value && this.state.value !== '') {
-            if (isBase64(this.state.value)) {
-                if (this.isUrl(atob(this.state.value))) {
-                    return atob(this.state.value);
-                } else {
-                    return 'data:image;base64,' + this.state.value;
-                }
+            imgSrc = this.state.value;
+        } else if (this.props.placeHolder){
+            imgSrc = this.props.placeHolder;
+        }
+
+        if (isBase64(imgSrc)) {
+            if (this.isUrl(atob(imgSrc))) {
+                return atob(imgSrc);
             } else {
-                return this.state.value;
+                return 'data:image;base64,' + imgSrc;
             }
         } else {
-            return null;
+            return imgSrc;
         }
     }
 
