@@ -5886,7 +5886,7 @@
 		for ( i=0 ; i<nestedSort.length ; i++ )
 		{
 			srcCol = nestedSort[i][0];
-			aDataSort = aoColumns[ srcCol ].aDataSort;
+			aDataSort = aoColumns[srcCol] ? aoColumns[ srcCol ].aDataSort : [];
 	
 			for ( k=0, kLen=aDataSort.length ; k<kLen ; k++ )
 			{
