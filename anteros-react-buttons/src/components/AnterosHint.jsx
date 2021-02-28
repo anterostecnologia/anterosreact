@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default ({Component, createElement}) =>
 	class AnterosHint extends Component {
 		static defaultProps = {

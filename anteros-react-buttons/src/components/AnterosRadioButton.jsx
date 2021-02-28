@@ -1,4 +1,4 @@
-import { Children, cloneElement, Component } from 'react';
+import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import lodash from 'lodash';
 import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
@@ -10,6 +10,7 @@ export class AnterosRadioButton extends Component {
         this.idRadio = lodash.uniqueId('radio');
         let arrChildren = Children.toArray(this.props.children);
         let _this = this;
+        _this.state = {activeIndex : -1}; 
         arrChildren.forEach(function (child, index) {
             if (child.props.checked)
                 _this.state = { activeIndex: index};

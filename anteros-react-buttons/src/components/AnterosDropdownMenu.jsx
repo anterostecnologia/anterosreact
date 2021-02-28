@@ -1,4 +1,4 @@
-import { Children, cloneElement, Component } from 'react';
+import React, { Children, cloneElement, Component } from 'react';
 
 export default class AnterosDropdownMenu extends Component {
     constructor(props)

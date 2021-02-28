@@ -141,6 +141,7 @@ export default function WithModalTemplate(_loadingProps) {
         }
 
         if (event === dataSourceEvents.AFTER_INSERT) {
+          //
         }
 
         if (event === dataSourceEvents.ON_ERROR) {

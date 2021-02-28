@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import lodash from "lodash";
 import PropTypes from 'prop-types';
 
@@ -40,8 +40,9 @@ export default class AnterosDropdownMenuItem extends Component {
     }
 
     render() {
-        if (!this.props.visible)
-        return null;
+        if (!this.props.visible){
+            return null;
+        }
 
         let icon;
         if (this.props.icon) {

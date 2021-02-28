@@ -1,8 +1,6 @@
-import { cloneElement, Children, Component } from 'react';
+import React, { cloneElement, Children, Component } from 'react';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
-import AnterosDropdownMenu from './AnterosDropdownMenu';
-import { AnterosBadge, AnterosStatusMark } from '@anterostecnologia/anteros-react-label';
 
 export class AnterosFloatingButton extends Component {
     constructor(props) {

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AnterosPopperTarget } from '@anterostecnologia/anteros-react-notification';
 import {AnterosUtils} from '@anterostecnologia/anteros-react-core';

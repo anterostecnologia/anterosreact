@@ -1,4 +1,5 @@
 import { AnterosJacksonParser } from '@anterostecnologia/anteros-react-core';
+import {AnterosRemoteDatasource} from '@anterostecnologia/anteros-react-datasource';
 
 export class AnterosQueryBuilderData {
   static getSaveFilterConfig(filter, version='v1') {
@@ -24,18 +25,43 @@ export class AnterosQueryBuilderData {
     };
   }
 
-  static configureDatasource(datasource, version='v1') {
-    datasource.setAjaxPostConfigHandler(filter => {
+  static configureDatasource(dataSource, version='v1') {
+    dataSource.setAjaxPostConfigHandler(filter => {
       return AnterosQueryBuilderData.getSaveFilterConfig(filter,version);
     });
-    datasource.setValidatePostResponse(response => {
+    dataSource.setValidatePostResponse(response => {
       return response.data !== undefined;
     });
-    datasource.setAjaxDeleteConfigHandler(filter => {
+    dataSource.setAjaxDeleteConfigHandler(filter => {
       return AnterosQueryBuilderData.getRemoveFilterConfig(filter,version);
     });
-    datasource.setValidateDeleteResponse(response => {
+    dataSource.setValidateDeleteResponse(response => {
       return response.data !== undefined;
     });
+    dataSource.setAjaxOpenConfigHandler((form,component,vers) => {
+      return AnterosQueryBuilderData.getFilters(form,component,vers);
+    });
   }
+
+  static createDatasource(form, component, version='v1') {
+    let dataSource = new AnterosRemoteDatasource();
+    dataSource.setAjaxPostConfigHandler(filter => {
+      return AnterosQueryBuilderData.getSaveFilterConfig(filter,version);
+    });
+    dataSource.setValidatePostResponse(response => {
+      return response.data !== undefined;
+    });
+    dataSource.setAjaxDeleteConfigHandler(filter => {
+      return AnterosQueryBuilderData.getRemoveFilterConfig(filter,version);
+    });
+    dataSource.setValidateDeleteResponse(response => {
+      return response.data !== undefined;
+    });
+    dataSource.setAjaxOpenConfigHandler(() => {
+      return AnterosQueryBuilderData.getFilters(form,component,version);
+    });
+    return dataSource;
+  }
+
+
 }

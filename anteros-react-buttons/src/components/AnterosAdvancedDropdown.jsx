@@ -1,4 +1,4 @@
-import { Children, Component } from 'react';
+import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { AnterosPopperManager } from '@anterostecnologia/anteros-react-notification';

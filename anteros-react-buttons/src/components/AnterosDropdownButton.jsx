@@ -1,4 +1,4 @@
-import { Children, cloneElement, Component } from "react";
+import React, { Children, cloneElement, Component } from "react";
 import AnterosButton from "./AnterosButton";
 import lodash from "lodash";
 import PropTypes from "prop-types";

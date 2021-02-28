@@ -159,6 +159,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                 }
 
                 if (event === dataSourceEvents.AFTER_INSERT) {
+                    //
                 }
 
                 if (event === dataSourceEvents.ON_ERROR) {
@@ -281,8 +282,6 @@ export default function WithFormModalTemplate(_loadingProps) {
                     });
                 }
             }
-
-
 
             render() {
                 let modalSize = {};

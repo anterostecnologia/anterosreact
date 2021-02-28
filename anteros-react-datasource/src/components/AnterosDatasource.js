@@ -1,17 +1,14 @@
 import {
-    AnterosStringUtils,
     AnterosJacksonParser,
     AnterosUtils,
     AnterosDateUtils,
-    AnterosError,
     AnterosDatasourceError,
     Anteros,
     AnterosObjectUtils
 } from '@anterostecnologia/anteros-react-core';
 import axios from 'axios';
 import {
-    cloneDeep,
-    clone
+    cloneDeep
 } from 'lodash';
 import React from 'react';
 
@@ -900,6 +897,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.ajaxPageConfigHandler = undefined;
         this.ajaxPostConfigHandler = undefined;
         this.ajaxDeleteConfigHandler = undefined;
+        this.ajaxOpenConfigHandler = undefined;
         this.validatePostResponse = undefined;
         this.validateDeleteResponse = undefined;
         this.storePostResultToRecord = true;
@@ -907,6 +905,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.setAjaxPageConfigHandler = this.setAjaxPageConfigHandler.bind(this);
         this.setAjaxPostConfigHandler = this.setAjaxPostConfigHandler.bind(this);
         this.setAjaxDeleteConfigHandler = this.setAjaxDeleteConfigHandler.bind(this);
+        this.setAjaxOpenConfigHandler = this.setAjaxOpenConfigHandler.bind(this);
         this.setStorePostResultToRecord = this.setStorePostResultToRecord.bind(this);
         this.setValidatePostResponse = this.setValidatePostResponse.bind(this);
         this.setValidateDeleteResponse = this.setValidateDeleteResponse.bind(this);
@@ -938,13 +937,21 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.ajaxDeleteConfigHandler = handler;
     }
 
-    open(ajaxConfig, callback) {
+    setAjaxOpenConfigHandler(handler) {
+        this.ajaxOpenConfigHandler = handler;
+    }
+
+    open(config, callback) {
         super.open();
-        if (ajaxConfig && ajaxConfig != null) {
-            let _this = this;
-            this.executeAjax((ajaxConfig ? ajaxConfig : this.ajaxConfig), dataSourceEvents.AFTER_OPEN, callback);
+        if (config && config != null) {
+            this.executeAjax((config ? config : this.config), dataSourceEvents.AFTER_OPEN, callback);
         } else {
-            this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
+            if (this.ajaxOpenConfigHandler !== null){
+                let openConfig = this.ajaxOpenConfigHandler();
+                this.executeAjax(openConfig, dataSourceEvents.AFTER_OPEN, callback);
+            } else {
+                this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
+            }
         }
     }
 
@@ -991,6 +998,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.currentRecord = record;
         this.totalRecords = this.data.length;
         this.grandTotalRecords = this.data.length;
+
         this.currentRecno = this.data.length - 1;
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
     }

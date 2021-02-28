@@ -1,1079 +1,1048 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 
-import { AnterosRemoteDatasource, dataSourceEvents, dataSourceConstants, DATASOURCE_EVENTS } from '@anterostecnologia/anteros-react-datasource';
-import { AnterosSweetAlert, AnterosError, autoBind, processErrorMessage, AnterosResizeDetector } from '@anterostecnologia/anteros-react-core';
-import { AnterosQueryBuilder, AnterosFilterDSL, AnterosQueryBuilderData } from '@anterostecnologia/anteros-react-querybuilder';
-import { AnterosCard, HeaderActions, FooterActions } from '@anterostecnologia/anteros-react-containers';
-import { AnterosBlockUi, AnterosLoader } from '@anterostecnologia/anteros-react-loaders';
-import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
-import { AnterosPagination } from '@anterostecnologia/anteros-react-navigation';
-import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
-import { AnterosDataTable } from '@anterostecnologia/anteros-react-table';
-import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
-import { AnterosLabel } from '@anterostecnologia/anteros-react-label';
+import {
+  AnterosRemoteDatasource,
+  dataSourceEvents,
+  dataSourceConstants,
+  DATASOURCE_EVENTS,
+} from "@anterostecnologia/anteros-react-datasource";
+import {
+  AnterosSweetAlert,
+  AnterosError,
+  autoBind,
+  processErrorMessage,
+  AnterosResizeDetector,
+} from "@anterostecnologia/anteros-react-core";
+import {
+  AnterosQueryBuilder,
+  AnterosFilterDSL,
+  AnterosQueryBuilderData,
+} from "@anterostecnologia/anteros-react-querybuilder";
+import {
+  AnterosCard,
+  HeaderActions,
+  FooterActions,
+} from "@anterostecnologia/anteros-react-containers";
+import {
+  AnterosBlockUi,
+  AnterosLoader,
+} from "@anterostecnologia/anteros-react-loaders";
+import {
+  AnterosCol,
+  AnterosRow,
+} from "@anterostecnologia/anteros-react-layout";
+import { AnterosPagination } from "@anterostecnologia/anteros-react-navigation";
+import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
+import { AnterosDataTable } from "@anterostecnologia/anteros-react-table";
+import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
+import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
 
 const defaultValues = {
-    openDataSourceFilter: true,
-    openMainDataSource: true,
-    messageLoading: 'Por favor aguarde...',
-    withFilter: true,
-    fieldsToForceLazy: '',
-    defaultSortFields: '',
-    layoutReducerName: 'layoutReducer',
-    version: 'v1'
+  openDataSourceFilter: true,
+  openMainDataSource: true,
+  messageLoading: "Por favor aguarde...",
+  withFilter: true,
+  fieldsToForceLazy: "",
+  defaultSortFields: "",
+  layoutReducerName: "layoutReducer",
+  version: "v1",
 };
 
 export default function WithTableContainerTemplate(_loadingProps) {
-    let loadingProps = { ...defaultValues, ..._loadingProps };
+  let loadingProps = { ...defaultValues, ..._loadingProps };
 
-    const mapStateToProps = state => {
-        let dataSource,
-            query,
-            sort,
-            activeSortIndex,
-            activeFilter,
-            quickFilterText,
-            needRefresh = false,
-            needUpdateView = false,
-            user;
-        let reducer = state[loadingProps.reducerName];
-        if (reducer) {
-            dataSource = reducer.dataSource;
-            query = reducer.query;
-            sort = reducer.sort;
-            activeSortIndex = reducer.activeSortIndex;
-            activeFilter = reducer.activeFilter;
-            quickFilterText = reducer.quickFilterText;
-            needRefresh = reducer.needRefresh;
-        }
-        user = state[loadingProps.userReducerName].user;
-        reducer = state[loadingProps.layoutReducerName];
-        if (reducer) {
-            needUpdateView = reducer.needUpdateView;
-        }
+  const mapStateToProps = (state) => {
+    let dataSource,
+      filterExpanded = false,
+      currentFilter = undefined,
+      activeFilterIndex = -1,
+      needRefresh = false,
+      needUpdateView = false,
+      user;
+    let reducer = state[loadingProps.reducerName];
+    if (reducer) {
+      dataSource = reducer.dataSource;
+      filterExpanded = reducer.filterExpanded;
+      currentFilter = reducer.currentFilter;
+      activeFilterIndex = reducer.activeFilterIndex;
+      needRefresh = reducer.needRefresh;
+    }
+    user = state[loadingProps.userReducerName].user;
+    reducer = state[loadingProps.layoutReducerName];
+    if (reducer) {
+      needUpdateView = reducer.needUpdateView;
+    }
 
-        return {
-            dataSource: dataSource,
-            query: query,
-            sort: sort,
-            activeSortIndex: activeSortIndex,
-            activeFilter: activeFilter,
-            quickFilterText: quickFilterText,
-            user: user,
-            needRefresh: needRefresh,
-            needUpdateView: needUpdateView
-        };
+    return {
+      dataSource: dataSource,
+      currentFilter: currentFilter,
+      activeFilterIndex: activeFilterIndex,
+      filterExpanded: filterExpanded,
+      user: user,
+      needRefresh: needRefresh,
+      needUpdateView: needUpdateView,
     };
+  };
 
-    const mapDispatchToProps = dispatch => {
-        return {
-            setDatasource: dataSource => {
-                dispatch(loadingProps.actions.setDatasource(dataSource));
-            },
-            hideTour: () => {
-                dispatch({ type: "HIDE_TOUR" });
-            },
-            setFilter: (
-                activeFilter,
-                query,
-                sort,
-                activeSortIndex,
-                quickFilterText
-            ) => {
-                dispatch(
-                    loadingProps.actions.setFilter(
-                        activeFilter,
-                        query,
-                        sort,
-                        activeSortIndex,
-                        quickFilterText
-                    )
-                );
-            }
-        };
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      setDatasource: (dataSource) => {
+        dispatch(loadingProps.actions.setDatasource(dataSource));
+      },
+      hideTour: () => {
+        dispatch({ type: "HIDE_TOUR" });
+      },
+      setFilter: (currentFilter, activeFilterIndex, filterExpanded) => {
+        dispatch(
+          loadingProps.actions.setFilter(
+            currentFilter,
+            activeFilterIndex,
+            filterExpanded
+          )
+        );
+      },
     };
+  };
 
-    return WrappedComponent => {
-        class TableContainerView extends WrappedComponent {
-            constructor(props, context) {
-                super(props);
-                autoBind(this);
-                if (!loadingProps.endPoints) {
-                    throw new AnterosError(
-                        'Informe o objeto com os endPoints de consulta.'
-                    );
-                }
-                if (!loadingProps.resource) {
-                    throw new AnterosError('Informe o nome do RESOURCE de consulta. ');
-                }
-                if (!loadingProps.reducerName) {
-                    throw new AnterosError('Informe o nome do REDUCER. ');
-                }
-                if (!loadingProps.userReducerName) {
-                    throw new AnterosError('Informe o nome do REDUCER de Usuários. ');
-                }
-                if (!loadingProps.actions) {
-                    throw new AnterosError(
-                        'Informe o objeto com as actions do REDUCER. '
-                    );
-                }
-                if (!loadingProps.viewName) {
-                    throw new AnterosError('Informe o nome da View. ');
-                }
-                if (!loadingProps.caption) {
-                    throw new AnterosError('Informe o caption(titulo) da View. ');
-                }
-                if (loadingProps.withFilter && !loadingProps.filterName) {
-                    throw new AnterosError('Informe o nome do filtro. ');
-                }
-                if (!loadingProps.routes) {
-                    throw new AnterosError('Informe as rotas das ações. ');
-                }
+  return (WrappedComponent) => {
+    class TableContainerView extends WrappedComponent {
+      constructor(props, context) {
+        super(props);
+        autoBind(this);
+        if (!loadingProps.endPoints) {
+          throw new AnterosError(
+            "Informe o objeto com os endPoints de consulta."
+          );
+        }
+        if (!loadingProps.resource) {
+          throw new AnterosError("Informe o nome do RESOURCE de consulta. ");
+        }
+        if (!loadingProps.reducerName) {
+          throw new AnterosError("Informe o nome do REDUCER. ");
+        }
+        if (!loadingProps.userReducerName) {
+          throw new AnterosError("Informe o nome do REDUCER de Usuários. ");
+        }
+        if (!loadingProps.actions) {
+          throw new AnterosError(
+            "Informe o objeto com as actions do REDUCER. "
+          );
+        }
+        if (!loadingProps.viewName) {
+          throw new AnterosError("Informe o nome da View. ");
+        }
+        if (!loadingProps.caption) {
+          throw new AnterosError("Informe o caption(titulo) da View. ");
+        }
+        if (loadingProps.withFilter && !loadingProps.filterName) {
+          throw new AnterosError("Informe o nome do filtro. ");
+        }
+        if (!loadingProps.routes) {
+          throw new AnterosError("Informe as rotas das ações. ");
+        }
 
-                if (WrappedComponent.prototype.hasOwnProperty('getColumns') === false) {
-                    throw new AnterosError('Implemente o método getColumns na classe.');
-                }
+        if (WrappedComponent.prototype.hasOwnProperty("getColumns") === false) {
+          throw new AnterosError("Implemente o método getColumns na classe.");
+        }
 
-                if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
-                    loadingProps.routes = this.getRoutes();
-                }
+        if (
+          WrappedComponent.prototype.hasOwnProperty("getRoutes") &&
+          this.getRoutes()
+        ) {
+          loadingProps.routes = this.getRoutes();
+        }
 
-                if (
-                    WrappedComponent.prototype.hasOwnProperty('getFieldsFilter') === false
-                ) {
-                    throw new AnterosError(
-                        'Implemente o método getFieldsFilter na classe '
-                    );
-                }
+        if (
+          WrappedComponent.prototype.hasOwnProperty("getFieldsFilter") === false
+        ) {
+          throw new AnterosError(
+            "Implemente o método getFieldsFilter na classe "
+          );
+        }
 
-                this.filterRef = React.createRef();
+        this.filterRef = React.createRef();
 
-                this.hasUserActions = WrappedComponent.prototype.hasOwnProperty(
-                    'getUserActions'
-                );
+        this.hasUserActions = WrappedComponent.prototype.hasOwnProperty(
+          "getUserActions"
+        );
 
-                this.positionUserActions =
-                    WrappedComponent.prototype.hasOwnProperty(
-                        'getPositionUserActions'
-                    ) === true
-                        ? this.getPositionUserActions()
-                        : 'first';
+        this.positionUserActions =
+          WrappedComponent.prototype.hasOwnProperty(
+            "getPositionUserActions"
+          ) === true
+            ? this.getPositionUserActions()
+            : "first";
 
-                this.createDataSourceFilter();
+        this.createDataSourceFilter();
 
-                if (
-                    WrappedComponent.prototype.hasOwnProperty(
-                        'onCreateDatasource'
-                    ) === true
-                ) {
-                    this.dataSource = this.onCreateDatasource();
-                    if (this.dataSource instanceof AnterosRemoteDatasource) {
-                        this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
-                    }
-                    this.dataSource.addEventListener(
-                        DATASOURCE_EVENTS,
-                        this.onDatasourceEvent
-                    );
-                } else {
-                    this.createMainDataSource();
-                }
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onCreateDatasource") ===
+          true
+        ) {
+          this.dataSource = this.onCreateDatasource();
+          if (this.dataSource instanceof AnterosRemoteDatasource) {
+            this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+          }
+          this.dataSource.addEventListener(
+            DATASOURCE_EVENTS,
+            this.onDatasourceEvent
+          );
+        } else {
+          this.createMainDataSource();
+        }
 
-                if (WrappedComponent.prototype.hasOwnProperty('getRoutes') && this.getRoutes()) {
-                    loadingProps.routes = this.getRoutes();
-                }
+        if (
+          WrappedComponent.prototype.hasOwnProperty("getRoutes") &&
+          this.getRoutes()
+        ) {
+          loadingProps.routes = this.getRoutes();
+        }
 
-                this.state = {
-                    dataSource: [],
-                    alertIsOpen: false,
-                    alertMessage: '',
-                    loading: false,
-                    width: undefined,
-                    newHeight: undefined,
-                    update: Math.random()
-                };
+        this.state = {
+          dataSource: [],
+          alertIsOpen: false,
+          alertMessage: "",
+          loading: false,
+          width: undefined,
+          newHeight: undefined,
+          update: Math.random(),
+        };
+      }
+
+      createDataSourceFilter() {
+        this.dsFilter = AnterosQueryBuilderData.createDatasource(
+          loadingProps.viewName,
+          "filter",
+          loadingProps.version
+        );
+      }
+
+      getDispatch() {
+        return this.props.dispatch;
+      }
+
+      getUser() {
+        if (this.props.user) {
+          return this.props.user;
+        }
+        return undefined;
+      }
+
+      createMainDataSource() {
+        if (this.props.dataSource) {
+          this.dataSource = this.props.dataSource;
+          if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+            this.dataSource.cancel();
+          }
+        } else {
+          this.dataSource = new AnterosRemoteDatasource();
+          this.dataSource.setAjaxPostConfigHandler((entity) => {
+            return loadingProps.endPoints.POST(
+              loadingProps.resource,
+              entity,
+              this.getUser()
+            );
+          });
+          this.dataSource.setValidatePostResponse((response) => {
+            return response.data !== undefined;
+          });
+          this.dataSource.setAjaxDeleteConfigHandler((entity) => {
+            return loadingProps.endPoints.DELETE(
+              loadingProps.resource,
+              entity,
+              this.getUser()
+            );
+          });
+          this.dataSource.setValidateDeleteResponse((response) => {
+            return response.data !== undefined;
+          });
+        }
+
+        this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
+        this.dataSource.addEventListener(
+          DATASOURCE_EVENTS,
+          this.onDatasourceEvent
+        );
+      }
+
+      componentDidMount() {
+        if (loadingProps.openMainDataSource) {
+          if (!this.dataSource.isOpen()) {
+            this.dataSource.open(this.getData(this.props.currentFilter,0));
+          } else if (this.props.needRefresh) {
+            this.dataSource.open(this.getData(this.props.currentFilter,this.dataSource.getCurrentPage()));
+          }
+          if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+            this.dataSource.cancel();
+          }
+        }
+
+        if (this.table1) {
+          this.table1.refreshData();
+        }
+
+        if (this.table2) {
+          this.table2.refreshData();
+        }
+
+        if (WrappedComponent.prototype.hasOwnProperty("onDidMount") === true) {
+          this.onDidMount();
+        }
+      }
+
+      componentWillUnmount() {
+        if (this.dataSource) {
+          this.dataSource.removeEventListener(
+            DATASOURCE_EVENTS,
+            this.onDatasourceEvent
+          );
+          if (this.dataSource instanceof AnterosRemoteDatasource) {
+            this.dataSource.setAjaxPageConfigHandler(null);
+          }
+        }
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onWillUnmount") === true
+        ) {
+          this.onWillUnmount();
+        }
+        this.props.hideTour();
+      }
+
+      componentWillReceiveProps(nextProps) {
+        this.onResize(
+          this.card.getCardBlockWidth(),
+          this.card.getCardBlockHeight()
+        );
+
+        if (this.dataSource) {
+          if (this.table1) {
+            this.table1.refreshData();
+          }
+          if (this.table2) {
+            this.table2.refreshData();
+          }
+        }
+      }
+
+      onFilterChanged(filter) {
+        this.props.setFilter(
+          filter,
+          this.props.activeFilterIndex,
+          this.props.filterExpanded
+        );
+      }
+
+      onToggleExpandedFilter(expanded) {
+        this.props.setFilter(
+          this.props.currentFilter,
+          this.props.activeFilterIndex,
+          expanded
+        );
+        setTimeout(() => {
+          if (
+            this.state.newHeight !== undefined &&
+            this.state.width !== undefined
+          ) {
+            if (this.table1) {
+              this.table1.resize(this.state.width - 360, this.state.newHeight);
             }
-
-            createDataSourceFilter() {
-                this.dsFilter = new AnterosRemoteDatasource();
-                AnterosQueryBuilderData.configureDatasource(this.dsFilter, loadingProps.version);
+            if (this.table2) {
+              this.table2.resize("100%", this.state.newHeight);
             }
+          }
+        }, 500);
+      }
 
-            getDispatch() {
-                return this.props.dispatch;
-            }
+      onSelectedFilter(filter, index) {
+        this.props.setFilter(filter, index, this.props.filterExpanded);
+      }
 
-            getUser() {
-                if (this.props.user) {
-                    return this.props.user;
-                }
-                return undefined;
-            }
+      onBeforePageChanged(currentPage, newPage) {
+        this.setState({
+          ...this.state,
+          loading: true,
+        });
+      }
 
-            refreshData(page) {
-                var p = page;
-                if (page === undefined || page === null) {
-                    p = 0;
-                }
+      handlePageChanged(newPage) {
+        this.setState({
+          ...this.state,
+          currentPage: newPage,
+          loading: false,
+        });
+      }
 
-                if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-                    return this.onFindAll(p, loadingProps.pageSize,
-                        this.getSortFields(),
-                        this.getUser(), loadingProps.fieldsToForceLazy);
-                } else {
-                    return loadingProps.endPoints.FIND_ALL(
-                        loadingProps.resource,
-                        p,
-                        loadingProps.pageSize,
-                        this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-                    );
-                }
-            }
+      getSortFields() {
+        if (
+          loadingProps.withFilter &&
+          this.filterRef &&
+          this.filterRef.current
+        ) {
+          if (
+            this.filterRef.current.getQuickFilterSort() &&
+            this.filterRef.current.getQuickFilterSort() !== ""
+          ) {
+            return this.filterRef.current.getQuickFilterSort();
+          }
+        }
+        return loadingProps.defaultSortFields;
+      }
 
-            createMainDataSource() {
-                if (this.props.dataSource) {
-                    this.dataSource = this.props.dataSource;
-                    if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-                        this.dataSource.cancel();
-                    }
-                } else {
-                    this.dataSource = new AnterosRemoteDatasource();
-                    this.dataSource.setAjaxPostConfigHandler(entity => {
-                        return loadingProps.endPoints.POST(loadingProps.resource, entity, this.getUser());
-                    });
-                    this.dataSource.setValidatePostResponse(response => {
-                        return response.data !== undefined;
-                    });
-                    this.dataSource.setAjaxDeleteConfigHandler(entity => {
-                        return loadingProps.endPoints.DELETE(loadingProps.resource, entity, this.getUser());
-                    });
-                    this.dataSource.setValidateDeleteResponse(response => {
-                        return response.data !== undefined;
-                    });
-                }
+      onDatasourceEvent(event, error) {
+        let loading = this.state.loading;
+        if (
+          event === dataSourceEvents.BEFORE_OPEN ||
+          event === dataSourceEvents.BEFORE_GOTO_PAGE
+        ) {
+          loading = true;
+        }
 
-                this.dataSource.setAjaxPageConfigHandler(this.pageConfigHandler);
-                this.dataSource.addEventListener(
-                    DATASOURCE_EVENTS,
-                    this.onDatasourceEvent
-                );
-            }
+        if (event === dataSourceEvents.BEFORE_POST) {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onBeforePost") === true
+          ) {
+            this.onBeforePost();
+          }
+        }
 
-            componentDidMount() {
-                if (loadingProps.openDataSourceFilter) {
-                    if (!this.dsFilter.isOpen()) {
-                        this.dsFilter.open(
-                            AnterosQueryBuilderData.getFilters(
-                                loadingProps.viewName,
-                                loadingProps.filterName,
-                                loadingProps.version
-                            )
-                        );
-                    }
-                }
+        if (
+          event === dataSourceEvents.AFTER_OPEN ||
+          event === dataSourceEvents.AFTER_GOTO_PAGE ||
+          event === dataSourceEvents.ON_ERROR
+        ) {
+          this.props.setDatasource(this.dataSource);
+          loading = false;
+        }
 
-                if (loadingProps.openMainDataSource) {
-                    if (!this.dataSource.isOpen()) {
-                        if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-                            this.dataSource.open(this.onFindAll(0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
-                        } else {
-                            this.dataSource.open(
-                                loadingProps.endPoints.FIND_ALL(
-                                    loadingProps.resource,
-                                    0,
-                                    loadingProps.pageSize,
-                                    this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-                                )
-                            );
-                        }
-                    } else if (this.props.needRefresh) {
-                        this.dataSource.open(this.refreshData(this.dataSource.getCurrentPage()));
-                    }
-                    if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-                        this.dataSource.cancel();
-                    }
-                }
+        if (event === dataSourceEvents.AFTER_INSERT) {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onAfterInsert") === true
+          ) {
+            this.onAfterInsert();
+          }
+        }
 
-                if (this.table1) {
-                    this.table1.refreshData();
-                }
+        if (event === dataSourceEvents.ON_ERROR) {
+          if (error) {
+            this.setState({
+              ...this.state,
+              alertIsOpen: true,
+              loading: false,
+              alertMessage: processErrorMessage(error),
+            });
+          }
+        } else {
+          this.setState({
+            ...this.state,
+            loading,
+            update: Math.random(),
+          });
+        }
+      }
 
-                if (this.table2) {
-                    this.table2.refreshData();
-                }
-
-                if (WrappedComponent.prototype.hasOwnProperty('onDidMount') === true) {
-                    this.onDidMount();
-                }
-
-            }
-
-            componentWillUnmount() {
-                if (this.dataSource) {
-                    this.dataSource.removeEventListener(
-                        DATASOURCE_EVENTS,
-                        this.onDatasourceEvent
-                    );
-                    if (this.dataSource instanceof AnterosRemoteDatasource) {
-                        this.dataSource.setAjaxPageConfigHandler(null);
-                    }
-                }
-                if (WrappedComponent.prototype.hasOwnProperty('onWillUnmount') === true) {
-                    this.onWillUnmount();
-                }
-                this.props.hideTour();
-            }
-            componentWillReceiveProps(nextProps) {
-                this.onResize(
-                    this.card.getCardBlockWidth(),
-                    this.card.getCardBlockHeight()
-                );
-
-                if (this.dataSource) {
-                    if (this.table1) {
-                        this.table1.refreshData();
-                    }
-                    if (this.table2) {
-                        this.table2.refreshData();
-                    }
-                }
-            }
-
-            onQueryChange(query) {
-                this.props.setFilter(
-                    this.props.activeFilter,
-                    query,
-                    this.props.sort,
-                    this.props.activeSortIndex,
-                    this.props.quickFilterText
-                );
-            }
-
-            onSortChange(sort, activeSortIndex) {
-                this.props.setFilter(
-                    this.props.activeFilter,
-                    this.props.query,
-                    sort,
-                    activeSortIndex,
-                    this.props.quickFilterText
-                );
-            }
-
-            onSelectActiveFilter(
-                activeFilter,
-                filter,
-                sort,
-                activeSortIndex,
-                quickFilterText
+      onButtonClick(event, button) {
+        if (button.props.id === "btnView") {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onCustomView") === true
+          ) {
+            this.onCustomView(button.props.route);
+            return;
+          }
+        } else if (button.props.id === "btnAdd") {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onCustomAdd") === true
+          ) {
+            this.onCustomAdd(button.props.route);
+            return;
+          } else {
+            if (
+              WrappedComponent.prototype.hasOwnProperty("onBeforeInsert") ===
+              true
             ) {
-                this.props.setFilter(
-                    activeFilter,
-                    filter,
-                    sort,
-                    activeSortIndex,
-                    quickFilterText
-                );
+              if (!this.onBeforeInsert()) {
+                return;
+              }
             }
-            onBeforePageChanged(currentPage, newPage) {
-                this.setState({
-                    ...this.state,
-                    loading: true
-                });
-            }
-
-            handlePageChanged(newPage) {
-                this.setState({
-                    ...this.state,
-                    currentPage: newPage,
-                    loading: false
-                });
-            }
-
-            onQuickFilter(filter, fields, sort) {
-                if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
-                    this.dataSource.open(this.onFindMultipleFields(filter, fields, 0, loadingProps.pageSize, sort, this.getUser(), loadingProps.fieldsToForceLazy));
-                } else {
-                    this.dataSource.open(
-                        loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-                            loadingProps.resource,
-                            filter,
-                            fields,
-                            0,
-                            loadingProps.pageSize,
-                            sort, this.getUser(), loadingProps.fieldsToForceLazy
-                        )
-                    );
-                }
+            if (!this.dataSource.isOpen()) this.dataSource.open();
+            this.dataSource.insert();
+          }
+        } else if (button.props.id === "btnEdit") {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onCustomEdit") === true
+          ) {
+            this.onCustomEdit(button.props.route);
+            return;
+          } else {
+            if (
+              WrappedComponent.prototype.hasOwnProperty("onBeforeEdit") === true
+            ) {
+              if (!this.onBeforeEdit()) {
+                return;
+              }
             }
 
-            getSortFields() {
-                if (loadingProps.withFilter && this.filterRef && this.filterRef.current) {
-                    if (this.filterRef.current.getQuickFilterSort() && this.filterRef.current.getQuickFilterSort() !== '') {
-                        return this.filterRef.current.getQuickFilterSort();
-                    }
-                }
-                return loadingProps.defaultSortFields;
+            this.dataSource.edit();
+          }
+        } else if (button.props.id === "btnRemove") {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onBeforeRemove") === true
+          ) {
+            if (!this.onBeforeRemove()) {
+              return;
             }
-
-            onDatasourceEvent(event, error) {
-                let loading = this.state.loading;
-                if (
-                    event === dataSourceEvents.BEFORE_OPEN ||
-                    event === dataSourceEvents.BEFORE_GOTO_PAGE
-                ) {
-                    loading = true;
+          }
+          let _this = this;
+          AnterosSweetAlert({
+            title: "Deseja remover ?",
+            text: "",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+            focusCancel: true,
+          })
+            .then(function () {
+              _this.dataSource.delete((error) => {
+                if (error) {
+                  _this.setState({
+                    ..._this.state,
+                    alertIsOpen: true,
+                    alertMessage: processErrorMessage(error),
+                  });
                 }
-
-                if (event === dataSourceEvents.BEFORE_POST) {
-                    if (WrappedComponent.prototype.hasOwnProperty('onBeforePost') === true) {
-                        this.onBeforePost();
-                    }
-                }
-
-                if (
-                    event === dataSourceEvents.AFTER_OPEN ||
-                    event === dataSourceEvents.AFTER_GOTO_PAGE ||
-                    event === dataSourceEvents.ON_ERROR
-                ) {
-                    this.props.setDatasource(this.dataSource);
-                    loading = false;
-                }
-
-                if (event === dataSourceEvents.AFTER_INSERT) {
-                    if (WrappedComponent.prototype.hasOwnProperty('onAfterInsert') === true) {
-                        this.onAfterInsert();
-                    }
-                }
-
-                if (event === dataSourceEvents.ON_ERROR) {
-                    if (error) {
-                        this.setState({
-                            ...this.state,
-                            alertIsOpen: true,
-                            loading: false,
-                            alertMessage: processErrorMessage(error)
-                        });
-                    }
-                } else {
-                    this.setState({
-                        ...this.state,
-                        loading,
-                        update: Math.random()
-                    });
-                }
-            }
-
-            onButtonClick(event, button) {
-                if (button.props.id === 'btnView') {
-                    if (WrappedComponent.prototype.hasOwnProperty('onCustomView') === true) {
-                        this.onCustomView(button.props.route);
-                        return;
-                    }
-                } else if (button.props.id === 'btnAdd') {
-                    if (WrappedComponent.prototype.hasOwnProperty('onCustomAdd') === true) {
-                        this.onCustomAdd(button.props.route);
-                        return;
-                    } else {
-                        if (WrappedComponent.prototype.hasOwnProperty('onBeforeInsert') === true) {
-                            if (!this.onBeforeInsert()) {
-                                return;
-                            }
-                        }
-                        if (!this.dataSource.isOpen())
-                            this.dataSource.open();
-                        this.dataSource.insert();
-                    }
-                } else if (button.props.id === 'btnEdit') {
-                    if (WrappedComponent.prototype.hasOwnProperty('onCustomEdit') === true) {
-                        this.onCustomEdit(button.props.route);
-                        return;
-                    } else {
-                        if (WrappedComponent.prototype.hasOwnProperty('onBeforeEdit') === true) {
-                            if (!this.onBeforeEdit()) {
-                                return;
-                            }
-                        }
-
-                        this.dataSource.edit();
-                    }
-                } else if (button.props.id === 'btnRemove') {
-                    if (WrappedComponent.prototype.hasOwnProperty('onBeforeRemove') === true) {
-                        if (!this.onBeforeRemove()) {
-                            return;
-                        }
-                    }
-                    let _this = this;
-                    AnterosSweetAlert({
-                        title: 'Deseja remover ?',
-                        text: '',
-                        type: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sim',
-                        cancelButtonText: 'Não',
-                        focusCancel: true
-                    })
-                        .then(function () {
-                            _this.dataSource.delete(error => {
-                                if (error) {
-                                    _this.setState({
-                                        ..._this.state,
-                                        alertIsOpen: true,
-                                        alertMessage: processErrorMessage(error)
-                                    });
-                                }
-                            });
-                        })
-                        .catch(error => { });
-                } else if (button.props.id === 'btnClose') {
-                    if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-                        this.setState({
-                            ...this.state,
-                            alertIsOpen: true,
-                            alertMessage: 'Salve ou cancele os dados antes de sair'
-                        });
-                        return;
-                    }
-                }
-
-                if (this.props.onButtonClick) {
-                    this.props.onButtonClick(event, button);
-                }
-                if (button.props.route) {
-                    this.props.history.push(button.props.route);
-                }
-            }
-
-            onSearchButtonClick(field, event) { }
-
-            onToggleExpandedFilter(expanded) {
-                this.setState({
-                    ...this.state,
-                    filterExpanded: expanded
-                })
-
-                setTimeout(() => {
-                    if (this.state.newHeight !== undefined && this.state.width !== undefined) {
-                        if (this.table1) {
-                            this.table1.resize(this.state.width - 360, this.state.newHeight);
-                        }
-                        if (this.table2) {
-                            this.table2.resize("100%", this.state.newHeight);
-                        }
-                    }
-                }, 500)
-            }
-
-            onDoubleClickTable(data) {
-                if (WrappedComponent.prototype.hasOwnProperty('onCustomDoubleClick') === true) {
-                    this.onCustomDoubleClick(data);
-                }
-            }
-
-            pageConfigHandler(page) {
-                if (
-                    this.props.query &&
-                    this.props.query.rules &&
-                    this.props.query.rules.length > 0
-                ) {
-                    var filter = new AnterosFilterDSL();
-                    filter.buildFrom(this.props.query, this.props.sort);
-                    if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
-                        return this.onFindWithFilter(filter.toJSON(), page, loadingProps.pageSize,
-                            this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy);
-                    } else {
-                        return loadingProps.endPoints.FIND_WITH_FILTER(
-                            loadingProps.resource,
-                            filter.toJSON(),
-                            page,
-                            loadingProps.pageSize,
-                            this.getSortFields(),
-                            this.getUser()
-                        );
-                    }
-                } else if (loadingProps.withFilter && this.filterRef && this.filterRef.current) {
-                    if (
-                        this.filterRef.current.getQuickFilterText() &&
-                        this.filterRef.current.getQuickFilterText() !== ''
-                    ) {
-                        if (WrappedComponent.prototype.hasOwnProperty('onFindMultipleFields') === true) {
-                            return this.onFindMultipleFields(this.props.quickFilterText, this.filterRef.current.getQuickFilterFields(), page, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy);
-                        } else {
-                            return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-                                loadingProps.resource,
-                                this.props.quickFilterText,
-                                this.filterRef.current.getQuickFilterFields(),
-                                page,
-                                loadingProps.pageSize,
-                                this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy
-                            );
-                        }
-                    } else {
-                        return this.refreshData(page);
-                    }
-                }
-            }
-
-            onButtonSearch(event) {
-                if (
-                    this.props.query &&
-                    this.props.query.rules &&
-                    this.props.query.rules.length > 0
-                ) {
-                    var filter = new AnterosFilterDSL();
-                    filter.buildFrom(this.props.query, this.props.sort);
-                    if (WrappedComponent.prototype.hasOwnProperty('onFindWithFilter') === true) {
-                        this.dataSource.open(this.onFindWithFilter(filter.toJSON(), 0, loadingProps.pageSize, this.getSortFields(), this.getUser(), loadingProps.fieldsToForceLazy));
-                    } else {
-                        this.dataSource.open(
-                            loadingProps.endPoints.FIND_WITH_FILTER(
-                                loadingProps.resource,
-                                filter.toJSON(),
-                                0,
-                                loadingProps.pageSize,
-                                this.getUser(), loadingProps.fieldsToForceLazy
-                            )
-                        );
-                    }
-                } else {
-                    this.props.setFilter(
-                        this.props.activeFilter,
-                        '',
-                        this.props.sort,
-                        this.props.activeSortIndex,
-                        ''
-                    );
-
-                    if (WrappedComponent.prototype.hasOwnProperty('onFindAll') === true) {
-                        this.dataSource.open(this.onFindAll(0, loadingProps.pageSize,
-                            this.getSortFields(),
-                            this.getUser(), loadingProps.fieldsToForceLazy));
-                    } else {
-                        this.dataSource.open(
-                            loadingProps.endPoints.FIND_ALL(
-                                loadingProps.resource,
-                                0,
-                                loadingProps.pageSize,
-                                this.getSortFields(),
-                                this.getUser(), loadingProps.fieldsToForceLazy
-                            )
-                        );
-                    }
-                }
-            }
-
-            onCloseAlert() {
-                this.setState({
-                    ...this.state,
-                    alertIsOpen: false,
-                    alertMessage: ''
-                });
-            }
-
-            onShowHideLoad(show) {
-                this.setState({
-                    ...this.state,
-                    loading: show,
-                    update: Math.random()
-                })
-            }
-
-            handleOnSelectRecord(row, data, tableId) {
-                if (WrappedComponent.prototype.hasOwnProperty('onSelectRecord') === true) {
-                    this.onSelectRecord(row, data, tableId)
-                }
-            }
-
-            handleOnUnselectRecord(row, data, tableId) {
-                if (WrappedComponent.prototype.hasOwnProperty('onUnselectRecord') === true) {
-                    this.onUnselectRecord(row, data, tableId)
-                }
-            }
-
-            handleOnSelectAllRecords(records, tableId) {
-                if (WrappedComponent.prototype.hasOwnProperty('onSelectAllRecords') === true) {
-                    this.onSelectAllRecords(records, tableId)
-                }
-            }
-
-            handleOnUnselectAllRecords(tableId) {
-                if (WrappedComponent.prototype.hasOwnProperty('onUnselectAllRecords') === true) {
-                    this.onUnselectAllRecords(tableId)
-                }
-            }
-
-            onResize(width, height) {
-                let newHeight = height - 120;
-
-                if (this.table1) {
-                    this.table1.resize(width - 350, newHeight);
-                }
-                if (this.table2) {
-                    this.table2.resize("100%", newHeight);
-                }
-                this.setState({
-                    ...this.state,
-                    width: width,
-                    newHeight: newHeight
-                })
-            }
-
-
-            render() {
-                const modals = WrappedComponent.prototype.hasOwnProperty('getModals') ? this.getModals() : null;
-
-                return (
-                    <Fragment>
-                        <AnterosCard
-                            caption={loadingProps.caption}
-                            className="versatil-card-full"
-                            withScroll={false}
-                            styleBlock={{
-                                height: 'calc(100% - 120px)'
-                            }}
-                            ref={ref => (this.card = ref)}
-                        >
-                            <AnterosResizeDetector
-                                handleWidth
-                                handleHeight
-                                onResize={this.onResize}
-                            />
-                            <AnterosAlert
-                                danger
-                                fill
-                                isOpen={this.state.alertIsOpen}
-                                autoCloseInterval={15000}
-                                onClose={this.onCloseAlert}
-                            >
-                                {this.state.alertMessage}
-                            </AnterosAlert>
-                            <HeaderActions>
-                                <AnterosButton
-                                    id="btnClose"
-                                    onButtonClick={this.onButtonClick}
-                                    route={loadingProps.routes.close}
-                                    visible={loadingProps.routes.close !== undefined}
-                                    icon="fa fa-times"
-                                    small
-                                    circle
-                                    disabled={
-                                        this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                    }
-                                />
-                            </HeaderActions>
-                            <AnterosBlockUi
-                                tagStyle={{
-                                    height: this.state.filterExpanded ? '100%' : 'auto'
-                                }}
-                                styleBlockMessage={{
-                                    border: '2px solid white',
-                                    width: '200px',
-                                    backgroundColor: '#8BC34A',
-                                    borderRadius: '8px',
-                                    color: 'white'
-                                }}
-                                styleOverlay={{
-                                    opacity: 0.1,
-                                    backgroundColor: 'black'
-                                }}
-                                tag="div"
-                                blocking={this.state.loading}
-                                message={loadingProps.messageLoading}
-                                loader={
-                                    <AnterosLoader active type="ball-pulse" color="#02a17c" />
-                                }
-                            >
-                                {loadingProps.withFilter ? (
-                                    <div style={{
-                                        display: 'flex',
-                                        flexFlow: 'row nowrap',
-                                        justifyContent: 'space-between',
-                                        width: 'calc(100%)',
-                                        height: 'calc(100%)'
-                                    }}>
-                                        <div style={{
-                                            width: this.state.filterExpanded ? 'calc(100% - 350px)' : 'calc(100%)',
-                                        }}>
-                                            <UserActions
-                                                dataSource={this.dataSource}
-                                                onButtonClick={this.onButtonClick}
-                                                onButtonSearch={this.onButtonSearch}
-                                                routes={loadingProps.routes}
-                                                allowRemove={loadingProps.disableRemove ? false : true}
-                                                labelButtonAdd={loadingProps.labelButtonAdd}
-                                                labelButtonEdit={loadingProps.labelButtonEdit}
-                                                labelButtonRemove={loadingProps.labelButtonRemove}
-                                                labelButtonSelect={loadingProps.labelButtonSelect}
-                                                positionUserActions={this.positionUserActions}
-                                                userActions={
-                                                    this.hasUserActions ? this.getUserActions() : null
-                                                }
-                                            />
-                                            {this.state.filterExpanded ? (
-                                                <AnterosDataTable
-                                                    id={'table' + loadingProps.viewName}
-                                                    height={'200px'}
-                                                    ref={ref => (this.table1 = ref)}
-                                                    dataSource={this.dataSource}
-                                                    width="100%"
-                                                    enablePaging={false}
-                                                    enableSearching={false}
-                                                    showExportButtons={false}
-                                                    onDoubleClick={this.onDoubleClickTable}
-                                                    onSelectRecord={this.handleOnSelectRecord}
-                                                    onUnSelectRecord={this.handleOnUnselectRecord}
-                                                    onSelectAllRecords={this.handleOnSelectAllRecords}
-                                                    onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                                                >
-                                                    {this.getColumns()}
-                                                </AnterosDataTable>
-                                            ) : null}
-                                        </div>
-                                        <AnterosQueryBuilder
-                                            zIndex={50}
-                                            query={this.props.query}
-                                            sort={this.props.sort}
-                                            id={loadingProps.filterName}
-                                            formName={loadingProps.viewName}
-                                            ref={this.filterRef}
-                                            expandedFilter={this.state.filterExpanded}
-                                            activeSortIndex={this.props.activeSortIndex}
-                                            dataSource={this.dsFilter}
-                                            activeFilter={this.props.activeFilter}
-                                            onSaveFilter={this.onSaveFilter}
-                                            onSelectActiveFilter={this.onSelectActiveFilter}
-                                            onQueryChange={this.onQueryChange}
-                                            onSortChange={this.onSortChange}
-                                            onQuickFilter={this.onQuickFilter}
-                                            quickFilterText={this.props.quickFilterText}
-                                            quickFilterWidth={
-                                                loadingProps.quickFilterWidth
-                                                    ? loadingProps.quickFilterWidth
-                                                    : '30%'
-                                            }
-                                            height="170px"
-                                            allowSort={true}
-                                            disabled={
-                                                this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                                            }
-                                            onSearchButtonClick={this.onSearchButtonClick}
-                                            onToggleExpandedFilter={this.onToggleExpandedFilter}
-                                        >
-                                            {this.getFieldsFilter()}
-                                        </AnterosQueryBuilder>
-                                    </div>
-                                ) : (
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'flex-start'
-                                            }}
-                                        >
-                                            <UserActions
-                                                dataSource={this.dataSource}
-                                                onButtonClick={this.onButtonClick}
-                                                onButtonSearch={this.onButtonSearch}
-                                                routes={loadingProps.routes}
-                                                allowRemove={loadingProps.disableRemove ? false : true}
-                                                labelButtonAdd={loadingProps.labelButtonAdd}
-                                                labelButtonEdit={loadingProps.labelButtonEdit}
-                                                labelButtonRemove={loadingProps.labelButtonRemove}
-                                                labelButtonSelect={loadingProps.labelButtonSelect}
-                                                positionUserActions={this.positionUserActions}
-                                                userActions={
-                                                    this.hasUserActions ? this.getUserActions() : null
-                                                }
-                                            />
-                                        </div>
-                                    )}
-
-                                {!this.state.filterExpanded ? (
-                                    <AnterosDataTable
-                                        id={'table' + loadingProps.viewName}
-                                        height={'200px'}
-                                        ref={ref => (this.table2 = ref)}
-                                        dataSource={this.dataSource}
-                                        width="100%"
-                                        enablePaging={false}
-                                        enableSearching={false}
-                                        showExportButtons={false}
-                                        onDoubleClick={this.onDoubleClickTable}
-                                        onSelectRecord={this.handleOnSelectRecord}
-                                        onUnSelectRecord={this.handleOnUnselectRecord}
-                                        onSelectAllRecords={this.handleOnSelectAllRecords}
-                                        onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                                    >
-                                        {this.getColumns()}
-                                    </AnterosDataTable>
-                                ) : null}
-                                <WrappedComponent
-                                    {...this.props}
-                                    ref={ref => (this.wrappedRef = ref)}
-                                    state={this.state}
-                                    user={this.props.user}
-                                    ownerTemplate={this}
-                                    history={this.props.history}
-                                    dataSource={this.dataSource}
-                                />
-                            </AnterosBlockUi>
-                            <FooterActions className="versatil-card-footer">
-                                <AnterosRow>
-                                    <AnterosCol medium={4}>
-                                        <AnterosLabel
-                                            caption={`Total ${
-                                                loadingProps.caption
-                                                } ${this.dataSource.getGrandTotalRecords()}`}
-                                        />
-                                    </AnterosCol>
-                                    <AnterosCol medium={7}>
-                                        <AnterosPagination
-                                            horizontalEnd
-                                            dataSource={this.dataSource}
-                                            visiblePages={3}
-                                            onBeforePageChanged={this.onBeforePageChanged}
-                                            onPageChanged={this.handlePageChanged}
-                                        />
-                                    </AnterosCol>
-                                </AnterosRow>
-                            </FooterActions>
-                        </AnterosCard>
-                        {modals}
-                    </Fragment>
-                );
-            }
+              });
+            })
+            .catch((error) => {});
+        } else if (button.props.id === "btnClose") {
+          if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+            this.setState({
+              ...this.state,
+              alertIsOpen: true,
+              alertMessage: "Salve ou cancele os dados antes de sair",
+            });
+            return;
+          }
         }
 
-        return connect(
-            mapStateToProps,
-            mapDispatchToProps
-        )(TableContainerView);
-    };
+        if (this.props.onButtonClick) {
+          this.props.onButtonClick(event, button);
+        }
+        if (button.props.route) {
+          this.props.history.push(button.props.route);
+        }
+      }
+
+      onSearchByFilter(currentFilter) {
+        this.dataSource.open(getData(currentFilter,0));
+      }
+
+      getData(currentFilter,page){
+        if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
+           (currentFilter.filter.rules.length > 0)) {
+              return this.getDataWithFilter(currentFilter,page);
+          } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
+                     (this.currentFilter.filter.quickFilterText !== "")) {
+              return this.getDataWithQuickFilter(currentFilter,page);
+          } else {
+              return this.getDataWithoutFilter(page);
+          }
+      }
+
+      getDataWithFilter(currentFilter, page) {
+        var filter = new AnterosFilterDSL();
+        filter.buildFrom(currentFilter.filter, currentFilter.sort);
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") === true
+        ) {
+          return this.onFindWithFilter(
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+        } else {
+          return loadingProps.endPoints.FIND_WITH_FILTER(
+              loadingProps.resource,
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+        }
+      }
+
+      getDataWithoutFilter(page) {
+        if (WrappedComponent.prototype.hasOwnProperty("onFindAll") === true) {
+          return this.onFindAll(
+              page,
+              loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+        } else {
+          return loadingProps.endPoints.FIND_ALL(
+              loadingProps.resource,
+              page,
+              loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            )
+        }
+      }
+
+      getDataWithQuickFilter(currentFilter) {
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onFindMultipleFields") ===
+          true
+        ) {
+          return this.onFindMultipleFields(
+              currentFilter.filter.quickFilterText,
+              currentFilter.filter.selectedFields,
+              0,
+              loadingProps.pageSize,
+              currentFilter.sort,
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+        } else {
+          return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+              loadingProps.resource,
+              currentFilter.filter.quickFilterText,
+              currentFilter.filter.selectedFields,
+              0,
+              loadingProps.pageSize,
+              currentFilter.sort,
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+        }
+      }
+
+      onDoubleClickTable(data) {
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onCustomDoubleClick") ===
+          true
+        ) {
+          this.onCustomDoubleClick(data);
+        }
+      }
+
+      pageConfigHandler(page) {
+        return this.getData(this.props.currentFilter,page);
+      }
+
+      onCloseAlert() {
+        this.setState({
+          ...this.state,
+          alertIsOpen: false,
+          alertMessage: "",
+        });
+      }
+
+      onShowHideLoad(show) {
+        this.setState({
+          ...this.state,
+          loading: show,
+          update: Math.random(),
+        });
+      }
+
+      handleOnSelectRecord(row, data, tableId) {
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onSelectRecord") === true
+        ) {
+          this.onSelectRecord(row, data, tableId);
+        }
+      }
+
+      handleOnUnselectRecord(row, data, tableId) {
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onUnselectRecord") === true
+        ) {
+          this.onUnselectRecord(row, data, tableId);
+        }
+      }
+
+      handleOnSelectAllRecords(records, tableId) {
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onSelectAllRecords") ===
+          true
+        ) {
+          this.onSelectAllRecords(records, tableId);
+        }
+      }
+
+      handleOnUnselectAllRecords(tableId) {
+        if (
+          WrappedComponent.prototype.hasOwnProperty("onUnselectAllRecords") ===
+          true
+        ) {
+          this.onUnselectAllRecords(tableId);
+        }
+      }
+
+      onResize(width, height) {
+        let newHeight = height - 120;
+
+        if (this.table1) {
+          this.table1.resize(width - 350, newHeight);
+        }
+        if (this.table2) {
+          this.table2.resize("100%", newHeight);
+        }
+        this.setState({
+          ...this.state,
+          width: width,
+          newHeight: newHeight,
+        });
+      }
+
+      render() {
+        const modals = WrappedComponent.prototype.hasOwnProperty("getModals")
+          ? this.getModals()
+          : null;
+
+        return (
+          <Fragment>
+            <AnterosCard
+              caption={loadingProps.caption}
+              className="versatil-card-full"
+              withScroll={false}
+              styleBlock={{
+                height: "calc(100% - 120px)",
+              }}
+              ref={(ref) => (this.card = ref)}
+            >
+              <AnterosResizeDetector
+                handleWidth
+                handleHeight
+                onResize={this.onResize}
+              />
+              <AnterosAlert
+                danger
+                fill
+                isOpen={this.state.alertIsOpen}
+                autoCloseInterval={15000}
+                onClose={this.onCloseAlert}
+              >
+                {this.state.alertMessage}
+              </AnterosAlert>
+              <HeaderActions>
+                <AnterosButton
+                  id="btnClose"
+                  onButtonClick={this.onButtonClick}
+                  route={loadingProps.routes.close}
+                  visible={loadingProps.routes.close !== undefined}
+                  icon="fa fa-times"
+                  small
+                  circle
+                  disabled={
+                    this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                  }
+                />
+              </HeaderActions>
+              <AnterosBlockUi
+                tagStyle={{
+                  height: this.state.filterExpanded ? "100%" : "auto",
+                }}
+                styleBlockMessage={{
+                  border: "2px solid white",
+                  width: "200px",
+                  backgroundColor: "#8BC34A",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+                styleOverlay={{
+                  opacity: 0.1,
+                  backgroundColor: "black",
+                }}
+                tag="div"
+                blocking={this.state.loading}
+                message={loadingProps.messageLoading}
+                loader={
+                  <AnterosLoader active type="ball-pulse" color="#02a17c" />
+                }
+              >
+                {loadingProps.withFilter ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexFlow: "row nowrap",
+                      justifyContent: "space-between",
+                      width: "calc(100%)",
+                      height: "calc(100%)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: this.state.filterExpanded
+                          ? "calc(100% - 350px)"
+                          : "calc(100%)",
+                      }}
+                    >
+                      <UserActions
+                        dataSource={this.dataSource}
+                        onButtonClick={this.onButtonClick}
+                        onButtonSearch={this.onButtonSearch}
+                        routes={loadingProps.routes}
+                        allowRemove={loadingProps.disableRemove ? false : true}
+                        labelButtonAdd={loadingProps.labelButtonAdd}
+                        labelButtonEdit={loadingProps.labelButtonEdit}
+                        labelButtonRemove={loadingProps.labelButtonRemove}
+                        labelButtonSelect={loadingProps.labelButtonSelect}
+                        positionUserActions={this.positionUserActions}
+                        userActions={
+                          this.hasUserActions ? this.getUserActions() : null
+                        }
+                      />
+                      {this.state.filterExpanded ? (
+                        <AnterosDataTable
+                          id={"table" + loadingProps.viewName}
+                          height={"200px"}
+                          ref={(ref) => (this.table1 = ref)}
+                          dataSource={this.dataSource}
+                          width="100%"
+                          enablePaging={false}
+                          enableSearching={false}
+                          showExportButtons={false}
+                          onDoubleClick={this.onDoubleClickTable}
+                          onSelectRecord={this.handleOnSelectRecord}
+                          onUnSelectRecord={this.handleOnUnselectRecord}
+                          onSelectAllRecords={this.handleOnSelectAllRecords}
+                          onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                        >
+                          {this.getColumns()}
+                        </AnterosDataTable>
+                      ) : null}
+                    </div>
+                    <AnterosQueryBuilder
+                      zIndex={50}
+                      id={loadingProps.filterName}
+                      formName={loadingProps.viewName}
+                      ref={this.filterRef}
+                      expandedFilter={this.props.filterExpanded}
+                      dataSource={this.dsFilter}
+                      currentFilter={this.props.currentFilter}
+                      activeFilterIndex={this.props.activeFilterIndex}
+                      onSelectedFilter={this.onSelectedFilter}
+                      onFilterChanged={this.onFilterChanged}
+                      onSearchByFilter={this.onSearchByFilter}
+                      onToggleExpandedFilter={this.onToggleExpandedFilter}
+                      quickFilterWidth={
+                        loadingProps.quickFilterWidth
+                          ? loadingProps.quickFilterWidth
+                          : "30%"
+                      }
+                      height="170px"
+                      allowSort={true}
+                      disabled={
+                        this.dataSource.getState() !==
+                        dataSourceConstants.DS_BROWSE
+                      }
+                    >
+                      {this.getFieldsFilter()}
+                    </AnterosQueryBuilder>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <UserActions
+                      dataSource={this.dataSource}
+                      onButtonClick={this.onButtonClick}
+                      onButtonSearch={this.onButtonSearch}
+                      routes={loadingProps.routes}
+                      allowRemove={loadingProps.disableRemove ? false : true}
+                      labelButtonAdd={loadingProps.labelButtonAdd}
+                      labelButtonEdit={loadingProps.labelButtonEdit}
+                      labelButtonRemove={loadingProps.labelButtonRemove}
+                      labelButtonSelect={loadingProps.labelButtonSelect}
+                      positionUserActions={this.positionUserActions}
+                      userActions={
+                        this.hasUserActions ? this.getUserActions() : null
+                      }
+                    />
+                  </div>
+                )}
+
+                {!this.state.filterExpanded ? (
+                  <AnterosDataTable
+                    id={"table" + loadingProps.viewName}
+                    height={"200px"}
+                    ref={(ref) => (this.table2 = ref)}
+                    dataSource={this.dataSource}
+                    width="100%"
+                    enablePaging={false}
+                    enableSearching={false}
+                    showExportButtons={false}
+                    onDoubleClick={this.onDoubleClickTable}
+                    onSelectRecord={this.handleOnSelectRecord}
+                    onUnSelectRecord={this.handleOnUnselectRecord}
+                    onSelectAllRecords={this.handleOnSelectAllRecords}
+                    onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                  >
+                    {this.getColumns()}
+                  </AnterosDataTable>
+                ) : null}
+                <WrappedComponent
+                  {...this.props}
+                  ref={(ref) => (this.wrappedRef = ref)}
+                  state={this.state}
+                  user={this.props.user}
+                  ownerTemplate={this}
+                  history={this.props.history}
+                  dataSource={this.dataSource}
+                />
+              </AnterosBlockUi>
+              <FooterActions className="versatil-card-footer">
+                <AnterosRow>
+                  <AnterosCol medium={4}>
+                    <AnterosLabel
+                      caption={`Total ${
+                        loadingProps.caption
+                      } ${this.dataSource.getGrandTotalRecords()}`}
+                    />
+                  </AnterosCol>
+                  <AnterosCol medium={7}>
+                    <AnterosPagination
+                      horizontalEnd
+                      dataSource={this.dataSource}
+                      visiblePages={3}
+                      onBeforePageChanged={this.onBeforePageChanged}
+                      onPageChanged={this.handlePageChanged}
+                    />
+                  </AnterosCol>
+                </AnterosRow>
+              </FooterActions>
+            </AnterosCard>
+            {modals}
+          </Fragment>
+        );
+      }
+    }
+
+    return connect(mapStateToProps, mapDispatchToProps)(TableContainerView);
+  };
 }
 
 class UserActions extends Component {
-    render() {
-        return (
-            <div>
-                {this.props.positionUserActions === 'first'
-                    ? this.props.userActions
-                    : null}
-                {this.props.routes.edit ? (
-                    <AnterosButton
-                        id="btnView"
-                        route={this.props.routes.edit}
-                        icon="fal fa-eye"
-                        small
-                        className="versatil-btn-visualizar"
-                        caption={
-                            this.props.labelButtonEdit ? this.props.labelButtonEdit : 'Visualizar'
-                        }
-                        hint={
-                            this.props.labelButtonEdit ? this.props.labelButtonEdit : 'Visualizar'
-                        }
-                        onButtonClick={this.props.onButtonClick}
-                        disabled={
-                            this.props.dataSource.isEmpty() ||
-                            this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                        }
-                    />
-                ) : null}
-                {this.props.routes.add ? (
-                    <AnterosButton
-                        id="btnAdd"
-                        route={this.props.routes.add}
-                        icon="fal fa-plus"
-                        small
-                        className="versatil-btn-adicionar"
-                        caption={
-                            this.props.labelButtonAdd
-                                ? this.props.labelButtonAdd
-                                : 'Adicionar'
-                        }
-                        hint={
-                            this.props.labelButtonAdd
-                                ? this.props.labelButtonAdd
-                                : 'Adicionar'
-                        }
-                        onButtonClick={this.props.onButtonClick}
-                        disabled={
-                            this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                        }
-                    />
-                ) : null}
-                {this.props.routes.edit ? (
-                    <AnterosButton
-                        id="btnEdit"
-                        route={this.props.routes.edit}
-                        icon="fal fa-pencil"
-                        small
-                        className="versatil-btn-editar"
-                        caption={
-                            this.props.labelButtonEdit ? this.props.labelButtonEdit : 'Editar'
-                        }
-                        hint={
-                            this.props.labelButtonEdit ? this.props.labelButtonEdit : 'Editar'
-                        }
-                        onButtonClick={this.props.onButtonClick}
-                        disabled={
-                            this.props.dataSource.isEmpty() ||
-                            this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                        }
-                    />
-                ) : null}
-                {this.props.allowRemove ? (
-                    <AnterosButton
-                        id="btnRemove"
-                        icon="fal fa-trash"
-                        disabled={
-                            this.props.dataSource.isEmpty() ||
-                            this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                        }
-                        small
-                        caption={
-                            this.props.labelButtonRemove
-                                ? this.props.labelButtonRemove
-                                : 'Remover'
-                        }
-                        hint={
-                            this.props.labelButtonRemove
-                                ? this.props.labelButtonRemove
-                                : 'Remover'
-                        }
-                        className="versatil-btn-remover"
-                        onButtonClick={this.props.onButtonClick}
-                    />
-                ) : null}
-                <AnterosButton
-                    id="btnSelect"
-                    icon="far fa-sync"
-                    disabled={
-                        this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                    }
-                    small
-                    caption={
-                        this.props.labelButtonSelect
-                            ? this.props.labelButtonSelect
-                            : 'Atualizar'
-                    }
-                    hint={
-                        this.props.labelButtonSelect
-                            ? this.props.labelButtonSelect
-                            : 'Atualizar'
-                    }
-                    secondary
-                    className="versatil-btn-selecionar"
-                    onButtonClick={this.props.onButtonSearch}
-                />{' '}
-                {this.props.positionUserActions === 'last'
-                    ? this.props.userActions
-                    : null}
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        {this.props.positionUserActions === "first"
+          ? this.props.userActions
+          : null}
+        {this.props.routes.edit ? (
+          <AnterosButton
+            id="btnView"
+            route={this.props.routes.edit}
+            icon="fal fa-eye"
+            small
+            className="versatil-btn-visualizar"
+            caption={
+              this.props.labelButtonEdit
+                ? this.props.labelButtonEdit
+                : "Visualizar"
+            }
+            hint={
+              this.props.labelButtonEdit
+                ? this.props.labelButtonEdit
+                : "Visualizar"
+            }
+            onButtonClick={this.props.onButtonClick}
+            disabled={
+              this.props.dataSource.isEmpty() ||
+              this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+            }
+          />
+        ) : null}
+        {this.props.routes.add ? (
+          <AnterosButton
+            id="btnAdd"
+            route={this.props.routes.add}
+            icon="fal fa-plus"
+            small
+            className="versatil-btn-adicionar"
+            caption={
+              this.props.labelButtonAdd
+                ? this.props.labelButtonAdd
+                : "Adicionar"
+            }
+            hint={
+              this.props.labelButtonAdd
+                ? this.props.labelButtonAdd
+                : "Adicionar"
+            }
+            onButtonClick={this.props.onButtonClick}
+            disabled={
+              this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+            }
+          />
+        ) : null}
+        {this.props.routes.edit ? (
+          <AnterosButton
+            id="btnEdit"
+            route={this.props.routes.edit}
+            icon="fal fa-pencil"
+            small
+            className="versatil-btn-editar"
+            caption={
+              this.props.labelButtonEdit ? this.props.labelButtonEdit : "Editar"
+            }
+            hint={
+              this.props.labelButtonEdit ? this.props.labelButtonEdit : "Editar"
+            }
+            onButtonClick={this.props.onButtonClick}
+            disabled={
+              this.props.dataSource.isEmpty() ||
+              this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+            }
+          />
+        ) : null}
+        {this.props.allowRemove ? (
+          <AnterosButton
+            id="btnRemove"
+            icon="fal fa-trash"
+            disabled={
+              this.props.dataSource.isEmpty() ||
+              this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+            }
+            small
+            caption={
+              this.props.labelButtonRemove
+                ? this.props.labelButtonRemove
+                : "Remover"
+            }
+            hint={
+              this.props.labelButtonRemove
+                ? this.props.labelButtonRemove
+                : "Remover"
+            }
+            className="versatil-btn-remover"
+            onButtonClick={this.props.onButtonClick}
+          />
+        ) : null}
+        {" "}
+        {this.props.positionUserActions === "last"
+          ? this.props.userActions
+          : null}
+      </div>
+    );
+  }
 }
 
 export class TableTemplateActions extends Component {
-    render() {
-        return <Fragment>{this.props.children}</Fragment>;
-    }
+  render() {
+    return <Fragment>{this.props.children}</Fragment>;
+  }
 }

@@ -1,4 +1,4 @@
-import { Children, createElement, Component } from 'react';
+import React, { Children, createElement, Component } from 'react';
 import { AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import AnterosButton from "./AnterosButton";
 import lodash from "lodash";
