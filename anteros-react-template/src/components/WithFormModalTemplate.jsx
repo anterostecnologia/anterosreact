@@ -60,6 +60,7 @@ export default function WithFormModalTemplate(_loadingProps) {
 
                 this.state = {
                     alertIsOpen: false,
+                    saving: false,
                     alertMessage: '',
                     detailMessage: undefined,
                     modalOpen: '',
@@ -125,19 +126,19 @@ export default function WithFormModalTemplate(_loadingProps) {
                 }
             }
 
-            convertMessage(alertMessage){
+            convertMessage(alertMessage) {
                 if (alertMessage.constructor === Array) {
-                  let result = [];
-                  alertMessage.forEach((item, index) => {
-                    result.push(<span style={{
-                       whiteSpace: "pre"
-                    }} key={index}>{item + "\n"}</span>);
-                  });
-                  return result;
+                    let result = [];
+                    alertMessage.forEach((item, index) => {
+                        result.push(<span style={{
+                            whiteSpace: "pre"
+                        }} key={index}>{item + "\n"}</span>);
+                    });
+                    return result;
                 } else {
-                  return alertMessage; 
+                    return alertMessage;
                 }
-              }
+            }
 
 
             onDatasourceEvent(event, error) {
@@ -196,11 +197,11 @@ export default function WithFormModalTemplate(_loadingProps) {
                     return this.getCustomButtons();
                 } else {
                     return (<Fragment>
-                        {this.dataSource.getState() !== 'dsBrowse'?<AnterosButton success id="btnOK" onClick={this.onClick}>
+                        {this.dataSource.getState() !== 'dsBrowse' ? <AnterosButton success id="btnOK" onClick={this.onClick} disabled={this.state.saving}>
                             OK
-                        </AnterosButton>:null}{' '}
-                                    <AnterosButton danger id="btnCancel" onClick={this.onClick}>
-                                        Cancela
+                        </AnterosButton> : null}{' '}
+                        <AnterosButton danger id="btnCancel" onClick={this.onClick} disabled={this.state.saving}>
+                            Cancela
                         </AnterosButton>
                     </Fragment>);
                 }
@@ -209,63 +210,64 @@ export default function WithFormModalTemplate(_loadingProps) {
             onClick(event, button) {
                 let _this = this;
                 if (button.props.id === "btnOK") {
+                    _this.setState({ ..._this.state, saving: true });
                     if (
                         WrappedComponent.prototype.hasOwnProperty('onBeforeOk') === true
-                    ) {                        
-                        let result = this.onBeforeOk(event);
-                        if (result instanceof Promise){    
+                    ) {
+                        let result = _this.onBeforeOk(event);
+                        if (result instanceof Promise) {
                             result.then(function (response) {
-                                _this.setState({ ..._this.state, alertIsOpen: false, alertMessage: '' });
+                                _this.setState({ ..._this.state, alertIsOpen: false, alertMessage: '', saving: false });
                                 if (_this.dataSource && _this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                                     if (!error) {
                                         if (
-                                          WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
-                                          true
+                                            WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
+                                            true
                                         ) {
-                                          if (!_this.onAfterSave()) {
-                                            return;
-                                          }
+                                            if (!_this.onAfterSave()) {
+                                                return;
+                                            }
                                         }
                                         _this.props.onClickOk(event, _this.props.selectedRecords);
-                                      }
+                                    }
                                 }
                             }).catch(function (error) {
-                                _this.setState({ ..._this.state, alertIsOpen: true, alertMessage: processErrorMessage(error) });
+                                _this.setState({ ..._this.state, alertIsOpen: true, alertMessage: processErrorMessage(error), saving: false });
                             });
                         } else if (result) {
                             if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                                 this.dataSource.post(error => {
                                     if (!error) {
-                                      if (
-                                        WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
-                                        true
-                                      ) {
-                                        if (!_this.onAfterSave()) {
-                                          return;
+                                        if (
+                                            WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
+                                            true
+                                        ) {
+                                            if (!_this.onAfterSave()) {
+                                                return;
+                                            }
                                         }
-                                      }
-                                      _this.props.onClickOk(event, _this.props.selectedRecords);
+                                        _this.props.onClickOk(event, _this.props.selectedRecords);
                                     }
-                                  });
+                                });
                             }
                         }
                     } else {
                         if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                             this.dataSource.post(error => {
                                 if (!error) {
-                                  if (
-                                    WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
-                                    true
-                                  ) {
-                                    if (!_this.onAfterSave()) {
-                                      return;
+                                    if (
+                                        WrappedComponent.prototype.hasOwnProperty('onAfterSave') ===
+                                        true
+                                    ) {
+                                        if (!_this.onAfterSave()) {
+                                            return;
+                                        }
                                     }
-                                  }
-                                  _this.props.onClickOk(event, _this.props.selectedRecords);
+                                    _this.props.onClickOk(event, _this.props.selectedRecords);
                                 }
-                              });
-                        }                        
-                    }                    
+                            });
+                        }
+                    }
                 } else if (button.props.id == "btnCancel") {
                     if (this.dataSource && this.dataSource.getState() !== 'dsBrowse') {
                         this.dataSource.cancel();
@@ -325,7 +327,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                             {this.getButtons()}
                         </ModalActions>
                         <div>
-                            <WrappedComponent {...this.props} dataSource={this.dataSource} ownerTemplate={this}/>
+                            <WrappedComponent {...this.props} dataSource={this.dataSource} ownerTemplate={this} />
                         </div>
                     </AnterosModal>
                 );

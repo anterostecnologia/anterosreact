@@ -10,7 +10,7 @@ export default class AnterosInputTag extends Component {
 
         this.state = {
             tags: this.props.dataSource && this.props.dataSource.fieldByName(this.props.dataField) ?
-            this.props.dataSource.fieldByName(this.props.dataField) : this.props.tags
+            this.props.dataSource.fieldByName(this.props.dataField).split(this.props.separator) : this.props.tags
         };
     }
 
@@ -30,7 +30,7 @@ export default class AnterosInputTag extends Component {
         newTags.splice(i, 1);
         this.setState({ tags: newTags });
         if (this.props.dataSource && this.props.dataSource.getState() !== 'dsBrowse') {
-            this.props.dataSource.setFieldByName(this.props.dataField, newTags.join(','))
+            this.props.dataSource.setFieldByName(this.props.dataField, newTags.join(this.props.separator))
         }
     }
 
@@ -67,7 +67,7 @@ export default class AnterosInputTag extends Component {
                 return;
             }
             if (this.props.dataSource && this.props.dataSource.getState() !== 'dsBrowse') {
-                this.props.dataSource.setFieldByName(this.props.dataField, ([...this.state.tags, val]).join(','));
+                this.props.dataSource.setFieldByName(this.props.dataField, ([...this.state.tags, val]).join(this.props.separator));
             }
             this.setState({ tags: [...this.state.tags, val] });
             this.tagInput.value = null;
@@ -83,7 +83,7 @@ export default class AnterosInputTag extends Component {
                 return;
             }
             if (this.props.dataSource && this.props.dataSource.getState() !== 'dsBrowse') {
-                this.props.dataSource.setFieldByName(this.props.dataField, ([...this.state.tags, val]).join(','))
+                this.props.dataSource.setFieldByName(this.props.dataField, ([...this.state.tags, val]).join(this.props.separator))
             }
             this.setState({ tags: [...this.state.tags, val] });
             this.tagInput.value = null;
@@ -148,6 +148,7 @@ AnterosInputTag.propTypes = {
         PropTypes.instanceOf(AnterosRemoteDatasource)
     ]),
     dataField: PropTypes.string,
+    separator: PropTypes.string,
     extraSmall: columnProps,
     small: columnProps,
     medium: columnProps,
@@ -160,5 +161,6 @@ AnterosInputTag.propTypes = {
 AnterosInputTag.defaultProps = {
     tags: [],
     disabled: false,
-    readOnly: false
+    readOnly: false,
+    separator: ','
 }
