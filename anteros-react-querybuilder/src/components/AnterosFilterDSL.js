@@ -637,8 +637,8 @@ export class AnterosFilterDSL {
     let _this = this;
     if (query.rules) {
       this.processRules(query.condition, query.rules, true);
-      if (sort) {
-        sort.forEach(function(field) {
+      if (sort && sort.sortFields) {
+        sort.sortFields.forEach(function(field) {
           if (field.selected) {
             _this.fieldsToSort.push(field.name + ' ' + field.asc_desc);
           }

@@ -89,6 +89,7 @@ export class AnterosQueryBuilder extends React.Component {
         id: "root",
         selectedFields: [],
         quickFilterText: "",
+        quickFilterFieldsText: "",
         rules: [],
         condition: "",
         filterType: "normal",
@@ -100,7 +101,9 @@ export class AnterosQueryBuilder extends React.Component {
       },
     };
     result.filter.selectedFields = this.getQuickFields();
+    result.filter.quickFilterFieldsText = this.getQuickFilterFields();
     result.sort.sortFields = this.mergeSortWithFields([]);
+    result.sort.quickFilterSort = this.getQuickFilterSort();
     return result;
   }
 
@@ -108,12 +111,12 @@ export class AnterosQueryBuilder extends React.Component {
     let result = [];
     let flds = this.getFields(this.props);
     if (flds) {
-      flds.forEach(function(field, index) {
+      flds.forEach(function (field, index) {
         let selected = false;
         let asc_desc = "asc";
         let order = index;
         if (sort) {
-          sort.forEach(function(item) {
+          sort.forEach(function (item) {
             if (item.name === field.name) {
               selected = item.selected;
               asc_desc = item.asc_desc;
@@ -129,7 +132,7 @@ export class AnterosQueryBuilder extends React.Component {
           label: field.label,
         });
       });
-      result = result.sort(function(a, b) {
+      result = result.sort(function (a, b) {
         return a.order - b.order;
       });
     }
@@ -190,14 +193,17 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   clearFilter() {
+    let currentFilter = this.getDefaultFilter();
+    this.setState({...this.state, currentFilter, activeFilterIndex: -1});
     if (this.props.onClearFilter) {
       this.props.onClearFilter(this);
     }
+    this.onFilterChanged(currentFilter,-1);
   }
 
   getQuickFields() {
     let result = [];
-    this.getFields(this.props).forEach(function(field) {
+    this.getFields(this.props).forEach(function (field) {
       if (field.quickFilter === true) {
         result.push({ name: field.name, label: field.label });
       }
@@ -209,11 +215,11 @@ export class AnterosQueryBuilder extends React.Component {
     let result = [];
     if (props.children) {
       let arrChildren = React.Children.toArray(props.children);
-      arrChildren.forEach(function(child) {
+      arrChildren.forEach(function (child) {
         if (child.type && child.type.componentName === "QueryFields") {
           if (child.props.children) {
             let arrChild = React.Children.toArray(child.props.children);
-            arrChild.forEach(function(chd) {
+            arrChild.forEach(function (chd) {
               if (chd.type && chd.type.componentName !== "QueryField") {
                 throw new AnterosError(
                   "Somente filhos do tipo QueryField podem ser usados com QueryFields."
@@ -221,7 +227,7 @@ export class AnterosQueryBuilder extends React.Component {
               }
               let values = [];
               let chld = React.Children.toArray(chd.props.children);
-              chld.forEach(function(val) {
+              chld.forEach(function (val) {
                 if (val.type && val.type.componentName !== "QueryFieldValue") {
                   throw new AnterosError(
                     "Somente filhos do tipo QueryFieldValue podem ser usados com QueryFields"
@@ -250,27 +256,29 @@ export class AnterosQueryBuilder extends React.Component {
     let result = "";
     let appendDelimiter = false;
 
-    if (
-      !this.state.currentFilter.filter.selectedFields ||
-      this.state.currentFilter.filter.selectedFields.length === 0
-    ) {
-      this.getFields(this.props).forEach(function(item) {
-        if (item.quickFilter === true) {
+    if (this.state && this.state.currentFilter && this.state.currentFilter.filter) {
+      if (
+        !this.state.currentFilter.filter.selectedFields ||
+        this.state.currentFilter.filter.selectedFields.length === 0
+      ) {
+        this.getFields(this.props).forEach(function (item) {
+          if (item.quickFilter === true) {
+            if (appendDelimiter) {
+              result = result + ",";
+            }
+            result = result + item.name;
+          }
+          appendDelimiter = true;
+        }, this);
+      } else {
+        this.state.currentFilter.filter.selectedFields.forEach(function (item) {
           if (appendDelimiter) {
             result = result + ",";
           }
           result = result + item.name;
-        }
-        appendDelimiter = true;
-      }, this);
-    } else {
-      this.state.currentFilter.selectedFields.forEach(function(item) {
-        if (appendDelimiter) {
-          result = result + ",";
-        }
-        result = result + item.name;
-        appendDelimiter = true;
-      }, this);
+          appendDelimiter = true;
+        }, this);
+      }
     }
 
     return result;
@@ -279,7 +287,7 @@ export class AnterosQueryBuilder extends React.Component {
   getQuickFilterSort() {
     let result = "";
     let appendDelimiter = false;
-    this.getFields(this.props).forEach(function(field) {
+    this.getFields(this.props).forEach(function (field) {
       if (field.quickFilterSort === true) {
         if (appendDelimiter) result += ",";
         result += field.name;
@@ -298,6 +306,7 @@ export class AnterosQueryBuilder extends React.Component {
   onClickOkCalendar = (event, startDate, endDate) => {
     let currentFilter = this.state.currentFilter;
     currentFilter.filter.quickFilterText = "";
+    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
     this.setState({ ...this.state, currentFilter });
 
     if (this.props.onSelectDateRange) {
@@ -319,12 +328,13 @@ export class AnterosQueryBuilder extends React.Component {
       },
       () => this.onSearchClick()
     );
-    this.onFilterChanged(currentFilter);
+    this.onFilterChanged(currentFilter, this.state.activeFilterIndex);
   };
 
   onChangeQuickFilter(event, value) {
     let currentFilter = this.state.currentFilter;
     currentFilter.filter.quickFilterText = value;
+    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
     this.setState({
       ...this.state,
       currentFilter,
@@ -343,11 +353,10 @@ export class AnterosQueryBuilder extends React.Component {
       currentFilter = {};
     }
     currentFilter.filter.selectedFields = selectedFields;
-    this.setState({ ...this.state, currentFilter }, () =>
-      this.onSearchClick()
-    );
+    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
+    this.setState({ ...this.state, currentFilter }, () => this.onSearchClick());
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter);
+      this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex);
     }
   }
 
@@ -355,9 +364,9 @@ export class AnterosQueryBuilder extends React.Component {
     return this.state.currentFilter.filter.quickFilterText;
   }
 
-  onFilterChanged(currentFilter) {
+  onFilterChanged(currentFilter, activeFilterIndex) {
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter);
+      this.props.onFilterChanged(currentFilter, activeFilterIndex);
     }
   }
 
@@ -377,8 +386,9 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Não",
         focusCancel: false,
       })
-        .then(function() {
+        .then(function () {
           let currentFilter = _this.state.currentFilter;
+          currentFilter.filter.quickFilterFieldsText = _this.getQuickFilterFields();
           if (
             _this.props.dataSource.locate({
               idFilter: currentFilter.id,
@@ -414,6 +424,7 @@ export class AnterosQueryBuilder extends React.Component {
       })
         .then((result) => {
           let currentFilter = _this.state.currentFilter;
+          currentFilter.filter.quickFilterFieldsText = _this.getQuickFilterFields();
           _this.props.dataSource.insert();
           _this.props.dataSource.setFieldByName(
             "componentFilter",
@@ -453,9 +464,10 @@ export class AnterosQueryBuilder extends React.Component {
   onChangeFilterType(value, checked) {
     let currentFilter = this.state.currentFilter;
     currentFilter.filter.filterType = checked ? "advanced" : "normal";
+    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
     this.setState({ ...this.state, currentFilter });
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter);
+      this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex);
     }
   }
   onChangeSelectedFilter(filter, index) {
@@ -491,7 +503,7 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Não",
         focusCancel: false,
       })
-        .then(function() {
+        .then(function () {
           let currentFilter = _this.state.currentFilter;
           if (
             _this.props.dataSource.locate({
@@ -535,7 +547,8 @@ export class AnterosQueryBuilder extends React.Component {
     return (
       <div
         style={{
-          width: "100%",
+          minWidth: this.props.width,
+          maxWidth: this.props.width,
           height: heightFilter,
           backgroundColor: "white",
           border: this.state.expandedFilter
@@ -583,7 +596,7 @@ export class AnterosQueryBuilder extends React.Component {
             icon="fal fa-filter"
             hint="Filtrar"
             hintPosition="down"
-            onClick={()=> {
+            onClick={() => {
               this.onSearchClick();
             }}
           />
@@ -653,11 +666,13 @@ AnterosQueryBuilder.propTypes = {
   formName: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   apiVersion: PropTypes.string.isRequired,
+  width: PropTypes.string.isRequired
 };
 
 AnterosQueryBuilder.defaultProps = {
   showClearButton: true,
   showToggleButton: true,
+  width: "550px"
 };
 
 class AnterosDetailFilter extends React.Component {
@@ -670,14 +685,14 @@ class AnterosDetailFilter extends React.Component {
   convertQueryFields(children) {
     let result = [];
     let arrChildren = React.Children.toArray(children);
-    arrChildren.forEach(function(child) {
+    arrChildren.forEach(function (child) {
       if (child.type && child.type.componentName === "QueryFields") {
         if (child.props.children) {
           let arrChild = React.Children.toArray(child.props.children);
-          arrChild.forEach(function(chd, index) {
+          arrChild.forEach(function (chd, index) {
             let childs = [];
             let arrChildren2 = React.Children.toArray(chd.children);
-            arrChildren2.forEach(function(child2) {
+            arrChildren2.forEach(function (child2) {
               childs.push(
                 <FilterFieldValue key={"fld" + index} {...child2.props} />
               );
@@ -831,11 +846,7 @@ class FilterItem extends React.Component {
     if (this.props.recordData.disabled) className += " disabled";
     return (
       <div className={className} style={style} onClick={this.onClick}>
-        <AnterosText
-          text={
-            this.props.recordData.filterName
-          }
-        />
+        <AnterosText text={this.props.recordData.filterName} />
       </div>
     );
   }
@@ -894,6 +905,7 @@ class AnterosFastFilter extends React.Component {
         style={{
           paddingBottom: "10px",
           overflowY: "auto",
+          display: "block",
           overflowX: "hidden",
         }}
       >

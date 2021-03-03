@@ -47,6 +47,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: "",
   defaultSortFields: "",
+  filterName: "filter",
   version: "v1",
 };
 
@@ -55,7 +56,6 @@ export default function WithCardListContainerTemplate(_loadingProps) {
 
   const mapStateToProps = (state) => {
     let dataSource,
-      filterExpanded = false,
       currentFilter = undefined,
       activeFilterIndex = -1,
       needRefresh = false,
@@ -64,7 +64,6 @@ export default function WithCardListContainerTemplate(_loadingProps) {
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
       dataSource = reducer.dataSource;
-      filterExpanded = reducer.filterExpanded;
       currentFilter = reducer.currentFilter;
       activeFilterIndex = reducer.activeFilterIndex;
       needRefresh = reducer.needRefresh;
@@ -79,7 +78,6 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       dataSource: dataSource,
       currentFilter: currentFilter,
       activeFilterIndex: activeFilterIndex,
-      filterExpanded: filterExpanded,
       user: user,
       needRefresh: needRefresh,
       needUpdateView: needUpdateView,
@@ -98,12 +96,11 @@ export default function WithCardListContainerTemplate(_loadingProps) {
           setDatasourceEdicao: (dataSource) => {
             dispatch(loadingProps.actions.setDatasourceEdicao(dataSource));
           },
-          setFilter: (currentFilter, activeFilterIndex, filterExpanded) => {
+          setFilter: (currentFilter, activeFilterIndex) => {
             dispatch(
               loadingProps.actions.setFilter(
                 currentFilter,
-                activeFilterIndex,
-                filterExpanded
+                activeFilterIndex
               )
             );
           },
@@ -112,12 +109,11 @@ export default function WithCardListContainerTemplate(_loadingProps) {
           setDatasource: (dataSource) => {
             dispatch(loadingProps.actions.setDatasource(dataSource));
           },
-          setFilter: (currentFilter, activeFilterIndex, filterExpanded) => {
+          setFilter: (currentFilter, activeFilterIndex) => {
             dispatch(
               loadingProps.actions.setFilter(
                 currentFilter,
-                activeFilterIndex,
-                filterExpanded
+                activeFilterIndex
               )
             );
           },
@@ -192,13 +188,14 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             ? this.dataSource.getCurrentRecord()
             : undefined,
           selectedView: loadingProps.defaultView,
+          filterExpanded: false
         };
       }
 
       createDataSourceFilter() {
         this.dsFilter = AnterosQueryBuilderData.createDatasource(
           loadingProps.viewName,
-          "filter",
+          loadingProps.filterName,
           loadingProps.version
         );
       }
@@ -515,20 +512,16 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         });
       }
 
-      onFilterChanged(filter) {
+      onFilterChanged(filter, activeFilterIndex) {
         this.props.setFilter(
           filter,
-          this.props.activeFilterIndex,
-          this.props.filterExpanded
+          activeFilterIndex
         );
+        this.setState({...this.state, update: Math.random()});
       }
 
       onToggleExpandedFilter(expanded) {
-        this.props.setFilter(
-          this.props.currentFilter,
-          this.props.activeFilterIndex,
-          expanded
-        );
+        this.setState({...this.state, filterExpanded: expanded});
         setTimeout(() => {
           if (
             this.state.newHeight !== undefined &&
@@ -545,7 +538,8 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       }
 
       onSelectedFilter(filter, index) {
-        this.props.setFilter(filter, index, this.props.filterExpanded);
+        this.props.setFilter(filter, index);
+        this.setState({...this.state, update: Math.random()});
       }
 
       onBeforePageChanged(currentPage, newPage) {
@@ -564,7 +558,10 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       }
 
       onSearchByFilter(currentFilter) {
-        this.dataSource.open(getData(currentFilter, 0));
+        this.onShowHideLoad(true);
+        this.dataSource.open(this.getData(currentFilter, 0),()=>{
+            this.onShowHideLoad(false);
+        });
       }
 
       getData(currentFilter,page){
@@ -572,7 +569,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
            (currentFilter.filter.rules.length > 0)) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
-                     (this.currentFilter.filter.quickFilterText !== "")) {
+                     (currentFilter.filter.quickFilterText !== "")) {
               return this.getDataWithQuickFilter(currentFilter,page);
           } else {
               return this.getDataWithoutFilter(page);
@@ -754,12 +751,8 @@ export default function WithCardListContainerTemplate(_loadingProps) {
                     onFilterChanged={this.onFilterChanged}
                     onSearchByFilter={this.onSearchByFilter}
                     onToggleExpandedFilter={this.onToggleExpandedFilter}
-                    quickFilterWidth={
-                      loadingProps.quickFilterWidth
-                        ? loadingProps.quickFilterWidth
-                        : "30%"
-                    }
                     height="170px"
+                    width={"550px"}
                     allowSort={true}
                     disabled={
                       this.dataSource.getState() !==

@@ -37,6 +37,7 @@ import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
 import { AnterosDataTable } from "@anterostecnologia/anteros-react-table";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
+import shallowCompare from "react-addons-shallow-compare";
 
 const defaultValues = {
   openDataSourceFilter: true,
@@ -45,6 +46,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: "",
   defaultSortFields: "",
+  filterName: 'filter',
   layoutReducerName: "layoutReducer",
   version: "v1",
 };
@@ -54,7 +56,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
   const mapStateToProps = (state) => {
     let dataSource,
-      filterExpanded = false,
       currentFilter = undefined,
       activeFilterIndex = -1,
       needRefresh = false,
@@ -63,7 +64,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
       dataSource = reducer.dataSource;
-      filterExpanded = reducer.filterExpanded;
       currentFilter = reducer.currentFilter;
       activeFilterIndex = reducer.activeFilterIndex;
       needRefresh = reducer.needRefresh;
@@ -78,7 +78,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
       dataSource: dataSource,
       currentFilter: currentFilter,
       activeFilterIndex: activeFilterIndex,
-      filterExpanded: filterExpanded,
       user: user,
       needRefresh: needRefresh,
       needUpdateView: needUpdateView,
@@ -93,12 +92,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
       hideTour: () => {
         dispatch({ type: "HIDE_TOUR" });
       },
-      setFilter: (currentFilter, activeFilterIndex, filterExpanded) => {
+      setFilter: (currentFilter, activeFilterIndex) => {
         dispatch(
           loadingProps.actions.setFilter(
             currentFilter,
-            activeFilterIndex,
-            filterExpanded
+            activeFilterIndex
           )
         );
       },
@@ -206,6 +204,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
           loading: false,
           width: undefined,
           newHeight: undefined,
+          filterExpanded: false,
           update: Math.random(),
         };
       }
@@ -213,7 +212,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       createDataSourceFilter() {
         this.dsFilter = AnterosQueryBuilderData.createDatasource(
           loadingProps.viewName,
-          "filter",
+          loadingProps.filterName,
           loadingProps.version
         );
       }
@@ -325,20 +324,20 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
       }
 
-      onFilterChanged(filter) {
+      shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+      }
+
+      onFilterChanged(filter, activeFilterIndex) {
         this.props.setFilter(
           filter,
-          this.props.activeFilterIndex,
-          this.props.filterExpanded
+          activeFilterIndex
         );
+        this.setState({...this.state, update: Math.random()});
       }
 
       onToggleExpandedFilter(expanded) {
-        this.props.setFilter(
-          this.props.currentFilter,
-          this.props.activeFilterIndex,
-          expanded
-        );
+        this.setState({...this.state, filterExpanded: expanded});
         setTimeout(() => {
           if (
             this.state.newHeight !== undefined &&
@@ -355,7 +354,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onSelectedFilter(filter, index) {
-        this.props.setFilter(filter, index, this.props.filterExpanded);
+        this.props.setFilter(filter, index);
+        this.setState({...this.state, update: Math.random()});
       }
 
       onBeforePageChanged(currentPage, newPage) {
@@ -534,7 +534,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onSearchByFilter(currentFilter) {
-        this.dataSource.open(getData(currentFilter,0));
+        this.onShowHideLoad(true);
+        this.dataSource.open(this.getData(currentFilter, 0),()=>{
+            this.onShowHideLoad(false);
+        });
       }
 
       getData(currentFilter,page){
@@ -542,7 +545,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
            (currentFilter.filter.rules.length > 0)) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
-                     (this.currentFilter.filter.quickFilterText !== "")) {
+                     (currentFilter.filter.quickFilterText !== "")) {
               return this.getDataWithQuickFilter(currentFilter,page);
           } else {
               return this.getDataWithoutFilter(page);
@@ -603,10 +606,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
         ) {
           return this.onFindMultipleFields(
               currentFilter.filter.quickFilterText,
-              currentFilter.filter.selectedFields,
+              currentFilter.filter.quickFilterFieldsText,
               0,
               loadingProps.pageSize,
-              currentFilter.sort,
+              currentFilter.sort.quickFilterSort,
               this.getUser(),
               loadingProps.fieldsToForceLazy
             );
@@ -614,10 +617,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
           return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
               loadingProps.resource,
               currentFilter.filter.quickFilterText,
-              currentFilter.filter.selectedFields,
+              currentFilter.filter.quickFilterFieldsText,
               0,
               loadingProps.pageSize,
-              currentFilter.sort,
+              currentFilter.sort.quickFilterSort,
               this.getUser(),
               loadingProps.fieldsToForceLazy
             );
@@ -691,7 +694,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         let newHeight = height - 120;
 
         if (this.table1) {
-          this.table1.resize(width - 350, newHeight);
+          this.table1.resize(width - 550, newHeight);
         }
         if (this.table2) {
           this.table2.resize("100%", newHeight);
@@ -782,7 +785,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     <div
                       style={{
                         width: this.state.filterExpanded
-                          ? "calc(100% - 350px)"
+                          ? "calc(100% - 550px)"
                           : "calc(100%)",
                       }}
                     >
@@ -826,7 +829,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                       id={loadingProps.filterName}
                       formName={loadingProps.viewName}
                       ref={this.filterRef}
-                      expandedFilter={this.props.filterExpanded}
+                      expandedFilter={this.state.filterExpanded}
                       dataSource={this.dsFilter}
                       currentFilter={this.props.currentFilter}
                       activeFilterIndex={this.props.activeFilterIndex}
@@ -834,11 +837,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                       onFilterChanged={this.onFilterChanged}
                       onSearchByFilter={this.onSearchByFilter}
                       onToggleExpandedFilter={this.onToggleExpandedFilter}
-                      quickFilterWidth={
-                        loadingProps.quickFilterWidth
-                          ? loadingProps.quickFilterWidth
-                          : "30%"
-                      }
+                      width={"550px"}
                       height="170px"
                       allowSort={true}
                       disabled={

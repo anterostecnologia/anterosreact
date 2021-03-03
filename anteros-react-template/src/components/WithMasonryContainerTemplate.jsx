@@ -42,6 +42,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: "",
   defaultSortFields: "",
+  filterName: 'filter',
   version: "v1",
   fieldId: "id",
 };
@@ -51,7 +52,6 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
 
   const mapStateToProps = (state) => {
     let dataSource,
-      filterExpanded = false,
       currentFilter = undefined,
       activeFilterIndex = -1,
       needRefresh = false,
@@ -60,7 +60,6 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
       dataSource = reducer.dataSource;
-      filterExpanded = reducer.filterExpanded;
       currentFilter = reducer.currentFilter;
       activeFilterIndex = reducer.activeFilterIndex;
       needRefresh = reducer.needRefresh;
@@ -75,7 +74,6 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       dataSource: dataSource,
       currentFilter: currentFilter,
       activeFilterIndex: activeFilterIndex,
-      filterExpanded: filterExpanded,
       user: user,
       needRefresh: needRefresh,
       needUpdateView: needUpdateView,
@@ -90,12 +88,11 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       hideTour: () => {
         dispatch({ type: "HIDE_TOUR" });
       },
-      setFilter: (currentFilter, activeFilterIndex, filterExpanded) => {
+      setFilter: (currentFilter, activeFilterIndex) => {
         dispatch(
           loadingProps.actions.setFilter(
             currentFilter,
-            activeFilterIndex,
-            filterExpanded
+            activeFilterIndex
           )
         );
       },
@@ -184,7 +181,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           idRecord: 0,
           contentHeight: "auto",
           selectedItem: undefined,
-          filterExpanded: undefined,
+          filterExpanded: false,
           loading: false,
         };
       }
@@ -192,7 +189,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       createDataSourceFilter() {
         this.dsFilter = AnterosQueryBuilderData.createDatasource(
           loadingProps.viewName,
-          "filter",
+          loadingProps.filterName,
           loadingProps.version
         );
       }
@@ -276,12 +273,12 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         );
       }
 
-      onFilterChanged(filter) {
+      onFilterChanged(filter, activeFilterIndex) {
         this.props.setFilter(
           filter,
-          this.props.activeFilterIndex,
-          this.props.filterExpanded
+          activeFilterIndex
         );
+        this.setState({...this.state, update: Math.random()});
       }
 
       onToggleExpandedFilter(expanded) {
@@ -306,7 +303,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       onSelectedFilter(filter, index) {
-        this.props.setFilter(filter, index, this.props.filterExpanded);
+        this.props.setFilter(filter, index);
+        this.setState({...this.state, update: Math.random()});
       }
 
       onBeforePageChanged(currentPage, newPage) {
@@ -475,17 +473,18 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         }
         this.props.history.push(button.props.route);
       }
-
       onSearchByFilter(currentFilter) {
-        this.dataSource.open(getData(currentFilter, 0));
+        this.onShowHideLoad(true);
+        this.dataSource.open(this.getData(currentFilter, 0),()=>{
+            this.onShowHideLoad(false);
+        });
       }
-
       getData(currentFilter,page){
         if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
            (currentFilter.filter.rules.length > 0)) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
-                     (this.currentFilter.filter.quickFilterText !== "")) {
+                     (currentFilter.filter.quickFilterText !== "")) {
               return this.getDataWithQuickFilter(currentFilter,page);
           } else {
               return this.getDataWithoutFilter(page);
@@ -630,6 +629,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           contentHeight: height - 60,
         });
       }
+      
 
       onShowHideLoad(show) {
         this.setState({
@@ -711,8 +711,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               >
                 <div
                   style={{
-                    width: this.state.filterExpanded
-                      ? "calc(100% - 350px)"
+                    width: this.props.filterExpanded
+                      ? "calc(100% - 550px)"
                       : "calc(100%)",
                   }}
                 >
@@ -772,7 +772,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                   id={loadingProps.filtroDispositivos}
                   formName={loadingProps.viewName}
                   ref={this.filterRef}
-                  expandedFilter={this.props.filterExpanded}
+                  expandedFilter={this.state.filterExpanded}
                   dataSource={this.dsFilter}
                   currentFilter={this.props.currentFilter}
                   activeFilterIndex={this.props.activeFilterIndex}
@@ -780,12 +780,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                   onFilterChanged={this.onFilterChanged}
                   onSearchByFilter={this.onSearchByFilter}
                   onToggleExpandedFilter={this.onToggleExpandedFilter}
-                  quickFilterWidth={
-                    loadingProps.quickFilterWidth
-                      ? loadingProps.quickFilterWidth
-                      : "30%"
-                  }
                   height="170px"
+                  width={"550px"}
                   allowSort={true}
                   disabled={
                     this.dataSource.getState() !== dataSourceConstants.DS_BROWSE

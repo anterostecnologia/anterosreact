@@ -38,6 +38,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: "",
   modalSize: "semifull",
+  filterName: 'filter',
   defaultSortFields: "",
   version: "v1",
 };
@@ -46,16 +47,14 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
   let loadingProps = { ...defaultValues, ..._loadingProps };
 
   const mapStateToProps = (state) => {
-    let filterExpanded, currentFilter, user, activeFilterIndex;
+    let currentFilter, user, activeFilterIndex;
     let reducer = state[loadingProps.reducerName];
     if (reducer) {
-      filterExpanded = reducer.filterExpanded;
       currentFilter = reducer.currentFilter;
       activeFilterIndex = reducer.activeFilterIndex;
     }
     user = state[loadingProps.userReducerName].user;
     return {
-      filterExpanded: filterExpanded,
       currentFilter: currentFilter,
       activeFilterIndex: activeFilterIndex,
       user: user,
@@ -67,10 +66,9 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
       setDatasource: (dataSource) => {
         dispatch(loadingProps.actions.setDatasource(dataSource));
       },
-      setFilter: (filterExpanded, currentFilter, activeFilterIndex) => {
+      setFilter: (currentFilter, activeFilterIndex) => {
         dispatch(
           loadingProps.actions.setFilter(
-            filterExpanded,
             currentFilter,
             activeFilterIndex
           )
@@ -162,7 +160,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
           alertMessage: "",
           modalOpen: "",
           modalCallback: null,
-          filterExpanded: undefined,
+          filterExpanded: false,
         };
 
         autoBind(this);
@@ -170,7 +168,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
       createDataSourceFilter() {
         this.dsFilter = AnterosQueryBuilderData.createDatasource(
           loadingProps.viewName,
-          "filter",
+          loadingProps.filterName,
           loadingProps.version
         );
       }
@@ -249,28 +247,36 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
         });
       }
 
-      onFilterChanged(filter) {
+      onFilterChanged(filter, activeFilterIndex) {
         this.props.setFilter(
           filter,
-          this.props.activeFilterIndex,
-          this.props.filterExpanded
+          activeFilterIndex
         );
+        this.setState({...this.state, update: Math.random()});
       }
 
       onToggleExpandedFilter(expanded) {
-        this.props.setFilter(
-          this.props.currentFilter,
-          this.props.activeFilterIndex,
-          expanded
-        );
+        this.setState({...this.state, filterExpanded: expanded});
       }
 
       onSelectedFilter(filter, index) {
-        this.props.setFilter(filter, index, this.props.filterExpanded);
+        this.props.setFilter(filter, index);
+        this.setState({...this.state, update: Math.random()});
+      }
+
+      onShowHideLoad(show) {
+        this.setState({
+          ...this.state,
+          loading: show,
+          update: Math.random(),
+        });
       }
 
       onSearchByFilter(currentFilter) {
-        this.dataSource.open(getData(currentFilter, 0));
+        this.onShowHideLoad(true);
+        this.dataSource.open(this.getData(currentFilter, 0),()=>{
+            this.onShowHideLoad(false);
+        });
       }
 
       getData(currentFilter,page){
@@ -278,7 +284,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
            (currentFilter.filter.rules.length > 0)) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
-                     (this.currentFilter.filter.quickFilterText !== "")) {
+                     (currentFilter.filter.quickFilterText !== "")) {
               return this.getDataWithQuickFilter(currentFilter,page);
           } else {
               return this.getDataWithoutFilter(page);
@@ -556,7 +562,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                   <div
                     style={{
                       width: this.state.filterExpanded
-                        ? "calc(100% - 350px)"
+                        ? "calc(100% - 550px)"
                         : "calc(100%)",
                     }}
                   >
@@ -594,18 +600,14 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                     id={loadingProps.filtroDispositivos}
                     formName={loadingProps.viewName}
                     ref={this.filterRef}
-                    expandedFilter={this.props.filterExpanded}
+                    expandedFilter={this.state.filterExpanded}
                     dataSource={this.dsFilter}
                     currentFilter={this.props.currentFilter}
                     activeFilterIndex={this.props.activeFilterIndex}
                     onSelectedFilter={this.onSelectedFilter}
                     onFilterChanged={this.onFilterChanged}
-                    quickFilterWidth={
-                      loadingProps.quickFilterWidth
-                        ? loadingProps.quickFilterWidth
-                        : "30%"
-                    }
                     height="170px"
+                    width={"550px"}
                     allowSort={true}
                     disabled={
                       this.dataSource.getState() !==
