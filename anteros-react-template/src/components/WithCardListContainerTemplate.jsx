@@ -292,7 +292,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       componentDidMount() {
         if (loadingProps.openMainDataSource) {
           if (!this.dataSource.isOpen()) {
-            this.dataSource.open(this.getData(0));
+            this.dataSource.open(this.getData(this.props.currentFilter, 0));
           }
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.dataSource.cancel();
@@ -652,7 +652,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       }
 
       pageConfigHandler(page) {
-        return this.getData(page);
+        return this.getData(this.props.currentFilter, page);
       }
 
       onShowHideLoad(show) {

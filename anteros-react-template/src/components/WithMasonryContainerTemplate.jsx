@@ -571,7 +571,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       pageConfigHandler(page) {
-        return this.getData(page);
+        return this.getData(this.props.currentFilter, page);
       }
 
       onCloseAlert() {

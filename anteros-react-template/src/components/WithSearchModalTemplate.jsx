@@ -218,11 +218,11 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       pageConfigHandler(page) {
-        return this.getData(page);
+        return this.getData(this.props.currentFilter, page);
       }
 
       componentDidMount() {
-        this.dataSource.open(this.getData(0));
+        this.dataSource.open(this.getData(this.props.currentFilter, 0));
         if (WrappedComponent.prototype.hasOwnProperty("onDidMount") === true) {
           this.onDidMount();
         }
@@ -246,7 +246,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       componentDidUpdate() {
-        this.dataSource.open(this.getData(0));
+        this.dataSource.open(this.getData(this.props.currentFilter, 0));
       }
 
       handlePageChanged(newPage) {
