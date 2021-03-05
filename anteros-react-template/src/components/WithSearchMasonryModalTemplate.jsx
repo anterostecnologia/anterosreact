@@ -236,10 +236,6 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
         }
       }
 
-      componentDidUpdate() {
-        this.dataSource.open(this.getData(this.props.currentFilter,0));
-      }
-
       handlePageChanged(newPage) {
         this.setState({
           ...this.state,
