@@ -341,10 +341,10 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
         ) {
           return this.onFindMultipleFields(
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
@@ -352,10 +352,10 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
           return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
@@ -364,10 +364,11 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
 
       getSortFields() {
         if (
-          this.filterRef.current.getQuickFilterSort() &&
-          this.filterRef.current.getQuickFilterSort() !== ""
+          loadingProps.withFilter &&
+          this.state.currentFilter &&
+          this.state.currentFilter.sort
         ) {
-          return this.filterRef.current.getQuickFilterSort();
+          return this.state.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
@@ -407,6 +408,8 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
           this.setState({
             ...this.state,
             loading,
+            alertIsOpen: false,
+            alertMessage: undefined,
             update: Math.random(),
           });
         }

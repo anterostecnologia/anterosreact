@@ -42,7 +42,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: "",
   defaultSortFields: "",
-  filterName: 'filter',
+  filterName: "filter",
   version: "v1",
   fieldId: "id",
 };
@@ -90,10 +90,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       },
       setFilter: (currentFilter, activeFilterIndex) => {
         dispatch(
-          loadingProps.actions.setFilter(
-            currentFilter,
-            activeFilterIndex
-          )
+          loadingProps.actions.setFilter(currentFilter, activeFilterIndex)
         );
       },
     };
@@ -241,10 +238,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       componentDidMount() {
         if (loadingProps.openMainDataSource) {
           if (WrappedComponent.prototype.hasOwnProperty("onFindAll") === true) {
-            this.dataSource.open(this.getData(this.props.currentFilter,0));
+            this.dataSource.open(this.getData(this.props.currentFilter, 0));
           } else {
             if (!this.dataSource.isOpen()) {
-              this.dataSource.open(this.getData(this.props.currentFilter,0));
+              this.dataSource.open(this.getData(this.props.currentFilter, 0));
             }
             if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
               this.dataSource.cancel();
@@ -274,11 +271,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       onFilterChanged(filter, activeFilterIndex) {
-        this.props.setFilter(
-          filter,
-          activeFilterIndex
-        );
-        this.setState({...this.state, update: Math.random()});
+        this.props.setFilter(filter, activeFilterIndex);
+        this.setState({ ...this.state, update: Math.random() });
       }
 
       onToggleExpandedFilter(expanded) {
@@ -304,7 +298,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
 
       onSelectedFilter(filter, index) {
         this.props.setFilter(filter, index);
-        this.setState({...this.state, update: Math.random()});
+        this.setState({ ...this.state, update: Math.random() });
       }
 
       onBeforePageChanged(currentPage, newPage) {
@@ -325,15 +319,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.filterRef &&
-          this.filterRef.current
+          this.state.currentFilter &&
+          this.state.currentFilter.sort
         ) {
-          if (
-            this.filterRef.current.getQuickFilterSort() &&
-            this.filterRef.current.getQuickFilterSort() !== ""
-          ) {
-            return this.filterRef.current.getQuickFilterSort();
-          }
+          return this.state.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
@@ -395,6 +384,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           this.setState({
             ...this.state,
             loading,
+            alertIsOpen: false,
+            alertMessage: undefined,
             update: Math.random(),
           });
         }
@@ -475,20 +466,28 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
       onSearchByFilter(currentFilter) {
         this.onShowHideLoad(true);
-        this.dataSource.open(this.getData(currentFilter, 0),()=>{
-            this.onShowHideLoad(false);
+        this.dataSource.open(this.getData(currentFilter, 0), () => {
+          this.onShowHideLoad(false);
         });
       }
-      getData(currentFilter,page){
-        if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
-           (currentFilter.filter.rules.length > 0)) {
-              return this.getDataWithFilter(currentFilter,page);
-          } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
-                     (currentFilter.filter.quickFilterText !== "")) {
-              return this.getDataWithQuickFilter(currentFilter,page);
-          } else {
-              return this.getDataWithoutFilter(page);
-          }
+      getData(currentFilter, page) {
+        if (
+          currentFilter &&
+          currentFilter.filter &&
+          currentFilter.filter.filterType === "advanced" &&
+          currentFilter.filter.rules.length > 0
+        ) {
+          return this.getDataWithFilter(currentFilter, page);
+        } else if (
+          currentFilter &&
+          currentFilter.filter &&
+          currentFilter.filter.filterType === "normal" &&
+          currentFilter.filter.quickFilterText !== ""
+        ) {
+          return this.getDataWithQuickFilter(currentFilter, page);
+        } else {
+          return this.getDataWithoutFilter(page);
+        }
       }
 
       getDataWithFilter(currentFilter, page) {
@@ -545,10 +544,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         ) {
           return this.onFindMultipleFields(
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
@@ -556,10 +555,10 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
@@ -629,7 +628,6 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           contentHeight: height - 60,
         });
       }
-      
 
       onShowHideLoad(show) {
         this.setState({
@@ -733,8 +731,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                         this.dataSource.getState() !==
                         dataSourceConstants.DS_BROWSE
                       }
-                    />
-                    {" "}
+                    />{" "}
                     {this.getPositionUserActions() === "last"
                       ? this.getUserActions()
                       : null}

@@ -34,7 +34,6 @@ export default class AnterosCheckboxList extends Component {
 			this
 		);
 		this.rebuildedChildrens = [];
-		this.gotoItemById = this.gotoItemById.bind(this);
 		this.onDatasourceEvent = this.onDatasourceEvent.bind(this);
 		this.getRecordDataFromChildren = this.getRecordDataFromChildren.bind(this);
 		this.handleCheckedListItem = this.handleCheckedListItem.bind(this);
@@ -162,11 +161,7 @@ export default class AnterosCheckboxList extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// let target = window.$(this.list).find(".active")[0];
-		// if (target) {
-		// 	this.scrollToItem(target);
-		// 	target.focus();
-		// }
+
 	}
 
 	scrollToItem(element) {
@@ -475,22 +470,17 @@ export default class AnterosCheckboxList extends Component {
 		return children;
 	}
 
-	gotoItemById(id, scrolltop, animate) {
+	index(collection,item) {
+		return [].slice.call(document.querySelectorAll(collection)).indexOf(document.querySelector(item));
+	}
+
+	gotoItemById(id, scrolltop) {
 		var element = document.getElementById(id);
 		if (element) {
 			if (scrolltop) {
-				if (animate) {
-					window.$(this.list).animate(
-						{
-							scrollTop: element.offsetTop
-						},
-						200
-					);
-				} else {
-					this.list.scrollTop = element.offsetTop;
-				}
+				this.list.scrollTop = element.offsetTop;
 			}
-			this.setState({ activeIndex: window.$(element).index() });
+			this.setState({ activeIndex: this.index(this.list,element) });
 		}
 	}
 

@@ -83,9 +83,6 @@ export default class AnterosIpAddressEdit extends AnterosBaseInputControl {
             'wholeNumber': true
         }).resize();
 
-        // if (this.props.ipv6)     $(this.inputRef.current).ipAddress({v:6}); else
-        // $(this.inputRef.current).ipAddress();
-
         if (this.props.dataSource) {
             this
                 .props

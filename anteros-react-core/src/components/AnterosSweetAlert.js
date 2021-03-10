@@ -433,7 +433,6 @@
 		}
 	};
 
-	// borrowed from jqeury $(elem).is(':visible') implementation
 	var isVisible = function isVisible(elem) {
 		return (
 			elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length

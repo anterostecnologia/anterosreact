@@ -203,18 +203,14 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.filterRef &&
-          this.filterRef.current
+          this.state.currentFilter &&
+          this.state.currentFilter.sort
         ) {
-          if (
-            this.filterRef.current.getQuickFilterSort() &&
-            this.filterRef.current.getQuickFilterSort() !== ""
-          ) {
-            return this.filterRef.current.getQuickFilterSort();
-          }
+          return this.state.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
+
       createMainDataSource() {
         if (this.props.dataSource) {
           this.dataSource = this.props.dataSource;
@@ -413,10 +409,21 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         }
 
         if (event === dataSourceEvents.ON_ERROR) {
+          if (error) {
+            this.setState({
+              ...this.state,
+              alertIsOpen: true,
+              loading: false,
+              alertMessage: processErrorMessage(error),
+            });
+          }
+        } else {
           this.setState({
             ...this.state,
-            alertIsOpen: true,
-            alertMessage: processErrorMessage(error),
+            loading,
+            alertIsOpen: false,
+            alertMessage: undefined,
+            update: Math.random(),
           });
         }
       }
@@ -630,10 +637,10 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         ) {
           return this.onFindMultipleFields(
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
@@ -641,10 +648,10 @@ export default function WithCardListContainerTemplate(_loadingProps) {
           return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
