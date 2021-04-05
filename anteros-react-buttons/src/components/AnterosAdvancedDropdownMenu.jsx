@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {AnterosUtils} from '@anterostecnologia/anteros-react-core';
 import { AnterosPopper } from '@anterostecnologia/anteros-react-notification';
 

@@ -645,7 +645,7 @@ class AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.AFTER_EDIT);
     }
 
-    
+
 
     _validatePost() {
         if (this.dsState == dataSourceConstants.DS_BROWSE) {
@@ -715,8 +715,8 @@ class AnterosDatasource {
                             fields.forEach((item)=>{
                                 if (item.includes(fieldName)) {
                                     listener.dispatch(event, error, fieldName);
-                                }   
-                            });                                                 
+                                }
+                            });
                         }
 
                     } else {
@@ -946,7 +946,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (config && config != null) {
             this.executeAjax((config ? config : this.config), dataSourceEvents.AFTER_OPEN, callback);
         } else {
-            if (this.ajaxOpenConfigHandler !== null){
+            if (this.ajaxOpenConfigHandler !== undefined){
                 let openConfig = this.ajaxOpenConfigHandler();
                 this.executeAjax(openConfig, dataSourceEvents.AFTER_OPEN, callback);
             } else {
