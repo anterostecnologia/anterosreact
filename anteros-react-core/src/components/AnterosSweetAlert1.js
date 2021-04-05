@@ -429,7 +429,7 @@ var hide = function hide(elem) {
 };
 var toggle = function toggle(elem, condition, display) {
   condition ? show(elem, display) : hide(elem);
-}; // borrowed from jquery $(elem).is(':visible') implementation
+}; 
 
 var isVisible = function isVisible(elem) {
   return !!(elem && (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length));

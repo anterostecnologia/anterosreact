@@ -297,6 +297,8 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
           this.setState({
             ...this.state,
             loading,
+            alertIsOpen: false,
+            alertMessage: undefined,
             update: Math.random(),
           });
         }
@@ -419,10 +421,10 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
         ) {
           return this.onFindMultipleFields(
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
@@ -430,14 +432,25 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
           return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
-            currentFilter.filter.selectedFields,
+            currentFilter.filter.quickFilterFieldsText,
             0,
             loadingProps.pageSize,
-            currentFilter.sort,
+            this.getSortFields(),
             this.getUser(),
             loadingProps.fieldsToForceLazy
           );
         }
+      }
+
+      getSortFields() {
+        if (
+          loadingProps.withFilter &&
+          this.state.currentFilter &&
+          this.state.currentFilter.sort
+        ) {
+          return this.state.currentFilter.sort.quickFilterSort;
+        }
+        return loadingProps.defaultSortFields;
       }
 
       pageConfigHandler(page) {

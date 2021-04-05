@@ -9,12 +9,14 @@ export class AnterosRadioButton extends Component {
         this.toggleRadioButtonChange = this.toggleRadioButtonChange.bind(this);
         this.idRadio = lodash.uniqueId('radio');
         let arrChildren = Children.toArray(this.props.children);
-        let _this = this;
-        _this.state = {activeIndex : -1}; 
+        let activeIndex = -1;
+        
         arrChildren.forEach(function (child, index) {
             if (child.props.checked)
-                _this.state = { activeIndex: index};
+                activeIndex = index;
         });
+
+        this.state = {activeIndex}; 
     }
 
     toggleRadioButtonChange(activeIndex) {
@@ -30,10 +32,11 @@ export class AnterosRadioButton extends Component {
     render() {
         let newChildren = [];
         let arrChildren = Children.toArray(this.props.children);
+        let {activeIndex} = this.state;
         let _this = this;
         arrChildren.forEach(function (child, index) {
             newChildren.push(cloneElement(child, {
-                checked: _this.state.activeIndex == index, onChange: _this.toggleRadioButtonChange, index: index,
+                checked: activeIndex == index, onChange: _this.toggleRadioButtonChange, index: index,
                 success: _this.props.success,
                 info: _this.props.info,
                 warning: _this.props.warning,
@@ -78,7 +81,7 @@ export class AnterosRadioButtonItem extends Component {
     }
 
     componentDidMount() {
-        // $(this.button).tooltip();
+
     }
 
     onClick(event) {
@@ -88,7 +91,7 @@ export class AnterosRadioButtonItem extends Component {
     }
 
     render() {
-        const { value, checked, disabled, index } = this.props;
+        const {checked, index } = this.props;
 
         let className = AnterosUtils.buildClassNames("btn", (this.props.checked ? "active focus" : ""));
 

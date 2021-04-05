@@ -114,16 +114,7 @@ export default class AnterosList extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        let target = $(this.list).find('.active')[0];
-        if (target) {
-            this.scrollToItem(target);
-            target.focus();
-        }
-    }
-
     scrollToItem(element) {
-        var scrollTo = element.offsetTop;
         if ((element.offsetTop + element.clientHeight) > (this.list.scrollTop + this.list.clientHeight)) {
             this.list.scrollTop = this.list.scrollTop + (element.offsetTop + element.clientHeight) - (this.list.scrollTop + this.list.clientHeight);
         } else if (element.offsetTop < this.list.scrollTop) {
@@ -137,7 +128,7 @@ export default class AnterosList extends Component {
         if (this.props.dataSource.constructor === AnterosRemoteDatasource || this.props.dataSource.constructor === AnterosLocalDatasource) {
             sourceData = this.props.dataSource.getData();
         }
-        if (!(sourceData.constructor === Array)) {
+        if ((sourceData.constructor !== Array)) {
             throw new AnterosError("O dataSource deve ser obrigatoriamente um array de dados.");
         }
         let children = [];
@@ -322,21 +313,19 @@ export default class AnterosList extends Component {
         return children;
     }
 
-    gotoItemById(id, scrolltop, animate) {
-        var element = document.getElementById(id);
-        if (element) {
-            if (scrolltop) {
-                if (animate) {
-                    $(this.list).animate({
-                        scrollTop: element.offsetTop
-                    }, 200);
-                } else {
-                    this.list.scrollTop = element.offsetTop;
-                }
-            }
-            this.setState({ activeIndex: $(element).index() });
-        }
-    }
+    index(collection,item) {
+		return [].slice.call(document.querySelectorAll(collection)).indexOf(document.querySelector(item));
+	}
+
+	gotoItemById(id, scrolltop) {
+		var element = document.getElementById(id);
+		if (element) {
+			if (scrolltop) {
+				this.list.scrollTop = element.offsetTop;
+			}
+			this.setState({ activeIndex: this.index(this.list,element) });
+		}
+	}
 
     render() {
         this.rebuildedChildrens = [];

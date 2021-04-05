@@ -946,7 +946,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (config && config != null) {
             this.executeAjax((config ? config : this.config), dataSourceEvents.AFTER_OPEN, callback);
         } else {
-            if (this.ajaxOpenConfigHandler !== undefined){
+            if (this.ajaxOpenConfigHandler && this.ajaxOpenConfigHandler !== null){
                 let openConfig = this.ajaxOpenConfigHandler();
                 this.executeAjax(openConfig, dataSourceEvents.AFTER_OPEN, callback);
             } else {

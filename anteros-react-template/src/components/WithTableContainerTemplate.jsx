@@ -46,7 +46,7 @@ const defaultValues = {
   withFilter: true,
   fieldsToForceLazy: "",
   defaultSortFields: "",
-  filterName: 'filter',
+  filterName: "filter",
   layoutReducerName: "layoutReducer",
   version: "v1",
 };
@@ -94,10 +94,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       },
       setFilter: (currentFilter, activeFilterIndex) => {
         dispatch(
-          loadingProps.actions.setFilter(
-            currentFilter,
-            activeFilterIndex
-          )
+          loadingProps.actions.setFilter(currentFilter, activeFilterIndex)
         );
       },
     };
@@ -268,9 +265,14 @@ export default function WithTableContainerTemplate(_loadingProps) {
       componentDidMount() {
         if (loadingProps.openMainDataSource) {
           if (!this.dataSource.isOpen()) {
-            this.dataSource.open(this.getData(this.props.currentFilter,0));
+            this.dataSource.open(this.getData(this.props.currentFilter, 0));
           } else if (this.props.needRefresh) {
-            this.dataSource.open(this.getData(this.props.currentFilter,this.dataSource.getCurrentPage()));
+            this.dataSource.open(
+              this.getData(
+                this.props.currentFilter,
+                this.dataSource.getCurrentPage()
+              )
+            );
           }
           if (this.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
             this.dataSource.cancel();
@@ -329,15 +331,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onFilterChanged(filter, activeFilterIndex) {
-        this.props.setFilter(
-          filter,
-          activeFilterIndex
-        );
-        this.setState({...this.state, update: Math.random()});
+        this.props.setFilter(filter, activeFilterIndex);
+        this.setState({ ...this.state, update: Math.random() });
       }
 
       onToggleExpandedFilter(expanded) {
-        this.setState({...this.state, filterExpanded: expanded});
+        this.setState({ ...this.state, filterExpanded: expanded });
         setTimeout(() => {
           if (
             this.state.newHeight !== undefined &&
@@ -355,7 +354,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       onSelectedFilter(filter, index) {
         this.props.setFilter(filter, index);
-        this.setState({...this.state, update: Math.random()});
+        this.setState({ ...this.state, update: Math.random() });
       }
 
       onBeforePageChanged(currentPage, newPage) {
@@ -376,15 +375,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.filterRef &&
-          this.filterRef.current
+          this.state.currentFilter &&
+          this.state.currentFilter.sort
         ) {
-          if (
-            this.filterRef.current.getQuickFilterSort() &&
-            this.filterRef.current.getQuickFilterSort() !== ""
-          ) {
-            return this.filterRef.current.getQuickFilterSort();
-          }
+          return this.state.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
@@ -436,6 +430,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
           this.setState({
             ...this.state,
             loading,
+            alertIsOpen: false,
+            alertMessage: undefined,
             update: Math.random(),
           });
         }
@@ -535,21 +531,29 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       onSearchByFilter(currentFilter) {
         this.onShowHideLoad(true);
-        this.dataSource.open(this.getData(currentFilter, 0),()=>{
-            this.onShowHideLoad(false);
+        this.dataSource.open(this.getData(currentFilter, 0), () => {
+          this.onShowHideLoad(false);
         });
       }
 
-      getData(currentFilter,page){
-        if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
-           (currentFilter.filter.rules.length > 0)) {
-              return this.getDataWithFilter(currentFilter,page);
-          } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
-                     (currentFilter.filter.quickFilterText !== "")) {
-              return this.getDataWithQuickFilter(currentFilter,page);
-          } else {
-              return this.getDataWithoutFilter(page);
-          }
+      getData(currentFilter, page) {
+        if (
+          currentFilter &&
+          currentFilter.filter &&
+          currentFilter.filter.filterType === "advanced" &&
+          currentFilter.filter.rules.length > 0
+        ) {
+          return this.getDataWithFilter(currentFilter, page);
+        } else if (
+          currentFilter &&
+          currentFilter.filter &&
+          currentFilter.filter.filterType === "normal" &&
+          currentFilter.filter.quickFilterText !== ""
+        ) {
+          return this.getDataWithQuickFilter(currentFilter, page);
+        } else {
+          return this.getDataWithoutFilter(page);
+        }
       }
 
       getDataWithFilter(currentFilter, page) {
@@ -559,43 +563,43 @@ export default function WithTableContainerTemplate(_loadingProps) {
           WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") === true
         ) {
           return this.onFindWithFilter(
-              filter.toJSON(),
-              page,
-              loadingProps.pageSize,
-              this.getSortFields(),
-              this.getUser(),
-              loadingProps.fieldsToForceLazy
-            );
+            filter.toJSON(),
+            page,
+            loadingProps.pageSize,
+            this.getSortFields(),
+            this.getUser(),
+            loadingProps.fieldsToForceLazy
+          );
         } else {
           return loadingProps.endPoints.FIND_WITH_FILTER(
-              loadingProps.resource,
-              filter.toJSON(),
-              page,
-              loadingProps.pageSize,
-              this.getUser(),
-              loadingProps.fieldsToForceLazy
-            );
+            loadingProps.resource,
+            filter.toJSON(),
+            page,
+            loadingProps.pageSize,
+            this.getUser(),
+            loadingProps.fieldsToForceLazy
+          );
         }
       }
 
       getDataWithoutFilter(page) {
         if (WrappedComponent.prototype.hasOwnProperty("onFindAll") === true) {
           return this.onFindAll(
-              page,
-              loadingProps.pageSize,
-              this.getSortFields(),
-              this.getUser(),
-              loadingProps.fieldsToForceLazy
-            );
+            page,
+            loadingProps.pageSize,
+            this.getSortFields(),
+            this.getUser(),
+            loadingProps.fieldsToForceLazy
+          );
         } else {
           return loadingProps.endPoints.FIND_ALL(
-              loadingProps.resource,
-              page,
-              loadingProps.pageSize,
-              this.getSortFields(),
-              this.getUser(),
-              loadingProps.fieldsToForceLazy
-            )
+            loadingProps.resource,
+            page,
+            loadingProps.pageSize,
+            this.getSortFields(),
+            this.getUser(),
+            loadingProps.fieldsToForceLazy
+          );
         }
       }
 
@@ -605,25 +609,25 @@ export default function WithTableContainerTemplate(_loadingProps) {
           true
         ) {
           return this.onFindMultipleFields(
-              currentFilter.filter.quickFilterText,
-              currentFilter.filter.quickFilterFieldsText,
-              0,
-              loadingProps.pageSize,
-              currentFilter.sort.quickFilterSort,
-              this.getUser(),
-              loadingProps.fieldsToForceLazy
-            );
+            currentFilter.filter.quickFilterText,
+            currentFilter.filter.quickFilterFieldsText,
+            0,
+            loadingProps.pageSize,
+            this.getSortFields(),
+            this.getUser(),
+            loadingProps.fieldsToForceLazy
+          );
         } else {
           return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
-              loadingProps.resource,
-              currentFilter.filter.quickFilterText,
-              currentFilter.filter.quickFilterFieldsText,
-              0,
-              loadingProps.pageSize,
-              currentFilter.sort.quickFilterSort,
-              this.getUser(),
-              loadingProps.fieldsToForceLazy
-            );
+            loadingProps.resource,
+            currentFilter.filter.quickFilterText,
+            currentFilter.filter.quickFilterFieldsText,
+            0,
+            loadingProps.pageSize,
+            this.getSortFields(),
+            this.getUser(),
+            loadingProps.fieldsToForceLazy
+          );
         }
       }
 
@@ -637,7 +641,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       pageConfigHandler(page) {
-        return this.getData(this.props.currentFilter,page);
+        return this.getData(this.props.currentFilter, page);
       }
 
       onCloseAlert() {
@@ -1030,8 +1034,7 @@ class UserActions extends Component {
             className="versatil-btn-remover"
             onButtonClick={this.props.onButtonClick}
           />
-        ) : null}
-        {" "}
+        ) : null}{" "}
         {this.props.positionUserActions === "last"
           ? this.props.userActions
           : null}
