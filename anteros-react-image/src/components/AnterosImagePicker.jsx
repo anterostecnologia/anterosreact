@@ -377,6 +377,7 @@ export default class AnterosImagePicker extends React.Component {
                             captureWidth={this.props.captureWidth}
                             captureHeight={this.props.captureHeight}
                             ref={this.AnterosImagePickerEdicaoRef}
+                            aspectRatio={this.props.aspectRatio}
                         /> : null}
                     </div>
                 </div>
@@ -441,6 +442,7 @@ export default class AnterosImagePicker extends React.Component {
                             captureWidth={this.props.captureWidth}
                             captureHeight={this.props.captureHeight}
                             ref={this.AnterosImagePickerEdicaoRef}
+                            aspectRatio={this.props.aspectRatio}
                         /> : null}
                     </div>
                 </div>
@@ -530,7 +532,8 @@ AnterosImagePicker.propTypes = {
     captureWidth: PropTypes.number.isRequired,
     captureHeight: PropTypes.number.isRequired,
     showCloseButton: PropTypes.bool,
-    accept: PropTypes.string.isRequired
+    accept: PropTypes.string.isRequired,
+    aspectRatio: PropTypes.number
 };
 
 AnterosImagePicker.defaultProps = {
@@ -542,7 +545,8 @@ AnterosImagePicker.defaultProps = {
     captureWidth: 480,
     captureHeight: 270,
     showCloseButton: false,
-    accept: 'image/png, image/jpeg'
+    accept: 'image/png, image/jpeg',
+    aspectRatio: NaN
 };
 
 class AnterosImagePickerEdicao extends Component {
@@ -613,6 +617,7 @@ class AnterosImagePickerEdicao extends Component {
                     height={this.props.captureHeight}
                     accept={this.props.accept}
                     ref={this.imageContentRef}
+                    aspectRatio={this.props.aspectRatio}
                 />
                 <AnterosRow horizontalEnd>
                     <AnterosCol
@@ -647,11 +652,13 @@ class AnterosImagePickerEdicao extends Component {
     }
 }
 AnterosImagePickerEdicao.propTypes = {
-    showCloseButton: PropTypes.bool
+    showCloseButton: PropTypes.bool,
+    aspectRatio: PropTypes.number
 };
 
 AnterosImagePickerEdicao.defaultProps = {
-    showCloseButton: false
+    showCloseButton: false,
+    aspectRatio: NaN
 };
 
 class ImageContent extends Component {
@@ -982,7 +989,7 @@ class ImageContent extends Component {
                         {this.state.currentImage && this.state.cropping ? (
                             <Fragment>
                                 <AnterosImageCropper
-                                    crossOrigin="true" // boolean, set it to true if your image is cors protected or it is hosted on cloud like aws s3 image server
+                                    crossOrigin="anonymous" // boolean, set it to true if your image is cors protected or it is hosted on cloud like aws s3 image server
                                     src={
                                         this.getValue()
                                     }
@@ -995,7 +1002,7 @@ class ImageContent extends Component {
                                     guides={true}
                                     modal={true}
                                     rotatable={true}
-                                    aspectRatio={this.props.width / this.props.height}
+                                    aspectRatio={this.props.aspectRatio}
                                     imageName="Imagem cortada"
                                     responseType="blob/base64"
                                     ref={ref => (this.cropperRef = ref)}

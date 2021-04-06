@@ -56,7 +56,7 @@ class AnterosImageCropper extends Component {
       Object.assign({}, prevOptions, { [propKey]: this.props[propKey] })
     , {});
 
-    
+
     this.cropper = new Cropper(this.img, options);
   }
 
@@ -235,9 +235,6 @@ class AnterosImageCropper extends Component {
 
     return (
       <div
-        src={null}
-        crossOrigin={null}
-        alt={null}
         style={this.props.style}
         className={this.props.className}
       >
@@ -341,7 +338,7 @@ AnterosImageCropper.defaultProps = {
   scaleY: 1,
   enable: true,
   zoomTo: 1,
-  rotateTo: 0,
+  rotateTo: 0
 };
 
 export default AnterosImageCropper;
