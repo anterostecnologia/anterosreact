@@ -598,7 +598,7 @@ class TabPanel extends Component {
         const { classNames, id, tabId, children, getContent } = this.props;
 
         return (
-            <div className={classNames} role="tabpanel" id={id} aria-labelledby={tabId} aria-hidden="false">
+            <div className={classNames} role="tabpanel" style={{height:'100%'}} id={id} aria-labelledby={tabId} aria-hidden="false">
                 {getContent && getContent()}
                 {!getContent && children}
             </div>

@@ -156,7 +156,6 @@ export default function WithSearchModalTemplate(_loadingProps) {
         }
 
         this.state = {
-          dataSource: [],
           alertIsOpen: false,
           alertMessage: "",
           modalOpen: "",
@@ -222,7 +221,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       componentDidMount() {
-        this.dataSource.open(this.getData(this.props.currentFilter, 0));
+        if (this.dataSource instanceof AnterosRemoteDatasource){
+          this.dataSource.open(this.getData(this.props.currentFilter, 0));
+        }
         if (WrappedComponent.prototype.hasOwnProperty("onDidMount") === true) {
           this.onDidMount();
         }

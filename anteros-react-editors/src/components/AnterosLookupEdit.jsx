@@ -107,7 +107,7 @@ export default class AnterosLookupEdit extends React.Component {
             if (value != _this.props.dataSource.fieldByName(this.props.lookupField)) {
                 if (value != "" && value != "0") {
                     let promise = this.props.onLookupData(value);
-                    if (!promise instanceof Promise) {
+                    if (!(promise instanceof Promise)) {
                         throw new AnterosError('onLookupData deve retornar um objeto Promise. AnterosLookupEdit.');
                     }
                     promise.then(function (data) {
@@ -140,7 +140,7 @@ export default class AnterosLookupEdit extends React.Component {
         } else {
             if (value != "") {
                 let promise = _this.props.onLookupData(value);
-                if (!promise instanceof Promise) {
+                if (!(promise instanceof Promise)) {
                     throw new AnterosError('onLookupData deve retornar um objeto Promise. AnterosLookupEdit.');
                 }
                 promise.then(function (data) {

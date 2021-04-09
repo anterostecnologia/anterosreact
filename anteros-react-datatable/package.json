@@ -34,6 +34,7 @@
     "babel-runtime": "^6.26.0",
     "bootstrap": "v4.0.0-alpha.6",
     "classnames": "^2.2.5",
+    "clsx": "^1.1.1",
     "collection-utils": "^1.0.1",
     "copy-to-clipboard": "^3.3.1",
     "css-loader": "^0.27.1",

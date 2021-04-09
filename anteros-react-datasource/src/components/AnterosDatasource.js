@@ -108,6 +108,7 @@ class AnterosDatasource {
         this.disabledAllListeners = this.disabledAllListeners.bind(this);
         this.enableAllListeners = this.enableAllListeners.bind(this);
         this.data = [];
+        this.allData = [];
         this.listeners = [];
         this.totalPages = 0;
         this.currentPage = 0;
@@ -146,6 +147,7 @@ class AnterosDatasource {
         if (!name) {
             this.dataSourceName = "ds" + Math.random();
         }
+        this.filter = undefined;
     }
 
     setContentProperty(name) {
@@ -169,9 +171,11 @@ class AnterosDatasource {
 
     open() {
         this.close();
-        this.data = [];
-        this.active = true;
         this.dispatchEvent(dataSourceEvents.BEFORE_OPEN);
+        this.data = [];
+        this.allData = [];
+        this.active = true;
+        this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
     }
 
     isOpen() {
@@ -180,13 +184,29 @@ class AnterosDatasource {
 
     close() {
         if (this.active) {
-            this.active = false;
             this.dispatchEvent(dataSourceEvents.BEFORE_CLOSE);
+            this.active = false;            
+            this.dispatchEvent(dataSourceEvents.AFTER_CLOSE);
         }
     }
 
     getData() {
         return this.data;
+    }
+
+    applyFilter(filter){
+        if (!(filter instanceof Function)){
+            throw new AnterosDatasourceError('Um filtro deve ser do tipo Function.');
+        }
+        this.filter = filter;
+        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        this.first();
+    }
+
+    clearFilter(){
+        this.filter = undefined;
+        this.data = [].concat(this.allData);
+        this.first();
     }
 
     getTotalPages() {
@@ -601,6 +621,15 @@ class AnterosDatasource {
     delete(callback) {
         this._validateDelete();
         this.dispatchEvent(dataSourceEvents.BEFORE_DELETE);
+        let index = -1;
+        this.allData.forEach((item, idx)=>{
+            if (this.currentRecno === item){
+                index = idx;
+            }
+        });
+        if (index>=0){
+            this.allData.splice(index, 1);  
+        }
         this.data.splice(this.currentRecno, 1);
         this.totalRecords--;
         this.grandTotalRecords--;
@@ -659,6 +688,19 @@ class AnterosDatasource {
         if (this.dsState == dataSourceConstants.DS_EDIT) {
             this.data[this.getRecno()] = this.currentRecord;
         }
+
+        let index = -1;
+        this.allData.forEach((item,idx)=>{
+            if (item === this.currentRecord){
+                index = idx;
+            }
+        })
+        if (index >= 0){
+            this.allData[index] = this.currentRecord;
+        } else {
+            this.allData.push(this.currentRecord);
+        }
+
         this.dsState = dataSourceConstants.DS_BROWSE;
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
         if (callback)
@@ -777,12 +819,14 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
     open(data, cloneOnEdit) {
         super.open();
-        this.data = data;
-        if (!this.data) {
+        this.allData = data;
+        if (!data) {
             this.data = [];
+            this.allData = [];
         }
+        this.data = [].concat(this.allData);
         this.totalRecords = this.data.length;
-        this.grandTotalRecords = this.data.length;
+        this.grandTotalRecords = this.allData.length;
         this.first();
         this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
         this.cloneOnEdit = (cloneOnEdit == undefined ? false : cloneOnEdit);
@@ -805,6 +849,18 @@ class AnterosLocalDatasource extends AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.AFTER_EDIT);
     }
 
+    refresh(){
+        if (this.getState() != dataSourceConstants.DS_BROWSE) {
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+        }
+        this.close();
+        this.dispatchEvent(dataSourceEvents.BEFORE_OPEN);
+        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        this.totalRecords = this.data.length; 
+        this.active = true;
+        this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
+    }
+
     append(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
             throw new AnterosDatasourceError('Registro já está sendo editado.');
@@ -815,13 +871,18 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
         if (!this.data) {
             this.data = [];
+            this.allData = [];
+            this.grandTotalRecords = 0;
         }
 
-        this.data.push(record);
+        this.allData.push(record);
+        this.data = this.filter?_this.allData.filter(this.filter):[].concat(this.allData);
         this.totalRecords = this.data.length;
-        this.grandTotalRecords = this.data.length;
-        this.currentRecord = record;
-        this.currentRecno = this.data.length - 1;
+        this.grandTotalRecords++;
+        if (!this.gotoRecordByData(record)){
+            this.currentRecord = undefined;
+            this.currentRecno = -1;
+        }    
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
@@ -833,17 +894,26 @@ class AnterosLocalDatasource extends AnterosDatasource {
         if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
-
         if (!this.data) {
-            this.data = [];
+            throw new AnterosDatasourceError('Fonte de dados vazia não é possível fazer um replace no registro.');
         }
 
-        this.data[this.getRecno()] = record;
-        this.currentRecord = record;
-        this.totalRecords = this.data.length;
-        this.grandTotalRecords = this.data.length;
-        this.currentRecno = this.data.length - 1;
+        let index = -1;
+        this.allData.forEach((item,idx)=>{
+            if (item === this.currentRecord){
+                index = idx;
+            }
+        })
+        if (index>0){
+            this.allData[index] = record;
+        }
+        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        if (!this.gotoRecordByData(record)){
+            this.currentRecord = undefined;
+            this.currentRecno = -1;
+        }    
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
+        this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
 
     appendFirst(record) {
@@ -853,12 +923,18 @@ class AnterosLocalDatasource extends AnterosDatasource {
         if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Não é possível utilizar o método appendFirst com um filtro aplicado');
+        }
 
         if (!this.data) {
             this.data = [];
+            this.allData = [];
+            this.grandTotalRecords = 0;
         }
 
         this.data.splice(0, 0, record);
+        this.allData = this.data;
         this.totalRecords = this.data.length;
         this.grandTotalRecords = this.data.length;
         this.currentRecord = record;
@@ -874,12 +950,18 @@ class AnterosLocalDatasource extends AnterosDatasource {
         if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
+        if (this.getState() == dataSourceConstants.DS_INSERT) {
+            throw new AnterosDatasourceError('Não é possível utilizar o método appendAtIndex com um filtro aplicado');
+        }
 
         if (!this.data) {
             this.data = [];
+            this.allData = [];
+            this.grandTotalRecords = 0;
         }
 
         this.data.splice(index, 0, record);
+        this.allData = this.data;
         this.totalRecords = this.data.length;
         this.grandTotalRecords = this.data.length;
         this.currentRecord = record;
@@ -971,13 +1053,18 @@ class AnterosRemoteDatasource extends AnterosDatasource {
 
         if (!this.data) {
             this.data = [];
+            this.allData = [];
+            this.grandTotalRecords = 0;
         }
 
-        this.data.push(record);
+        this.allData.push(record);
+        this.data = this.filter?_this.allData.filter(this.filter):[].concat(this.allData);
         this.totalRecords = this.data.length;
-        this.grandTotalRecords = this.data.length;
-        this.currentRecord = record;
-        this.currentRecno = this.data.length - 1;
+        this.grandTotalRecords++;
+        if (!this.gotoRecordByData(record)){
+            this.currentRecord = undefined;
+            this.currentRecno = -1;
+        }    
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
         this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
@@ -989,18 +1076,26 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (this.getState() == dataSourceConstants.DS_INSERT) {
             throw new AnterosDatasourceError('Registro já está sendo inserido.');
         }
-
         if (!this.data) {
-            this.data = [];
+            throw new AnterosDatasourceError('Fonte de dados vazia não é possível fazer um replace no registro.');
         }
 
-        this.data[this.getRecno()] = record;
-        this.currentRecord = record;
-        this.totalRecords = this.data.length;
-        this.grandTotalRecords = this.data.length;
-
-        this.currentRecno = this.data.length - 1;
+        let index = -1;
+        this.allData.forEach((item,idx)=>{
+            if (item === this.currentRecord){
+                index = idx;
+            }
+        })
+        if (index>0){
+            this.allData[index] = record;
+        }
+        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        if (!this.gotoRecordByData(record)){
+            this.currentRecord = undefined;
+            this.currentRecno = -1;
+        }    
         this.dispatchEvent(dataSourceEvents.AFTER_POST);
+        this.dispatchEvent(dataSourceEvents.AFTER_SCROLL);
     }
 
     post(callback) {
@@ -1021,6 +1116,19 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                 }
                 if (_this.storePostResultToRecord == true) {
                     let newObject = AnterosJacksonParser.convertJsonToObject(response.data);
+
+                    let index = -1;
+                    _this.allData.forEach((item,idx)=>{
+                        if (item === _this.currentRecord){
+                            index = idx;
+                        }
+                    })
+                    if (index >= 0){
+                        _this.allData[index] = newObject;
+                    } else {
+                        _this.allData.push(newObject);
+                    }
+
                     _this.data[_this.getRecno()] = newObject;
                     _this.currentRecord = newObject;
                 }
@@ -1050,7 +1158,17 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         let ajaxDeleteConfig = this.ajaxDeleteConfigHandler(this.currentRecord);
         axios(ajaxDeleteConfig).then(function (response) {
             if (_this.validateDeleteResponse(response)) {
-                _this.data.splice(_this.currentRecno, 1);
+                let index = -1;
+                _this.allData.forEach((item, idx)=>{
+                    if (_this.currentRecno === item){
+                        index = idx;
+                    }
+                });
+                if (index>=0){
+                    _this.allData.splice(index, 1);  
+                }
+                _this.data.splice(_this.currentRecno, 1); 
+
                 if (_this.data.length == 0)
                     _this.currentRecord = undefined
                 else
@@ -1126,55 +1244,58 @@ class AnterosRemoteDatasource extends AnterosDatasource {
             if (response.data.hasOwnProperty(_this.contentProperty)) {
                 let temp = AnterosJacksonParser.convertJsonToObject(response.data[_this.contentProperty]);
                 if (temp === "") {
-                    _this.data = [];
+                    _this.allData = [];
                 } else {
                     if (AnterosUtils.isArray(temp))
                         if (accumulated === true) {
-                            _this.data.concat(temp);
+                            _this.allData.concat(temp);
                         } else {
-                            _this.data = temp;
+                            _this.allData = temp;
                         }
                     else {
                         if (accumulated === true) {
                             if (!_this.data) {
-                                _this.data = [];
-                                _this.data.push(temp);
+                                _this.allData = [];
+                                _this.allData.push(temp);
                             } else {
-                                _this.data.push(temp);
+                                _this.allData.push(temp);
                             }
                         } {
-                            _this.data = [];
-                            _this.data.push(temp);
+                            _this.allData = [];
+                            _this.allData.push(temp);
                         }
                     }
                 }
+                _this.data = _this.filter?_this.allData.filter(_this.filter):[].concat(_this.allData);
+                _this.totalRecords = _this.data.length;
             } else {
                 let temp = AnterosJacksonParser.convertJsonToObject(response.data);
                 if (temp === "") {
-                    _this.data = [];
+                    _this.allData = [];
                 } else {
                     if (AnterosUtils.isArray(temp))
                         if (accumulated === true) {
-                            _this.data.concat(temp);
+                            _this.allData.concat(temp);
                         } else {
-                            _this.data = temp;
+                            _this.allData = temp;
                         }
                     else {
                         if (accumulated === true) {
-                            if (!_this.data) {
-                                _this.data = [];
-                                _this.data.push(temp);
+                            if (!_this.allData) {
+                                _this.allData = [];
+                                _this.allData.push(temp);
                             } else {
-                                _this.data.push(temp);
+                                _this.allData.push(temp);
                             }
                         } {
-                            _this.data = [];
-                            _this.data.push(temp);
+                            _this.allData = [];
+                            _this.allData.push(temp);
                         }
                     }
                 }
+                _this.grandTotalRecords = _this.allData.length;
+                _this.data = _this.filter?_this.allData.filter(_this.filter):[].concat(_this.allData);
                 _this.totalRecords = _this.data.length;
-                _this.grandTotalRecords = _this.data.length;
             }
             _this.executed = true;
             _this.dsState = dataSourceConstants.DS_BROWSE;
@@ -1200,6 +1321,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
     close() {
         super.close();
         this.data = [];
+        this.allData = [];
         this.dispatchEvent(dataSourceEvents.AFTER_CLOSE);
     }
 }
