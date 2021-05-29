@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-theme",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Anteros components for React - Theme",
   "main": "lib/@anterostecnologia/anteros-react-theme.js",
   "scripts": {
@@ -31,7 +31,6 @@
     "file-loader": "^0.10.1",
     "lodash": "^4.17.4",
     "lodash.omit": "^4.5.0",
-    "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
@@ -52,6 +51,7 @@
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "css-loader": "^0.27.1",
+    "node-sass": "^5.0.0",
     "purifycss": "^1.1.9",
     "sass-resources-loader": "^2.0.3",
     "style-loader": "^0.13.2",

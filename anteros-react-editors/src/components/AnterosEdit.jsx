@@ -1,4 +1,4 @@
-import { Children, createElement, Component } from 'react';
+import React, { Children, createElement, Component } from 'react';
 import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
 import { AnterosUtils } from "@anterostecnologia/anteros-react-core";

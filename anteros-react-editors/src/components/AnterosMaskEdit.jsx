@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {AnterosError} from "@anterostecnologia/anteros-react-core";
 import lodash from "lodash";

@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import * as React from 'react';
+import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
 import { AnterosUtils } from "@anterostecnologia/anteros-react-core";
@@ -107,7 +106,7 @@ export default class AnterosTextArea extends React.Component {
         let myField = document.getElementById(this.idTextArea);
         if (document.selection) {
             myField.focus();
-            sel = document.selection.createRange();
+            let sel = document.selection.createRange();
             sel.text = text;
         }
         // Microsoft Edge

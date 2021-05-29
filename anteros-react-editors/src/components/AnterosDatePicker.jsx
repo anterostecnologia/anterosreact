@@ -1,4 +1,4 @@
-import { PureComponent, Component } from 'react';
+import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
@@ -310,14 +310,6 @@ export default class AnterosDatePicker extends Component {
 
         this.setState({ value });
 
-        if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
-            if (value === 0 || value === '0' || value === null){
-                this.props.dataSource.setFieldByName(this.props.dataField, undefined);
-            } else {
-                this.props.dataSource.setFieldByName(this.props.dataField, value);
-            }
-        }
-
         if (onChange) {
             onChange(value);
         }
@@ -325,7 +317,12 @@ export default class AnterosDatePicker extends Component {
 
     onBlur(event) {
         if (this.props.dataSource && this.props.dataSource.getState !== 'dsBrowse') {
-            this.props.dataSource.setFieldByName(this.props.dataField, this.state.value);
+            let {value} = this.state.value;
+            if (value === 0 || value === '0' || value === null){
+                this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+            } else {
+                this.props.dataSource.setFieldByName(this.props.dataField, value);
+            }
         }
     }
 

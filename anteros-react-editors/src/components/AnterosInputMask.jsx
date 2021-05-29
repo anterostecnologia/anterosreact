@@ -1,4 +1,4 @@
-import { cloneElement, Component } from 'react';
+import React, { cloneElement, Component } from 'react';
 import {findDOMNode} from 'react-dom';
 import {autoBind} from '@anterostecnologia/anteros-react-core';
 import PropTypes from 'prop-types';

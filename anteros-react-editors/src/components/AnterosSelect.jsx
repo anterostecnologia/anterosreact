@@ -1,4 +1,4 @@
-import { createElement, Children, Component } from 'react';
+import React, { createElement, Children, Component } from 'react';
 import 'script-loader!bootstrap-select/dist/js/bootstrap-select.min.js'
 import lodash from 'lodash';
 import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";

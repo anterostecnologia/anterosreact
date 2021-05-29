@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { createElement, Children, Component } from 'react';
+import React, { createElement, Children, Component } from 'react';
 import lodash from 'lodash'
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";

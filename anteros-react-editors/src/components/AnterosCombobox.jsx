@@ -1,7 +1,7 @@
 import AutosizeInput from 'react-input-autosize';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Component, Children } from 'react';
+import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import lodash from 'lodash';
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";

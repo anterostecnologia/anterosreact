@@ -33,6 +33,7 @@ import { processErrorMessage, processDetailErrorMessage } from "./components/Ant
 import AnterosFloater from "./components/AnterosFloater";
 import AnterosClickOutside from './components/AnterosClickOutside';
 import AnterosLazyLoad from './components/AnterosLazyLoad';
+import { AnterosCircularJSON } from './components/AnterosCircularJson';
 
 export {
 	AnterosError,
@@ -45,6 +46,7 @@ export {
 	Case,
 	Switch,
 	Default,
+	AnterosCircularJSON,
 	AnterosJacksonParser,
 	AnterosObjectUtils,
 	AnterosDateUtils,

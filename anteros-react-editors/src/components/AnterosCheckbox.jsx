@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import lodash from "lodash";
 import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";
 import { AnterosUtils } from "@anterostecnologia/anteros-react-core";

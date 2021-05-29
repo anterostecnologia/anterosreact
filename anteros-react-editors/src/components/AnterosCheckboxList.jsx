@@ -1,4 +1,4 @@
-import { createElement, Children, Component } from "react";
+import React, { createElement, Children, Component } from "react";
 import lodash from "lodash";
 import { AnterosError, AnterosUtils } from "@anterostecnologia/anteros-react-core";
 import PropTypes from "prop-types";

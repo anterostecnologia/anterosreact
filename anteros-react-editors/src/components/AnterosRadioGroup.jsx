@@ -1,4 +1,4 @@
-import { cloneElement, Component } from 'react';
+import React, { cloneElement, Component } from 'react';
 import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import PropTypes from 'prop-types';

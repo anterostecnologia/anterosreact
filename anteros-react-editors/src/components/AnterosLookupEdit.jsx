@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import * as React from 'react';
+import React, { Component } from 'react';
 import 'script-loader!bootstrap-maxlength/src/bootstrap-maxlength.js'
 import lodash from "lodash";
 import { buildGridClassNames, columnProps } from "@anterostecnologia/anteros-react-layout";

@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import makeEventProps from 'make-event-props';
 import mergeClassNames from 'merge-class-names';
@@ -14,7 +14,7 @@ import updateInputWidth, { getFontShorthand } from 'update-input-width';
 import getUserLocale from 'get-user-locale';
 import {AnterosClock} from "@anterostecnologia/anteros-react-calendar";
 import { AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
-import { AnterosDateUtils, autoBind } from '@anterostecnologia/anteros-react-core';
+import { autoBind } from '@anterostecnologia/anteros-react-core';
 
 
 const baseClassName = 'react-time-picker';

@@ -235,6 +235,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                                 _this.setState({ ..._this.state, alertIsOpen: true, alertMessage: processErrorMessage(error), saving: false });
                             });
                         } else if (result) {
+                            this.setState({ ...this.state, alertIsOpen: false, alertMessage: '', saving: false });
                             if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                                 this.dataSource.post(error => {
                                     if (!error) {
@@ -252,6 +253,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                             }
                         }
                     } else {
+                        this.setState({ ...this.state, alertIsOpen: false, alertMessage: '', saving: false });
                         if (this.dataSource && this.dataSource.getState() != dataSourceConstants.DS_BROWSE) {
                             this.dataSource.post(error => {
                                 if (!error) {
@@ -269,6 +271,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         }
                     }
                 } else if (button.props.id == "btnCancel") {
+                    this.setState({ ...this.state, alertIsOpen: false, alertMessage: '', saving: false });
                     if (this.dataSource && this.dataSource.getState() !== 'dsBrowse') {
                         this.dataSource.cancel();
                     }

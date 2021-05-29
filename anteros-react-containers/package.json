@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-containers",
-  "version": "2.0.11",
+  "version": "2.0.13",
   "description": "Anteros components for React - Containers",
   "main": "lib/@anterostecnologia/anteros-react-containers.js",
   "scripts": {
