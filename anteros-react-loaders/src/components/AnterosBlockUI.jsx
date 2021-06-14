@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+
 export default class AnterosBlockUi extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +20,10 @@ export default class AnterosBlockUi extends Component {
     this.state = {
       top: '50%'
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   componentWillReceiveProps(nextProps) {

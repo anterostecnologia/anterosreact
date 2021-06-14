@@ -904,7 +904,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
                 index = idx;
             }
         })
-        if (index>0){
+        if (index>=0){
             this.allData[index] = record;
         }
         this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
@@ -1086,7 +1086,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                 index = idx;
             }
         })
-        if (index>0){
+        if (index>=0){
             this.allData[index] = record;
         }
         this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);

@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-loaders",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "description": "Anteros components for React - Loaders",
   "main": "lib/@anterostecnologia/anteros-react-loaders.js",
   "scripts": {
@@ -10,6 +10,8 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
+    "@anterostecnologia/anteros-react-core": "^2.0.7",
+    "@anterostecnologia/anteros-react-layout": "^2.0.9",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
@@ -18,8 +20,6 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "@anterostecnologia/anteros-react-core": "^2.0.7",
-    "@anterostecnologia/anteros-react-layout": "^2.0.9",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -49,6 +49,7 @@
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "react": "^16.11.0",
+    "react-addons-shallow-compare": "^15.6.3",
     "react-dom": "^16.11.0",
     "react-transition-group": "^1.2.1",
     "sass-loader": "^6.0.6",
