@@ -94,6 +94,7 @@ $date-today-bg-color:       #FFF9C4;
   flex-grow: 1;
   flex-shrink: 0;
   border-radius: 4px;
+  width: 0;
   &__container {
     position: absolute;
     z-index:100;

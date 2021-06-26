@@ -477,6 +477,10 @@ class AnterosDatePicker extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   getDateFormat() {
     const { dateFormat, includeTime, showTimeOnly } = this.props;
 
@@ -973,6 +977,10 @@ class CalendarBody extends React.Component {
     autoBind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   render() {
     const { current, onClick, locale } = this.props;
     const viewMap = {
@@ -1128,6 +1136,10 @@ class CalendarContainer extends React.Component {
     );
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   render() {
     const { show, showToday } = this.props;
     const calendarClass = classNames("date-calendar__container", {
@@ -1201,6 +1213,10 @@ class DayView extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   getDayClass(date) {
@@ -1326,6 +1342,10 @@ class AnterosPicker extends React.Component {
     autoBind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   showContents() {
     const { portal, disabled, readOnly } = this.props;
     if (disabled || readOnly) return;
@@ -1409,6 +1429,10 @@ class AnterosPickerInput extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   handleClear(e) {
     const { onClear } = this.props;
     if (onClear) onClear();
@@ -1481,6 +1505,10 @@ class AnterosDateRangePicker extends React.Component {
       endValue: formatDate(end, dateFormat),
     };
     autoBind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   handleDateChange(actions, date) {
