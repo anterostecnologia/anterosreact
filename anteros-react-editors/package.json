@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-editors",
-  "version": "2.0.23",
+  "version": "2.0.26",
   "description": "Anteros components for React - Editors",
   "main": "lib/@anterostecnologia/anteros-react-editors.js",
   "scripts": {
@@ -48,6 +48,7 @@
     "create-react-class": "^15.6.3",
     "css-customs-loader": "^0.3.0",
     "css-loader": "^0.27.1",
+    "dayjs": "^1.10.5",
     "emojionearea": "^3.4.2",
     "eslint": "^3.19.0",
     "eslint-config": "^0.3.0",

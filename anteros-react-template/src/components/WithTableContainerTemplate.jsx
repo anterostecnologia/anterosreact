@@ -530,6 +530,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onSearchByFilter(currentFilter) {
+        this.props.setFilter(currentFilter,this.props.activeFilterIndex);
         this.onShowHideLoad(true);
         this.dataSource.open(this.getData(currentFilter, 0), () => {
           this.onShowHideLoad(false);

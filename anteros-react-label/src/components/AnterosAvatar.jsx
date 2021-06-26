@@ -581,7 +581,7 @@ function matchSource(Source, props, cb) {
     });
 }
 
-function createAvatarComponent({ sources = [] }) {
+export function createAvatarComponent({ sources = [] }) {
     const sourcePropTypes = sources.reduce((r, s) => Object.assign(r, s.propTypes), {});
 
     class Avatar extends React.Component {

@@ -824,7 +824,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
             this.data = [];
             this.allData = [];
         }
-        this.data = [].concat(this.allData);
+        this.data = this.allData;
         this.totalRecords = this.data.length;
         this.grandTotalRecords = this.allData.length;
         this.first();
@@ -855,7 +855,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
         }
         this.close();
         this.dispatchEvent(dataSourceEvents.BEFORE_OPEN);
-        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        this.data = this.filter?this.allData.filter(this.filter):this.allData;
         this.totalRecords = this.data.length; 
         this.active = true;
         this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
@@ -876,7 +876,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
         }
 
         this.allData.push(record);
-        this.data = this.filter?_this.allData.filter(this.filter):[].concat(this.allData);
+        this.data = this.filter?_this.allData.filter(this.filter):this.allData;
         this.totalRecords = this.data.length;
         this.grandTotalRecords++;
         if (!this.gotoRecordByData(record)){
@@ -907,7 +907,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
         if (index>=0){
             this.allData[index] = record;
         }
-        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        this.data = this.filter?this.allData.filter(this.filter):this.allData;
         if (!this.gotoRecordByData(record)){
             this.currentRecord = undefined;
             this.currentRecno = -1;
@@ -1058,7 +1058,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         }
 
         this.allData.push(record);
-        this.data = this.filter?_this.allData.filter(this.filter):[].concat(this.allData);
+        this.data = this.filter?_this.allData.filter(this.filter):this.allData;
         this.totalRecords = this.data.length;
         this.grandTotalRecords++;
         if (!this.gotoRecordByData(record)){
@@ -1089,7 +1089,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (index>=0){
             this.allData[index] = record;
         }
-        this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
+        this.data = this.filter?this.allData.filter(this.filter):this.allData;
         if (!this.gotoRecordByData(record)){
             this.currentRecord = undefined;
             this.currentRecno = -1;

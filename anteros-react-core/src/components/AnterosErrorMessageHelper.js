@@ -5,7 +5,7 @@ export function processErrorMessage(error) {
 		if (error.response.data.apierror.subErrors) {
 			msgErro = [];
 			error.response.data.apierror.subErrors.forEach(element => {
-				msgErro.push(element.message);
+				msgErro.push(element.message+" ("+element.object+")");
 			});
 		}
 	} else {

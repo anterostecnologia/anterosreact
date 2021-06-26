@@ -58,7 +58,9 @@ export default class AnterosUserAvatar extends React.Component {
             className
         } = this.props;
 
-        if (!name) throw new Error('UserAvatar requires a name');
+        if (!name) {
+            return <div></div>
+        }
 
         const abbr = defaultInitials(name, { maxInitials });
         size = addPx(size);

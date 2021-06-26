@@ -162,7 +162,7 @@ export class AnterosMegaMenu extends Component {
       if (element.props.children) {
         result = result.concat(this.filterItens(element, filter));
       } else {
-        if (element.props.caption.includes(filter)) {
+        if (new RegExp(filter, 'i').test(element.props.caption)) {
           result.push(element);
         }
       }
