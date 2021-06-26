@@ -2,11 +2,11 @@ import * as React from "react";
 import * as dayjs from "dayjs";
 import * as customParseFormat from "dayjs/plugin/customParseFormat";
 import * as CX from "classnames";
-import { boundClass } from "@anterostecnologia/anteros-react-core";
 import * as localeData from "dayjs/plugin/localeData";
 import * as localizedFormat from "dayjs/plugin/localizedFormat";
 import * as weekday from "dayjs/plugin/weekday";
 import * as classNames from "classnames";
+import shallowCompare from 'react-addons-shallow-compare';
 import {
   buildGridClassNames,
   columnProps,
