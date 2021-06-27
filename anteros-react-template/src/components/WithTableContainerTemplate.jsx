@@ -711,6 +711,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
         });
       }
 
+      changeState(state){
+        this.setState({...this.state,...state});
+      }
+
       render() {
         const modals = WrappedComponent.prototype.hasOwnProperty("getModals")
           ? this.getModals()
