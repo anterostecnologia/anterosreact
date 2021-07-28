@@ -465,11 +465,13 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         this.props.history.push(button.props.route);
       }
       onSearchByFilter(currentFilter) {
+        this.props.setFilter(currentFilter,this.props.activeFilterIndex);
         this.onShowHideLoad(true);
         this.dataSource.open(this.getData(currentFilter, 0), () => {
           this.onShowHideLoad(false);
         });
       }
+      
       getData(currentFilter, page) {
         if (
           currentFilter &&
