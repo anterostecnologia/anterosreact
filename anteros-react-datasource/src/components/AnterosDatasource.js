@@ -1248,7 +1248,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                 } else {
                     if (AnterosUtils.isArray(temp))
                         if (accumulated === true) {
-                            _this.allData.concat(temp);
+                            _this.allData = _this.allData.concat(temp);
                         } else {
                             _this.allData = temp;
                         }
@@ -1275,7 +1275,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
                 } else {
                     if (AnterosUtils.isArray(temp))
                         if (accumulated === true) {
-                            _this.allData.concat(temp);
+                            _this.allData = _this.allData.concat(temp);
                         } else {
                             _this.allData = temp;
                         }

@@ -257,7 +257,7 @@ export default class AnterosList extends Component {
         let _this = this;
         let arrChildren = React.Children.toArray(this.props.children);
         arrChildren.forEach(function (child) {
-            if (child.type && !(child.type.componentName === 'AnterosListItem')) {
+            if (child.type && (child.type.componentName !== 'AnterosListItem')) {
                 throw new AnterosError("Apenas componentes do tipo AnterosListItem podem ser usados como filhos de AnterosList.");
             }
             if (!child.props.id) {
@@ -358,8 +358,8 @@ export class AnterosListItem extends Component {
         this.onClick = this.onClick.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
-        this.idItem;
-        this.keyItem;
+        this.idItem=undefined;
+        this.keyItem=undefined;
     }
 
     onClick() {

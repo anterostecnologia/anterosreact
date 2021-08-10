@@ -711,8 +711,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
         });
       }
 
-      changeState(state){
-        this.setState({...this.state,...state});
+      changeState(state, callback){
+        if (callback){
+          this.setState({...this.state,...state}, callback);
+        } else {
+          this.setState({...this.state,...state});
+        }
       }
 
       render() {

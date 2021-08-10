@@ -11,7 +11,7 @@ class AnterosPanel extends Component {
     }
     render() {
         const colClasses = buildGridClassNames(this.props, false, []);
-
+        const {visible} = this.props;
         let className = AnterosUtils.buildClassNames("panel panel-default",
             (this.props.textCenter ? "text-center" : ""),
             (this.props.textRight ? "text-right" : ""),
@@ -27,16 +27,18 @@ class AnterosPanel extends Component {
         if (!this.props.border) {
             style = { ...style, border: 0, boxShadow: "none" };
         }
-        return (
-            <div id={this.props.id}
-                className={className}
-                style={style}
-                onMouseOver={this.props.onMouseOver}
-                onMouseOut={this.props.onMouseOut}
-                onClick={this.onPanelClick}>
-                {this.props.children}
-            </div>
-        )
+        if (visible) {
+            return (<div id={this.props.id}
+                    className={className}
+                    style={style}
+                    onMouseOver={this.props.onMouseOver}
+                    onMouseOut={this.props.onMouseOut}
+                    onClick={this.onPanelClick}>
+                    {this.props.children}
+                </div>);
+        } else {
+            return null;
+        }
     }
 }
 
@@ -61,6 +63,7 @@ AnterosPanel.propTypes = {
     large: columnProps,
     extraLarge: columnProps,
     border: PropTypes.bool,
+    visible: PropTypes.bool.isRequired,
     onPanelClick: PropTypes.func,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func
@@ -69,7 +72,8 @@ AnterosPanel.propTypes = {
 AnterosPanel.defaultProps = {
     outline: false,
     withScroll: true,
-    border: true
+    border: true,
+    visible: true
 }
 
 export default AnterosPanel;
