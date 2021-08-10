@@ -139,4 +139,5 @@ export { default as useViewportScrollCoords } from './hooks/useViewportScrollCoo
 export { default as useViewportSize } from './hooks/useViewportSize';
 export { default as useWindowScrollCoords } from './hooks/useWindowScrollCoords';
 export { default as useWindowSize2 } from './hooks/useWindowSize';
+export { default as useSWUpdateChecker } from './hooks/useSWUpdateChecker';
 

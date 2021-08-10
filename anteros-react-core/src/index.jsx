@@ -34,6 +34,7 @@ import AnterosFloater from "./components/AnterosFloater";
 import AnterosClickOutside from './components/AnterosClickOutside';
 import AnterosLazyLoad from './components/AnterosLazyLoad';
 import { AnterosCircularJSON } from './components/AnterosCircularJson';
+import AnterosServiceWorkerUpdater from './components/AnterosServiceWorkerUpdater';
 
 export {
 	AnterosError,
@@ -66,5 +67,6 @@ export {
 	boundMethod,
 	AnterosFloater,
 	AnterosClickOutside,
-	AnterosLazyLoad
+	AnterosLazyLoad,
+	AnterosServiceWorkerUpdater
 };
