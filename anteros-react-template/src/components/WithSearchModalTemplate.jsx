@@ -174,8 +174,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       getUser() {
-        if (this.props.user) {
-          return this.props.user;
+        if (
+          WrappedComponent.prototype.hasOwnProperty("getCustomUser") === true
+        ) {
+            return this.getCustomUser();
+        } else {
+          if (this.props.user) {
+            return this.props.user;
+          }
         }
         return undefined;
       }

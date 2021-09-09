@@ -304,9 +304,12 @@ export default class AnterosDataTable extends Component {
 		let column = this.getColumnByIndex(meta.col);
 		let width, height;
 		let classNameImage;
+		let style = {};
 		if (column) {
 			if (column.props.imageCircle) {
 				classNameImage = "img-circle";
+			} else {
+				style = {borderRadius:"8px"};
 			}
 			width = column.props.imageWidth;
 			height = column.props.imageHeight;
@@ -330,6 +333,7 @@ export default class AnterosDataTable extends Component {
 		return ReactDOMServer.renderToString(
 			<img
 				className={classNameImage}
+				style={style}
 				src={imgSrc}
 				height={height}
 				width={width}

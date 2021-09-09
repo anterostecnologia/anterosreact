@@ -62,6 +62,8 @@ import {
   AnterosFlexSplitter,
 } from "./components/AnterosFlexContainer";
 
+import AnterosPopup from "./components/AnterosPopup";
+
 export {
   AnterosCard,
   HeaderActions,
@@ -114,4 +116,5 @@ export {
   AnterosFlexEvents,
   AnterosFlexHandle,
   AnterosFlexSplitter,
+  AnterosPopup
 };

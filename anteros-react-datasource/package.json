@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-datasource",
-  "version": "2.0.18",
+  "version": "2.0.20",
   "description": "Anteros components for React - Datasource",
   "main": "lib/@anterostecnologia/anteros-react-datasource.js",
   "scripts": {
@@ -10,6 +10,8 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
+    "@anterostecnologia/anteros-react-api": "^1.0.0",
+    "@anterostecnologia/anteros-react-core": "^2.0.7",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
@@ -18,7 +20,6 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "@anterostecnologia/anteros-react-core": "^2.0.7",
     "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",

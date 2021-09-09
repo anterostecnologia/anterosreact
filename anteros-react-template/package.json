@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-template",
-  "version": "2.0.41",
+  "version": "2.0.48",
   "description": "Anteros components for React - Template",
   "main": "lib/@anterostecnologia/anteros-react-template.js",
   "scripts": {

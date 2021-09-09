@@ -219,8 +219,14 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       getUser() {
-        if (this.props.user) {
-          return this.props.user;
+        if (
+          WrappedComponent.prototype.hasOwnProperty("getCustomUser") === true
+        ) {
+          return this.getCustomUser();
+        } else {
+          if (this.props.user) {
+            return this.props.user;
+          }
         }
         return undefined;
       }
@@ -426,14 +432,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
               alertMessage: processErrorMessage(error),
             });
           }
-        } else {
-          this.setState({
-            ...this.state,
-            loading,
-            alertIsOpen: false,
-            alertMessage: undefined,
-            update: Math.random(),
-          });
         }
       }
 
@@ -530,7 +528,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onSearchByFilter(currentFilter) {
-        this.props.setFilter(currentFilter,this.props.activeFilterIndex);
+        this.props.setFilter(currentFilter, this.props.activeFilterIndex);
         this.onShowHideLoad(true);
         this.dataSource.open(this.getData(currentFilter, 0), () => {
           this.onShowHideLoad(false);
@@ -711,11 +709,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
         });
       }
 
-      changeState(state, callback){
-        if (callback){
-          this.setState({...this.state,...state}, callback);
+      changeState(state, callback) {
+        if (callback) {
+          this.setState({ ...this.state, ...state }, callback);
         } else {
-          this.setState({...this.state,...state});
+          this.setState({ ...this.state, ...state });
         }
       }
 
@@ -723,6 +721,14 @@ export default function WithTableContainerTemplate(_loadingProps) {
         const modals = WrappedComponent.prototype.hasOwnProperty("getModals")
           ? this.getModals()
           : null;
+
+        const customLoader = WrappedComponent.prototype.hasOwnProperty("getCustomLoader")
+          ? this.getCustomLoader()
+          : null;
+
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty("getCustomMessageLoading")
+        ? this.getCustomMessageLoading()
+        : loadingProps.messageLoading;
 
         return (
           <Fragment>
@@ -780,9 +786,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 }}
                 tag="div"
                 blocking={this.state.loading}
-                message={loadingProps.messageLoading}
+                message={messageLoading}
                 loader={
-                  <AnterosLoader active type="ball-pulse" color="#02a17c" />
+                  customLoader?customLoader:<AnterosLoader active type="ball-pulse" color="#02a17c" />
                 }
               >
                 {loadingProps.withFilter ? (
@@ -814,7 +820,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                         labelButtonSelect={loadingProps.labelButtonSelect}
                         positionUserActions={this.positionUserActions}
                         userActions={
-                          this.hasUserActions ? this.getUserActions() : null
+                          this.hasUserActions ? (
+                            this.getUserActions()
+                          ) : (
+                            <div><AnterosButton visible={false}/></div>
+                          )
                         }
                       />
                       {this.state.filterExpanded ? (
