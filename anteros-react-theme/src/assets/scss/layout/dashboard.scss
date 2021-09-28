@@ -205,7 +205,7 @@
     opacity: .98;
   }
   .dashboard .widget-panel-enter {
-    bottom: calc(0 - 200px);
+    bottom: calc(0px - 200px);
   }
   .dashboard .widget-panel-enter.widget-panel-enter-active {
     bottom: 0;
@@ -216,7 +216,7 @@
     bottom: 0;
   }
   .dashboard .widget-panel-leave.widget-panel-leave-active {
-    bottom: calc(0 - 200px);
+    bottom: calc(0px - 200px);
     -webkit-transition: bottom 0.25s ease-in;
     transition: bottom 0.25s ease-in;
   }

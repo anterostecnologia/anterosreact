@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import nouislider from 'nouislider/distribute/nouislider.min.js';
+import nouislider from 'nouislider/dist/nouislider.min.js';
 import lodash from "lodash";
 import PropTypes from 'prop-types';
 

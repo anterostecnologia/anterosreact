@@ -8,6 +8,7 @@ import EditorContainer from './components/editors/EditorContainer';
 export {
     TextEditor, EditorContainer, SortableHeaderCell, AnterosDataTable, AnterosAdvancedTable, 
     AnterosAdvancedTableEditor, AnterosAdvancedTableContainer, GridCellKind
+   
 
 };
 

@@ -1,7 +1,9 @@
 import {
   autoBind
-} from '@anterostecnologia/anteros-react-core';
+} from './AnterosAutoBind';
 var CryptoJS = require("crypto-js");
+import { decode, encode } from "universal-base64";
+import 'regenerator-runtime/runtime';
 
 const SECRET_KEY = 'dmtUTkhBMnFocWZyY3hzeA==';
 
@@ -32,8 +34,8 @@ export class AnterosPreferencesService {
       dataStorage.forEach((item) => {
         if (data === item.owner) {
           let password = CryptoJS.AES.decrypt(
-            atob(item.password),
-            atob(SECRET_KEY)
+            decode(item.password),
+            decode(SECRET_KEY)
           );
           password = password.toString(CryptoJS.enc.Utf8);
           callback(item.owner,item.userName,password,data);
@@ -59,7 +61,7 @@ export class AnterosPreferencesService {
         {
           owner: credentials.owner,
           userName: credentials.username,
-          password: btoa(CryptoJS.AES.encrypt(credentials.password,atob(SECRET_KEY))),
+          password: encode(CryptoJS.AES.encrypt(credentials.password,decode(SECRET_KEY))),
           url: window.location.href,
         },
       ];
@@ -72,7 +74,7 @@ export class AnterosPreferencesService {
       } else {
         let dataStorage = localStorage.getItem(key);
         dataStorage = JSON.parse(dataStorage);
-        dataStorage.password = CryptoJS.AES.decrypt(atob(dataStorage.password),atob(SECRET_KEY));
+        dataStorage.password = CryptoJS.AES.decrypt(decode(dataStorage.password),decode(SECRET_KEY));
         dataStorage.password = dataStorage.password.toString(CryptoJS.enc.Utf8);
         if (dataStorage==undefined){
           dataStorage = [];

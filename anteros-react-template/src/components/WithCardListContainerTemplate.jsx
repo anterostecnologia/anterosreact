@@ -220,13 +220,13 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         } else {
           this.dataSource = new AnterosRemoteDatasource();
           this.dataSource.setAjaxPostConfigHandler((entity) => {
-            return loadingProps.endPoints.POST(loadingProps.resource, entity);
+            return loadingProps.endPoints.post(loadingProps.resource, entity);
           });
           this.dataSource.setValidatePostResponse((response) => {
             return response.data !== undefined;
           });
           this.dataSource.setAjaxDeleteConfigHandler((entity) => {
-            return loadingProps.endPoints.DELETE(loadingProps.resource, entity);
+            return loadingProps.endPoints.delete(loadingProps.resource, entity);
           });
           this.dataSource.setValidateDeleteResponse((response) => {
             return response.data !== undefined;
@@ -252,13 +252,13 @@ export default function WithCardListContainerTemplate(_loadingProps) {
           } else {
             this.dataSourceEdicao = new AnterosRemoteDatasource();
             this.dataSourceEdicao.setAjaxPostConfigHandler((entity) => {
-              return loadingProps.endPoints.POST(loadingProps.resource, entity);
+              return loadingProps.endPoints.post(loadingProps.resource, entity);
             });
             this.dataSourceEdicao.setValidatePostResponse((response) => {
               return response.data !== undefined;
             });
             this.dataSourceEdicao.setAjaxDeleteConfigHandler((entity) => {
-              return loadingProps.endPoints.DELETE(
+              return loadingProps.endPoints.delete(
                 loadingProps.resource,
                 entity
               );
@@ -268,7 +268,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             });
 
             this.dataSourceEdicao.setAjaxPageConfigHandler((page) => {
-              return loadingProps.endPoints.FIND_FULL(
+              return loadingProps.endPoints.findAll(
                 loadingProps.resource,
                 page,
                 loadingProps.pageSize
@@ -444,7 +444,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
           if (this.dataSourceEdicao) {
             this.dataSourceEdicao.locate({ id: this.state.selectedItem.id });
             this.dataSourceEdicao.open(
-              loadingProps.endPoints.FIND_ONE(
+              loadingProps.endPoints.findOne(
                 loadingProps.resource,
                 this.dataSource.fieldByName("id"),
                 this.props.user,
@@ -598,7 +598,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.fieldsToForceLazy
           );
         } else {
-          return loadingProps.endPoints.FIND_WITH_FILTER(
+          return loadingProps.endPoints.findWithFilter(
             loadingProps.resource,
             filter.toJSON(),
             page,
@@ -619,7 +619,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.fieldsToForceLazy
           );
         } else {
-          return loadingProps.endPoints.FIND_ALL(
+          return loadingProps.endPoints.findAll(
             loadingProps.resource,
             page,
             loadingProps.pageSize,
@@ -645,7 +645,7 @@ export default function WithCardListContainerTemplate(_loadingProps) {
             loadingProps.fieldsToForceLazy
           );
         } else {
-          return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+          return loadingProps.endPoints.findMultipleFields(
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
             currentFilter.filter.quickFilterFieldsText,

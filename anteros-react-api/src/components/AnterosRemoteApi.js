@@ -1,10 +1,9 @@
 import axios from "axios";
 import {
-  Anteros
-} from '@anterostecnologia/anteros-react-core';
-import {
   tokenService
 } from './AnterosTokenService';
+import 'regenerator-runtime/runtime';
+
 
 const options = {
   invalidTokenStatuses: [401],
@@ -21,8 +20,6 @@ export function createRemoteApi() {
       "Content-Type": "application/json",
     },
   });
-
-  Anteros.dataSourceDatetimeFormat = 'YYYY-MM-DDTHH:mm:ss.SSS';
 
   instance.interceptors.request.use(
     (config) => {

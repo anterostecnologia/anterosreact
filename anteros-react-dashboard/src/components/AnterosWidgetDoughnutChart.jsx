@@ -55,6 +55,7 @@ class AnterosWidgetDoughnutChart extends Component{
                 currentData.datasets[0].data.push(d.value)
                 currentData.labels.push(d.label)
                 currentData.datasets[0].backgroundColor.push(d.color)
+                return d
             })
         }
       
@@ -69,10 +70,10 @@ class AnterosWidgetDoughnutChart extends Component{
                                 <AnterosText text={this.props.primaryText} h3 textAlign="start" color={this.props.primaryTextColor ? this.props.primaryTextColor : this.props.color }/>
                             </AnterosCol>
                         </AnterosRow>
-                        <AnterosRow style={{height:this.props.medium ? 450 : 300}}>
+                        <AnterosRow style={{height:this.props.medium ? 340 : 300}}>
                             <AnterosCol style={{paddingTop:30}}>
                                 <AnterosChart.Doughnut
-                                    height={this.props.medium ? 160 : 150}
+                                    height={this.props.medium ? 130 : 180}
                                     data={currentData}
                                     legend={{position:'bottom',reverse:'false'}}
                                     />

@@ -61,8 +61,10 @@ import {
   AnterosFlexHandle,
   AnterosFlexSplitter,
 } from "./components/AnterosFlexContainer";
-
+import { AnterosMuuriLayout } from './components/AnterosMuuriLayout';
+import AnterosGridGallery from './components/AnterosGridGallery';
 import AnterosPopup from "./components/AnterosPopup";
+import {AnterosCalendarTimeLine} from './components/AnterosCalendarTimeLine';
 
 export {
   AnterosCard,
@@ -116,5 +118,8 @@ export {
   AnterosFlexEvents,
   AnterosFlexHandle,
   AnterosFlexSplitter,
-  AnterosPopup
+  AnterosPopup,
+  AnterosMuuriLayout,
+  AnterosGridGallery,
+  AnterosCalendarTimeLine
 };

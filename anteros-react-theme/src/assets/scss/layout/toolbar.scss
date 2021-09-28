@@ -1,0 +1,51 @@
+.anteros_toolbar--horizontal {
+    flex-direction: row;
+    align-items: center;
+}
+
+.anteros_toolbar {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    background: #F7F7F7;
+    margin-block-start: 0.2em;
+    margin-block-end: 0.2em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 8px;
+}
+
+.anteros_toolbar__item--separator{
+    width: 1px;
+    min-width: 1px;
+    height: 100%;
+    background-color: #dfdfdf;
+    margin: 0 2px;
+    height: 28px;
+}
+
+.anteros_widget--bg {
+    background: #F7F7F7;
+}
+
+.anteros_widget--bordered {
+    border: 1px solid #e4e4e4;
+}
+
+.anteros_widget {
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "liga";
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(0, 0, 0, .7);
+}

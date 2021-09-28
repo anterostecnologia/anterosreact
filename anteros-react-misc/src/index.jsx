@@ -19,6 +19,8 @@ import AnterosRadialGauge from './components/AnterosRadialGauge';
 import AnterosThermometer from './components/AnterosThermometer';
 import AnterosIframe from './components/AnterosIframe';
 import AnterosCornerRibbon from './components/AnterosCornerRibbon';
+import AnterosFileManager, {AnterosToolbar, AnterosToolbarItem} from './components/AnterosFileManager';
+import {AnterosAttachementManager, AnterosAttachementUploadModal} from './components/AnterosAttachementManager';
 // import {AnterosPlayer,AnterosReactPlayer,createSinglePlayer,Preview,AnterosDailyMotion,
 //     AnterosFacebook,AnterosFilePlayer,AnterosMixcloud,AnterosSoundCloud,
 //     AnterosStreamable,AnterosTwitch,AnterosVimeo,AnterosWistia,AnterosYouTube} from './components/AnterosReactPlayer'
@@ -28,7 +30,8 @@ export {
     AnterosPDFViewer, AnterosProgressBar, AnterosRibbon,
     AnterosSlider, AnterosSpinner, AnterosStarRating, AnterosBarcode,
     AnterosIdleTimer,AnterosTimeAgo, AnterosQRCode, AnterosRecaptcha, AnterosTour, 
-    AnterosTourStep,AnterosLinearProgressBar,AnterosFloater,AnterosSpeedometer,AnterosCornerRibbon
+    AnterosTourStep,AnterosLinearProgressBar,AnterosFloater,AnterosSpeedometer,AnterosCornerRibbon,
+    AnterosFileManager,AnterosToolbar, AnterosToolbarItem, AnterosAttachementManager, AnterosAttachementUploadModal
     // AnterosRadialGauge, AnterosThermometer, AnterosIframe,AnterosPlayer,AnterosReactPlayer,createSinglePlayer,Preview,AnterosDailyMotion,
     // AnterosFacebook,AnterosFilePlayer,AnterosMixcloud,AnterosSoundCloud,
     // AnterosStreamable,AnterosTwitch,AnterosVimeo,AnterosWistia,AnterosYouTube

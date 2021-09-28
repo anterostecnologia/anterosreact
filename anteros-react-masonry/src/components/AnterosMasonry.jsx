@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import lodash from 'lodash';
-import Masonry from 'masonry-layout/dist/masonry.pkgd.min.js';
-import imagesloaded from 'imagesloaded/imagesloaded.pkgd.min.js';
+import Masonry from './masonry.js';
 
 
 
 var propTypes = {
     enableResizableChildren: PropTypes.bool,
-    disableImagesLoaded: PropTypes.bool,
-    onImagesLoaded: PropTypes.func,
     updateOnEachImageLoad: PropTypes.bool,
     options: PropTypes.object,
     elementType: PropTypes.string,
@@ -25,7 +22,6 @@ export default class AnterosMasonry extends React.Component {
         this.getCurrentDomChildren = this.getCurrentDomChildren.bind(this);
         this.diffDomChildren = this.diffDomChildren.bind(this);
         this.performLayout = this.performLayout.bind(this);
-        this.imagesLoaded = this.imagesLoaded.bind(this);
         this.initializeResizableChildren = this.initializeResizableChildren.bind(this);
         this.listenToElementResize = this.listenToElementResize.bind(this);
         this.destroyErd = this.destroyErd.bind(this);
@@ -54,7 +50,7 @@ export default class AnterosMasonry extends React.Component {
 
     getCurrentDomChildren() {
         var node = this.masonryContainer;
-        var children = this.props.options.itemSelector ? node.querySelectorAll(this.props.options.itemSelector) .children;
+        var children = this.props.options.itemSelector ? node.querySelectorAll(this.props.options.itemSelector) : node.children;
         return Array.prototype.slice.call(children);
     }
 
@@ -186,23 +182,6 @@ export default class AnterosMasonry extends React.Component {
         this.masonry.layout();
     }
 
-    imagesLoaded() {
-        if (this.props.disableImagesLoaded) {
-            return;
-        }
-
-        imagesloaded(this.masonryContainer)
-            .on(
-            this.props.updateOnEachImageLoad ? 'progress' : 'always',
-            lodash.debounce(
-                function (instance) {
-                    if (this.props.onImagesLoaded) {
-                        this.props.onImagesLoaded(instance);
-                    }
-                    this.masonry.layout();
-                }.bind(this), 100)
-            );
-    }
 
     initializeResizableChildren() {
         if (!this.props.enableResizableChildren) {
@@ -231,12 +210,10 @@ export default class AnterosMasonry extends React.Component {
     componentDidMount() {
         this.initializeMasonry();
         this.initializeResizableChildren();
-        this.imagesLoaded();
     }
 
     componentDidUpdate() {
         this.performLayout();
-        this.imagesLoaded();
     }
 
     componentWillUnmount() {
@@ -267,7 +244,6 @@ export default class AnterosMasonry extends React.Component {
 
 AnterosMasonry.propTypes = {
     enableResizableChildren: PropTypes.bool,
-    disableImagesLoaded: PropTypes.bool,
     updateOnEachImageLoad: PropTypes.bool,
     options: PropTypes.object,
     className: PropTypes.string,
@@ -278,7 +254,6 @@ AnterosMasonry.propTypes = {
 
 AnterosMasonry.defaultProps = {
     enableResizableChildren: false,
-    disableImagesLoaded: false,
     updateOnEachImageLoad: false,
     options: {},
     className: '',

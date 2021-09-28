@@ -1,8 +1,10 @@
 import {
   AnterosJacksonParser,
-  processErrorMessage,
-  autoBind
-} from '@anterostecnologia/anteros-react-core';
+} from './AnterosJacksonParser';
+import {
+  processErrorMessage
+} from './AnterosErrorMessageHelper';
+import {autoBind} from './AnterosAutoBind';
 import {
   authService
 } from './AnterosAuthenticationService';
@@ -11,6 +13,8 @@ import {
 } from './AnterosPreferencesService';
 import { tokenService } from './AnterosTokenService';
 import axios from 'axios';
+import { decode, encode } from "universal-base64";
+import 'regenerator-runtime/runtime';
 var CryptoJS = require("crypto-js");
 
 
@@ -30,7 +34,7 @@ export class AnterosUserService {
     const KEY_USER_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userInfo";
     userInfo = localStorage.getItem(KEY_USER_INFO);
     if (userInfo) {
-      userInfo = CryptoJS.AES.decrypt(atob(userInfo), atob(this.config.secretKey));
+      userInfo = CryptoJS.AES.decrypt(decode(userInfo), decode(this.config.secretKey));
       userInfo = userInfo.toString(CryptoJS.enc.Utf8);
       userInfo = AnterosJacksonParser.convertJsonToObject(JSON.parse(userInfo));
       return userInfo;
@@ -42,7 +46,7 @@ export class AnterosUserService {
     const KEY_ENDPOINT_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_endpointInfo";
     userInfo = localStorage.getItem(KEY_ENDPOINT_INFO);
     if (userInfo) {
-      userInfo = CryptoJS.AES.decrypt(atob(userInfo), atob(this.config.secretKey));
+      userInfo = CryptoJS.AES.decrypt(decode(userInfo), decode(this.config.secretKey));
       userInfo = userInfo.toString(CryptoJS.enc.Utf8);
       userInfo = AnterosJacksonParser.convertJsonToObject(JSON.parse(userInfo));
       return userInfo;
@@ -54,7 +58,7 @@ export class AnterosUserService {
     const KEY_USER_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userInfo";
     userInfo = localStorage.getItem(KEY_USER_INFO);
     if (userInfo) {
-      userInfo = CryptoJS.AES.decrypt(atob(userInfo), atob(this.config.secretKey));
+      userInfo = CryptoJS.AES.decrypt(decode(userInfo), decode(this.config.secretKey));
       userInfo = userInfo.toString(CryptoJS.enc.Utf8);
       userInfo = AnterosJacksonParser.convertJsonToObject(JSON.parse(userInfo));
       return new Promise((resolve, reject) => {
@@ -80,25 +84,25 @@ export class AnterosUserService {
 
   updateEndpointInformation(credentials, endpoints) {
     const KEY_ENDPOINT_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_endpointInfo";
-    let _endpoints = btoa(CryptoJS.AES.encrypt(JSON.stringify(endpoints), atob(this.config.secretKey)));
+    let _endpoints = encode(CryptoJS.AES.encrypt(JSON.stringify(endpoints), decode(this.config.secretKey)));
     localStorage.setItem(KEY_ENDPOINT_INFO, _endpoints);
   }
 
   updateUserInformation(credentials, user) {
     const KEY_USER_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userInfo";
-    let _user = btoa(CryptoJS.AES.encrypt(JSON.stringify(user), atob(this.config.secretKey)));
+    let _user = encode(CryptoJS.AES.encrypt(JSON.stringify(user), decode(this.config.secretKey)));
     localStorage.setItem(KEY_USER_INFO, _user);
   }
 
   updateUserSocialInformation(credentials, user) {
     const KEY_USER_SOCIAL = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userSocialInfo";
-    let _user = btoa(CryptoJS.AES.encrypt(JSON.stringify(user), atob(this.config.secretKey)));
+    let _user = encode(CryptoJS.AES.encrypt(JSON.stringify(user), decode(this.config.secretKey)));
     localStorage.setItem(KEY_USER_SOCIAL, _user);
   }
 
   updateOwnerInfo(credentials, owner) {
     const KEY_OWNER_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_ownerInfo";
-    let _owner = btoa(CryptoJS.AES.encrypt(JSON.stringify(owner), atob(this.config.secretKey)));
+    let _owner = encode(CryptoJS.AES.encrypt(JSON.stringify(owner), decode(this.config.secretKey)));
     localStorage.setItem(KEY_OWNER_INFO, _owner);
   }
 
@@ -191,7 +195,7 @@ export class AnterosUserService {
     const KEY_USER_SOCIAL = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_userSocial`;
     userInfo = localStorage.getItem(KEY_USER_SOCIAL);
     if (userInfo && userInfo !== "null") {
-      userInfo = CryptoJS.AES.decrypt(atob(userInfo), atob(this.config.secretKey));
+      userInfo = CryptoJS.AES.decrypt(decode(userInfo), decode(this.config.secretKey));
       userInfo = userInfo.toString(CryptoJS.enc.Utf8);
       userInfo = AnterosJacksonParser.convertJsonToObject(JSON.parse(userInfo));
       return new Promise((resolve, reject) => {
@@ -242,7 +246,7 @@ export class AnterosUserService {
     const KEY_ONWER_INFO = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_ownerInfo`;
     ownerInfo = localStorage.getItem(KEY_ONWER_INFO);
     if (ownerInfo && ownerInfo !== "null") {
-      ownerInfo = CryptoJS.AES.decrypt(atob(ownerInfo), atob(this.config.secretKey));
+      ownerInfo = CryptoJS.AES.decrypt(decode(ownerInfo), decode(this.config.secretKey));
       ownerInfo = ownerInfo.toString(CryptoJS.enc.Utf8);
       ownerInfo = AnterosJacksonParser.convertJsonToObject(JSON.parse(ownerInfo));
       return new Promise((resolve, reject) => {

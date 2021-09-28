@@ -72,7 +72,7 @@ AnterosSectionRightSide.defaultProps = {
     icon: 'fad fa-filter',
     iconOpened: 'fad fa-times',
     color: 'white',
-    width: 370,
+    width: 570,
     hintPosition: 'up',
     hint: "Abrir filtro",
     hintOpened: 'Fechar filtro'

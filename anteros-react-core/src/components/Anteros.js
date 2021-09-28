@@ -52,51 +52,53 @@ class AnterosDefaults {
 	}
 
 	_enterTab() {
-		let _this = this;
-		window.$(document).keydown(function(e) {
-			if (_this._enableEnterTab) {
-				// Set self as the current item in focus
-				var self = window.$(":focus"),
-					// Set the form by the current item in focus
-					form = self.parents("form:eq(0)"),
-					focusable;
+		if (window && window.$) {
+			let _this = this;
+			window.$(document).keydown(function (e) {
+				if (_this._enableEnterTab) {
+					// Set self as the current item in focus
+					var self = window.$(":focus"),
+						// Set the form by the current item in focus
+						form = self.parents("form:eq(0)"),
+						focusable;
 
-				// Array of Indexable/Tab-able items
-				focusable = form
-					.find("input,select,textarea,div[contenteditable=true]")
-					.filter(":visible :not([disabled])");
+					// Array of Indexable/Tab-able items
+					focusable = form
+						.find("input,select,textarea,div[contenteditable=true]")
+						.filter(":visible :not([disabled])");
 
-				function enterKey() {
-					if (
-						(e.which === 13 || e.keyCode == 38 || e.keyCode == 40) &&
-						!self.is("textarea,div[contenteditable=true]")
-					) {
-						// [Enter] key
+					function enterKey() {
+						if (
+							(e.which === 13 || e.keyCode == 38 || e.keyCode == 40) &&
+							!self.is("textarea,div[contenteditable=true]")
+						) {
+							// [Enter] key
 
-						// If not a regular hyperlink/button/textarea
-						if (window.$.inArray(self, focusable) && !self.is("a,button")) {
-							// Then prevent the default [Enter] key behaviour from submitting the form
-							e.preventDefault();
-						} // Otherwise follow the link/button as by design, or put new line in textarea
+							// If not a regular hyperlink/button/textarea
+							if (window.$.inArray(self, focusable) && !self.is("a,button")) {
+								// Then prevent the default [Enter] key behaviour from submitting the form
+								e.preventDefault();
+							} // Otherwise follow the link/button as by design, or put new line in textarea
 
-						// Focus on the next item (either previous or next depending on shift)
-						focusable
-							.eq(
-								focusable.index(self) + (e.shiftKey || e.keyCode == 38 ? -1 : 1)
-							)
-							.focus();
+							// Focus on the next item (either previous or next depending on shift)
+							focusable
+								.eq(
+									focusable.index(self) + (e.shiftKey || e.keyCode == 38 ? -1 : 1)
+								)
+								.focus();
 
-						return false;
+							return false;
+						}
+					}
+					// We need to capture the [Shift] key and check the [Enter] key either way.
+					if (e.shiftKey) {
+						enterKey();
+					} else {
+						enterKey();
 					}
 				}
-				// We need to capture the [Shift] key and check the [Enter] key either way.
-				if (e.shiftKey) {
-					enterKey();
-				} else {
-					enterKey();
-				}
-			}
-		});
+			});
+		}
 	}
 }
 

@@ -192,7 +192,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
         } else {
           this.dataSource = new AnterosRemoteDatasource();
           this.dataSource.setAjaxPostConfigHandler((entity) => {
-            return loadingProps.endPoints.POST(
+            return loadingProps.endPoints.post(
               loadingProps.resource,
               entity,
               this.getUser()
@@ -202,7 +202,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             return response.data !== undefined;
           });
           this.dataSource.setAjaxDeleteConfigHandler((entity) => {
-            return loadingProps.endPoints.DELETE(
+            return loadingProps.endPoints.delete(
               loadingProps.resource,
               entity,
               this.getUser()
@@ -323,7 +323,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             loadingProps.fieldsToForceLazy
           );
         } else {
-          return loadingProps.endPoints.FIND_WITH_FILTER(
+          return loadingProps.endPoints.findWithFilter(
             loadingProps.resource,
             filter.toJSON(),
             page,
@@ -344,7 +344,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             loadingProps.fieldsToForceLazy
           );
         } else {
-          return loadingProps.endPoints.FIND_ALL(
+          return loadingProps.endPoints.findAll(
             loadingProps.resource,
             page,
             loadingProps.pageSize,
@@ -370,7 +370,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             loadingProps.fieldsToForceLazy
           );
         } else {
-          return loadingProps.endPoints.FIND_MULTIPLE_FIELDS(
+          return loadingProps.endPoints.findMultipleFields(
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
             currentFilter.filter.quickFilterFieldsText,

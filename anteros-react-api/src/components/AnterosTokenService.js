@@ -1,10 +1,12 @@
 import axios from 'axios';
 import {
-  processErrorMessage,
-  autoBind
-} from '@anterostecnologia/anteros-react-core';
+  processErrorMessage
+} from './AnterosErrorMessageHelper';
+import {autoBind} from './AnterosAutoBind';
 import {authService} from './AnterosAuthenticationService';
 import {userService} from './AnterosUserService';
+import { decode, encode } from "universal-base64";
+import 'regenerator-runtime/runtime';
 var CryptoJS = require("crypto-js");
 
 
@@ -25,7 +27,7 @@ export class AnterosTokenService {
     if (!token) {
       return;
     }
-    token = CryptoJS.AES.decrypt(atob(token),atob(this.config.secretKey));
+    token = CryptoJS.AES.decrypt(decode(token),decode(this.config.secretKey));
     token = token.toString(CryptoJS.enc.Utf8);
     return JSON.parse(token);
   }
@@ -35,10 +37,14 @@ export class AnterosTokenService {
     let endpointInfo = userService.getSavedEndpointInformation(credentials);
     var basic = authService.getBasicAuth();
     let urlToken = `${this.config.url_token}${this.config.token}`;
-    if (endpointInfo.urlGetToken) {
+    if (endpointInfo && endpointInfo.urlGetToken) {
       urlToken = endpointInfo.urlGetToken;
     }
-    let tenantID = credentials.owner;
+    let headers = {};
+      if (credentials.owner && credentials.owner !== 'undefined'){
+        let tenantID = credentials.owner;
+        headers = {'X-Tenant-ID': tenantID};
+      }
     let _this = this;
     var bodyFormData = new FormData();
     bodyFormData.append('username', credentials.username);
@@ -49,10 +55,9 @@ export class AnterosTokenService {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {
+          headers: {...headers,
             'content-type': 'application/x-www-form-urlencoded',
-            'Authorization': basic,
-            'X-Tenant-ID': tenantID
+            'Authorization': basic
           },
           data: bodyFormData,
         }).then(response => {
@@ -80,10 +85,14 @@ export class AnterosTokenService {
     let endpointInfo = userService.getSavedEndpointInformation(credentials);
     var basic = authService.getBasicAuth();
     let urlToken = `${this.config.url_token}${this.config.token}`;
-    if (endpointInfo.urlGetToken) {
+    if (endpointInfo && endpointInfo.urlGetToken) {
       urlToken = endpointInfo.urlGetToken;
     }
-    let tenantID = credentials.owner;
+    let headers = {};
+      if (credentials.owner && credentials.owner !== 'undefined'){
+        let tenantID = credentials.owner;
+        headers = {'X-Tenant-ID': tenantID};
+      }
     let _this = this;
     var bodyFormData = new FormData();
     bodyFormData.append('username', credentials.username);
@@ -94,10 +103,9 @@ export class AnterosTokenService {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {
+          headers: {...headers,
             'content-type': 'application/x-www-form-urlencoded',
-            'Authorization': basic,
-            'X-Tenant-ID': tenantID,
+            'Authorization': basic
           },
           data: bodyFormData
         }).then(response => {
@@ -121,7 +129,7 @@ export class AnterosTokenService {
     if (!token) {
       return;
     }
-    token = CryptoJS.AES.decrypt(atob(token),atob(this.config.secretKey));
+    token = CryptoJS.AES.decrypt(decode(token),decode(this.config.secretKey));
     token = token.toString(CryptoJS.enc.Utf8);
     return JSON.parse(token);
   }
@@ -129,7 +137,11 @@ export class AnterosTokenService {
   refreshTokenSaaS(credentials, onError, onSuccess) {
     let basic = authService.getBasicAuthSaaS();
     let urlToken = `${this.config.url_token}${this.config.token}`;
-    let tenantID = credentials.owner;
+    let headers = {};
+      if (credentials.owner && credentials.owner !== 'undefined'){
+        let tenantID = credentials.owner;
+        headers = {'X-Tenant-ID': tenantID};
+      }
     let _this = this;
     var bodyFormData = new FormData();
     bodyFormData.append('username', credentials.username);
@@ -139,10 +151,9 @@ export class AnterosTokenService {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {
+          headers: {...headers,
             'content-type': 'application/x-www-form-urlencoded',
-            'Authorization': basic,
-            'X-Tenant-ID': tenantID
+            'Authorization': basic
           },
           data: bodyFormData,
         }).then(response => {
@@ -163,7 +174,11 @@ export class AnterosTokenService {
   internalRefreshTokenSaaS(credentials) {
     let basic = authService.getBasicAuthSaaS();
     let urlToken = `${this.config.url_token}${this.config.token}`;
-    let tenantID = credentials.owner;
+    let headers = {};
+      if (credentials.owner && credentials.owner !== 'undefined'){
+        let tenantID = credentials.owner;
+        headers = {'X-Tenant-ID': tenantID};
+      }
     let _this = this;
     var bodyFormData = new FormData();
     bodyFormData.append('username', credentials.username);
@@ -173,10 +188,9 @@ export class AnterosTokenService {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {
+          headers: {...headers,
             'content-type': 'application/x-www-form-urlencoded',
-            'Authorization': basic,
-            'X-Tenant-ID': tenantID
+            'Authorization': basic
           },
           data: bodyFormData,
         }).then(response => {
@@ -214,13 +228,13 @@ export class AnterosTokenService {
 
   updateAccessToken(credentials, token) {
     const KEY_TOKEN = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_token`;
-    const _token = btoa(CryptoJS.AES.encrypt(JSON.stringify(token),atob(this.config.secretKey)));
+    const _token = encode(CryptoJS.AES.encrypt(JSON.stringify(token),decode(this.config.secretKey)));
     localStorage.setItem(KEY_TOKEN, _token);
   }
 
   updateAccessTokenSaaS(credentials, token) {
     const KEY_TOKEN_SAAS = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_tokenSaaS`;
-    const _token = btoa(CryptoJS.AES.encrypt(JSON.stringify(token),atob(this.config.secretKey)));
+    const _token = encode(CryptoJS.AES.encrypt(JSON.stringify(token),decode(this.config.secretKey)));
     localStorage.setItem(KEY_TOKEN_SAAS, _token);
   }
 
@@ -234,10 +248,14 @@ export class AnterosTokenService {
     } else {
       var basic = authService.getBasicAuth();
       let urlToken = `${this.config.url_token}${this.config.token}`;
-      if (endpointInfo.urlGetToken) {
+      if (endpointInfo && endpointInfo.urlGetToken) {
         urlToken = endpointInfo.urlGetToken;
       }
-      let tenantID = credentials.owner;
+      let headers = {};
+      if (credentials.owner && credentials.owner !== 'undefined'){
+        let tenantID = credentials.owner;
+        headers = {'X-Tenant-ID': tenantID};
+      }
       let _this = this;
       var bodyFormData = new FormData();
       bodyFormData.append('username', credentials.username);
@@ -248,10 +266,9 @@ export class AnterosTokenService {
         return axios({
             url: urlToken, 
             method: 'post',
-            headers: {
+            headers: { ...headers,
               'content-type': 'application/x-www-form-urlencoded',
-              'Authorization': basic,
-              'X-Tenant-ID': tenantID
+              'Authorization': basic,              
             },
             data: bodyFormData
           }).then(response => {
@@ -283,7 +300,11 @@ export class AnterosTokenService {
     } else {
       let basic = authService.getBasicAuthSaaS();
       let urlToken = `${this.config.url_token}${this.config.token}`;
-      let tenantID = credentials.owner;
+      let headers = {};
+      if (credentials.owner && credentials.owner !== 'undefined'){
+        let tenantID = credentials.owner;
+        headers = {'X-Tenant-ID': tenantID};
+      }
       let _this = this;
       var bodyFormData = new FormData();
       bodyFormData.append('username', credentials.username);
@@ -293,10 +314,9 @@ export class AnterosTokenService {
         return axios({
             url: urlToken,
             method: 'post',
-            headers: {
+            headers: {...headers,
               'content-type': 'application/x-www-form-urlencoded',
-              'Authorization': basic,
-              'X-Tenant-ID': tenantID
+              'Authorization': basic
             },
             data: bodyFormData,
           }).then(response => {

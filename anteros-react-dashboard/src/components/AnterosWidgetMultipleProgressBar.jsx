@@ -57,7 +57,7 @@ class AnterosWidgetMultipleProgressBar extends Component{
                 )
             }else{
                 return(
-                    <AnterosCol small={6} style={{height:30}}>
+                    <AnterosCol small={3} style={{height:30}}>
                         <AnterosRow verticalCenter>
                             <div style={{height:10,width:10,backgroundColor:item.color,borderRadius:5}}/>
                             <AnterosText style={{fontSize:14,color:"#666",marginLeft:10}} text={item.label} textAlign="center"/>
@@ -79,7 +79,7 @@ render(){
                     <AnterosText text={this.props.primaryText} h3 textAlign="start" color={this.props.primaryTextColor ? this.props.primaryTextColor : "#333"}/>
                 </AnterosCol>
             </AnterosRow>
-            <AnterosRow style={{marginBottom:this.props.bigPercent ? 40 : 20,marginLeft:10,marginTop:30}}>
+            <AnterosRow style={{marginBottom:this.props.bigPercent ? 40 : 10,marginLeft:10,marginTop:30}}>
                 {this.props.data ? this.renderLegend(this.props.data) : null}
             </AnterosRow>
             <AnterosRow style={{margin: 10}}>

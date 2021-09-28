@@ -16,20 +16,20 @@ class AnterosWidgetProgress extends Component{
                 <AnterosRow>
                     <AnterosCol>
                     <AnterosCard showHeader={false} style={{backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : (this.props.fill ? this.props.color : "#FFF")}}>
-                        <AnterosRow verticalAlign='center' style={{height:120}}>
+                        <AnterosRow verticalAlign='center' style={{height:this.props.footer ? 80: 120}}>
                             <AnterosCol large={4}>
                                 <AnterosIcon icon={this.props.icon} color={this.props.iconColor ? this.props.iconColor : (this.props.fill ? "#FFF" : this.props.color)} size={this.props.iconSize ? this.props.iconSize : 50}/>
                             </AnterosCol>
                             <AnterosCol medium={8} horizontalEnd>
                                 <AnterosText text={this.props.secondaryText} h6 textAlign="end" color={this.props.secondaryTextColor ? this.props.secondaryTextColor : (this.props.fill ? "#FFF" : "#bdbdbd")}/>
                                 <AnterosText text={this.props.primaryText} h2 textAlign="end" color={this.props.primaryTextColor ? this.props.primaryTextColor : (this.props.fill ? "#FFF" : this.props.color)}/>
-                                <AnterosProgressBar value={this.props.progress} height={5} backgroundColor={this.props.fill ? "#FFF" : this.props.color}/>
+                                <AnterosProgressBar value={this.props.progress} height={15} backgroundColor={this.props.fill ? "#FFF" : this.props.color}/>
                             </AnterosCol>
                         </AnterosRow>
                     </AnterosCard>
                     </AnterosCol>
                 </AnterosRow>
-                <AnterosRow style={{height:this.props.footer ? 50 : 0,marginLeft:1,marginRight:1,paddingLeft:10}} verticalCenter>
+                <AnterosRow style={{height:this.props.footer ? 40 : 0,marginLeft:1,marginRight:1,paddingLeft:10}} verticalTop>
                     <AnterosCol small={8}>
                         <AnterosText text={footer.text} h6 textAlign="start" color={this.props.footerTextColor ? this.props.footerTextColor : (!this.props.fill ? "#FFF" : this.props.color)}/>
                     </AnterosCol>

@@ -1,21 +1,39 @@
-import React, { Component, Fragment } from "react"
+import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
+import { AnterosModal, ModalActions } from '@anterostecnologia/anteros-react-containers';
+import { autoBind } from '@anterostecnologia/anteros-react-core';
+import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
+import lodash from 'lodash';
 import PropTypes from 'prop-types';
-import lodash from 'lodash'
-import {CSSTransitionGroup} from "react-transition-group";
-import { DndProvider, DropTarget, DragSource } from "react-dnd";
+import React, { Component, Fragment } from "react";
+import { DndProvider, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import { CSSTransition } from "react-transition-group";
 import windowSize from "react-window-size";
-import {autoBind} from '@anterostecnologia/anteros-react-core';
-
 
 class AnterosDashboard extends Component {
     constructor(props) {
         super(props)
         autoBind(this);
+
+        //selecionar items
+        let selectedItems = []
+        props.config.map(cf => {
+            selectedItems.push(cf.widgetId)
+            return cf;
+        })
+
         this.state = {
             editMode: false,
-            moveMode: false
+            moveMode: false,
+            modalOpen:false,
+            selectedItems:selectedItems,
+            update:true,
+            componentHeight:window.innerHeight
         }
+    }
+
+    state = {
+        
     }
 
     displayName() {
@@ -45,7 +63,10 @@ class AnterosDashboard extends Component {
                 return React.cloneElement(withPositions, {
                     dashEditable: editMode,
                     draggable: moveMode,
+                    id:widget.widgetId,
                     key: widget.instanceId,
+                    widget:widget,
+                    defaultConfigComp:this.props.defaultConfigComp,
                     onConfigChange: this.configChange,
                     onHide: () => {
                         return this.hideWidget(widget.instanceId)
@@ -58,6 +79,7 @@ class AnterosDashboard extends Component {
                     doneButtonClass
                 })
             }
+            return <></>;
         })
 
         return lodash.compact(instances)
@@ -125,8 +147,9 @@ class AnterosDashboard extends Component {
             const addPanelChildren = arrChildren.map((child) => {
                 const preview = child.props.previewComp ? (
                     React.createElement(child.props.previewComp)
+                    
                 ) : (
-                        <div className="default-preview" key={child.props.id}>
+                    <div className="default-preview" key={child.props.id}>
                             No Preview
                     </div>
                     )
@@ -134,15 +157,21 @@ class AnterosDashboard extends Component {
                     <div className="widget-preview" key={child.props.id} onClick={() => _this.addWidget(child.props.id)}>
                         <div className="no-click">{preview}</div>
                     </div>
+                    
                 )
             })
 
-            return <AddWidgetPanel>{addPanelChildren}</AddWidgetPanel>
+            return (<CSSTransition timeout={500} className="widget-panel"
+            >
+                <AddWidgetPanel>{addPanelChildren}</AddWidgetPanel>
+                    
+            </CSSTransition>);
         }
     }
     handleResize() {
         this.setState({
-            componentWidth: window.innerWidth
+            componentWidth: window.innerWidth,
+            componentHeight:window.innerHeight
         })
     }
 
@@ -150,14 +179,43 @@ class AnterosDashboard extends Component {
         this.handleResize()
         window.addEventListener("resize", this.handleResize)
     }
+
+    
     componentWillUnmount() {
         window.removeEventListener("resize", this.handleResize)
     }
 
+    onClickOk = () => {
+        this.toggleModal()
+        
+    }
+
+    toggleModal(){
+        this.setState({modalOpen:!this.state.modalOpen,editMode:!this.state.editMode})
+    }
+
+    
+    selectedWidget = (widget) => {
+        console.log('selectedWidget',widget)
+        let newWidget = {...widget,instanceId:Math.floor(Math.random() * 100000)}
+
+        let configDefault;
+        this.props.defaultPropsConfig.map(wgt => {
+            if(wgt.widgetId === widget.widgetId){
+                configDefault = wgt.config
+            }
+            return wgt;
+        })
+        newWidget.config = configDefault;
+        let newConfig = [...this.props.config]
+        newConfig.push(newWidget)
+        this.props.onConfigChange(newConfig)
+    }
+
+
     render() {
         let {
             children,
-            title,
             className,
             config,
             widgetHeight,
@@ -197,36 +255,102 @@ class AnterosDashboard extends Component {
         return (
             <DndProvider backend={HTML5Backend}>
                 <Fragment>
-                <div className={`dashboard ${className} ${editMode && !moveMode ? "editing" : ""}`}>
-                    <DashboardTitle height={titleHeight}>
-                        {title}
-                    </DashboardTitle>
-                    <div className={`edit-button ${editMode ? "editing" : ""}`} onClick={this.toggleEditMode}>
-                        <i className="fa fa-cogs" />
-                    </div>
-                    {editMode ? (
-                        <div className={`move-button ${moveMode ? "moving" : ""}`} onClick={this.toggleMoveMode}>
-                            <i className="fa fa-arrows" />
+                    <div className={`dashboard ${className} ${editMode && !moveMode ? "" : ""}`}>
+                        <div className={`edit-button ${editMode ? "" : ""}`} onClick={this.toggleEditMode} style={{backgroundColor:editMode ? '#ef5350' : '#42a5f5',marginTop:this.state.componentHeight ? this.state.componentHeight - 220 : 0}}>
+                            <i className="fa fa-cogs" />
                         </div>
-                    ) : null}
-                    <div className="dashboard-container">
-                        <div
-                            className={`dashboard-content columns-${this.layout.columnCount()}`}
-                            style={{ width: contentWidth }}>
-                            {childrenForCurrentConfig}
+                        {editMode ? (
+                            <div className={`move-button ${moveMode ? "" : ""}`} onClick={this.toggleMoveMode} style={{backgroundColor:moveMode ? '#ef5350' : '#42a5f5',marginTop:this.state.componentHeight ? this.state.componentHeight - 220 : 0}}>
+                                <i className="fa fa-arrows" />
+                            </div>
+                        ) : null}
+                            {!editMode ? <div className={`move-button ${moveMode ? "" : ""}`} style={{backgroundColor:'#42a5f5',alignItems:'center',justifyContent:'center',marginTop:this.state.componentHeight ? this.state.componentHeight - 220 : 0}} onClick={this.toggleModal}>
+                                <i className="fa fa-chart-bar" />
+                            </div> : null}
+                        <div className="dashboard-container" style={{top:0}}>
+                            <div
+                                className={`dashboard-content columns-${this.layout.columnCount()}`}
+                                style={{ width: contentWidth }}>
+                                {childrenForCurrentConfig}
+                            </div>
                         </div>
+                    {<AnterosModal
+                        id={'modalAddWidget'}
+                        title={"Adicionar Widget"}
+                        primary
+                        large
+                        showHeaderColor={true}
+                        showContextIcon={false}
+                        style={{ height: "700px", width: "1100px" }}
+                        isOpen={this.state.modalOpen}
+                        onClose={() => {}}>
+                        <ModalActions>
+                            <AnterosButton success dataUser="btnOK" onClick={this.onClickOk}>
+                                    OK
+                            </AnterosButton>{' '}
+                            <AnterosButton danger dataUser="btnCancel" onClick={this.toggleModal}>
+                                    Cancelar
+                            </AnterosButton>
+                        </ModalActions>
+                        <ItemListWidget config={this.props.defaultPropsConfig} children={this.props.children} onSelected={this.selectedWidget}
+                        //selectedItems={this.state.selectedItems}
+                        />
+                    </AnterosModal>}
                     </div>
-                    <CSSTransitionGroup
-                        transitionName="widget-panel"
-                        transitionEnterTimeout={500}
-                        transitionLeaveTimeout={500}
-                        transitionEnter={true}
-                        transitionLeave={true}>
-                        {this.renderAddWidgets()}
-                    </CSSTransitionGroup>
-                </div>
                 </Fragment>
-           </DndProvider>
+            </DndProvider>
+        )
+    }
+}
+
+class ItemListWidget extends React.Component{
+
+    constructor(props){
+        super(props);
+        this.state = {
+            selectedItems:props.selectedItems,
+        }
+    }
+
+    renderItemsWidgetPreview = () => {
+        let arrChildren = React.Children.toArray(this.props.children)
+        
+        let items = arrChildren.map(child => {
+            let indexConfig = 0;
+            this.props.config.map((cfg,idx) => {
+                if(cfg.widgetId === child.props.id){
+                    indexConfig = idx
+                }
+                return cfg;
+            })
+            const preview = child.props.previewComp ? (
+                React.createElement(child.props.previewComp)
+            ) : (
+                React.createElement(child.props.contentComp,{...this.props.config[indexConfig]})
+            )
+
+            let widget = this.props.config[indexConfig]
+            return (
+                <AnterosCol small={4} style={{marginBottom:15}}>
+                    <div style={{padding:5,backgroundColor: null}} onClick={() => {
+                        this.props.onSelected(widget)
+                    }}>
+                    {preview}
+                    </div>
+                </AnterosCol>
+            )
+        })
+
+        return (
+            <AnterosRow>
+                {items}
+            </AnterosRow>
+        )
+    }
+
+    render(){
+        return(
+            this.renderItemsWidgetPreview()
         )
     }
 }
@@ -420,8 +544,10 @@ class AnterosDashboardWidget extends React.Component {
     constructor(props) {
         super(props)
         autoBind(this);
+        
         this.state = {
-            editMode: false
+            editMode: false,
+            modalOpen:false
         }
     }
 
@@ -442,24 +568,16 @@ class AnterosDashboardWidget extends React.Component {
 
     hide() { }
 
+    
+
     renderEditButton() {
-        const { dashEditable, draggable, onHide, doneButtonClass, configComp } = this.props
-        let className= "edit-widget-button close-button ";
-        let hrefLink = '#';
-        if (doneButtonClass){
-            className+= doneButtonClass;
-        }
+        const { dashEditable, draggable, onHide, configComp } = this.props
         if (dashEditable && !draggable) {
-            if (this.state.editMode) {
-                return (
-                    <a href={hrefLink} className={className} onClick={this.toggleEditMode}>
-                        done
-                    </a>
-                )
-            }
-            return (
+            return (//alterna para configuracao do widget (botao de edição e exclusao)
                 <div className="edit-overlay">
-                    {configComp ? <i className="fa fa-cog edit-widget-button" onClick={this.toggleEditMode} /> : null}
+                    {configComp || this.props.defaultConfigComp ? <i className="fa fa-cog edit-widget-button" onClick={() => {
+                        this.toggleEditMode()
+                    }} /> : null}
                     <i className="fa fa-times hide-widget-button" onClick={onHide} />
                 </div>
             )
@@ -467,32 +585,50 @@ class AnterosDashboardWidget extends React.Component {
     }
 
     renderComponent() {
-        const { config, instanceId, onConfigChange, dashEditable, configComp, contentComp } = this.props
+        const { config, instanceId, onConfigChange, dashEditable, configComp, contentComp, widget } = this.props
         if (dashEditable && this.state.editMode) {
             if (configComp) {
                 return (
-                    <div>
+                    <div style={{backgroundColor:'#00000020'}}>
                         <div className="config-comp">
                             {React.createElement(configComp, {
-                                instanceId,
-                                config,
-                                onConfigChange
+                                widget:widget,
+                                onConfigChange:onConfigChange,
+                                onFinish:() => {
+                                    this.toggleEditMode()
+                                    
+                                }
                             })}
                         </div>
                         <i className="fa fa-lg fa-cog background-watermark" />
                     </div>
-                ) 
+                )
             } else {
-                return <div />
+                return (
+                    <div style={{backgroundColor:'#00000020'}}>
+                        <div className="config-comp">
+                            {React.createElement(this.props.defaultConfigComp, {
+                                widget:widget,
+                                onConfigChange:onConfigChange,
+                                onFinish:() => {
+                                    this.toggleEditMode()
+                                    
+                                }
+                            })}
+                        </div>
+                        <i className="fa fa-lg fa-cog background-watermark" />
+                    </div>
+                )
             }
         } else {
             if (contentComp) {
-                return React.createElement(contentComp, { instanceId, config })
+                return React.createElement(contentComp, { instanceId, config})
             } else {
                 return <div />
             }
         }
     }
+
     render() {
         let {
             height,
@@ -523,6 +659,7 @@ class AnterosDashboardWidget extends React.Component {
 
         if (isOver) classes.push("drag-over")
 
+
         const rendered = (
             <div className={classes.join(" ")} style={styles}>
                 {isOver ? <div className="drop-prompt" style={{ height: widgetHeight }} /> : null}
@@ -531,6 +668,7 @@ class AnterosDashboardWidget extends React.Component {
                     {this.renderEditButton()}
                     {this.renderComponent()}
                 </div>
+                
             </div>
         )
         return draggable ? connectDragSource(connectDropTarget(rendered)) : rendered
@@ -551,6 +689,6 @@ AnterosDashboardWidget.propTypes = {
 
 export default windowSize(AnterosDashboard);
 
-export {AnterosDashboardWidget}
+export { AnterosDashboardWidget };
 
 

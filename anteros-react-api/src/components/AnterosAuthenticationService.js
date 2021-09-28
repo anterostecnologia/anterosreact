@@ -1,9 +1,11 @@
 import {
     autoBind
-} from '@anterostecnologia/anteros-react-core';
+} from './AnterosAutoBind';
 import {tokenService} from './AnterosTokenService';
 import axios from "axios";
 import {userService} from './AnterosUserService';
+import { encode } from "universal-base64";
+import 'regenerator-runtime/runtime';
 
 export class AnterosAuthenticationService {
 
@@ -38,11 +40,11 @@ export class AnterosAuthenticationService {
     }
 
     getBasicAuth() {
-        return 'Basic ' + window.btoa(this.config.clientId + ":" + this.config.clientSecret);
+        return 'Basic ' + encode(this.config.clientId + ":" + this.config.clientSecret);
     }
 
     getBasicAuthSaaS() {
-        return 'Basic ' + window.btoa(this.config.clientIdOwner + ":" + this.config.clientSecretOwner);
+        return 'Basic ' + encode(this.config.clientIdOwner + ":" + this.config.clientSecretOwner);
     }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-masonry",
-  "version": "2.0.7",
+  "version": "2.0.9",
   "description": "Anteros components for React - Masonry",
   "main": "lib/@anterostecnologia/anteros-react-masonry.js",
   "scripts": {
@@ -39,7 +39,6 @@
     "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
-    "imagesloaded": "^4.1.3",
     "lodash": "^4.17.4",
     "lodash.omit": "^4.5.0",
     "masonry-layout": "^4.2.0",
