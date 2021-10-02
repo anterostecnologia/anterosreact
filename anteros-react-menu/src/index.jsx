@@ -6,10 +6,20 @@ import AnterosNavigatorBar, {AnterosNavigatorBarItem, AnterosNavigatorBarLink, A
 import AnterosNavigatorLink from './components/AnterosNavigatorLink';
 import AnterosNavigatorLinkDropdown from './components/AnterosNavigatorLinkDropdown';
 import {AnterosMegaMenu, AnterosMegaMenuItem} from './components/AnterosMegaMenu';
+import AnterosSidebar from './components/AnterosSidebar';
+import AnterosSidebarMenu from './components/AnterosSidebarMenu';
+import AnterosSidebarMenuItem from './components/AnterosSidebarMenuItem';
+import AnterosSidebarSubMenu from './components/AnterosSidebarSubMenu';
+import AnterosSidebarContent from './components/AnterosSidebarContent';
+import AnterosSidebarFooter from './components/AnterosSidebarFooter';
+import AnterosSidebarHeader from './components/AnterosSidebarHeader';
 
 export {
     AnterosAccordion, AnterosAccordionItem, AnterosMenu,AnterosNavigatorBar,AnterosNavigatorBarItem, AnterosNavigatorBarLink, 
     AnterosNavigatorBarBrand, AnterosNavigatorBarToggler, AnterosMenuItem, 
     AnterosNavigator, AnterosNavigatorLink, AnterosNavigatorLinkDropdown,
-    AnterosMegaMenu, AnterosMegaMenuItem
+    AnterosMegaMenu, AnterosMegaMenuItem, AnterosSidebar, AnterosSidebarMenu, 
+    AnterosSidebarMenuItem, AnterosSidebarContent, AnterosSidebarFooter,
+    AnterosSidebarHeader, AnterosSidebarSubMenu
+
 };

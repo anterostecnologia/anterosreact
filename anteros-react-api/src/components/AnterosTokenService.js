@@ -2,11 +2,23 @@ import axios from 'axios';
 import {
   processErrorMessage
 } from './AnterosErrorMessageHelper';
-import {autoBind} from './AnterosAutoBind';
-import {authService} from './AnterosAuthenticationService';
-import {userService} from './AnterosUserService';
-import { decode, encode } from "universal-base64";
+import {
+  autoBind
+} from './AnterosAutoBind';
+import {
+  authService
+} from './AnterosAuthenticationService';
+import {
+  userService
+} from './AnterosUserService';
+import {
+  decode,
+  encode
+} from "universal-base64";
+import qs from "qs";
 import 'regenerator-runtime/runtime';
+
+
 var CryptoJS = require("crypto-js");
 
 
@@ -23,13 +35,12 @@ export class AnterosTokenService {
 
   getAccessToken(credentials) {
     const KEY_TOKEN = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_token`;
-    let token = localStorage.getItem(KEY_TOKEN);
+    let token = this.config.localStorage.getItem(KEY_TOKEN);
     if (!token) {
       return;
     }
-    token = CryptoJS.AES.decrypt(decode(token),decode(this.config.secretKey));
-    token = token.toString(CryptoJS.enc.Utf8);
-    return JSON.parse(token);
+    token = this.decryptionWithCryptoJS(token);
+    return qs.parse(token);
   }
 
   internalRefreshToken(credentials) {
@@ -41,40 +52,44 @@ export class AnterosTokenService {
       urlToken = endpointInfo.urlGetToken;
     }
     let headers = {};
-      if (credentials.owner && credentials.owner !== 'undefined'){
-        let tenantID = credentials.owner;
-        headers = {'X-Tenant-ID': tenantID};
-      }
+    if (credentials.owner && credentials.owner !== 'undefined') {
+      let tenantID = credentials.owner;
+      headers = {
+        'X-Tenant-ID': tenantID
+      };
+    }
     let _this = this;
-    var bodyFormData = new FormData();
-    bodyFormData.append('username', credentials.username);
-    bodyFormData.append('password', credentials.password);
-    bodyFormData.append('grant_type', 'refresh_token');
-    bodyFormData.append('refresh_token', token.refresh_token);
+    var bodyFormData = {
+      'username': credentials.username,
+      'password': credentials.password,
+      'grant_type': 'refresh_token',
+      'refresh_token': token.refresh_token
+    };
     return new Promise((resolve, reject) => {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {...headers,
+          headers: {
+            ...headers,
             'content-type': 'application/x-www-form-urlencoded',
             'Authorization': basic
           },
-          data: bodyFormData,
+          data: qs.stringify(bodyFormData),
         }).then(response => {
           if (response.data === '' || response.data === undefined) {
             onError('Usuário/senha incorretos.');
             reject();
           } else {
-            _this.updateAccessToken(credentials,response.data);
+            _this.updateAccessToken(credentials, response.data);
             resolve(response.data);
           }
         })
         .catch(error => {
           _this.clearToken(credentials);
-          _this.getRemoteAccessToken(endpointInfo, credentials,(err)=>{
-              reject(err);
-          },(data)=>{
-              resolve(data);
+          _this.getRemoteAccessToken(endpointInfo, credentials, (err) => {
+            reject(err);
+          }, (data) => {
+            resolve(data);
           });
         });
     });
@@ -89,84 +104,91 @@ export class AnterosTokenService {
       urlToken = endpointInfo.urlGetToken;
     }
     let headers = {};
-      if (credentials.owner && credentials.owner !== 'undefined'){
-        let tenantID = credentials.owner;
-        headers = {'X-Tenant-ID': tenantID};
-      }
+    if (credentials.owner && credentials.owner !== 'undefined') {
+      let tenantID = credentials.owner;
+      headers = {
+        'X-Tenant-ID': tenantID
+      };
+    }
     let _this = this;
-    var bodyFormData = new FormData();
-    bodyFormData.append('username', credentials.username);
-    bodyFormData.append('password', credentials.password);
-    bodyFormData.append('grant_type', 'refresh_token');
-    bodyFormData.append('refresh_token', token.refresh_token);
+    var bodyFormData = {
+      'username': credentials.username,
+      'password': credentials.password,
+      'grant_type': 'refresh_token',
+      'refresh_token': token.refresh_token
+    }
     return new Promise((resolve, reject) => {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {...headers,
+          headers: {
+            ...headers,
             'content-type': 'application/x-www-form-urlencoded',
             'Authorization': basic
           },
-          data: bodyFormData
+          data: qs.stringify(bodyFormData)
         }).then(response => {
           if (response.data === '' || response.data === undefined) {
             onError('Usuário/senha incorretos.');
           } else {
-            _this.updateAccessToken(credentials,response.data);
+            _this.updateAccessToken(credentials, response.data);
             onSuccess(response.data);
           }
         })
         .catch(error => {
           _this.clearToken(credentials);
-          _this.getRemoteAccessToken(endpointInfo,credentials,onError,onSuccess);
+          _this.getRemoteAccessToken(endpointInfo, credentials, onError, onSuccess);
         });
     });
   }
 
   getAccessTokenSaaS(credentials) {
     const KEY_TOKEN_SAAS = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_tokenSaaS`;
-    let token = localStorage.getItem(KEY_TOKEN_SAAS);
+    let token = this.config.localStorage.getItem(KEY_TOKEN_SAAS);
     if (!token) {
       return;
     }
-    token = CryptoJS.AES.decrypt(decode(token),decode(this.config.secretKey));
-    token = token.toString(CryptoJS.enc.Utf8);
-    return JSON.parse(token);
+    token = this.decryptionWithCryptoJS(token);
+    return qs.parse(token);
   }
 
   refreshTokenSaaS(credentials, onError, onSuccess) {
     let basic = authService.getBasicAuthSaaS();
     let urlToken = `${this.config.url_token}${this.config.token}`;
     let headers = {};
-      if (credentials.owner && credentials.owner !== 'undefined'){
-        let tenantID = credentials.owner;
-        headers = {'X-Tenant-ID': tenantID};
-      }
+    if (credentials.owner && credentials.owner !== 'undefined') {
+      let tenantID = credentials.owner;
+      headers = {
+        'X-Tenant-ID': tenantID
+      };
+    }
     let _this = this;
-    var bodyFormData = new FormData();
-    bodyFormData.append('username', credentials.username);
-    bodyFormData.append('password', credentials.password);
-    bodyFormData.append('grant_type', 'password');
+    var bodyFormData = {
+      'username': credentials.username,
+      'password': credentials.password,
+      'grant_type': 'password'
+    }
     return new Promise((resolve, reject) => {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {...headers,
+          headers: {
+            ...headers,
             'content-type': 'application/x-www-form-urlencoded',
             'Authorization': basic
           },
-          data: bodyFormData,
+          data: qs.stringify(bodyFormData),
         }).then(response => {
           if (response.data === '' || response.data === undefined) {
             onError('Usuário/senha incorretos.');
           } else {
-            _this.updateAccessTokenSaaS(credentials,response.data);
+            _this.updateAccessTokenSaaS(credentials, response.data);
             onSuccess(response.data);
           }
         })
         .catch(error => {
           _this.clearToken(credentials);
-          _this.getRemoteAccessTokenSaaS(credentials,onError,onSuccess);
+          _this.getRemoteAccessTokenSaaS(credentials, onError, onSuccess);
         });
     });
   }
@@ -175,39 +197,43 @@ export class AnterosTokenService {
     let basic = authService.getBasicAuthSaaS();
     let urlToken = `${this.config.url_token}${this.config.token}`;
     let headers = {};
-      if (credentials.owner && credentials.owner !== 'undefined'){
-        let tenantID = credentials.owner;
-        headers = {'X-Tenant-ID': tenantID};
-      }
+    if (credentials.owner && credentials.owner !== 'undefined') {
+      let tenantID = credentials.owner;
+      headers = {
+        'X-Tenant-ID': tenantID
+      };
+    }
     let _this = this;
-    var bodyFormData = new FormData();
-    bodyFormData.append('username', credentials.username);
-    bodyFormData.append('password', credentials.password);
-    bodyFormData.append('grant_type', 'password');
+    var bodyFormData = {
+      'username': credentials.username,
+      'password': credentials.password,
+      'grant_type': 'password'
+    };
     return new Promise((resolve, reject) => {
       return axios({
           url: urlToken,
           method: 'post',
-          headers: {...headers,
+          headers: {
+            ...headers,
             'content-type': 'application/x-www-form-urlencoded',
             'Authorization': basic
           },
-          data: bodyFormData,
+          data: qs.stringify(bodyFormData),
         }).then(response => {
           if (response.data === '' || response.data === undefined) {
             onError('Usuário/senha incorretos.');
             reject();
           } else {
-            _this.updateAccessTokenSaaS(credentials,response.data);
+            _this.updateAccessTokenSaaS(credentials, response.data);
             resolve(response.data);
           }
         })
         .catch(error => {
           _this.clearToken(credentials);
-          _this.getRemoteAccessTokenSaaS(credentials,(err)=>{
-              reject(err);
-          },(data)=>{
-              resolve(data);
+          _this.getRemoteAccessTokenSaaS(credentials, (err) => {
+            reject(err);
+          }, (data) => {
+            resolve(data);
           });
         });
     });
@@ -219,23 +245,23 @@ export class AnterosTokenService {
   }
   clearToken(credentials) {
     const KEY_TOKEN = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_token`;
-    localStorage.removeItem(KEY_TOKEN);
+    this.config.localStorage.removeItem(KEY_TOKEN);
   }
   clearTokenSaaS(credentials) {
     const KEY_TOKEN_SAAS = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_tokenSaaS`;
-    localStorage.removeItem(KEY_TOKEN_SAAS);
+    this.config.localStorage.removeItem(KEY_TOKEN_SAAS);
   }
 
   updateAccessToken(credentials, token) {
     const KEY_TOKEN = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_token`;
-    const _token = encode(CryptoJS.AES.encrypt(JSON.stringify(token),decode(this.config.secretKey)));
-    localStorage.setItem(KEY_TOKEN, _token);
+    const _token = this.encryptWithCryptoJS(qs.stringify(token));
+    this.config.localStorage.setItem(KEY_TOKEN, _token);
   }
 
   updateAccessTokenSaaS(credentials, token) {
     const KEY_TOKEN_SAAS = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_tokenSaaS`;
-    const _token = encode(CryptoJS.AES.encrypt(JSON.stringify(token),decode(this.config.secretKey)));
-    localStorage.setItem(KEY_TOKEN_SAAS, _token);
+    const _token = this.encryptWithCryptoJS(qs.stringify(token));
+    this.config.localStorage.setItem(KEY_TOKEN_SAAS, _token);
   }
 
   getRemoteAccessToken(endpointInfo, credentials, onError, onSuccess) {
@@ -252,35 +278,39 @@ export class AnterosTokenService {
         urlToken = endpointInfo.urlGetToken;
       }
       let headers = {};
-      if (credentials.owner && credentials.owner !== 'undefined'){
+      if (credentials.owner && credentials.owner !== 'undefined') {
         let tenantID = credentials.owner;
-        headers = {'X-Tenant-ID': tenantID};
+        headers = {
+          'X-Tenant-ID': tenantID
+        };
       }
       let _this = this;
-      var bodyFormData = new FormData();
-      bodyFormData.append('username', credentials.username);
-      bodyFormData.append('password', credentials.password);
-      bodyFormData.append('grant_type', 'password');
+      var bodyFormData = {
+        'username': credentials.username,
+        'password': credentials.password,
+        'grant_type': 'password'
+      };
 
       return new Promise((resolve, reject) => {
         return axios({
-            url: urlToken, 
+            url: urlToken,
             method: 'post',
-            headers: { ...headers,
+            headers: {
+              ...headers,
               'content-type': 'application/x-www-form-urlencoded',
-              'Authorization': basic,              
+              'Authorization': basic,
             },
-            data: bodyFormData
+            data: qs.stringify(bodyFormData)
           }).then(response => {
             if (response.data === '' || response.data === undefined) {
               onError('Usuário/senha incorretos.');
             } else {
-              _this.updateAccessToken(credentials,response.data);
+              _this.updateAccessToken(credentials, response.data);
               onSuccess(response.data);
             }
           })
           .catch(error => {
-            if (error.response.data && error.response.data.error === "invalid_grant"){
+            if (error.response.data && error.response.data.error === "invalid_grant") {
               onError('Usuário/senha incorretos.')
             } else {
               onError(processErrorMessage(error));
@@ -301,29 +331,33 @@ export class AnterosTokenService {
       let basic = authService.getBasicAuthSaaS();
       let urlToken = `${this.config.url_token}${this.config.token}`;
       let headers = {};
-      if (credentials.owner && credentials.owner !== 'undefined'){
+      if (credentials.owner && credentials.owner !== 'undefined') {
         let tenantID = credentials.owner;
-        headers = {'X-Tenant-ID': tenantID};
+        headers = {
+          'X-Tenant-ID': tenantID
+        };
       }
       let _this = this;
-      var bodyFormData = new FormData();
-      bodyFormData.append('username', credentials.username);
-      bodyFormData.append('password', credentials.password);
-      bodyFormData.append('grant_type', 'password');
+      var bodyFormData = {
+        'username': credentials.username,
+        'password': credentials.password,
+        'grant_type': 'password'
+      };
       return new Promise((resolve, reject) => {
         return axios({
             url: urlToken,
             method: 'post',
-            headers: {...headers,
+            headers: {
+              ...headers,
               'content-type': 'application/x-www-form-urlencoded',
               'Authorization': basic
             },
-            data: bodyFormData,
+            data: qs.stringify(bodyFormData)
           }).then(response => {
             if (response.data === '' || response.data === undefined) {
               onError('Usuário/senha incorretos.');
             } else {
-              _this.updateAccessTokenSaaS(credentials,response.data);
+              _this.updateAccessTokenSaaS(credentials, response.data);
               onSuccess(response.data);
             }
           })
@@ -333,6 +367,39 @@ export class AnterosTokenService {
       });
     }
   }
+
+  getSecretKey(){
+    return decode(this.config.secretKey);
+  }
+
+  encryptWithCryptoJS(plainText) {
+    let sk = this.getSecretKey();
+    const key = CryptoJS.enc.Utf8.parse(sk);
+    const iv1 = CryptoJS.enc.Utf8.parse(sk);
+    const encrypted = CryptoJS.AES.encrypt(plainText, key, {
+      keySize: 16,
+      iv: iv1,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+
+    return encrypted + "";
+  }
+
+  decryptionWithCryptoJS(cipher) {
+    let sk = this.getSecretKey();
+    const key = CryptoJS.enc.Utf8.parse(sk);
+    const iv1 = CryptoJS.enc.Utf8.parse(sk);
+    const plainText = CryptoJS.AES.decrypt(cipher, key, {
+      keySize: 16,
+      iv: iv1,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    return plainText.toString(CryptoJS.enc.Utf8);
+  }
+
+
 }
 
 export const tokenService = new AnterosTokenService();

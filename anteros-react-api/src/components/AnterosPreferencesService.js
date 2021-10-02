@@ -4,40 +4,45 @@ import {
 var CryptoJS = require("crypto-js");
 import { decode, encode } from "universal-base64";
 import 'regenerator-runtime/runtime';
+import { createLocalStorage } from "localstorage-ponyfill";
+import qs from "qs";
 
 const SECRET_KEY = 'dmtUTkhBMnFocWZyY3hzeA==';
 
 export class AnterosPreferencesService {
   constructor() {
     autoBind(this);
-  }
-  init(){
+    if ((typeof process !== 'undefined') && module.exports) {
+      this._localStorage = createLocalStorage({ mode : "browser" });
+    } else {
+      this._localStorage = createLocalStorage({ mode : "node"});
+    }
     
   }
 
+  init(localStorage){
+    this._localStorage = localStorage;
+  }
+
   getPref(key){
-    return localStorage.getItem(key);
+    return this._localStorage.getItem(key);
   }
 
   saveRemindMe(key, remindMe){
     if (remindMe) {
-        localStorage.setItem(key, remindMe);
+        this._localStorage.setItem(key, remindMe);
       } else {
-        localStorage.removeItem(key, remindMe);
+        this._localStorage.removeItem(key, remindMe);
       }
   }
 
   getLoginCredentials(key, data, callback){
-    let dataStorage = localStorage.getItem(key);
-    dataStorage = JSON.parse(dataStorage);
+    let dataStorage = this._localStorage.getItem(key);
+    dataStorage = qs.parse(dataStorage);
     if (dataStorage !== null) {
       dataStorage.forEach((item) => {
         if (data === item.owner) {
-          let password = CryptoJS.AES.decrypt(
-            decode(item.password),
-            decode(SECRET_KEY)
-          );
-          password = password.toString(CryptoJS.enc.Utf8);
+          let password = this.decryptionWithCryptoJS(item.password);
           callback(item.owner,item.userName,password,data);
         }
       });
@@ -45,14 +50,14 @@ export class AnterosPreferencesService {
   }
 
   removeCredentials(key, owner){
-    let data = localStorage.getItem(key);
-    data = JSON.parse(data);
+    let data = this._localStorage.getItem(key);
+    data = qs.parse(data);
     data = data.filter(function(item) {
       return item.owner !== owner;
     });
-    localStorage.removeItem(key);
+    this._localStorage.removeItem(key);
     if (data.length > 0) {
-      localStorage.setItem(key, JSON.stringify(data));
+      this._localStorage.setItem(key, qs.stringify(data));
     }
   }
 
@@ -61,26 +66,25 @@ export class AnterosPreferencesService {
         {
           owner: credentials.owner,
           userName: credentials.username,
-          password: encode(CryptoJS.AES.encrypt(credentials.password,decode(SECRET_KEY))),
+          password: this.encryptWithCryptoJS(credentials.password),
           url: window.location.href,
         },
       ];
   
-      if (localStorage.credentials === undefined) {
-        localStorage.setItem(
+      if (this._localStorage.credentials === undefined) {
+        this._localStorage.setItem(
           key,
-          JSON.stringify(credentialsToStorage)
+          qs.stringify(credentialsToStorage)
         );
       } else {
-        let dataStorage = localStorage.getItem(key);
-        dataStorage = JSON.parse(dataStorage);
-        dataStorage.password = CryptoJS.AES.decrypt(decode(dataStorage.password),decode(SECRET_KEY));
-        dataStorage.password = dataStorage.password.toString(CryptoJS.enc.Utf8);
+        let dataStorage = this._localStorage.getItem(key);
+        dataStorage = qs.parse(dataStorage);
+        dataStorage.password = this.decryptionWithCryptoJS(dataStorage);
         if (dataStorage==undefined){
           dataStorage = [];
         }
   
-        localStorage.removeItem(key);
+        this._localStorage.removeItem(key);
         let hasOwner = false;
         for (let i = 0; i < dataStorage.length; i++) {
           const item = dataStorage[i];
@@ -97,11 +101,42 @@ export class AnterosPreferencesService {
           dataStorage.push(credentialsToStorage[0]);
         }
   
-        localStorage.setItem(
+        this._localStorage.setItem(
           key,
-          JSON.stringify(dataStorage)
+          qs.stringify(dataStorage)
         );
       }
+  }
+
+  getSecretKey(){
+    return decode(this.config.secretKey);
+  }
+
+  encryptWithCryptoJS(plainText) {
+    let sk = this.getSecretKey();
+    const key = CryptoJS.enc.Utf8.parse(sk);
+    const iv1 = CryptoJS.enc.Utf8.parse(sk);
+    const encrypted = CryptoJS.AES.encrypt(plainText, key, {
+      keySize: 16,
+      iv: iv1,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+
+    return encrypted + "";
+  }
+
+  decryptionWithCryptoJS(cipher) {
+    let sk = this.getSecretKey();
+    const key = CryptoJS.enc.Utf8.parse(sk);
+    const iv1 = CryptoJS.enc.Utf8.parse(sk);
+    const plainText = CryptoJS.AES.decrypt(cipher, key, {
+      keySize: 16,
+      iv: iv1,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    return plainText.toString(CryptoJS.enc.Utf8);
   }
 
 }
