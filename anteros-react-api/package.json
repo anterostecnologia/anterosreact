@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-api",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "Anteros Remote API",
   "main": "lib/@anterostecnologia/anteros-react-api.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
     "bootstrap": "v4.0.0-alpha.6",
+    "browser-or-node": "^1.3.0",
     "classnames": "^2.2.5",
     "crypto-js": "^4.1.1",
     "css-loader": "^0.27.1",
@@ -69,7 +70,6 @@
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "bootstrap": "v4.0.0-alpha.6",
-    "browser-or-node": "^1.3.0",
     "css-loader": "^0.27.1",
     "purifycss": "^1.1.9",
     "style-loader": "^0.13.2",

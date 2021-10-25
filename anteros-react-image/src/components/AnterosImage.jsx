@@ -132,6 +132,7 @@ export default class AnterosImage extends Component {
                 </div>
             </div>);
         } else {
+            let styleContainer = {...this.props.styleContainer};
             let style = {...this.props.style,
                 width: this.props.width,
                 height: this.props.height,
@@ -157,7 +158,7 @@ export default class AnterosImage extends Component {
                 style = { ...style, marginRight: this.props.marginRight }
             }
             return (
-            <div>
+            <div style={styleContainer}>
                 <img ref={ref => this.image = ref}
                 className={AnterosUtils.buildClassNames(className,"img-status-mark")}
                 src={this.props.src}
@@ -206,7 +207,8 @@ AnterosImage.propTypes = {
     success: PropTypes.bool,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
-    onDoubleClick: PropTypes.func
+    onDoubleClick: PropTypes.func,
+    styleContainer: PropTypes.object
 }
 
 

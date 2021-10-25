@@ -111,7 +111,9 @@ export class AnterosReactComponent extends Component {
                         } else {
                             this.defaulInsertValueOnDataSource(datasource, field, record);
                         }
-                    }).catch(error => { })
+                    }).catch(error => {
+                        //
+                     })
                 } else {
                     if (callback) {
                         callback(datasource, field, record);

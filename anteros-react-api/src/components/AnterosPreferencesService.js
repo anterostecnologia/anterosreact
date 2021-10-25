@@ -6,13 +6,14 @@ import { decode, encode } from "universal-base64";
 import 'regenerator-runtime/runtime';
 import { createLocalStorage } from "localstorage-ponyfill";
 import qs from "qs";
+import { isBrowser } from "browser-or-node";
 
 const SECRET_KEY = 'dmtUTkhBMnFocWZyY3hzeA==';
 
 export class AnterosPreferencesService {
   constructor() {
     autoBind(this);
-    if ((typeof process !== 'undefined') && module.exports) {
+    if (isBrowser) {
       this._localStorage = createLocalStorage({ mode : "browser" });
     } else {
       this._localStorage = createLocalStorage({ mode : "node"});
