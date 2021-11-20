@@ -249,8 +249,8 @@ function getSumScroll(node) {
     } else {
         const parent = getSumScroll(node.parentNode)
         return ({
-            scrollLeft.scrollLeft + parent.scrollLeft,
-            scrollTop.scrollTop + parent.scrollTop
+            scrollLeft: scrollLeft.scrollLeft + parent.scrollLeft,
+            scrollTop: scrollTop.scrollTop + parent.scrollTop
         })
     }
 }
@@ -261,8 +261,8 @@ function getSumOffset(node) {
     } else {
         const parent = getSumOffset(node.offsetParent)
         return ({
-            offsetLeft.offsetLeft + parent.offsetLeft,
-            offsetTop.offsetTop + parent.offsetTop
+            offsetLeft: offsetLeft.offsetLeft + parent.offsetLeft,
+            offsetTop: offsetTop.offsetTop + parent.offsetTop
         })
     }
 }
@@ -554,6 +554,7 @@ function groupStack(
                     collidingItem = other
                     break
                 } else {
+                    //
                 }
             }
 
@@ -832,7 +833,7 @@ function getItemWithInteractions({
         resizingEdge,
         resizeTime
     })
-    const newItem = {
+    return {
         ...item,
         [keys.itemTimeStartKey]: itemTimeStart,
         [keys.itemTimeEndKey]: itemTimeEnd,
@@ -840,7 +841,6 @@ function getItemWithInteractions({
             ? _get(groups[newGroupOrder], keys.groupIdKey)
             : _get(item, keys.itemGroupKey)
     }
-    return newItem
 }
 
 /**
@@ -929,7 +929,7 @@ function calculateScrollCanvas(
     return newState
 }
 
-export default class AnterosCalendarTimeline extends Component {
+export class AnterosCalendarTimeline extends Component {
     constructor(props) {
         super(props)
 
@@ -1893,8 +1893,8 @@ AnterosCalendarTimeline.defaultProps = {
     style: {},
     keys: defaultKeys,
     timeSteps: defaultTimeSteps,
-    headerRef: () => { },
-    scrollRef: () => { },
+    headerRef: () => {},
+    scrollRef: () => {},
     visibleTimeStart: null,
     visibleTimeEnd: null,
     onTimeChange: function (
@@ -1916,8 +1916,6 @@ AnterosCalendarTimeline.childContextTypes = {
 }
 
 
-import { iterateTimes } from '../utility/calendar'
-import { TimelineStateConsumer } from '../timeline/TimelineStateContext'
 
 const passThroughPropTypes = {
     canvasTimeStart: PropTypes.number.isRequired,
@@ -4593,3 +4591,5 @@ AnterosCustomMarker.displayName = 'AnterosCustomMarker'
 export const AnterosTimelineMarkers = props => {
     return props.children || null
 }
+
+

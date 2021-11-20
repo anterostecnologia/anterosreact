@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-calendar",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "Anteros components for React - Calendar",
   "main": "lib/@anterostecnologia/anteros-react-calendar.js",
   "scripts": {
@@ -10,6 +10,10 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
+    "@anterostecnologia/anteros-react-containers": "^2.0.9",
+    "@anterostecnologia/anteros-react-core": "^2.0.7",
+    "@anterostecnologia/anteros-react-image": "^2.0.6",
+    "@anterostecnologia/anteros-react-label": "^2.0.5",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
@@ -19,10 +23,6 @@
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@wojtekmaj/date-utils": "^1.0.2",
-    "@anterostecnologia/anteros-react-containers": "^2.0.9",
-    "@anterostecnologia/anteros-react-core": "^2.0.7",
-    "@anterostecnologia/anteros-react-image": "^2.0.6",
-    "@anterostecnologia/anteros-react-label": "^2.0.5",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -34,8 +34,9 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "v4.0.0-alpha.6",
+    "bootstrap": "^4.6.1",
     "classnames": "^2.2.5",
+    "create-react-context": "^0.3.0",
     "css-loader": "^0.27.1",
     "date-fns": "^2.9.0",
     "eslint": "^3.19.0",
@@ -47,7 +48,9 @@
     "get-user-locale": "^1.3.0",
     "interactjs": "^1.7.2",
     "lodash": "^4.17.4",
+    "lodash.isequal": "^4.5.0",
     "lodash.omit": "^4.5.0",
+    "memoize-one": "^6.0.0",
     "merge-class-names": "^1.3.0",
     "moment": "^2.24.0",
     "node-sass": "^4.5.3",
@@ -74,7 +77,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "bootstrap": "v4.0.0-alpha.6",
     "css-loader": "^0.27.1",
     "npm-auth": "^1.1.0",
     "purifycss": "^1.1.9",

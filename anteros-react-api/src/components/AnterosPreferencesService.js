@@ -13,12 +13,16 @@ const SECRET_KEY = 'dmtUTkhBMnFocWZyY3hzeA==';
 export class AnterosPreferencesService {
   constructor() {
     autoBind(this);
+    this.config = {};
     if (isBrowser) {
       this._localStorage = createLocalStorage({ mode : "browser" });
     } else {
       this._localStorage = createLocalStorage({ mode : "node"});
-    }
-    
+    }    
+  }
+
+  setConfiguration(config) {
+    this.config = config;
   }
 
   init(localStorage){

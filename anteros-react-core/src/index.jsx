@@ -36,7 +36,7 @@ import AnterosLazyLoad from './components/AnterosLazyLoad';
 import { AnterosCircularJSON } from './components/AnterosCircularJson';
 import AnterosServiceWorkerUpdater from './components/AnterosServiceWorkerUpdater';
 import {AnterosReactComponent} from './components/AnterosReactComponent';
-
+import {AnterosErrorBoundary, withErrorBoundary, useErrorHandler} from './components/AnterosErrorBoundary';
 export {
 	AnterosError,
 	AnterosDatasourceError,
@@ -70,5 +70,6 @@ export {
 	AnterosClickOutside,
 	AnterosLazyLoad,
 	AnterosServiceWorkerUpdater,
-	AnterosReactComponent
+	AnterosReactComponent,
+	AnterosErrorBoundary, withErrorBoundary, useErrorHandler
 };

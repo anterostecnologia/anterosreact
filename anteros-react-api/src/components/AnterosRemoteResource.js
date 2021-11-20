@@ -43,7 +43,7 @@ export class AnterosRemoteResource {
     post(resourceName, entity, user) {
         let _resourceName = resourceName;
         if (resourceName instanceof AnterosRemoteResource){
-            _resourceName = resourceName.resourceName;
+            _resourceName = resourceName.name;
         }
         let result = {
             url: `${this.url}${_resourceName}`,
@@ -74,7 +74,7 @@ export class AnterosRemoteResource {
     delete(resourceName, entity, user) {
         let _resourceName = resourceName;
         if (resourceName instanceof AnterosRemoteResource){
-            _resourceName = resourceName.resourceName;
+            _resourceName = resourceName.name;
         }
         let result = {
             url: `${this.url}${_resourceName}${entity.id}`,
@@ -87,7 +87,7 @@ export class AnterosRemoteResource {
     validate(resourceName, entity, user) {
         let _resourceName = resourceName;
         if (resourceName instanceof AnterosRemoteResource){
-            _resourceName = resourceName.resourceName;
+            _resourceName = resourceName.name;
         }
         let result = {
             url: `${this.url}${_resourceName}validate`,
@@ -101,7 +101,7 @@ export class AnterosRemoteResource {
     findOne(resourceName, value, user, fieldsToForceLazy = "") {
         let _resourceName = resourceName;
         if (resourceName instanceof AnterosRemoteResource){
-            _resourceName = resourceName.resourceName;
+            _resourceName = resourceName.name;
         }
         let result;
         if (user && user.owner && user.owner.boUtilizaCode === true) {
