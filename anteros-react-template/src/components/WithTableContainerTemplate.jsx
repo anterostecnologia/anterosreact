@@ -293,6 +293,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
           this.table2.refreshData();
         }
 
+
+
         if (WrappedComponent.prototype.hasOwnProperty("onDidMount") === true) {
           this.onDidMount();
         }
@@ -329,6 +331,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
           if (this.table2) {
             this.table2.refreshData();
           }
+        }
+
+        if (this.table1){
+          let click_event = new CustomEvent('click');
+          this.table1.dispatchEvent(click_event);
         }
       }
 
@@ -939,7 +946,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     <AnterosPagination
                       horizontalEnd
                       dataSource={this.dataSource}
-                      visiblePages={3}
+                      visiblePages={8}
                       onBeforePageChanged={this.onBeforePageChanged}
                       onPageChanged={this.handlePageChanged}
                     />

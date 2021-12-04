@@ -24,10 +24,10 @@ const formatDuration = seconds => {
     return dateString;
 };
 
-// adapted from: https://github.com/okonet/attr-accept/blob/master/src/index.js
-// returns true if file.name is empty and accept string is something like ".csv",
-// because file comes from dataTransferItem for drag events, and
-// dataTransferItem.name is always empty
+// adaptado de: https://github.com/okonet/attr-accept/blob/master/src/index.js
+// retorna verdadeiro se o arquivo.nome estiver vazio e a string de aceitação for algo como ".csv",
+// porque o arquivo vem de dataTransferItem para eventos de arrastar, e
+// dataTransferItem.name está sempre vazio
 const accepts = (file, accept) => {
     if (!accept || accept === "*") return true;
 
@@ -44,7 +44,7 @@ const accepts = (file, accept) => {
                     file.name.toLowerCase().endsWith(type.toLowerCase())
                 );
             } else if (type.endsWith("/*")) {
-                // this is something like an image/* mime type
+                // isso é algo como uma imagem / * tipo mime
                 return baseMimeType === type.replace(/\/.*$/, "");
             }
             return mimeType === type;
@@ -1060,14 +1060,14 @@ AnterosDropzone.defaultProps = {
     canCancel: true,
     canRemove: true,
     canRestart: true,
-    inputContent: "Arraste aqui os arquivos ou  Clique para procurar",
+    inputContent: "Arraste aqui os arquivos ou  clique para procurar",
     inputWithFilesContent: "Adicionar arquivos",
     submitButtonDisabled: false,
     submitButtonContent: "Enviar",
     classNames: {},
     styles: {},
     width: "75%",
-    height: "auto",
+    height: "100%",
     minHeight: "150px",
     contentPosition: "center",
     addClassNames: {}

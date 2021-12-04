@@ -20,18 +20,18 @@ const matchers = {
   aspectRatio: PropTypes.string,
   deviceAspectRatio: PropTypes.string,
 
-  height,
-  deviceHeight,
+  height: PropTypes.any,
+  deviceHeight: PropTypes.any,
 
-  width,
-  deviceWidth,
+  width: PropTypes.any,
+  deviceWidth: PropTypes.any,
 
   color: PropTypes.bool,
 
   colorIndex: PropTypes.bool,
 
   monochrome: PropTypes.bool,
-  resolution
+  resolution: PropTypes.any,
 }
 
 // media features
@@ -41,15 +41,15 @@ const features = {
   minDeviceAspectRatio: PropTypes.string,
   maxDeviceAspectRatio: PropTypes.string,
 
-  minHeight,
-  maxHeight,
-  minDeviceHeight,
-  maxDeviceHeight,
+  minHeight: PropTypes.any,
+  maxHeight: PropTypes.any,
+  minDeviceHeight: PropTypes.any,
+  maxDeviceHeight: PropTypes.any,
 
-  minWidth,
-  maxWidth,
-  minDeviceWidth,
-  maxDeviceWidth,
+  minWidth: PropTypes.any,
+  maxWidth: PropTypes.any,
+  minDeviceWidth: PropTypes.any,
+  maxDeviceWidth: PropTypes.any,
 
   minColor: PropTypes.number,
   maxColor: PropTypes.number,
@@ -60,8 +60,8 @@ const features = {
   minMonochrome: PropTypes.number,
   maxMonochrome: PropTypes.number,
 
-  minResolution,
-  maxResolution,
+  minResolution: PropTypes.any,
+  maxResolution: PropTypes.any,
 
   ...matchers
 }

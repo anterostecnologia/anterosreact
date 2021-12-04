@@ -156,6 +156,10 @@ export default function WithMainLayoutTemplate(_loadingProps) {
       }
 
       onCollapseMenu() {
+        this.collapseMenu();
+      }
+
+      collapseMenu(){
         if (this.props.setNeedUpdateView)
           this.props.setNeedUpdateView();
       }
@@ -338,6 +342,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
                     onCollapseMenu={this.onCollapseMenu} 
                     onChangeMenuFormat={this.onChangeMenuFormat}
                     withoutUserBlock={!loadingProps.showUserBlock} 
+                    menuOpened={this.state.menuOpened}
                     onSelectMenuItem={this.onSelectMenuItem} 
                     visible={this.isMainMenuVisible()} />
                   ) : null}

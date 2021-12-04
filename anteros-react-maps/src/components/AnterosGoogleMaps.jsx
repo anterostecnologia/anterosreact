@@ -5,8 +5,6 @@ import lodash from "lodash";
 import { loadScript } from '@anterostecnologia/anteros-react-core';
 import MarkerClustererPlus from "marker-clusterer-plus";
 
-
-
 const loadGoogleMapApi = function (url, success, error) {
     if (window.google.maps) {
         success();
@@ -53,8 +51,8 @@ export default class AnterosGoogleMaps extends Component {
         this.setZoom = this.setZoom.bind(this);
         this.setMarkerAnimationById = this.setMarkerAnimationById.bind(this);
         this.goToMarkerById = this.goToMarkerById.bind(this);
-        this.map;
-        this.oms;
+        this.map=undefined;
+        this.oms=undefined;
         this.markers = [];
         this.updateMarkers = false;
         this.state = { update: Math.random() };

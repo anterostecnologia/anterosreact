@@ -5,18 +5,31 @@ import { AnterosText } from '@anterostecnologia/anteros-react-label';
 import { AnterosIcon } from '@anterostecnologia/anteros-react-image';
 import lodash from 'lodash';
 import { AnterosScrollbars } from '@anterostecnologia/anteros-react-containers';
+import shallowCompare from 'react-addons-shallow-compare';
 
 export class AnterosMegaMenu extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      selectedItem: [], menuOpened: this.props.menuOpened,
-      filteredItens: [], favorites: [], onlyFavorites: false
-    };
+    
     if (this.props.onChangeMenuFormat) {
       this.props.onChangeMenuFormat(this.props.menuOpened);
     }
     autoBind(this);
+
+    let favorites = [];
+    if (this.props.getFavorites) {
+      let _favorites=props.getFavorites();
+      _favorites.forEach(id=>{
+      let it = this.getItem(id, this.props);
+        favorites.push(it);
+      })
+    } else {
+      favorites = this.props.favorites?this.props.favorites:[];
+    }
+    this.state = {
+      selectedItem: [], menuOpened: this.props.menuOpened,
+      filteredItens: [], favorites: favorites, onlyFavorites: false
+    };
   }
 
   onSelectedItem(item) {
@@ -36,14 +49,17 @@ export class AnterosMegaMenu extends Component {
       if (this.itemIsMainLevel(item)) {
         let mainItem = item;
         let selectedItem = [];
-        this.setState({ ...this.state, selectedItem, selectedMainItem: mainItem });
+        this.setState({ ...this.state, selectedItem, selectedMainItem: mainItem },()=>{
+          this.closeMenu();
+        });
       } else {
         let subItem = item;
-        this.setState({ ...this.state, selectedSubItem: subItem });
+        this.setState({ ...this.state, selectedSubItem: subItem },()=>{
+          this.closeMenu();
+        });
       }
     }
   }
-
 
   itemIsMainLevel(item) {
     const children = React.Children.toArray(this.props.children);
@@ -73,17 +89,30 @@ export class AnterosMegaMenu extends Component {
       favorites: this.state.favorites
     };
   }
-  onClickFavorite(item) {
+  onClickFavorite(item, event) {
     let it = this.getItem(item.props.id, this.props);
     let favorites = this.state.favorites;
-    if (this.state.favorites.includes(it)) {
-      const index = favorites.indexOf(it);
-      if (index > -1) {
-        favorites.splice(index, 1);
-      }
+    let found = false;
+    let indexFound = -1;
+    if (this.state.favorites){
+      this.state.favorites.forEach((favItem,index)=>{
+        if (favItem.props.id === item.props.id){
+            found = true;
+            indexFound = index;
+        }
+      })
+    }
+    if (found) {
+      favorites.splice(indexFound, 1);
     } else {
       favorites.push(it);
     }
+    let favoritesList = [];
+    favorites.forEach(item=>{
+      favoritesList.push(item.props.id);
+    })
+    event.stopPropagation();
+    this.props.onChangeFavorites&&this.props.onChangeFavorites(favoritesList);
     this.setState({ ...this.state, favorites })
   }
 
@@ -101,7 +130,6 @@ export class AnterosMegaMenu extends Component {
         }
       }
     }
-    return;
   }
 
   onMouseEnter(event) {
@@ -122,22 +150,28 @@ export class AnterosMegaMenu extends Component {
 
   }
 
-  onClickOutside(event) {
+  onMouseLeave(event) {
+    this.closeMenu();
+  }
+
+  closeMenu(){
     if (this.state.menuOpened) {
       let _this = this;
+      this.setState({ ...this.state, menuOpened: false });
+
       if (this.props.onChangeMenuFormat) {
         this.props.onChangeMenuFormat(false);
       }
-      this.setState({ ...this.state, menuOpened: false });
-
       setTimeout(() => {
         if (_this.props.onCollapseMenu) {
           _this.props.onCollapseMenu();
         }
-      }, 200);
+      }, 300);
     }
+  }
 
-
+  onClickOutside(event) {
+    this.closeMenu();
   }
 
   onFilterChange(filter) {
@@ -145,7 +179,7 @@ export class AnterosMegaMenu extends Component {
     if (filter === '' || filter === undefined) {
       itens = [];
     } else {
-      itens = this.filterItens(this, filter);
+      itens = this.filterItems(this, filter);
     }
     this.setState({ ...this.state, filteredItens: itens, selectedItem: [], selectedMainItem: undefined, selectedSubItem: undefined });
   }
@@ -154,21 +188,23 @@ export class AnterosMegaMenu extends Component {
     this.setState({ ...this.state, onlyFavorites: !this.state.onlyFavorites });
   }
 
-  filterItens(item, filter) {
+  filterItems(item, filter) {
     let result = [];
     let arrayChildren = React.Children.toArray(item.props.children);
-    for (let index = 0; index < arrayChildren.length; index++) {
-      const element = arrayChildren[index];
+    for (let element in arrayChildren) {
       if (element.props.children) {
-        result = result.concat(this.filterItens(element, filter));
+        result = result.concat(this.filterItems(element, filter));
       } else {
         if (new RegExp(filter, 'i').test(element.props.caption)) {
           result.push(element);
         }
       }
     }
-
     return result;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   render() {
@@ -178,7 +214,7 @@ export class AnterosMegaMenu extends Component {
     }
     return (
       <AnterosClickOutside onClickOutside={this.onClickOutside}>
-        <div className="mmenu-main" style={style} onMouseEnter={this.onMouseEnter}>
+        <div className="mmenu-main" style={style} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
           <AnterosScrollbars
             className="app-scroll"
             autoHide
@@ -374,7 +410,7 @@ export class AnterosMegaMenuItem extends Component {
   }
 
   onClickFavorite(event) {
-    this.context.onClickFavorite(this);
+    this.context.onClickFavorite(this, event);
     event.stopPropagation();
   }
 

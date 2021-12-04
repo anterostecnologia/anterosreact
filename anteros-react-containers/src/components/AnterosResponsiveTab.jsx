@@ -79,10 +79,10 @@ class AnterosResponsiveTabs extends Component {
                 }
             });
         }
-    };
+    }
 
     onChangeTab(nextTabKey) {
-        const { onChange } = this.props;
+        const { onChange, onPageChange } = this.props;
         const { selectedTabKey } = this.state;
         const isCollapsed = this.getIsCollapsed();
         if (isCollapsed && selectedTabKey === nextTabKey) {
@@ -96,7 +96,11 @@ class AnterosResponsiveTabs extends Component {
         if (onChange) {
             onChange(nextTabKey);
         }
-    };
+
+        if (onPageChange){
+            onPageChange(nextTabKey);
+        }
+    }
 
     onFocusTab(focusedTabKey) {
         this.setState({ focusedTabKey });
@@ -111,7 +115,7 @@ class AnterosResponsiveTabs extends Component {
         if (event.keyCode === 13 && focusedTabKey !== null) {
             this.setState({ selectedTabKey: focusedTabKey });
         }
-    };
+    }
 
     setTabsDimensions() {
         if (!this.tabsWrapper) {
@@ -135,7 +139,7 @@ class AnterosResponsiveTabs extends Component {
         });
 
         this.setState({ tabDimensions, tabsTotalWidth, blockWidth });
-    };
+    }
 
     getItems() {
         if (this.props.items && this.props.items.length > 0)
@@ -184,7 +188,6 @@ class AnterosResponsiveTabs extends Component {
                 return result;
             }
         }
-        return;
     }
 
     getTabs(items) {
@@ -256,7 +259,7 @@ class AnterosResponsiveTabs extends Component {
             },
             { tabsVisible: [], tabsHidden: [], panels: {}, isSelectedTabHidden: false }
         );
-    };
+    }
 
     getTabProps({ title, caption, key, id, icon, image, imageCircle, imageHeight, imageWidth, selected, collapsed, tabIndex, disabled, className, onRemove, allowRemove }) {
         return {
@@ -296,7 +299,7 @@ class AnterosResponsiveTabs extends Component {
             tabId: tabPrefix + key,
             classNames: this.getClassNamesFor('panel', { className })
         };
-    };
+    }
 
     getShowMoreProps(isShown, isSelectedTabHidden, showMoreLabel) {
         return {
@@ -322,7 +325,7 @@ class AnterosResponsiveTabs extends Component {
             default:
                 return '';
         }
-    };
+    }
 
     getSelectedTabKey() {
         const { items } = this.props;
@@ -334,13 +337,13 @@ class AnterosResponsiveTabs extends Component {
             return items[0].key || 0;
         }
         return selectedTabKey;
-    };
+    }
 
     getIsCollapsed() {
         const { transform, transformWidth } = this.props;
         const { blockWidth } = this.state;
         return blockWidth && transform && blockWidth < transformWidth;
-    };
+    }
 
     showMoreChanged(element) {
         if (!element) {
@@ -356,7 +359,7 @@ class AnterosResponsiveTabs extends Component {
         this.setState({
             showMoreWidth: offsetWidth
         });
-    };
+    }
 
     render() {
         const { showInkBar, containerClass, tabsWrapperClass, showMore, transform, showMoreLabel } = this.props;
@@ -431,6 +434,8 @@ AnterosResponsiveTabs.propTypes = {
     transformWidth: PropTypes.number,
     // onChange active tab callback
     onChange: PropTypes.func,
+    // onChange active tab callback
+    onPageChange: PropTypes.func,
     // onRemove callback
     onRemove: PropTypes.func,
     // frequency of onResize recalculation fires
@@ -460,13 +465,14 @@ AnterosResponsiveTabs.defaultProps = {
     panelClass: undefined,
     showMoreLabel: '...',
     onChange: () => null,
+    onPageChange: () => null,
     onRemove: () => null
 };
 
 class TabHeaderActions extends Component {
 
     render() {
-        return (<div>
+        return (<div style={{display:'flex'}}>
             {this.props.children}
         </div>);
     }

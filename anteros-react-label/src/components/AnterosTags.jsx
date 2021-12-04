@@ -5,9 +5,8 @@ import uniq from 'lodash/uniq';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import escapeRegExp from 'lodash/escapeRegExp';
-import flow from 'lodash/flow';
 import { findDOMNode } from 'react-dom';
-
+import {AnterosObjectUtils} from "@anterostecnologia/anteros-react-core";
 
 const KEYS = {
     ENTER: 13,
@@ -144,7 +143,7 @@ const ItemTypes = { TAG: 'tag' };
 class Tag extends Component {
     render() {
         const { props } = this;
-        const label = props.tag[props.labelField];
+        const label =  AnterosObjectUtils.getNestedProperty(props.tag, props.labelField);
         const {
             readOnly,
             tag,
@@ -259,6 +258,7 @@ export default class AnterosTags extends Component {
         readOnly: false,
         allowUnique: true,
         allowDragDrop: true,
+        allowClear: true,
         addTags: true,
         tags: [],
     };
@@ -587,6 +587,7 @@ export default class AnterosTags extends Component {
             maxLength,
             inline,
             inputFieldPosition,
+            allowClear
         } = this.props;
 
         const position = !inline
@@ -636,7 +637,7 @@ export default class AnterosTags extends Component {
                 <div className={classNames.selected}>
                     {tagItems}
                     {position === INPUT_FIELD_POSITIONS.INLINE && tagInput}
-                    <button className="fal fa-times" onClick={this.props.onClear} style={{border:0, color:'red'}}/>
+                    {allowClear?<button className="fal fa-times" onClick={this.props.onClear} style={{border:0, color:'red'}}/>:null}
                 </div>                
                 {position === INPUT_FIELD_POSITIONS.BOTTOM && tagInput}
             </div>

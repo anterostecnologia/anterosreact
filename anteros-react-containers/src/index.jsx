@@ -52,7 +52,6 @@ import {
   AnterosResponsiveTab,
   TabHeaderActions,
 } from "./components/AnterosResponsiveTab";
-// import AnterosMainFooter from './components/AnterosMainFooter';
 import { AnterosSectionRightSide } from "./components/AnterosSectionRightSide";
 import {
   AnterosFlexContainer,
@@ -64,7 +63,6 @@ import {
 import { AnterosMuuriLayout } from './components/AnterosMuuriLayout';
 import AnterosGridGallery from './components/AnterosGridGallery';
 import AnterosPopup from "./components/AnterosPopup";
-import {AnterosCalendarTimeLine} from './components/AnterosCalendarTimeLine';
 
 export {
   AnterosCard,
@@ -120,6 +118,5 @@ export {
   AnterosFlexSplitter,
   AnterosPopup,
   AnterosMuuriLayout,
-  AnterosGridGallery,
-  AnterosCalendarTimeLine
+  AnterosGridGallery
 };

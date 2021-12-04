@@ -16,7 +16,7 @@ export class AnterosFloatingButton extends Component {
     }
 
     componentDidMount() {
-
+        //
     }
 
     onDocumentClick(event) {

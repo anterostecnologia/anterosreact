@@ -84,6 +84,19 @@ export class AnterosRemoteResource {
         return this.applyCompany(user, result);
     }
 
+    deleteById(resourceName, id, user) {
+        let _resourceName = resourceName;
+        if (resourceName instanceof AnterosRemoteResource){
+            _resourceName = resourceName.name;
+        }
+        let result = {
+            url: `${this.url}${_resourceName}${id}`,
+            method: DELETE
+        };
+        result = this.applyOwner(user, result);
+        return this.applyCompany(user, result);
+    }
+
     validate(resourceName, entity, user) {
         let _resourceName = resourceName;
         if (resourceName instanceof AnterosRemoteResource){
