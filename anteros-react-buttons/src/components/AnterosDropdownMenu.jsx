@@ -8,6 +8,7 @@ export default class AnterosDropdownMenu extends Component {
     }
 
     componentDidMount(){
+        //
     }
 
     buildChildren(children) {
@@ -34,7 +35,8 @@ export default class AnterosDropdownMenu extends Component {
         if (this.props.className) {
             className += " " + this.props.className;
         }
-        return (<div className={className}>
+        return (<div className={className} style={this.props.style}>
+            {this.props.title?<div style={[{height:'30px', display:'flex'},this.props.styleHeader]}>{this.props.title}</div>:null}
             {children}
         </div>);
     }

@@ -144,7 +144,7 @@ export default class AnterosMainHeader extends Component {
               color={this.props.toolbarIconColor}
               hintPosition="bottom"
             >
-              <AnterosDropdownMenu>{quickLinks}</AnterosDropdownMenu>
+              <AnterosDropdownMenu styleHeader={{backgroundColor: this.props.quickLinkHeaderColor, color: this.props.toolbarIconColor}} title={"Links rápidos"}>{quickLinks}</AnterosDropdownMenu>
             </AnterosDropdownButton>
           ) : null}
 
@@ -201,6 +201,7 @@ AnterosMainHeader.propTypes = {
 
 AnterosMainHeader.defaultPropTypes = {
   showInputSearch: true,
+  quickLinkHeaderColor: "blue",
   toolbarIconColor: "white",
 };
 
