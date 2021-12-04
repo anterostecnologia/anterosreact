@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   AnterosButton,
+  AnterosDropdownButton, 
+  AnterosDropdownMenu,
   AnterosAdvancedDropdown,
   AnterosAdvancedDropdownMenu,
-  AnterosAdvancedDropdownToggle
+  AnterosAdvancedDropdownToggle,
 } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosText } from "@anterostecnologia/anteros-react-label";
 import AnterosMediaQuery from "./AnterosMediaQuery";
-import { AnterosToolbar, AnterosToolbarGroup } from "@anterostecnologia/anteros-react-containers";
+import {
+  AnterosToolbar,
+  AnterosToolbarGroup,
+} from "@anterostecnologia/anteros-react-containers";
 import { Link } from "react-router-dom";
 import { AnterosInputSearch } from "@anterostecnologia/anteros-react-querybuilder";
 import { AnterosImage } from "@anterostecnologia/anteros-react-image";
@@ -31,7 +36,8 @@ export default class AnterosMainHeader extends Component {
     this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
     this.state = {
       customizer: false,
-      userDropdownMenu: false
+      userDropdownMenu: false,
+      quickLinksDropdownMenu: false,
     };
     autoBind(this);
   }
@@ -71,7 +77,14 @@ export default class AnterosMainHeader extends Component {
   toggleUserDropdownMenu() {
     this.setState({
       ...this.state,
-      userDropdownMenu: !this.state.userDropdownMenu
+      userDropdownMenu: !this.state.userDropdownMenu,
+    });
+  }
+
+  toggleQuickLinksDropdownMenu() {
+    this.setState({
+      ...this.state,
+      quickLinksDropdownMenu: !this.state.quickLinksDropdownMenu,
     });
   }
 
@@ -81,16 +94,19 @@ export default class AnterosMainHeader extends Component {
 
   render() {
     let userActions;
+    let quickLinks;
     let toolbarEnd;
     let toolbarCenter;
     if (this.props.children) {
       let arrChildren = React.Children.toArray(this.props.children);
       arrChildren.forEach(function (child) {
-        if (child.type && (child.type.componentName === 'UserActions')) {
+        if (child.type && child.type.componentName === "UserActions") {
           userActions = child.props.children;
-        } else if (child.type && (child.type.componentName === 'ToolbarEnd')) {
+        } else if (child.type && child.type.componentName === "QuickLinks") {
+          quickLinks = child.props.children;
+        } else if (child.type && child.type.componentName === "ToolbarEnd") {
           toolbarEnd = child.props.children;
-        } else if (child.type && (child.type.componentName === 'ToolbarCenter')) {
+        } else if (child.type && child.type.componentName === "ToolbarCenter") {
           toolbarCenter = child.props.children;
         }
       });
@@ -120,17 +136,23 @@ export default class AnterosMainHeader extends Component {
               hintPosition="bottom"
             />
           )}
-          <AnterosButton
-            medium
-            icon="fab fa-buromobelexperte"
-            iconSize="24px"
-            color={this.props.toolbarIconColor}
-            hintPosition="bottom"
-          />
+          {quickLinks ? (
+            <AnterosDropdownButton
+              medium
+              icon="fab fa-buromobelexperte"
+              iconSize="24px"
+              color={this.props.toolbarIconColor}
+              hintPosition="bottom"
+            >
+              <AnterosDropdownMenu>{quickLinks}</AnterosDropdownMenu>
+            </AnterosDropdownButton>
+          ) : null}
 
-          {this.props.showInputSearch ? <AnterosMediaQuery minDeviceWidth={1224}>
-            <AnterosInputSearch placeHolder="Procurar" />
-          </AnterosMediaQuery> : null}
+          {this.props.showInputSearch ? (
+            <AnterosMediaQuery minDeviceWidth={1224}>
+              <AnterosInputSearch placeHolder="Procurar" />
+            </AnterosMediaQuery>
+          ) : null}
         </AnterosToolbarGroup>
 
         <AnterosToolbarGroup justifyContent="center" colSize="col-sm-2">
@@ -148,16 +170,14 @@ export default class AnterosMainHeader extends Component {
             <AnterosAdvancedDropdownToggle caret>
               <AnterosImage
                 src={
-                  imgUser && isB64
-                    ? 'data:image;base64,' + imgUser
-                    : imgUser
+                  imgUser && isB64 ? "data:image;base64," + imgUser : imgUser
                 }
-                circle={this.props.avatarWidth===this.props.avatarHeight}
-                rounded={this.props.avatarWidth!==this.props.avatarHeight}
+                circle={this.props.avatarWidth === this.props.avatarHeight}
+                rounded={this.props.avatarWidth !== this.props.avatarHeight}
                 width={this.props.avatarWidth}
                 height={this.props.avatarHeight}
               />
-              <AnterosText text={this.props.userName} fontSize="12px"/>
+              <AnterosText text={this.props.userName} fontSize="12px" />
             </AnterosAdvancedDropdownToggle>
             <AnterosAdvancedDropdownMenu right>
               <AnterosUserMenu
@@ -176,12 +196,27 @@ export default class AnterosMainHeader extends Component {
 
 AnterosMainHeader.propTypes = {
   showInputSearch: PropTypes.bool.isRequired,
-  toolbarIconColor: PropTypes.any
-}
+  toolbarIconColor: PropTypes.any,
+};
 
 AnterosMainHeader.defaultPropTypes = {
   showInputSearch: true,
-  toolbarIconColor: 'white'
+  toolbarIconColor: "white",
+};
+
+export class QuickLinks extends Component {
+  constructor(props) {
+    super(props);
+    autobind(this);
+  }
+
+  static get componentName() {
+    return "QuickLinks";
+  }
+
+  render() {
+    return null;
+  }
 }
 
 export class UserActions extends Component {
