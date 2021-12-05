@@ -141,12 +141,12 @@ export default class AnterosMainHeader extends Component {
               medium
               icon="fab fa-buromobelexperte"
               iconSize="24px"
-              backgroundColor= {this.props.quickLinkHeaderColor}
+              backgroundColor= {this.props.toolbarIconBackgroundColor}
               color={this.props.toolbarIconColor}
               hintPosition="bottom"
             >
               <AnterosDropdownMenu
-                style={{ paddingTop: "0px", border:'silver' }}
+                style={{ paddingTop: "0px", border:'1px solid #e0e0e0' }}
                 styleHeader={{
                   backgroundColor: this.props.quickLinkHeaderColor,
                   color: this.props.toolbarIconColor,

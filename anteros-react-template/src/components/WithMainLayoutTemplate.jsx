@@ -26,7 +26,8 @@ const defaultProps = {
   avatarWidth: "42px",
   avatarHeight: "42px",
   toolbarIconColor: "white",
-  quickLinkHeaderColor:'blue'
+  quickLinkHeaderColor:'blue',
+  toolbarIconBackgroundColor: 'rgb(255,255,255,0.2'
 };
 
 export default function WithMainLayoutTemplate(_loadingProps) {
@@ -309,6 +310,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               onSetOpenSidebar={this.onSetOpen}
               sidebarOpen={this.state.sidebarOpen}
               toolbarIconColor={loadingProps.toolbarIconColor}
+              toolbarIconBackgroundColor={loadingProps.toolbarIconBackgroundColor}
               quickLinkHeaderColor={loadingProps.quickLinkHeaderColor}
               showInputSearch={loadingProps.showInputSearch}
               userName={
