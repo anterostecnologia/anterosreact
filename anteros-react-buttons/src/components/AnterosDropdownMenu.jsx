@@ -36,7 +36,7 @@ export default class AnterosDropdownMenu extends Component {
             className += " " + this.props.className;
         }
         return (<div className={className} style={this.props.style}>
-            {this.props.title?<div style={[{height:'30px', display:'flex'},this.props.styleHeader]}>{this.props.title}</div>:null}
+            {this.props.title?<div style={{height:'30px', display:'flex', alignItems:"center", justifyContent:"center", ...this.props.styleHeader}}>{this.props.title}</div>:null}
             {children}
         </div>);
     }

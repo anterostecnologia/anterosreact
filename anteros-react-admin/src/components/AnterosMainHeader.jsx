@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   AnterosButton,
-  AnterosDropdownButton, 
+  AnterosDropdownButton,
   AnterosDropdownMenu,
   AnterosAdvancedDropdown,
   AnterosAdvancedDropdownMenu,
@@ -141,10 +141,20 @@ export default class AnterosMainHeader extends Component {
               medium
               icon="fab fa-buromobelexperte"
               iconSize="24px"
+              backgroundColor= {this.props.quickLinkHeaderColor}
               color={this.props.toolbarIconColor}
               hintPosition="bottom"
             >
-              <AnterosDropdownMenu styleHeader={{backgroundColor: this.props.quickLinkHeaderColor, color: this.props.toolbarIconColor}} title={"Links rápidos"}>{quickLinks}</AnterosDropdownMenu>
+              <AnterosDropdownMenu
+                style={{ paddingTop: "0px", border:'silver' }}
+                styleHeader={{
+                  backgroundColor: this.props.quickLinkHeaderColor,
+                  color: this.props.toolbarIconColor,
+                }}
+                title={"Links rápidos"}
+              >
+                {quickLinks}
+              </AnterosDropdownMenu>
             </AnterosDropdownButton>
           ) : null}
 
