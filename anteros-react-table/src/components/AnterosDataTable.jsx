@@ -1404,7 +1404,8 @@ AnterosDataTableColumn.propTypes = {
 		"cpf",
 		"cnpj",
 		"audio",
-		"memo"
+		"memo",
+		"code"
 	]).isRequired,
 	maskFormatNumber: PropTypes.string,
 	title: PropTypes.string.isRequired,

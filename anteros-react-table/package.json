@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-table",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "Anteros components for React - Table",
   "main": "lib/@anterostecnologia/anteros-react-table.js",
   "scripts": {

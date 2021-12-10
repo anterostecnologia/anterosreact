@@ -349,7 +349,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onToggleExpandedFilter(expanded) {
-        this.setState({ ...this.state, filterExpanded: expanded });
+        this.setState({ ...this.state, filterExpanded: expanded, update: Math.random() });
         setTimeout(() => {
           if (
             this.state.newHeight !== undefined &&
@@ -373,6 +373,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       onBeforePageChanged(currentPage, newPage) {
         this.setState({
           ...this.state,
+          update: Math.random(),
           loading: true,
         });
       }
@@ -380,6 +381,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       handlePageChanged(newPage) {
         this.setState({
           ...this.state,
+          update: Math.random(),
           currentPage: newPage,
           loading: false,
         });
@@ -419,6 +421,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
           event === dataSourceEvents.ON_ERROR
         ) {
           this.props.setDatasource(this.dataSource);
+          this.setState({
+            ...this.state,
+            update: Math.random(),
+            alertIsOpen: false,
+            loading: false
+          });
           _loading = false;
         }
 
@@ -436,6 +444,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
               ...this.state,
               alertIsOpen: true,
               loading: false,
+              update: Math.random(),
               alertMessage: processErrorMessage(error),
             });
           }
@@ -509,6 +518,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   _this.setState({
                     ..._this.state,
                     alertIsOpen: true,
+                    update: Math.random(),
                     alertMessage: processErrorMessage(error),
                   });
                 }
@@ -520,6 +530,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             this.setState({
               ...this.state,
               alertIsOpen: true,
+              update: Math.random(),
               alertMessage: "Salve ou cancele os dados antes de sair",
             });
             return;
@@ -654,6 +665,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         this.setState({
           ...this.state,
           alertIsOpen: false,
+          update: Math.random(),
           alertMessage: "",
         });
       }
@@ -661,7 +673,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       onShowHideLoad(show) {
         this.setState({
           ...this.state,
-          loading: show,
+          loading: show,          
           update: Math.random(),
         });
       }
@@ -711,6 +723,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
         this.setState({
           ...this.state,
+          update: Math.random(),
           width: width,
           newHeight: newHeight,
         });
@@ -718,9 +731,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       changeState(state, callback) {
         if (callback) {
-          this.setState({ ...this.state, ...state }, callback);
+          this.setState({ ...this.state, ...state, update: Math.random() }, callback);
         } else {
-          this.setState({ ...this.state, ...state });
+          this.setState({ ...this.state, ...state, update: Math.random() });
         }
       }
 

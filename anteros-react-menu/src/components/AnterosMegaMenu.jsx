@@ -113,7 +113,7 @@ export class AnterosMegaMenu extends Component {
     })
     event.stopPropagation();
     this.props.onChangeFavorites&&this.props.onChangeFavorites(favoritesList);
-    this.setState({ ...this.state, favorites })
+    this.setState({ ...this.state, update: Math.random(), favorites })
   }
 
   getItem(id, props) {
@@ -242,7 +242,7 @@ export class AnterosMegaMenu extends Component {
                 : <SubMenuView className='mmenu-sub-menu' selectedItens={this.state.selectedItem} />}
             </AnterosMegaMenuNav>
           </AnterosScrollbars>
-          <div class="mmenu-footer">
+          <div className="mmenu-footer">
             {this.props.version}
           </div>
         </div>
@@ -320,7 +320,7 @@ class AnterosMegaMenuTop extends Component {
                   value={this.state.filter}
                   placeholder='Procurar' />
                 <span id="box_icone_busca">
-                  <i id="icone_busca" class="fa fa-times" onClick={this.onClearSearch}></i>
+                  <i id="icone_busca" className="fa fa-times" onClick={this.onClearSearch}></i>
                 </span>
                 <button className='mmenu-btn mm-btn_close mmenu-searchfield-btn mmenu-hidden' href="#">Cancelar</button>
               </div>
