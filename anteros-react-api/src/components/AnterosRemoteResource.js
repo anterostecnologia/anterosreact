@@ -208,11 +208,10 @@ export class AnterosRemoteResource {
             _resourceName = resourceName.name;
         }
         if (sort) {
-            let result = {
+            return {
                 url: `${_resourceName}findAllByRelationShip/${field}/${id}?page=${page}&size=${size}&sort=${sort}&fieldsToForceLazy=${fieldsToForceLazy}`,
                 method: GET
             };
-            return result;
         }
         let result1 = {
             url: `${_resourceName}findAllByRelationShip/${field}/${id}?page=${page}&size=${size}&fieldsToForceLazy=${fieldsToForceLazy}`,
@@ -234,12 +233,11 @@ export class AnterosRemoteResource {
         if (resourceName instanceof AnterosRemoteResource){
             _resourceName = resourceName.name;
         }
-        let result = {
+        return {
             url: `${_resourceName}findWithFilterByRelationShip/${field}/${id}?page=${page}&size=${size}&fieldsToForceLazy=${fieldsToForceLazy}`,
             data: filter,
             method: POST
         };
-        return result;
     }
 
     findMultipleFieldsByRelationShip(resourceName, field, id, filter, fields, page, size, sort, user, fieldsToForceLazy = "") {
@@ -247,11 +245,10 @@ export class AnterosRemoteResource {
         if (resourceName instanceof AnterosRemoteResource){
             _resourceName = resourceName.name;
         }
-        let result = {
+        return {
             url: `${_resourceName}findMultipleFieldsByRelationShip/${field}/${id}?filter=${encodeURIComponent(filter)}&fields=${fields}&page=${page}&size=${size}&sort=${sort}&fieldsToForceLazy=${fieldsToForceLazy}`,
             method: POST
         };
-        return result;
     }
 
     applySort(sort, result) {
@@ -294,8 +291,9 @@ export class AnterosRemoteResource {
     }
 
     buildLookupValue(value, user, onSuccess, onError, fieldsToForceLazy = ''){
+        let _this = this;
         return new Promise(function (resolve, reject) {
-            remoteApi(this.findOne(this.resourceName, value, user, fieldsToForceLazy))
+            remoteApi(this.findOne(_this.resourceName, value, user, fieldsToForceLazy))
               .then(function (response) {
                 resolve(response.data);
                 if (onSuccess){

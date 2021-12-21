@@ -27,7 +27,6 @@ export class AnterosAuthenticationService {
                     Authorization: `Bearer ${token.access_token}`
                   };
                 onSuccess(token);
-                return;
             });
         } else {
             return tokenService.getRemoteAccessToken(ownerUrl, credentials, onError, onSuccess);

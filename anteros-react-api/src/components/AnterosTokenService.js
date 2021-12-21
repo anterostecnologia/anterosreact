@@ -269,7 +269,6 @@ export class AnterosTokenService {
     if (token && token !== "null") {
       return new Promise((resolve, reject) => {
         onSuccess(token);
-        return;
       });
     } else {
       var basic = authService.getBasicAuth();
