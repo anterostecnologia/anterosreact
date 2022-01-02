@@ -293,7 +293,7 @@ export class AnterosRemoteResource {
     buildLookupValue(value, user, onSuccess, onError, fieldsToForceLazy = ''){
         let _this = this;
         return new Promise(function (resolve, reject) {
-            remoteApi(this.findOne(_this.resourceName, value, user, fieldsToForceLazy))
+            remoteApi(_this.findOne(_this.name, value, user, fieldsToForceLazy))
               .then(function (response) {
                 resolve(response.data);
                 if (onSuccess){
