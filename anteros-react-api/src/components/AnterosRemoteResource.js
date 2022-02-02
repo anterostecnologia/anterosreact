@@ -222,7 +222,8 @@ export class AnterosRemoteResource {
             result1 = {
                 ...result1,
                 headers: {
-                    "X-Tenant-ID": user.owner.id
+                    "X-Tenant-ID": user.owner.id,
+                    "X-Company-ID": user.company.id
                 }
             }
         }
