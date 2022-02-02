@@ -207,16 +207,17 @@ export class AnterosRemoteResource {
         if (resourceName instanceof AnterosRemoteResource){
             _resourceName = resourceName.name;
         }
-        if (sort) {
-            return {
-                url: `${_resourceName}findAllByRelationShip/${field}/${id}?page=${page}&size=${size}&sort=${sort}&fieldsToForceLazy=${fieldsToForceLazy}`,
-                method: GET
-            };
+        
+        let url = `${_resourceName}findAllByRelationShip/${field}/${id}?page=${page}&size=${size}&fieldsToForceLazy=${fieldsToForceLazy}`;
+        if(sort && sort.length > 0){
+            url += `&sort=${sort}`;
         }
+
         let result1 = {
-            url: `${_resourceName}findAllByRelationShip/${field}/${id}?page=${page}&size=${size}&fieldsToForceLazy=${fieldsToForceLazy}`,
+            url,
             method: GET
         };
+        
         if (user && user.owner) {
             result1 = {
                 ...result1,
