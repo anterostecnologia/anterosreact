@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { AnterosUtils } from '@anterostecnologia/anteros-react-core';
 import { Link } from 'react-router-dom';
-import {AnterosScrollbars} from "@anterostecnologia/anteros-react-containers";
 
 const $ = window.$;
 
@@ -23,16 +22,12 @@ export default class AnterosSidebarContent extends Component {
       isDarkSidenav,
       style,
     } = this.props;
-    if (
+    return (
       enableSidebarBackgroundImage !== nextProps.enableSidebarBackgroundImage ||
       selectedSidebarImage !== nextProps.selectedSidebarImage ||
       isDarkSidenav !== nextProps.isDarkSidenav ||
       style !== nextProps.style
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   }
 
   static get componentName() {

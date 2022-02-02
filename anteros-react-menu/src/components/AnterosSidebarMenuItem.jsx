@@ -2,17 +2,19 @@ import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 
 const AnterosSidebarMenuItem = (
-  { children, className, icon, active, prefix, suffix, firstchild, popperarrow, ...rest },
+  { onSelectMenuItem, route, children, className, icon, active, prefix, suffix, firstchild, popperarrow, ...rest },
   ref,
 ) => {
   const menuItemRef = (ref) || React.createRef();
 
   return (
-    <li ref={menuItemRef} className={classNames('pro-menu-item', className, { active })} {...rest}>
+    <li onClick={()=>onSelectMenuItem(route)} ref={menuItemRef} className={classNames('pro-menu-item', className, { active })} {...rest}>
       <div className="pro-inner-item" tabIndex={0} role="button">
         {icon ? (
           <span className="pro-icon-wrapper">
-            <span className="pro-icon">{icon}</span>
+            <span className="pro-icon">
+              <i className={`${icon}`}></i>
+            </span>
           </span>
         ) : null}
 

@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-audiovideo",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "description": "Anteros components for React - Audio/video",
   "main": "lib/@anterostecnologia/anteros-react-audiovideo.js",
   "scripts": {
@@ -10,6 +10,12 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
+    "@anterostecnologia/anteros-react-buttons": "^2.0.9",
+    "@anterostecnologia/anteros-react-containers": "^2.0.9",
+    "@anterostecnologia/anteros-react-core": "^2.0.7",
+    "@anterostecnologia/anteros-react-dashboard": "^2.0.5",
+    "@anterostecnologia/anteros-react-datasource": "^2.0.7",
+    "@anterostecnologia/anteros-react-layout": "^2.0.9",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.7.4",
@@ -19,12 +25,6 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "@anterostecnologia/anteros-react-buttons": "^2.0.9",
-    "@anterostecnologia/anteros-react-containers": "^2.0.9",
-    "@anterostecnologia/anteros-react-core": "^2.0.7",
-    "@anterostecnologia/anteros-react-dashboard": "^2.0.5",
-    "@anterostecnologia/anteros-react-datasource": "^2.0.7",
-    "@anterostecnologia/anteros-react-layout": "^2.0.9",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -36,7 +36,7 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.1.3",
     "classnames": "^2.2.5",
     "css-loader": "^0.27.1",
     "d3": "^5.5.0",
@@ -78,7 +78,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "bootstrap": "^4.6.1",
     "css-loader": "^0.27.1",
     "jsbarcode": "^3.9.0",
     "npm": "^6.2.0",

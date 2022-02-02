@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-calendar",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "Anteros components for React - Calendar",
   "main": "lib/@anterostecnologia/anteros-react-calendar.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.1.3",
     "classnames": "^2.2.5",
     "create-react-context": "^0.3.0",
     "css-loader": "^0.27.1",

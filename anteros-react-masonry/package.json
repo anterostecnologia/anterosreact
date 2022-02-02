@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-masonry",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "Anteros components for React - Masonry",
   "main": "lib/@anterostecnologia/anteros-react-masonry.js",
   "scripts": {
@@ -10,6 +10,7 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
+    "@anterostecnologia/anteros-react-core": "^2.0.7",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
@@ -18,7 +19,6 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "@anterostecnologia/anteros-react-core": "^2.0.7",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -30,7 +30,7 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.1.3",
     "classnames": "^2.2.5",
     "css-loader": "^0.27.1",
     "eslint": "^3.19.0",
@@ -62,7 +62,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "bootstrap": "^4.6.1",
     "css-loader": "^0.27.1",
     "purifycss": "^1.1.9",
     "style-loader": "^0.13.2"

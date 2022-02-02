@@ -1321,7 +1321,7 @@ AnterosDataTable.defaultProps = {
 	stateSave: false,
 	showBorder: true,
 	showHover: true,
-	showStripedRows: true,
+	showStripedRows: false,
 	showDetails: false,
 	tabIndex: -1,
 	decimalSeparator: ".",

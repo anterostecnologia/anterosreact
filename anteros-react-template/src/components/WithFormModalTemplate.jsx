@@ -7,8 +7,7 @@ import {
     dataSourceEvents,
     dataSourceConstants, DATASOURCE_EVENTS
 } from '@anterostecnologia/anteros-react-datasource';
-import { autoBind } from '@anterostecnologia/anteros-react-core';
-import { processErrorMessage, processDetailErrorMessage, AnterosSweetAlert } from '@anterostecnologia/anteros-react-core';
+import { autoBind, processErrorMessage, processDetailErrorMessage, AnterosSweetAlert } from '@anterostecnologia/anteros-react-core';
 
 const defaultValues = {
     withInternalDatasource: false,

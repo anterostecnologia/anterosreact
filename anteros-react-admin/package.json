@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-admin",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "description": "Anteros components for React - Admin menu",
   "main": "lib/@anterostecnologia/anteros-react-admin.js",
   "scripts": {
@@ -10,14 +10,6 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@babel/preset-react": "^7.0.0",
     "@anterostecnologia/anteros-react-buttons": "^2.0.9",
     "@anterostecnologia/anteros-react-containers": "^2.0.9",
     "@anterostecnologia/anteros-react-core": "^2.0.7",
@@ -27,6 +19,14 @@
     "@anterostecnologia/anteros-react-loaders": "^2.0.1",
     "@anterostecnologia/anteros-react-menu": "^2.0.6",
     "@anterostecnologia/anteros-react-querybuilder": "^2.0.8",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -38,7 +38,7 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.1.3",
     "classnames": "^2.2.5",
     "css-loader": "^0.27.1",
     "css-mediaquery": "^0.1.2",
@@ -81,7 +81,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "bootstrap": "^4.6.1",
     "css-loader": "^0.27.1",
     "purifycss": "^1.1.9",
     "style-loader": "^0.13.2"

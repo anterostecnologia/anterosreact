@@ -213,7 +213,7 @@ export default class AnterosCheckboxList extends Component {
 		) {
 			sourceData = this.props.dataSource.getData();
 		}
-		if (!(sourceData.constructor === Array)) {
+		if (sourceData.constructor !== Array) {
 			throw new AnterosError(
 				"O dataSource deve ser obrigatoriamente um array de dados."
 			);

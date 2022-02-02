@@ -588,6 +588,8 @@ export class AnterosQueryBuilder extends React.Component {
             style={{
               height: "36px",
               padding: "3px",
+              border: '1px solid #ccd4db',
+              borderRadius: '6px'
             }}
           />
           <AnterosButton

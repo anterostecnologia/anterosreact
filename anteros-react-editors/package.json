@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-editors",
-  "version": "2.0.30",
+  "version": "2.0.31",
   "description": "Anteros components for React - Editors",
   "main": "lib/@anterostecnologia/anteros-react-editors.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.1.3",
     "bootstrap-colorpicker": "^2.5.3",
     "bootstrap-daterangepicker": "^3.1.0",
     "bootstrap-maxlength": "^1.10.0",
@@ -97,7 +97,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "bootstrap": "^4.6.1",
     "css-loader": "^0.27.1",
     "node-sass": "^4.14.1",
     "purifycss": "^1.1.9",

@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-table",
-  "version": "2.0.12",
+  "version": "2.0.14",
   "description": "Anteros components for React - Table",
   "main": "lib/@anterostecnologia/anteros-react-table.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-runtime": "^6.26.0",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.1.3",
     "classnames": "^2.2.5",
     "css-loader": "^0.27.1",
     "datatables.net-buttons": "^1.4.2",
@@ -73,7 +73,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "bootstrap": "^4.6.1",
     "css-loader": "^0.27.1",
     "purifycss": "^1.1.9",
     "style-loader": "^0.13.2",

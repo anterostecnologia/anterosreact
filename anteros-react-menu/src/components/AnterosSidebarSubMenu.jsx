@@ -99,7 +99,9 @@ const AnterosSidebarSubMenu = (
       >
         {icon ? (
           <span className="pro-icon-wrapper">
-            <span className="pro-icon">{icon}</span>
+            <span className="pro-icon">
+              <i className={`${icon}`}/>
+            </span>
           </span>
         ) : null}
         {prefix ? <span className="prefix-wrapper">{prefix}</span> : null}
