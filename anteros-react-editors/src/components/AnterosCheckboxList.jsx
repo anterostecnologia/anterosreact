@@ -47,7 +47,9 @@ export default class AnterosCheckboxList extends Component {
 			);
 		}
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		//
+	}
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({ activeIndex: nextProps.activeIndex, itemsChecked: nextProps.itemsChecked });
@@ -161,7 +163,7 @@ export default class AnterosCheckboxList extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-
+		//
 	}
 
 	scrollToItem(element) {
@@ -359,10 +361,10 @@ export default class AnterosCheckboxList extends Component {
 		let index = 0;
 		let _this = this;
 		let arrChildren = Children.toArray(this.props.children);
-		arrChildren.forEach(function(child) {
+		arrChildren.forEach((child) => {
 			if (
 				child.type &&
-				!(child.type.componentName === "AnterosCheckboxListItem")
+				(child.type.componentName !== "AnterosCheckboxListItem")
 			) {
 				throw new AnterosError(
 					"Apenas componentes do tipo AnterosCheckboxListItem podem ser usados como filhos de AnterosCheckboxList."
@@ -540,6 +542,7 @@ export class AnterosCheckboxListItem extends Component {
 			if (this.props.onSelectListItem) {
 				this.props.onSelectListItem(this.props.index, this.props.recordData);
 			}
+			this.onCheckboxChange(undefined, !this.state.checked, this.props.recordData);
 		}
 	}
 
@@ -616,14 +619,14 @@ export class AnterosCheckboxListItem extends Component {
 			this.props.activeColor &&
 			this.props.active
 		) {
-			style = {
+			style = {...style,
 				backgroundColor: this.props.activeBackColor,
 				color: this.props.activeColor
 			};
 		}
 
 		if (this.props.backgroundColor && this.props.color && !this.props.active) {
-			style = {
+			style = {...style,
 				backgroundColor: this.props.backgroundColor,
 				color: this.props.color
 			};
@@ -649,6 +652,7 @@ export class AnterosCheckboxListItem extends Component {
 					key={this.keyItem}
 				>
 					<AnterosCheckbox
+					    ref={ref => (this.checkbox = ref)}
 						valueChecked={true}
 						checked={this.state.checked}
 						valueUnchecked={false}
@@ -675,6 +679,7 @@ export class AnterosCheckboxListItem extends Component {
 			>
 				<AnterosCheckbox
 					valueChecked={true}
+					ref={ref => (this.checkbox = ref)}
 					checked={this.state.checked}
 					onCheckboxChange={this.onCheckboxChange}
 					valueUnchecked={false}

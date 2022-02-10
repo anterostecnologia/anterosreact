@@ -79,7 +79,7 @@ export function createReducer(_initialState, _reducer) {
 
 
   export function makeDefaultReduxObject(_reducerName) {
-    const reducerObj = {
+    return {
         [`SET_DATASOURCE_${_reducerName.toUpperCase()}`]: (state, payload) => ({
             ...state,
             dataSource: payload.dataSource,
@@ -96,8 +96,6 @@ export function createReducer(_initialState, _reducer) {
             needRefresh: true
         })
       };
-    
-    return reducerObj;
 }
 
 

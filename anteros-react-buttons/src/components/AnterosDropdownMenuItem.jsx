@@ -46,7 +46,7 @@ export default class AnterosDropdownMenuItem extends Component {
 
         let icon;
         if (this.props.icon) {
-            icon = (<i className={"icon " + this.props.icon} id={this.idItem3}></i>);
+            icon = (<i className={"icon " + this.props.icon} style={{color:this.props.iconColor, fontSize:this.props.iconSize}} id={this.idItem3}></i>);
         }
 
         let _className = "dropdown-item";
@@ -65,6 +65,8 @@ export default class AnterosDropdownMenuItem extends Component {
 AnterosDropdownMenuItem.propTypes = {
     disabled: PropTypes.bool,
     icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    iconSize: PropTypes.string,
     image: PropTypes.string,
     caption: PropTypes.string,
     onSelectMenuItem: PropTypes.func,
