@@ -335,6 +335,11 @@ export default function WithFormTemplate(_loadingProps) {
         )
           ? this.getCustomMessageLoading()
           : loadingProps.messageLoading;
+        const customLoader = WrappedComponent.prototype.hasOwnProperty(
+            "getCustomLoader"
+          )
+            ? this.getCustomLoader()
+            : null;
         return (
           <AnterosCard
             caption={loadingProps.caption}

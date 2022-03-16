@@ -670,6 +670,11 @@ export default function WithCardListContainerTemplate(_loadingProps) {
         )
           ? this.getCustomMessageLoading()
           : loadingProps.messageLoading;
+        const customLoader = WrappedComponent.prototype.hasOwnProperty(
+            "getCustomLoader"
+          )
+            ? this.getCustomLoader()
+            : null;
         return (
           <AnterosCard
             withScroll={false}

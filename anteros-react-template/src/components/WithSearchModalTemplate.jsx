@@ -543,6 +543,12 @@ export default function WithSearchModalTemplate(_loadingProps) {
         } else if (loadingProps.modalSize === "full") {
           modalSize = { full: true };
         }
+        const customLoader = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomLoader"
+        )
+          ? this.getCustomLoader()
+          : null;
+          
         const messageLoading = WrappedComponent.prototype.hasOwnProperty(
           "getCustomMessageLoading"
         )
