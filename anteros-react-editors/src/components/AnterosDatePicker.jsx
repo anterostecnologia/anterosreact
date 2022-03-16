@@ -1,359 +1,110 @@
-import * as React from "react";
+import React, {
+  Component,
+  useMemo,
+  useRef,
+  useEffect,
+  useState,
+  Fragment,
+} from "react";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import DatePanel from "react-multi-date-picker/plugins/date_panel";
+import InputMask from "react-input-mask";
+import PropTypes from "prop-types";
 import * as dayjs from "dayjs";
-import * as customParseFormat from "dayjs/plugin/customParseFormat";
-import * as CX from "classnames";
-import * as localeData from "dayjs/plugin/localeData";
-import * as localizedFormat from "dayjs/plugin/localizedFormat";
-import * as weekday from "dayjs/plugin/weekday";
-import * as classNames from "classnames";
-import shallowCompare from 'react-addons-shallow-compare';
-import {
-  buildGridClassNames,
-  columnProps,
-} from "@anterostecnologia/anteros-react-layout";
 import {
   AnterosLocalDatasource,
   AnterosRemoteDatasource,
   dataSourceEvents,
 } from "@anterostecnologia/anteros-react-datasource";
+import shallowCompare from "react-addons-shallow-compare";
+import {
+  buildGridClassNames,
+  columnProps,
+} from "@anterostecnologia/anteros-react-layout";
 import {
   AnterosUtils,
   AnterosDateUtils,
   autoBind,
 } from "@anterostecnologia/anteros-react-core";
-import PropTypes from "prop-types";
-
-require("dayjs/locale/pt-br");
-
-export const FieldType = {
-  START: "START",
-  END: "END",
-};
-
-export const TabValue = {
-  DATE: "DATE",
-  TIME: "TIME",
-};
-
-export const PickerDirection = {
-  TOP: "TOP",
-  BOTTOM: "BOTTOM",
-};
-
-export const ViewMode = {
-  YEAR: "YEAR",
-  MONTH: "MONTH",
-  DAY: "DAY",
-};
-
-export const TimeType = {
-  AM: "AM",
-  PM: "PM",
-};
-
-export const range = (n1, n2) => {
-  const result = [];
-  let first = !n2 ? 0 : n1;
-  let last = n2;
-
-  if (!last) {
-    last = n1;
-  }
-
-  while (first < last) {
-    result.push(first);
-    first += 1;
-  }
-  return result;
-};
-
-export const repeat = (el, n) => {
-  return range(n).map(() => el);
-};
-
-export const lpad = (val, length, char = "0") =>
-  val.length < length ? char.repeat(length - val.length) + val : val;
-
-dayjs.extend(localeData);
-dayjs.extend(localizedFormat);
-dayjs.extend(weekday);
-
-export const getMonthShort = (locale) => {
-  dayjs.locale(locale);
-  return range(0, 12).map((v) =>
-    dayjs().localeData().monthsShort(dayjs().month(v))
-  );
-};
-
-export const getWeekDays = (locale) => {
-  dayjs.locale(locale);
-  return range(7).map((v) =>
-    dayjs().localeData().weekdaysShort(dayjs().weekday(v))
-  );
-};
-
-export const getToday = (locale) => {
-  return dayjs().locale(locale).format("LL");
-};
+import Popover from "@uiw/react-popover";
+import formatter from "@uiw/formatter";
+import { noop } from "lodash";
+import moment from "moment";
 
 export const ifExistCall = (func, ...args) => func && func(...args);
-
-const convertPx = (value) => `${value}px`;
-
-export const getDivPosition = (
-  node,
-  direction = PickerDirection.BOTTOM,
-  height,
-  distance = 5
-) => {
-  if (!node) return { left: "", top: "", bottom: "" };
-
-  let top = 0;
-  let left = 0;
-
-  switch (direction) {
-    case PickerDirection.BOTTOM:
-      top = node.offsetTop + node.offsetHeight + distance;
-      left = node.offsetLeft;
-      break;
-    case PickerDirection.TOP:
-      top = node.offsetTop - height - distance;
-      left = node.offsetLeft;
-      break;
-  }
-
-  return {
-    top: convertPx(top),
-    left: convertPx(left),
-  };
-};
-
-export const getDomHeight = (node) => {
-  return node ? node.clientHeight : 0;
-};
-
-export const chunk = (arr, n) => {
-  const result = [];
-  let i = 0;
-  while (i < arr.length / n) {
-    result.push(arr.slice(i * n, i * n + n));
-    i += 1;
-  }
-
-  return result;
-};
-
-export const getDayMatrix = (year, month) => {
-  const date = dayjs().year(year).month(month);
-
-  const startOfMonth = date.startOf("month").date();
-  const endOfMonth = date.endOf("month").date();
-
-  const startDay = date.startOf("month").day();
-  const remain = (startDay + endOfMonth) % 7;
-
-  return chunk(
-    [
-      ...repeat(" ", startDay),
-      ...range(startOfMonth, endOfMonth + 1).map((v) => `${v}`),
-      ...(7 - remain === 7 ? [] : repeat(" ", 7 - remain)),
-    ],
-    7
-  );
-};
-
-export const getMonthMatrix = (locale) => {
-  return chunk(getMonthShort(locale), 3);
-};
-
-export const getYearMatrix = (year) => {
-  return chunk(
-    range(year - 4, year + 5).map((v) => `${v}`),
-    3
-  );
-};
-
-export const isDayEqual = (day1, day2) => {
-  if (!day1 || !day2) return false;
-  return dayjs(day1).isSame(day2, "date");
-};
-
-export const isDayAfter = (day1, day2) => {
-  return dayjs(day1).isAfter(day2, "date");
-};
-
-export const isDayBefore = (day1, day2) => {
-  return dayjs(day1).isBefore(day2, "date");
-};
-
-export const isDayRange = (date, start, end) => {
-  if (!start || !end) return false;
-
-  return isDayAfter(date, start) && isDayBefore(date, end);
-};
-
 export const formatDate = (date, format) => {
   if (date === undefined) return "";
   return dayjs(date).format(format);
 };
 
-const IconBase = (props) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={props.size}
-    height={props.size}
-    fill={props.color}
-    {...props}
-    viewBox="0 0 24 24"
-  >
-    {props.children}
-  </svg>
-);
+const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const months = [
+  "Jan",
+  "Fev",
+  "Mar",
+  "Abr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Set",
+  "Out",
+  "Nov",
+  "Dez",
+];
 
-const CalendarIcon = (props) => (
-  <IconBase {...props}>
-    <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z" />
-    <path fill="none" d="M0 0h24v24H0z" />
-  </IconBase>
-);
-
-const ClearIcon = (props) => (
-  <IconBase {...props}>
-    <path fill="none" d="M0 0h24v24H0V0z" />
-    <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" />
-  </IconBase>
-);
-
-const LeftArrowIcon = (props) => (
-  <IconBase {...props}>
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-  </IconBase>
-);
-
-const RightArrowIcon = (props) => (
-  <IconBase {...props}>
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
-  </IconBase>
-);
-
-const TimeIcon = (props) => (
-  <IconBase {...props}>
-    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
-  </IconBase>
-);
-
-const UpIcon = (props) => (
-  <IconBase {...props}>
-    <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
-    <path d="M0 0h24v24H0z" fill="none" />
-  </IconBase>
-);
-
-const DownIcon = (props) => (
-  <IconBase {...props}>
-    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-    <path fill="none" d="M0 0h24v24H0V0z" />
-  </IconBase>
-);
-
-export const DatePickerDefaults = {
-  dateFormat: "DD/MM/YYYY",
-  dateTimeFormat: "DD/MM/YYYY HH:mm A",
-  dateFormatPlaceholder: "dd/mm/aaaa",
-  dateTimeFormatPlaceholder: "dd/mm/aaaa hh:mm",
-  timeFormat: "HH:mm A",
-  locale: "pt-br",
-};
-
-const SVGIcon = (props) => {
-  const iconMap = {
-    calendar: CalendarIcon,
-    clear: ClearIcon,
-    time: TimeIcon,
-    "left-arrow": LeftArrowIcon,
-    "right-arrow": RightArrowIcon,
-    down: DownIcon,
-    up: UpIcon,
-  };
-
-  const Icon = iconMap[props.id];
-
-  return <Icon className={`icon-${props.id}`} {...props} />;
-};
-
-SVGIcon.defaultProps = {
-  size: "16",
-  color: "currentColor",
-};
-
-const Backdrop = ({ invert, show, onClick }) => (
-  <React.Fragment>
-    {show && (
-      <div
-        onClick={onClick}
-        className={classNames("date-backdrop", { invert })}
-      />
-    )}
-  </React.Fragment>
-);
-
-const TableCell = ({ className, text, subText, onClick, onMouseOver }) => {
+function CustomInput({
+  openCalendar,
+  stringDate,
+  handleValueChange,
+  format,
+  closeCalendar,
+  clear,
+  icon,
+  right,
+  onClearValue,
+}) {
+  let _format = format.replace(/[`~DMYhs]/gi, "9");
   return (
-    <td
-      onClick={() => ifExistCall(onClick, text)}
-      onMouseOver={() => ifExistCall(onMouseOver, text)}
-      className={className}
-    >
-      <div>{text}</div>
-      {subText && <span className="sub__text">{subText}</span>}
-    </td>
+    <div style={{ display: "flex" }}>
+      <InputMask
+        onFocus={openCalendar}
+        style={{
+          height: "38px",
+          padding: "3px",
+          border: "1px solid rgb(204, 212, 219)",
+          borderTopLeftRadius: "4px",
+          borderBottomLeftRadius: "4px",
+          width: "100%",
+        }}
+        mask={_format}
+        value={stringDate}
+        onChange={handleValueChange}
+      ></InputMask>
+      {clear ? (
+        <i
+          onClick={onClearValue}
+          className={"far fa-times"}
+          style={{
+            cursor: "pointer",
+            color: "#6565cd",
+            position: "absolute",
+            right,
+            top: 12,
+          }}
+        ></i>
+      ) : null}
+    </div>
   );
-};
+}
 
-const TableMatrixView = ({ className, matrix, cell, headers }) => {
-  return (
-    <table className={classNames("date-calendar__body--table", className)}>
-      {headers && (
-        <thead>
-          <tr>
-            {headers.map((v, i) => (
-              <th key={i}>{v}</th>
-            ))}
-          </tr>
-        </thead>
-      )}
-      <tbody>
-        {matrix.map((row, i) => (
-          <tr key={i}>
-            {row.map((v, j) => cell(v, i * matrix[i].length + j))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
-
-class AnterosDatePicker extends React.Component {
+class AnterosDatePicker extends Component {
   constructor(props) {
     super(props);
-    dayjs.extend(customParseFormat);
-    const { initialDate, includeTime, showTimeOnly } = this.props;
-    const selected = [];
+    this.dateRef = React.createRef();
+
     let date;
-
-    if (initialDate) {
-      date = initialDate;
-      selected.push(date);
-    }
-
-    if (includeTime && showTimeOnly) {
-      throw new Error("includeTime & showTimeOnly não podem ser usados juntos");
-    }
-
     if (this.props.dataSource) {
       let value = this.props.dataSource.fieldByName(this.props.dataField);
       if (!value) {
@@ -365,23 +116,22 @@ class AnterosDatePicker extends React.Component {
       date = undefined;
       if (value !== undefined && value !== 0) {
         date = dayjs(value);
-        selected.push(date);
       }
       this.state = {
-        date: date,
-        selected,
-        tabValue: TabValue.DATE,
         value: date ? formatDate(date, this.getDateFormat()) : "",
+        calendarOpened: false,
       };
     } else {
       this.state = {
-        date,
-        selected,
-        tabValue: TabValue.DATE,
         value: formatDate(date, this.getDateFormat()),
+        calendarOpened: false,
       };
     }
     autoBind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidMount() {
@@ -436,12 +186,40 @@ class AnterosDatePicker extends React.Component {
     if (value !== undefined && value !== 0) {
       date = dayjs(value);
     }
-    if (this.state.date !== date) {
+    this.setState({
+      ...this.state,
+      value: date ? formatDate(date, this.getDateFormat()) : "",
+      update: Math.random(),
+    });
+  }
+
+  handleDateChange(value) {
+    if (value !== null) {
+      const { onChange, includeTime } = this.props;
+      let date = value.toDate();
+      if (!includeTime) {
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+      }
+      const _value = dayjs(date).format(this.getDateFormat());
+
+      ifExistCall(onChange, date, _value);
+
+      if (
+        this.props.dataSource &&
+        this.props.dataSource.getState !== "dsBrowse"
+      ) {
+        if (!date && date.toDate() === 0) {
+          this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+        } else {
+          this.props.dataSource.setFieldByName(this.props.dataField, date);
+        }
+      }
+
       this.setState({
         ...this.state,
-        date,
-        selected: [date],
-        value: date ? formatDate(date, this.getDateFormat()) : "",
+        value: _value,
       });
     }
   }
@@ -464,294 +242,69 @@ class AnterosDatePicker extends React.Component {
       }
       this.setState({
         ...this.state,
-        date,
-        selected: [date],
         value: date ? formatDate(date, this.getDateFormat()) : "",
       });
     } else {
-      this.setState({
-        date: nextProps.date,
-        selected: [nextProps.date],
-        value: nextProps.value,
-      });
+      this.setState({ ...this.state, value: nextProps.value });
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
   getDateFormat() {
-    const { dateFormat, includeTime, showTimeOnly } = this.props;
-
-    if (!dateFormat) {
-      if (includeTime) {
-        return DatePickerDefaults.dateTimeFormat;
-      }
-      if (showTimeOnly) {
-        return DatePickerDefaults.timeFormat;
-      }
-      return DatePickerDefaults.dateFormat;
+    const { dateFormat, timeFormat, includeTime } = this.props;
+    if (includeTime) {
+      return dateFormat + " " + timeFormat;
     }
     return dateFormat;
   }
 
-  handleDateChange(date) {
-    const { onChange, includeTime } = this.props;
-    if (!includeTime) {
-      date = date.hour(0).minute(0).second(0);
-    }
-    const value = dayjs(date).format(this.getDateFormat());
+  closeCalendar() {
+    this.dateRef.current.closeCalendar();
+  }
 
-    ifExistCall(onChange, date, value);
-
-    if (
-      this.props.dataSource &&
-      this.props.dataSource.getState !== "dsBrowse"
-    ) {
-      if (!date && date.toDate() === 0) {
-        this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+  onButtonClick() {
+    if (this.props.onButtonClick) {
+      this.props.onButtonClick();
+    } else {
+      if (this.state.calendarOpened) {
+        this.dateRef.current.closeCalendar();
       } else {
-        this.props.dataSource.setFieldByName(
-          this.props.dataField,
-          date.toDate()
-        );
+        this.dateRef.current.openCalendar();
       }
     }
-
-    this.setState({
-      ...this.state,
-      date,
-      value: value,
-      selected: [date],
-    });
   }
 
-  handleTimeChange(hour, minute) {
-    const { onChange } = this.props;
-    let date = this.state.date;
-    let selected = this.state.selected;
+  onOpen() {
+    this.setState({ ...this.state, calendarOpened: true });
+  }
 
-    if (!date) {
-      date = dayjs();
-      selected = [date];
+  onClose() {
+    this.setState({ ...this.state, calendarOpened: false });
+  }
+
+  onClearValue() {
+    if (this.state.calendarOpened) {
+      this.dateRef.current.closeCalendar();
     }
-
-    date = date.hour(hour).minute(minute);
-    const value = date.format(this.getDateFormat());
-
-    ifExistCall(onChange, date, value);
-
-    if (
-      this.props.dataSource &&
-      this.props.dataSource.getState !== "dsBrowse"
-    ) {
-      if (!date && date.toDate() === 0) {
-        this.props.dataSource.setFieldByName(this.props.dataField, undefined);
-      } else {
-        this.props.dataSource.setFieldByName(
-          this.props.dataField,
-          date.toDate()
-        );
-      }
-    }
-
-    this.setState({
-      ...this.state,
-      date,
-      selected,
-      value,
-    });
-  }
-
-  handleInputChange(e) {
-    const { onChange } = this.props;
-    const value = e.currentTarget.value;
-
-    ifExistCall(onChange, value, undefined);
-
-    this.setState({
-      ...this.state,
-      value: e.currentTarget.value,
-    });
-  }
-
-  handleInputClear() {
-    const { onChange } = this.props;
-
-    ifExistCall(onChange, "", undefined);
-
     if (
       this.props.dataSource &&
       this.props.dataSource.getState !== "dsBrowse"
     ) {
       this.props.dataSource.setFieldByName(this.props.dataField, undefined);
     }
-
-    this.setState({
-      ...this.state,
-      value: "",
-    });
-  }
-
-  handleInputBlur(e) {
-    const { date } = this.state;
-    const value = e.currentTarget.value;
-    const parsedDate = dayjs(value, this.getDateFormat());
-    let updateDate;
-
-    updateDate = date;
-
-    if (dayjs(parsedDate).isValid()) {
-      updateDate = parsedDate;
-
-      if (
-        this.props.dataSource &&
-        this.props.dataSource.getState !== "dsBrowse"
-      ) {
-        if (!updateDate && updateDate.toDate() === 0) {
-          this.props.dataSource.setFieldByName(this.props.dataField, undefined);
-        } else {
-          this.props.dataSource.setFieldByName(
-            this.props.dataField,
-            updateDate.toDate()
-          );
-        }
-      }
-    }
-
-    this.setState({
-      ...this.state,
-      date: updateDate,
-      selected: [updateDate],
-      value: updateDate ? updateDate.format(this.getDateFormat()) : "",
-    });
-  }
-
-  renderInputComponent() {
-    let {
-      inputComponent,
-      readOnly,
-      disabled,
-      clear,
-      autoFocus,
-      showDefaultIcon,
-      placeholder,
-    } = this.props;
-    const { value } = this.state;
-    let inputProps = {
-      readOnly,
-      autoFocus,
-      disabled,
-      clear,
-      placeholder,
-      onChange: this.handleInputChange,
-      onClear: this.handleInputClear,
-      onBlur: this.handleInputBlur,
-      value: value,
-      icon: showDefaultIcon ? <SVGIcon id="calendar" /> : undefined,
-    };
-
-    if (this.props.dataSource && !readOnly) {
-      readOnly = this.props.dataSource.getState() == "dsBrowse";
-    }
-    return inputComponent ? inputComponent({ ...inputProps, readOnly:readOnly }) : <AnterosPickerInput {...inputProps} readOnly={readOnly} />;
-  }
-
-  handleTab(val) {
-    this.setState({
-      ...this.state,
-      tabValue: val,
-    });
-  }
-
-  renderTabMenu() {
-    const { tabValue } = this.state;
-
-    const renderButton = (type, label, icon) => (
-      <button
-        className={CX({
-          active: tabValue === type,
-        })}
-        onClick={() => this.handleTab(type)}
-        type="button"
-      >
-        <SVGIcon id={icon} />
-        {label}
-      </button>
-    );
-    return (
-      <div className="date-picker__container__tab">
-        {renderButton(TabValue.DATE, "Data", "calendar")}
-        {renderButton(TabValue.TIME, "Hora", "time")}
-      </div>
-    );
-  }
-
-  renderCalendar(actions) {
-    const { selected, date } = this.state;
-    return (
-      <Calendar
-        {...this.props}
-        base={date}
-        onChange={(e) => {
-          this.handleDateChange(e);
-          actions.hide();
-        }}
-        selected={selected}
-      />
-    );
-  }
-
-  renderTime() {
-    const date = this.state.date || dayjs();
-
-    return (
-      <TimeContainer
-        hour={date.hour()}
-        minute={date.minute()}
-        onChange={this.handleTimeChange}
-      />
-    );
-  }
-
-  renderContents(actions) {
-    const { includeTime, showTimeOnly } = this.props;
-    const { tabValue } = this.state;
-    let component;
-
-    component = (
-      <div className="date-picker__container__calonly">
-        {this.renderCalendar(actions)}
-      </div>
-    );
-
-    if (showTimeOnly) {
-      component = (
-        <div className="date-picker__container__timeonly">
-          {this.renderTime()}
-        </div>
-      );
-    }
-
-    if (includeTime) {
-      component = (
-        <div className="date-picker__container__include-time">
-          {this.renderTabMenu()}
-          {tabValue === TabValue.DATE
-            ? this.renderCalendar(actions)
-            : this.renderTime()}
-        </div>
-      );
-    }
-    return component;
+    this.setState({ ...this.state, value: undefined, calendarOpened: false });
   }
 
   render() {
-    let { includeTime, portal, direction, disabled, readOnly } = this.props;
-
+    let {
+      includeTime,
+      disabled,
+      readOnly,
+      clear,
+      disableDayPicker,
+      onOpenPickNewDate,
+    } = this.props;
     if (this.props.dataSource && !readOnly) {
-      readOnly = this.props.dataSource.getState() == "dsBrowse";
+      readOnly = this.props.dataSource.getState() === "dsBrowse";
     }
 
     const colClasses = buildGridClassNames(this.props, false, []);
@@ -795,29 +348,46 @@ class AnterosDatePicker extends React.Component {
         : ""
     );
 
-    let classNameInput = AnterosUtils.buildClassNames(
-      colClasses.length > 0 || this.context.withinInputGroup || icon
-        ? "form-control"
-        : "",
-      this.props.fullPrimary ? "btn-primary" : "",
-      this.props.fullSucces ? "btn-success" : "",
-      this.props.fullInfo ? "btn-info" : "",
-      this.props.fullDanger ? "btn-danger" : "",
-      this.props.fullWarning ? "btn-warning" : "",
-      this.props.fullSecondary ? "btn-secondary" : ""
+    let plugins = [];
+    if (includeTime) {
+      plugins.push(<TimePicker position="bottom" />);
+    }
+
+    let edit = (
+      <DatePicker
+        ref={this.dateRef}
+        disableDayPicker={disableDayPicker}
+        value={this.state.value}
+        editable={!readOnly}
+        disabled={disabled}
+        weekDays={weekDays}
+        months={months}
+        onOpenPickNewDate={onOpenPickNewDate}
+        portal={true}
+        onOpen={this.onOpen}
+        onClose={this.onClose}
+        format={this.getDateFormat()}
+        onChange={this.handleDateChange}
+        plugins={plugins}
+        containerStyle={{
+          width: this.props.icon
+            ? `calc(${this.props.width} - 38px)`
+            : this.props.width,
+        }}
+        render={
+          <CustomInput
+            clear={clear}
+            icon={this.props.icon}
+            right={64}
+            onClearValue={this.onClearValue}
+            closeCalendar={this.closeCalendar}
+            format={this.getDateFormat()}
+          />
+        }
+      />
     );
 
-    let edit = <AnterosPicker
-    portal={portal}
-    direction={direction}
-    readOnly={readOnly}
-    disabled={disabled}
-    className={CX({ include__time: includeTime })}
-    renderTrigger={() => this.renderInputComponent()}
-    renderContents={({ actions }) => this.renderContents(actions)}
-  />;
-
-    if (this.props.icon) {
+    if (this.props.icon && colClasses.length > 0) {
       return (
         <div
           className={className}
@@ -827,12 +397,18 @@ class AnterosDatePicker extends React.Component {
           {edit}
           <div
             className={classNameAddOn}
-            style={{ margin: 0 }}
-            onClick={this.props.onButtonClick}
+            style={{ margin: 0, width: "38px" }}
+            onClick={this.onButtonClick}
           >
             <span>
               {icon}
-              <img src={this.props.image} onClick={this.props.onButtonClick} />
+              {this.props.image ? (
+                <img
+                  alt=" "
+                  src={this.props.image}
+                  onClick={this.onButtonClick}
+                />
+              ) : null}
             </span>
           </div>
         </div>
@@ -843,15 +419,75 @@ class AnterosDatePicker extends React.Component {
           <div className={AnterosUtils.buildClassNames(colClasses)}>{edit}</div>
         );
       } else {
-        return edit;
+        return (
+          <div
+            className={className}
+            style={{
+              ...this.props.style,
+              width: width,
+              marginBottom: "4px",
+              marginTop: "4px",
+            }}
+            ref={(ref) => (this.divInput = ref)}
+          >
+            <DatePicker
+              ref={this.dateRef}
+              value={this.state.value}
+              disableDayPicker={disableDayPicker}
+              editable={!readOnly}
+              disabled={disabled}
+              weekDays={weekDays}
+              months={months}
+              portal={true}
+              onOpen={this.onOpen}
+              onClose={this.onClose}
+              format={this.getDateFormat()}
+              onChange={this.handleDateChange}
+              plugins={plugins}
+              containerStyle={{
+                width: this.props.icon
+                  ? `calc(${this.props.width} - 38px)`
+                  : this.props.width,
+              }}
+              render={
+                <CustomInput
+                  clear={clear}
+                  icon={this.props.icon}
+                  right={48}
+                  onClearValue={this.onClearValue}
+                  closeCalendar={this.closeCalendar}
+                  format={this.getDateFormat()}
+                />
+              }
+            />
+            <div
+              className={classNameAddOn}
+              style={{ margin: 0, width: "38px" }}
+              onClick={this.onButtonClick}
+            >
+              <span>
+                <i
+                  onClick={this.onButtonClick}
+                  className={
+                    this.props.icon ? this.props.icon : "fa fa-calendar"
+                  }
+                  style={{ color: this.props.iconColor }}
+                ></i>
+                {this.props.image ? (
+                  <img
+                    alt=" "
+                    src={this.props.image}
+                    onClick={this.onButtonClick}
+                  />
+                ) : null}
+              </span>
+            </div>
+          </div>
+        );
       }
     }
   }
 }
-
-AnterosDatePicker.contextTypes = {
-  withinInputGroup: PropTypes.bool,
-};
 
 AnterosDatePicker.propTypes = {
   dataSource: PropTypes.oneOfType([
@@ -873,8 +509,11 @@ AnterosDatePicker.propTypes = {
   iconColor: PropTypes.string,
   image: PropTypes.string,
   style: PropTypes.object,
+  width: PropTypes.any,
   readOnly: PropTypes.bool.isRequired,
   clear: PropTypes.bool.isRequired,
+  dateFormat: PropTypes.string.isRequired,
+  timeFormat: PropTypes.string.isRequired,
 };
 
 AnterosDatePicker.defaultProps = {
@@ -882,12 +521,12 @@ AnterosDatePicker.defaultProps = {
   icon: "fa fa-calendar",
   clear: true,
   primary: true,
-  placeHolder: DatePickerDefaults.dateFormatPlaceholder,
   includeTime: false,
-  showMonthCnt: 1,
-  locale: DatePickerDefaults.locale,
-  portal: false,
   showDefaultIcon: false,
+  dateFormat: "DD/MM/YYYY",
+  timeFormat: "HH:mm:ss",
+  width: "100%",
+  onOpenPickNewDate: false,
 };
 
 class AnterosDateTimePicker extends React.Component {
@@ -895,769 +534,445 @@ class AnterosDateTimePicker extends React.Component {
     super(props);
     autoBind(this);
   }
-
   render() {
-    return <AnterosDatePicker {...this.props} includeTime />;
+    return (
+      <AnterosDatePicker
+        {...this.props}
+        includeTime={true}
+        icon="fa fa-clock"
+      ></AnterosDatePicker>
+    );
   }
 }
 
 AnterosDateTimePicker.propTypes = AnterosDatePicker.propTypes;
 AnterosDateTimePicker.defaultProps = AnterosDatePicker.defaultProps;
 
-class Calendar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      base: props.base,
-    };
-    autoBind(this);
-  }
+const DEFAULT_COLON = ":";
+const DEFAULT_VALUE_SHORT = `00${DEFAULT_COLON}00`;
+const DEFAULT_VALUE_FULL = `00${DEFAULT_COLON}00${DEFAULT_COLON}00`;
 
-  setBase(base) {
-    this.setState({ base });
-  }
-
-  render() {
-    const { showMonthCnt } = this.props;
-    const { base } = this.state;
-
-    return (
-      <div className="date-calendar">
-        <div className="date-calendar__list">
-          {range(showMonthCnt).map((idx) => (
-            <div className="date-calendar__item" key={idx}>
-              <CalendarContainer
-                {...this.props}
-                base={this.state.base}
-                current={dayjs(base).add(idx, "month")}
-                prevIcon={idx === 0}
-                nextIcon={idx === showMonthCnt - 1}
-                setBase={this.setBase}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+export function isNumber(value) {
+  const number = Number(value);
+  return !isNaN(number) && String(value) === String(number);
 }
 
-Calendar.defaultProps = {
-  base: dayjs(),
-  showMonthCnt: 1,
-  showToday: false,
-};
+export function formatTimeItem(value) {
+  return `${value || ""}00`.substr(0, 2);
+}
 
-const YEAR_VIEW_CLASS = "date-calendar__year";
-const MONTH_VIEW_CLASS = "date-calendar__month";
+export function validateTimeAndCursor(
+  showSeconds = false,
+  value = "",
+  defaultValue = "",
+  colon = DEFAULT_COLON,
+  cursorPosition = 0
+) {
+  const [oldH, oldM, oldS] = defaultValue.split(colon);
 
-const buildMatrixView = (matrix, className, onClick) => {
+  let newCursorPosition = Number(cursorPosition);
+  let [newH, newM, newS] = String(value).split(colon);
+
+  newH = formatTimeItem(newH);
+  if (Number(newH[0]) > 2) {
+    newH = oldH;
+    newCursorPosition -= 1;
+  } else if (Number(newH[0]) === 2) {
+    if (Number(oldH[0]) === 2 && Number(newH[1]) > 3) {
+      newH = `2${oldH[1]}`;
+      newCursorPosition -= 2;
+    } else if (Number(newH[1]) > 3) {
+      newH = "23";
+    }
+  }
+
+  newM = formatTimeItem(newM);
+  if (Number(newM[0]) > 5) {
+    newM = oldM;
+    newCursorPosition -= 1;
+  }
+
+  if (showSeconds) {
+    newS = formatTimeItem(newS);
+    if (Number(newS[0]) > 5) {
+      newS = oldS;
+      newCursorPosition -= 1;
+    }
+  }
+
+  const validatedValue = showSeconds
+    ? `${newH}${colon}${newM}${colon}${newS}`
+    : `${newH}${colon}${newM}`;
+
+  return [validatedValue, newCursorPosition];
+}
+
+function TimePickerPanel(props) {
+  const {
+    prefixCls = "w-timepicker",
+    className,
+    count = 24,
+    date,
+    type = "Hours",
+    disabledHours,
+    disabledMinutes,
+    disabledSeconds,
+    hideDisabled,
+    onSelected,
+    ...other
+  } = props;
+  const disableds = useRef([]);
+  function getMaybeNumber() {
+    if (date && type) {
+      return new Date(date)[`get${type}`]();
+    }
+    return 0;
+  }
+  function handleClick(num, e) {
+    if (!date) return;
+    const currentDate = new Date(date);
+    currentDate[`set${type}`](num);
+    onSelected && onSelected(type, num, disableds.current, currentDate);
+  }
+  function getDisabledItem(num) {
+    const disabled = props[`disabled${type}`];
+    if (disabled) {
+      return disabled(num, type, new Date(date));
+    }
+    return false;
+  }
+  function getItemInstance(tag) {
+    if (tag && tag.parentNode && tag.dataset["index"]) {
+      const offsetTop = Number(tag.dataset["index"]) * tag.clientHeight;
+      if (tag.parentNode.parentNode) {
+        tag.parentNode.parentNode.scrollTop = offsetTop;
+      }
+    }
+  }
+  const data = useMemo(() => {
+    return [...Array(count)]
+      .map((_, idx) => {
+        const disabled = getDisabledItem(idx);
+        if (disabled) disableds.current.push(idx);
+        return {
+          count: idx,
+          disabled: getDisabledItem(idx),
+        };
+      })
+      .filter((item) => (hideDisabled && item.disabled ? false : true));
+  }, [hideDisabled]);
+
   return (
-    <TableMatrixView
-      matrix={matrix}
-      cell={(value, key) => (
-        <TableCell
-          key={key}
-          className={className}
-          text={value}
-          onClick={onClick(key, value)}
-        />
-      )}
-    />
-  );
-};
-
-class CalendarBody extends React.Component {
-  static defaultProps = {
-    viewMode: ViewMode.DAY,
-    locale: DatePickerDefaults.locale,
-  };
-  constructor(props) {
-    super(props);
-    autoBind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
-  render() {
-    const { current, onClick, locale } = this.props;
-    const viewMap = {
-      [ViewMode.YEAR]: buildMatrixView(
-        getYearMatrix(dayjs(current).year()),
-        YEAR_VIEW_CLASS,
-        (_, v) => () => onClick(v)
-      ),
-      [ViewMode.MONTH]: buildMatrixView(
-        getMonthMatrix(locale),
-        MONTH_VIEW_CLASS,
-        (k, _) => () => onClick(String(k))
-      ),
-      [ViewMode.DAY]: <DayView {...this.props} />,
-    };
-
-    return (
-      <div className="date-calendar__body">{viewMap[this.props.viewMode]}</div>
-    );
-  }
-}
-
-class CalendarContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewMode: ViewMode.DAY,
-    };
-    autoBind(this);
-  }
-
-  getHeaderTitle() {
-    const { current } = this.props;
-    const year = dayjs(current).year();
-    return {
-      [ViewMode.YEAR]: `${year - 4} - ${year + 5}`,
-      [ViewMode.MONTH]: `${year}`,
-      [ViewMode.DAY]: dayjs(current).format("YYYY.MM"),
-    }[this.state.viewMode];
-  }
-
-  handleTitleClick() {
-    const { viewMode } = this.state;
-    const { showMonthCnt } = this.props;
-    let changedMode;
-
-    if (viewMode === ViewMode.MONTH) {
-      changedMode = ViewMode.YEAR;
-    } else if (viewMode === ViewMode.DAY) {
-      changedMode = ViewMode.MONTH;
-    }
-    this.setState({
-      viewMode: showMonthCnt > 1 ? ViewMode.DAY : changedMode,
-    });
-  }
-
-  handleChange(value) {
-    const { viewMode } = this.state;
-    const { current, onChange, setBase, showMonthCnt, base } = this.props;
-    if (!value.trim()) return;
-    if (showMonthCnt > 1) {
-      const date = dayjs(current).date(parseInt(value, 10)).toDate();
-      ifExistCall(onChange, date);
-      return;
-    }
-
-    if (viewMode === ViewMode.YEAR) {
-      setBase(dayjs(base).year(parseInt(value, 10)));
-      this.setState({
-        viewMode: ViewMode.MONTH,
-      });
-    } else if (viewMode === ViewMode.MONTH) {
-      setBase(dayjs(base).month(parseInt(value, 10)));
-      this.setState({
-        viewMode: ViewMode.DAY,
-      });
-    } else {
-      const date = dayjs(current).date(parseInt(value, 10));
-      ifExistCall(onChange, date);
-    }
-  }
-
-  handleBase(method) {
-    const { base, setBase } = this.props;
-    const { viewMode } = this.state;
-    const date = dayjs(base);
-    if (viewMode === ViewMode.YEAR) {
-      setBase(date[method](10, "year"));
-    } else if (viewMode === ViewMode.MONTH) {
-      setBase(date[method](1, "year"));
-    } else {
-      setBase(date[method](1, "month"));
-    }
-  }
-
-  handleToday() {
-    const { setBase } = this.props;
-    setBase(dayjs());
-  }
-
-  renderCalendarHead() {
-    const { prevIcon, nextIcon } = this.props;
-    return (
-      <CalendarHead
-        onPrev={() => this.handleBase("subtract")}
-        onNext={() => this.handleBase("add")}
-        prevIcon={prevIcon}
-        nextIcon={nextIcon}
-        onTitleClick={this.handleTitleClick}
-        title={this.getHeaderTitle()}
-      />
-    );
-  }
-
-  renderTodayPane() {
-    const { showToday, locale = DatePickerDefaults.locale } = this.props;
-    return (
-      <TodayPanel
-        today={getToday(locale)}
-        onClick={this.handleToday}
-        show={showToday}
-      />
-    );
-  }
-
-  renderCalendarBody() {
-    const {
-      customDayClass,
-      customDayText,
-      disableDay,
-      selected,
-      startDay,
-      endDay,
-      onMouseOver,
-      current,
-      locale = DatePickerDefaults.locale,
-    } = this.props;
-
-    return (
-      <CalendarBody
-        viewMode={this.state.viewMode}
-        current={current}
-        selected={selected}
-        startDay={startDay}
-        endDay={endDay}
-        disableDay={disableDay}
-        onClick={this.handleChange}
-        onMouseOver={onMouseOver}
-        customDayClass={customDayClass}
-        customDayText={customDayText}
-        locale={locale}
-      />
-    );
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
-  render() {
-    const { show, showToday } = this.props;
-    const calendarClass = classNames("date-calendar__container", {
-      "date-calendar--show": show,
-    });
-
-    return (
-      <div className={calendarClass}>
-        {this.renderCalendarHead()}
-        {showToday && this.renderTodayPane()}
-        {this.renderCalendarBody()}
-      </div>
-    );
-  }
-}
-
-CalendarContainer.defaultProps = {
-  current: dayjs(),
-  show: true,
-  showMonthCnt: 1,
-  showToday: false,
-  locale: DatePickerDefaults.locale,
-};
-
-const CalendarHead = ({
-  onPrev,
-  onNext,
-  prevIcon,
-  nextIcon,
-  title,
-  onTitleClick,
-}) => {
-  return (
-    <div className="date-calendar__head">
-      <div className="date-calendar__head--prev">
-        {prevIcon && (
-          <button
-            onClick={onPrev}
-            className="date-calendar__head--button"
-            type="button"
-          >
-            <SVGIcon id="left-arrow" />
-          </button>
-        )}
-      </div>
-      <h2 className="date-calendar__head--title" onClick={onTitleClick}>
-        {title}
-      </h2>
-      <div className="date-calendar__head--next">
-        {nextIcon && (
-          <button
-            onClick={onNext}
-            className="date-calendar__head--button"
-            type="button"
-          >
-            <SVGIcon id="right-arrow" />
-          </button>
-        )}
-      </div>
+    <div className={`${prefixCls}-spinner`} {...other}>
+      <ul>
+        {data.map((item, idx) => {
+          const liProps = {};
+          if (!item.disabled) {
+            liProps.onClick = (e) => handleClick(item.count, e);
+          }
+          const currentCount = getMaybeNumber();
+          return (
+            <li
+              key={idx}
+              data-index={currentCount === item.count ? idx : undefined}
+              ref={(tag) => tag && getItemInstance(tag)}
+              {...liProps}
+              className={[
+                item.disabled ? "disabled" : null,
+                currentCount === item.count ? "selected" : null,
+                hideDisabled && item.disabled ? "hide" : null,
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .trim()}
+            >
+              {item.count < 10 ? `0${item.count}` : item.count}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
-};
+}
 
-CalendarHead.defaultProps = { title: "" };
-
-class DayView extends React.Component {
+class AnterosTimeInput extends Component {
   static defaultProps = {
-    locale: DatePickerDefaults.locale,
+    showSeconds: true,
+    input: null,
+    readOnly: false,
+    icon: "fa fa-clock",
+    width: "120px",
+    clear: true,
+    primary: true,
+    style: {},
+    colon: DEFAULT_COLON,
   };
 
   constructor(props) {
     super(props);
-    autoBind(this);
-  }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
+    const _showSeconds = Boolean(props.showSeconds);
+    const _defaultValue = _showSeconds
+      ? DEFAULT_VALUE_FULL
+      : DEFAULT_VALUE_SHORT;
+    const _colon =
+      props.colon && props.colon.length === 1 ? props.colon : DEFAULT_COLON;
 
-  getDayClass(date) {
-    const {
-      current,
-      customDayClass,
-      startDay,
-      endDay,
-      selected,
-      disableDay,
-    } = this.props;
-    const currentDate = dayjs(current).date(parseInt(date, 10));
+    this.dateRef = React.createRef();
 
-    let classArr = [];
-
-    if (!date.trim()) {
-      return "";
-    }
-
-    if (customDayClass !== undefined) {
-      const customClass = customDayClass(currentDate);
-      classArr = classArr.concat(
-        typeof customClass === "string" ? [customClass] : customClass
-      );
-    }
-
-    const dayClass = classNames(
-      "date-calendar__day",
-      `date-calendar__day--${dayjs(currentDate).day()}`,
-      classArr,
-      {
-        "date-calendar__day--end": isDayEqual(currentDate, endDay),
-        "date-calendar__day--range": isDayRange(currentDate, startDay, endDay),
-        "date-calendar__day--selected": this.isIncludeDay(date, selected),
-        "date-calendar__day--disabled": disableDay
-          ? disableDay(currentDate)
-          : false,
-        "date-calendar__day--start": isDayEqual(currentDate, startDay),
-        "date-calendar__day--today": isDayEqual(currentDate, dayjs()),
+    let _value;
+    if (this.props.dataSource) {
+      let _value = this.props.dataSource.fieldByName(this.props.dataField);
+      if (!_value) {
+        _value = "";
       }
-    );
-
-    return dayClass;
-  }
-
-  getCustomText(date) {
-    const { current, customDayText } = this.props;
-    const currentDate = dayjs(current).date(parseInt(date, 10));
-
-    if (!date.trim()) {
-      return "";
-    }
-    if (!customDayText) {
-      return "";
+    } else {
+      _value = props.value;
     }
 
-    return customDayText(currentDate);
-  }
-
-  isIncludeDay(date, dates) {
-    const { current } = this.props;
-    if (dates === undefined) {
-      return false;
-    }
-    return dates.some((v) =>
-      isDayEqual(dayjs(current).date(parseInt(date, 10)), v)
+    const [validatedTime] = validateTimeAndCursor(
+      _showSeconds,
+      _value,
+      _defaultValue,
+      _colon
     );
-  }
 
-  handleClick(date) {
-    const { current, disableDay } = this.props;
-    const currentDate = dayjs(current).date(parseInt(date, 10));
-    if (!(disableDay && disableDay(currentDate))) {
-      ifExistCall(this.props.onClick, date);
-    }
-  }
-
-  handleMouseOver(date) {
-    const { onMouseOver, current } = this.props;
-    ifExistCall(onMouseOver, dayjs(current).date(parseInt(date, 10)));
-  }
-
-  render() {
-    const { current, locale } = this.props;
-
-    const dayMatrix = getDayMatrix(
-      dayjs(current).year(),
-      dayjs(current).month()
-    );
-    const weekdays = getWeekDays(locale);
-
-    return (
-      <TableMatrixView
-        headers={weekdays}
-        matrix={dayMatrix}
-        cell={(date, key) => (
-          <TableCell
-            className={this.getDayClass(date)}
-            subText={this.getCustomText(date)}
-            onClick={this.handleClick}
-            onMouseOver={this.handleMouseOver}
-            text={date}
-            key={key}
-          />
-        )}
-      />
-    );
-  }
-}
-
-class AnterosPicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.triggerRef = React.createRef();
-    this.contentsRef = React.createRef();
     this.state = {
-        show: false,
-        position: {
-          left: "",
-          top: "",
-        },
-      };
-    autoBind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
-  showContents() {
-    const { portal, disabled, readOnly } = this.props;
-    if (disabled || readOnly) return;
-
-    this.setState(
-      {
-        show: true,
-      },
-      () => {
-        if (!portal) {
-          this.setPosition();
-        }
-      }
-    );
-  }
-
-  hideContents() {
-    this.setState({
-      show: false,
-    });
-  }
-
-  setPosition() {
-    const { direction } = this.props;
-    this.setState({
-      position: getDivPosition(
-        this.triggerRef.current,
-        direction,
-        getDomHeight(this.contentsRef.current)
-      ),
-    });
-  }
-
-  render() {
-    const { portal, className, renderTrigger, renderContents, readOnly, disabled } = this.props;
-    const { show, position } = this.state;
-    const actions = {
-      show: this.showContents,
-      hide: this.hideContents,
+      value: validatedTime,
+      _colon,
+      _showSeconds,
+      _defaultValue,
+      _maxLength: _defaultValue.length,
     };
 
-    return (
-      <div className="date-picker" readOnly={readOnly} disabled={disabled}>
-        <div
-          className="date-picker__trigger"
-          onClick={this.showContents}
-          ref={this.triggerRef}
-        >
-          {renderTrigger({ actions })}
-        </div>
-        {show && (
-          <div
-            className={CX("date-picker__container", { portal, className })}
-            role="dialog"
-            aria-modal="true"
-            style={position}
-            ref={this.contentsRef}
-          >
-            {renderContents({ actions })}
-          </div>
-        )}
-        <Backdrop show={show} invert={portal} onClick={this.hideContents} />
-      </div>
-    );
-  }
-}
-
-class AnterosPickerInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inputRef = React.createRef();
     autoBind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      const [validatedTime] = validateTimeAndCursor(
+        this.state._showSeconds,
+        this.props.value,
+        this.state._defaultValue,
+        this.state._colon
+      );
+      this.setState({
+        value: validatedTime,
+      });
+    }
+  }
+
+  onInputChange(event, callback) {
+    const oldValue = this.state.value;
+    const inputEl = event.target;
+    const inputValue = inputEl.value;
+    const position = inputEl.selectionEnd || 0;
+    const isTyped = inputValue.length > oldValue.length;
+    const cursorCharacter = inputValue[position - 1];
+    const addedCharacter = isTyped ? cursorCharacter : null;
+    const removedCharacter = isTyped ? null : oldValue[position];
+    const replacedSingleCharacter =
+      inputValue.length === oldValue.length ? oldValue[position - 1] : null;
+    const colon = this.state._colon;
+
+    let newValue = oldValue;
+    let newPosition = position;
+
+    if (addedCharacter !== null) {
+      if (position > this.state._maxLength) {
+        newPosition = this.state._maxLength;
+      } else if (
+        (position === 3 || position === 6) &&
+        addedCharacter === colon
+      ) {
+        newValue = `${inputValue.substr(
+          0,
+          position - 1
+        )}${colon}${inputValue.substr(position + 1)}`;
+      } else if (
+        (position === 3 || position === 6) &&
+        isNumber(addedCharacter)
+      ) {
+        newValue = `${inputValue.substr(
+          0,
+          position - 1
+        )}${colon}${addedCharacter}${inputValue.substr(position + 2)}`;
+        newPosition = position + 1;
+      } else if (isNumber(addedCharacter)) {
+        newValue =
+          inputValue.substr(0, position - 1) +
+          addedCharacter +
+          inputValue.substr(position + 1);
+        if (position === 2 || position === 5) {
+          newPosition = position + 1;
+        }
+      } else {
+        newPosition = position - 1;
+      }
+    } else if (replacedSingleCharacter !== null) {
+      if (isNumber(cursorCharacter)) {
+        if (position - 1 === 2 || position - 1 === 5) {
+          newValue = `${inputValue.substr(
+            0,
+            position - 1
+          )}${colon}${inputValue.substr(position)}`;
+        } else {
+          newValue = inputValue;
+        }
+      } else {
+        newValue = oldValue;
+        newPosition = position - 1;
+      }
+    } else if (
+      typeof cursorCharacter !== "undefined" &&
+      cursorCharacter !== colon &&
+      !isNumber(cursorCharacter)
+    ) {
+      newValue = oldValue;
+      newPosition = position - 1;
+    } else if (removedCharacter !== null) {
+      if ((position === 2 || position === 5) && removedCharacter === colon) {
+        newValue = `${inputValue.substr(
+          0,
+          position - 1
+        )}0${colon}${inputValue.substr(position)}`;
+        newPosition = position - 1;
+      } else {
+        newValue = `${inputValue.substr(0, position)}0${inputValue.substr(
+          position
+        )}`;
+      }
+    }
+
+    const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
+      this.state._showSeconds,
+      newValue,
+      oldValue,
+      colon,
+      newPosition
+    );
+
+    if (
+      this.props.dataSource &&
+      this.props.dataSource.getState !== "dsBrowse"
+    ) {
+      this.props.dataSource.setFieldByName(this.props.dataField, validatedTime);
+    }
+
+    this.setState({ value: validatedTime }, () => {
+      inputEl.selectionStart = validatedCursorPosition;
+      inputEl.selectionEnd = validatedCursorPosition;
+      callback(event, validatedTime);
+    });
+
+    event.persist();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidMount() {
-    const { current } = this.inputRef;
-    const { autoFocus } = this.props;
-
-    if (current && autoFocus) {
-      current.focus();
+    if (this.props.dataSource) {
+      this.props.dataSource.addEventListener(
+        [
+          dataSourceEvents.AFTER_CLOSE,
+          dataSourceEvents.AFTER_OPEN,
+          dataSourceEvents.AFTER_GOTO_PAGE,
+          dataSourceEvents.AFTER_CANCEL,
+          dataSourceEvents.AFTER_SCROLL,
+        ],
+        this.onDatasourceEvent
+      );
+      this.props.dataSource.addEventListener(
+        dataSourceEvents.DATA_FIELD_CHANGED,
+        this.onDatasourceEvent,
+        this.props.dataField
+      );
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
+  componentWillUnmount() {
+    if (this.props.dataSource) {
+      this.props.dataSource.removeEventListener(
+        [
+          dataSourceEvents.AFTER_CLOSE,
+          dataSourceEvents.AFTER_OPEN,
+          dataSourceEvents.AFTER_GOTO_PAGE,
+          dataSourceEvents.AFTER_CANCEL,
+          dataSourceEvents.AFTER_SCROLL,
+        ],
+        this.onDatasourceEvent
+      );
+      this.props.dataSource.removeEventListener(
+        dataSourceEvents.DATA_FIELD_CHANGED,
+        this.onDatasourceEvent,
+        this.props.dataField
+      );
+    }
   }
 
-  handleClear(e) {
-    const { onClear } = this.props;
-    if (onClear) onClear();
-    e.stopPropagation();
+  onClearValue() {
+    if (
+      this.props.dataSource &&
+      this.props.dataSource.getState !== "dsBrowse"
+    ) {
+      this.props.dataSource.setFieldByName(this.props.dataField, undefined);
+    }
+    this.setState({ ...this.state, value: "" });
   }
 
-  renderInput = () => {
-    const {
-      readOnly = false,
-      disabled = false,
-      value = "",
-      icon,
-      onChange,
-      onClick,
-      onBlur,
-      placeholder,
-      paddingLeft,
-    } = this.props;
+  onDatasourceEvent(event, error) {
+    let value = this.props.dataSource.fieldByName(this.props.dataField);
+    if (!value) {
+      value = "";
+    }
+    if (value !== this.state.value) {
+      this.setState({
+        ...this.state,
+        value: value,
+      });
+    }
+  }
 
-    return (
-      <input
-        ref={this.inputRef}
-        className="date-picker-input__text"
-        type="text"
-        value={value}
-        readOnly={readOnly}
-        disabled={disabled}
-        onChange={onChange}
-        onClick={onClick}
-        onBlur={onBlur}
-        placeholder={placeholder}
-        style={{
-          paddingLeft: icon ? "32px" : paddingLeft,
-        }}
-      />
-    );
-  };
-
-  renderClear() {
-    return (
-      <span className="date-picker-input__clear" onClick={this.handleClear}>
-        <SVGIcon id="clear" />
-      </span>
-    );
+  onButtonClick() {
+    if (this.props.onButtonClick) {
+      this.props.onButtonClick();
+    }
   }
 
   render() {
-    const { clear, icon, className } = this.props;
-    return (
-      <div className={classNames("date-picker-input", className)}>
-        {icon && <span className="date-picker-input__icon">{icon}</span>}
-        {this.renderInput()}
-        {clear && this.renderClear()}
-      </div>
-    );
-  }
-}
-
-class AnterosDateRangePicker extends React.Component {
-  constructor(props) {
-    super(props);
-    const { dateFormat, initialStartDate, initialEndDate } = props;
-    const start = initialStartDate;
-    const end = initialEndDate;
-
-    this.state = {
-      start,
-      end,
-      startValue: formatDate(start, dateFormat),
-      endValue: formatDate(end, dateFormat),
-    };
-    autoBind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
-  handleDateChange(actions, date) {
-    const { onChange, dateFormat } = this.props;
-    const { start, end } = this.state;
-    let startDate;
-    let endDate;
-
-    startDate = start;
-    endDate = end;
-
-    if (!start) {
-      startDate = date;
-    } else {
-      if (end) {
-        startDate = date;
-        endDate = undefined;
-      } else {
-        if (!isDayBefore(date, start)) {
-          endDate = date;
-        } else {
-          startDate = date;
-        }
-      }
-    }
-
-    ifExistCall(onChange, startDate, endDate);
-
-    this.setState(
-      {
-        ...this.state,
-        start: startDate,
-        end: endDate,
-        startValue: formatDate(startDate, dateFormat),
-        endValue: formatDate(endDate, dateFormat),
-      },
-      () => {
-        if (this.state.start && this.state.end) {
-          actions.hide();
-        }
-      }
-    );
-  }
-
-  handleInputChange(fieldType, value) {
-    const key = fieldType === FieldType.START ? "startValue" : "endValue";
-    this.setState({
-      ...this.state,
-      [key]: value,
-    });
-  }
-
-  handleMouseOver(date) {
-    this.setState({
-      ...this.state,
-      hoverDate: date,
-    });
-  }
-
-  handleInputBlur(fieldType, value) {
-    const { dateFormat } = this.props;
-    const { start, end } = this.state;
-    const parsedDate = dayjs(value, dateFormat);
-    let startDate = start;
-    let endDate = end;
-
-    if (
-      parsedDate.isValid() &&
-      dateFormat &&
-      dateFormat.length === value.length
-    ) {
-      if (fieldType === FieldType.END) {
-        endDate = parsedDate;
-      } else if (fieldType === FieldType.START) {
-        startDate = parsedDate;
-      }
-    }
-
-    if (startDate && endDate) {
-      if (isDayBefore(endDate, startDate) || isDayAfter(startDate, endDate)) {
-        let temp;
-        temp = startDate;
-        startDate = endDate;
-        endDate = temp;
-      }
-    }
-
-    this.setState({
-      ...this.state,
-      start: startDate,
-      end: endDate,
-      startValue: formatDate(startDate, dateFormat),
-      endValue: formatDate(endDate, dateFormat),
-    });
-  }
-
-  handleCalendarText(date) {
-    const { startText, endText, customDayText } = this.props;
-    const { start, end } = this.state;
-    if (isDayEqual(start, date)) return startText;
-    if (isDayEqual(end, date)) return endText;
-    ifExistCall(customDayText, date);
-    return "";
-  }
-
-  handleCalendarClass(date) {
-    const { customDayClass } = this.props;
-    const { start, end, hoverDate } = this.state;
-    if (start && !end && hoverDate) {
-      if (isDayRange(date, start, hoverDate)) {
-        return "date-calendar__day--range";
-      }
-    }
-    ifExistCall(customDayClass, date);
-    return "";
-  }
-
-  handleInputClear(fieldType) {
-    if (fieldType === FieldType.START) {
-      this.setState({
-        ...this.state,
-        start: undefined,
-        startValue: "",
-      });
-    } else if (fieldType === FieldType.END) {
-      this.setState({
-        ...this.state,
-        end: undefined,
-        endValue: "",
-      });
-    }
-  }
-
-  renderRangePickerInput() {
     let {
-      startPlaceholder,
-      endPlaceholder,
-      readOnly,
       disabled,
-      clear,
+      readOnly,
       onChange,
-    } = this.props;
-    const { startValue, endValue } = this.state;
+      style,
+      showSeconds,
+      input,
+    } = this.props; //eslint-disable-line no-unused-vars
+    const onChangeHandler = (event) =>
+      this.onInputChange(event, (e, v) => onChange && onChange(e, v));
+    let width = this.props.width;
+
+    let newStyle = {
+      height: "38px",
+      padding: "3px",
+      border: "1px solid rgb(204, 212, 219)",
+      borderTopLeftRadius: "4px",
+      borderBottomLeftRadius: "4px",
+      width: width ? `calc(${width} - 38px)` : `calc(120px - 38px)`,
+      ...style,
+    };
 
     if (this.props.dataSource && !readOnly) {
-      readOnly = this.props.dataSource.getState() == "dsBrowse";
+      readOnly = this.props.dataSource.getState() === "dsBrowse";
     }
 
     const colClasses = buildGridClassNames(this.props, false, []);
+    if (colClasses.length > 0) {
+      style.width = "calc(100% - 38px)";
+      width = style.width;
+    }
 
     if (this.props.id) {
       this.idEdit = this.props.id;
@@ -1667,11 +982,6 @@ class AnterosDateRangePicker extends React.Component {
       this.props.className ? this.props.className : "",
       colClasses
     );
-
-    let width = this.props.width;
-    if (colClasses.length > 0) {
-      width = "";
-    }
 
     let icon;
     if (this.props.icon) {
@@ -1698,34 +1008,33 @@ class AnterosDateRangePicker extends React.Component {
         : ""
     );
 
-    let classNameInput = AnterosUtils.buildClassNames(
-      colClasses.length > 0 || this.context.withinInputGroup || icon
-        ? "form-control"
-        : "",
-      this.props.fullPrimary ? "btn-primary" : "",
-      this.props.fullSucces ? "btn-success" : "",
-      this.props.fullInfo ? "btn-info" : "",
-      this.props.fullDanger ? "btn-danger" : "",
-      this.props.fullWarning ? "btn-warning" : "",
-      this.props.fullSecondary ? "btn-secondary" : ""
-    );
-
     let edit = (
-      <AnterosRangePickerInput
-        startPlaceholder={startPlaceholder}
-        readOnly={readOnly}
+      <input
+        type="text"
+        {...this.props}
         disabled={disabled}
-        clear={clear}
-        endPlaceholder={endPlaceholder}
-        startValue={startValue}
-        endValue={endValue}
-        onChange={this.handleInputChange}
-        onBlur={this.handleInputBlur}
-        onClear={this.handleInputClear}
+        showSeconds={showSeconds}
+        readOnly={readOnly}
+        ref={this.dateRef}
+        value={this.state.value}
+        onChange={onChangeHandler}
+        style={{ width: 120, ...newStyle }}
       />
     );
 
-    if (this.props.icon) {
+    if (input) {
+      edit = React.cloneElement(input, {
+        ...this.props,
+        disabled,
+        value: this.state.value,
+        readOnly,
+        showSeconds,
+        newStyle,
+        onChange: onChangeHandler,
+      });
+    }
+
+    if (this.props.icon && colClasses.length > 0) {
       return (
         <div
           className={className}
@@ -1733,14 +1042,33 @@ class AnterosDateRangePicker extends React.Component {
           ref={(ref) => (this.divInput = ref)}
         >
           {edit}
+          {this.props.clear ? (
+            <i
+              onClick={this.onClearValue}
+              className={"far fa-times"}
+              style={{
+                cursor: "pointer",
+                color: "#6565cd",
+                position: "absolute",
+                right: 64,
+                top: 12,
+              }}
+            ></i>
+          ) : null}
           <div
             className={classNameAddOn}
-            style={{ margin: 0 }}
-            onClick={this.props.onButtonClick}
+            style={{ margin: 0, width: "38px" }}
+            onClick={this.onButtonClick}
           >
             <span>
               {icon}
-              <img src={this.props.image} onClick={this.props.onButtonClick} />
+              {this.props.image ? (
+                <img
+                  alt=" "
+                  src={this.props.image}
+                  onClick={this.onButtonClick}
+                />
+              ) : null}
             </span>
           </div>
         </div>
@@ -1748,330 +1076,1345 @@ class AnterosDateRangePicker extends React.Component {
     } else {
       if (colClasses.length > 0) {
         return (
-          <div className={AnterosUtils.buildClassNames(colClasses)}>{edit}</div>
+          <div className={AnterosUtils.buildClassNames(colClasses)}>
+            {edit}
+            {this.props.clear ? (
+              <i
+                onClick={this.onClearValue}
+                className={"far fa-times"}
+                style={{
+                  cursor: "pointer",
+                  color: "#6565cd",
+                  position: "absolute",
+                  right: 48,
+                  top: 12,
+                }}
+              ></i>
+            ) : null}
+          </div>
         );
       } else {
-        return edit;
+        return (
+          <div
+            className={className}
+            style={{
+              ...this.props.style,
+              width: width,
+              marginBottom: "4px",
+              marginTop: "4px",
+            }}
+            ref={(ref) => (this.divInput = ref)}
+          >
+            {edit}
+            {this.props.clear ? (
+              <i
+                onClick={this.onClearValue}
+                className={"far fa-times"}
+                style={{
+                  cursor: "pointer",
+                  color: "#6565cd",
+                  position: "absolute",
+                  right: 48,
+                  top: 12,
+                }}
+              ></i>
+            ) : null}
+            <div
+              className={classNameAddOn}
+              style={{ margin: 0, width: "38px" }}
+              onClick={this.onButtonClick}
+            >
+              <span>
+                <i
+                  onClick={this.onButtonClick}
+                  className={this.props.icon ? this.props.icon : "fa fa-clock"}
+                  style={{ color: this.props.iconColor }}
+                ></i>
+                {this.props.image ? (
+                  <img
+                    alt=" "
+                    src={this.props.image}
+                    onClick={this.onButtonClick}
+                  />
+                ) : null}
+              </span>
+            </div>
+          </div>
+        );
       }
     }
   }
+}
 
-  renderCalendar(actions) {
-    const { showMonthCnt, initialDate, wrapper } = this.props;
-    const { start, end } = this.state;
-    let component;
+function TimePickerTime(props) {
+  const {
+    prefixCls = "w-timepicker",
+    className,
+    precision = "second",
+    ...other
+  } = props;
+  return (
+    <div
+      className={[prefixCls, className]
+        .filter(Boolean)
+        .join(" ")
+        .trim()}
+    >
+      {/^(second|minute|hour)$/.test(precision) && (
+        <TimePickerPanel type="Hours" count={24} {...other} />
+      )}
+      {/^(second|minute)$/.test(precision) && (
+        <TimePickerPanel type="Minutes" count={60} {...other} />
+      )}
+      {/^(second)$/.test(precision) && (
+        <TimePickerPanel type="Seconds" count={60} {...other} />
+      )}
+    </div>
+  );
+}
 
-    const calendar = (
-      <Calendar
-        {...this.props}
-        base={start || initialDate}
-        startDay={start}
-        endDay={end}
-        showMonthCnt={showMonthCnt}
-        onChange={(date) => this.handleDateChange(actions, date)}
-        onMouseOver={this.handleMouseOver}
-        customDayText={this.handleCalendarText}
-        customDayClass={this.handleCalendarClass}
-      />
-    );
+function CustomTimePicker(props) {
+  let {
+    prefixCls = "w-timepicker",
+    disabled,
+    readOnly,
+    value,
+    format = "HH:mm:ss",
+    popoverProps,
+    onChange,
+    disabledHours,
+    disabledMinutes,
+    disabledSeconds,
+    hideDisabled,
+    precision,
+    style,
+    primary = true,
+    width = "120px",
+    ...inputProps
+  } = props;
+  const [date, setDate] = useState(props.value);
+  useEffect(() => setDate(props.value), [props.value]);
+  const timeProps = {
+    disabledHours,
+    disabledMinutes,
+    disabledSeconds,
+    hideDisabled,
+    precision,
+  };
+  const inputValue = date ? formatter(format, new Date(date)) : "";
+  const datePickerTime = date || new Date();
+  const _props = { ...inputProps, value: inputValue };
+  const colClasses = buildGridClassNames(props, false, []);
+  let newStyle = {
+    height: "38px",
+    padding: "3px",
+    border: "1px solid rgb(204, 212, 219)",
+    borderTopLeftRadius: "4px",
+    borderBottomLeftRadius: "4px",
+    width: width ? `calc(${width} - 38px)` : `calc(120px - 38px)`,
+    ...style,
+  };
 
-    component = calendar;
+  if (props.dataSource && !readOnly) {
+    readOnly = props.dataSource.getState() === "dsBrowse";
+  }
 
-    if (wrapper) {
-      component = wrapper(calendar);
+  if (colClasses.length > 0) {
+    width = "";
+    newStyle.width = `calc(100% - 38px)`;
+  }
+
+  let className = AnterosUtils.buildClassNames(
+    "input-group",
+    props.className ? props.className : "",
+    colClasses
+  );
+
+  const onButtonClick = () => {
+    if (props.onButtonClick) {
+      props.onButtonClick();
     }
+  };
 
-    return component;
+  const onClearValue = () => {
+    setDate(undefined);
+    onChange && onChange("");
+  };
+
+  let icon;
+  if (props.icon) {
+    icon = (
+      <i
+        data-user={props.dataUser}
+        onClick={onButtonClick}
+        className={props.icon}
+        style={{ color: props.iconColor }}
+      ></i>
+    );
+  }
+
+  let classNameAddOn = AnterosUtils.buildClassNames(
+    "input-group-addon",
+    disabled || readOnly ? "disabled" : "",
+    primary || props.fullPrimary ? "btn btn-primary" : "",
+    props.success || props.fullSucces ? "btn btn-success" : "",
+    props.info || props.fullInfo ? "btn btn-info" : "",
+    props.danger || props.fullDanger ? "btn btn-danger" : "",
+    props.warning || props.fullWarning ? "btn btn-warning" : "",
+    props.secondary || props.fullSecondary ? "btn btn-secondary" : ""
+  );
+
+  let edit = (
+    <Popover
+      trigger="focus"
+      placement="bottomLeft"
+      autoAdjustOverflow
+      visibleArrow={false}
+      {...popoverProps}
+      content={
+        <TimePickerTime
+          className={`${prefixCls}-popover`}
+          {...timeProps}
+          date={datePickerTime}
+          onSelected={(type, num, disableds, currentDate) => {
+            setDate(new Date(currentDate));
+            const dataStr = currentDate ? formatter(format, currentDate) : "";
+            onChange && onChange(dataStr, currentDate, type, num, disableds);
+          }}
+        />
+      }
+    >
+      <input
+        placeholder=""
+        readOnly
+        disabled={disabled}
+        {..._props}
+        style={newStyle}
+        className={[`${prefixCls}-input`]
+          .filter(Boolean)
+          .join(" ")
+          .trim()}
+      />
+    </Popover>
+  );
+
+  if (props.icon && colClasses.length > 0) {
+    return (
+      <div className={className} style={{ ...props.style, width: width }}>
+        {edit}
+        {props.clear ? (
+          <i
+            onClick={onClearValue}
+            className={"far fa-times"}
+            style={{
+              cursor: "pointer",
+              color: "#6565cd",
+              position: "absolute",
+              right: 64,
+              top: 12,
+            }}
+          ></i>
+        ) : null}
+        <div
+          className={classNameAddOn}
+          style={{ margin: 0, width: "38px" }}
+          onClick={onButtonClick}
+        >
+          <span>
+            {icon}
+            {props.image ? (
+              <img alt=" " src={props.image} onClick={onButtonClick} />
+            ) : null}
+          </span>
+        </div>
+      </div>
+    );
+  } else {
+    if (colClasses.length > 0) {
+      return (
+        <div className={AnterosUtils.buildClassNames(colClasses)}>
+          {edit}
+          {props.clear ? (
+            <i
+              onClick={onClearValue}
+              className={"far fa-times"}
+              style={{
+                cursor: "pointer",
+                color: "#6565cd",
+                position: "absolute",
+                right: 48,
+                top: 12,
+              }}
+            ></i>
+          ) : null}
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={className}
+          style={{
+            ...props.style,
+            width: width,
+            marginBottom: "4px",
+            marginTop: "4px",
+          }}
+        >
+          {edit}
+          {props.clear ? (
+            <i
+              onClick={onClearValue}
+              className={"far fa-times"}
+              style={{
+                cursor: "pointer",
+                color: "#6565cd",
+                position: "absolute",
+                right: 48,
+                top: 12,
+              }}
+            ></i>
+          ) : null}
+          <div
+            className={classNameAddOn}
+            style={{ margin: 0, width: "38px" }}
+            onClick={onButtonClick}
+          >
+            <span>
+              <i
+                onClick={onButtonClick}
+                className={props.icon ? props.icon : "fa fa-clock"}
+                style={{ color: props.iconColor }}
+              ></i>
+              {props.image ? (
+                <img alt=" " src={props.image} onClick={onButtonClick} />
+              ) : null}
+            </span>
+          </div>
+        </div>
+      );
+    }
+  }
+}
+
+CustomTimePicker.defaultProps = {
+  icon: "fa fa-clock",
+  width: "120px",
+  clear: true,
+};
+
+class AnterosTimePicker extends Component {
+  constructor(props) {
+    super(props);
+    let _value;
+    if (this.props.dataSource) {
+      let _value = this.props.dataSource.fieldByName(this.props.dataField);
+      if (!_value) {
+        _value = "";
+      } else {
+        _value = moment(_value, "HH:mm:ss");
+      }
+    } else {
+      _value = props.value;
+    }
+    this.state = { value: _value };
+    autoBind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
+  componentDidMount() {
+    if (this.props.dataSource) {
+      this.props.dataSource.addEventListener(
+        [
+          dataSourceEvents.AFTER_CLOSE,
+          dataSourceEvents.AFTER_OPEN,
+          dataSourceEvents.AFTER_GOTO_PAGE,
+          dataSourceEvents.AFTER_CANCEL,
+          dataSourceEvents.AFTER_SCROLL,
+        ],
+        this.onDatasourceEvent
+      );
+      this.props.dataSource.addEventListener(
+        dataSourceEvents.DATA_FIELD_CHANGED,
+        this.onDatasourceEvent,
+        this.props.dataField
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.dataSource) {
+      this.props.dataSource.removeEventListener(
+        [
+          dataSourceEvents.AFTER_CLOSE,
+          dataSourceEvents.AFTER_OPEN,
+          dataSourceEvents.AFTER_GOTO_PAGE,
+          dataSourceEvents.AFTER_CANCEL,
+          dataSourceEvents.AFTER_SCROLL,
+        ],
+        this.onDatasourceEvent
+      );
+      this.props.dataSource.removeEventListener(
+        dataSourceEvents.DATA_FIELD_CHANGED,
+        this.onDatasourceEvent,
+        this.props.dataField
+      );
+    }
+  }
+
+  onDatasourceEvent(event, error) {
+    let value = this.props.dataSource.fieldByName(this.props.dataField);
+    if (!value) {
+      value = "";
+    } else {
+      value = moment(value, "HH:mm:ss");
+    }
+    if (value !== this.state.value) {
+      this.setState({
+        ...this.state,
+        value: value,
+      });
+    }
+  }
+
+  onChange(value) {
+    if (
+      this.props.dataSource &&
+      this.props.dataSource.getState !== "dsBrowse"
+    ) {
+      this.props.dataSource.setFieldByName(this.props.dataField, value);
+    } else {
+      this.setState({ ...this.state, value });
+    }
   }
 
   render() {
-    let { portal, direction, disabled, readOnly } = this.props;
-
-    if (this.props.dataSource && !readOnly) {
-      readOnly = this.props.dataSource.getState() == "dsBrowse";
-    }
-
     return (
-      <AnterosPicker
-        portal={portal}
-        direction={direction}
-        readOnly={readOnly}
-        disabled={disabled}
-        renderTrigger={() => this.renderRangePickerInput()}
-        renderContents={({ actions }) => this.renderCalendar(actions)}
+      <CustomTimePicker
+        {...this.props}
+        value={this.state.value}
+        onChange={this.onChange}
       />
     );
   }
 }
 
-AnterosDateRangePicker.contextTypes = {
-  withinInputGroup: PropTypes.bool,
+AnterosTimePicker.defaultProps = {
+  disabled: false,
+  readOnly: false,
+  value: "",
+  format: "HH:mm:ss",
+  onChange: noop,
+  disabledHours: false,
+  disabledMinutes: false,
+  disabledSeconds: false,
+  primary: true,
+  width: "120px",
 };
 
+class AnterosDateRangePicker extends Component {
+  constructor(props) {
+    super(props);
+    this.dateRef = React.createRef();
+    this.state = { calendarOpened: false, value: props.value };
+    autoBind(this);
+  }
+
+  onOpen() {
+    this.setState({ ...this.state, calendarOpened: true });
+  }
+
+  onClose() {
+    this.setState({ ...this.state, calendarOpened: false });
+  }
+
+  onButtonClick(event) {
+    event.preventDefault();
+    if (this.state.calendarOpened) {
+      this.dateRef.current.closeCalendar();
+    } else {
+      this.dateRef.current.openCalendar();
+    }
+    this.setState({
+      ...this.state,
+      calendarOpened: !this.state.calendarOpened,
+    });
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({...this.state, value: nextProps.value});
+  }
+
+  onClearValue() {
+    this.setState({...this.state, value: [], update:Math.random()},()=>{
+      if (this.props.onChange){
+        this.props.onChange([]);
+      }
+    });    
+  }
+
+
+  render() {
+    const {
+      readOnly,
+      disabled,
+      format,
+      numberOfMonths,
+      weekPicker,
+      onlyMonthPicker,
+      onChange,
+      minDate,
+      maxDate,
+      onOpenPickNewDate,
+      clear,
+      style,
+      width,
+    } = this.props;
+    let classNameAddOn = AnterosUtils.buildClassNames(
+      "input-group-addon",
+      disabled || readOnly ? "disabled" : "",
+      this.props.primary || this.props.fullPrimary ? "btn btn-primary" : "",
+      this.props.success || this.props.fullSucces ? "btn btn-success" : "",
+      this.props.info || this.props.fullInfo ? "btn btn-info" : "",
+      this.props.danger || this.props.fullDanger ? "btn btn-danger" : "",
+      this.props.warning || this.props.fullWarning ? "btn btn-warning" : "",
+      this.props.secondary || this.props.fullSecondary
+        ? "btn btn-secondary"
+        : ""
+    );
+
+    const colClasses = buildGridClassNames(this.props, false, []);
+
+    let input = (
+      <Fragment>
+        <DatePicker
+          onlyMonthPicker={onlyMonthPicker}
+          weekPicker={weekPicker}
+          numberOfMonths={numberOfMonths}
+          weekDays={weekDays}
+          months={months}
+          onChange={onChange}
+          minDate={minDate}
+          maxDate={maxDate}
+          hideOnScroll={true}
+          value={this.state.value}
+          onOpenPickNewDate={onOpenPickNewDate}
+          portal={true}
+          format={format}
+          ref={this.dateRef}
+          containerStyle={{
+            width:
+              colClasses.length > 0
+                ? `calc(100% - 38px)`
+                : `calc(${width} - 38px)`,
+          }}
+          style={{
+            height: "38px",
+            padding: "3px",
+            border: "1px solid rgb(204, 212, 219)",
+            borderTopLeftRadius: "4px",
+            borderBottomLeftRadius: "4px",
+            borderBottomRightRadius: 0,
+            borderTopRightRadius: 0,
+            width: `100%`,
+            ...style,
+          }}
+          range={true}
+          plugins={[<DatePanel header="Datas" />]}
+        />
+        <div
+          className={classNameAddOn}
+          style={{ margin: 0, width: "38px" }}
+          onClick={this.onButtonClick}
+        >
+          <span>
+            <i
+              onClick={this.onButtonClick}
+              className={
+                this.props.icon ? this.props.icon : "fa fa-calendar-alt"
+              }
+              style={{ color: this.props.iconColor }}
+            ></i>
+            {this.props.image ? (
+              <img
+                alt=" "
+                src={this.props.image}
+                onClick={this.onButtonClick}
+              />
+            ) : null}
+          </span>
+        </div>
+        {clear ? (
+          <i
+            onClick={this.onClearValue}
+            className={"far fa-times"}
+            style={{
+              cursor: "pointer",
+              color: "#6565cd",
+              position: "absolute",
+              right: 48,
+              top: 12,
+            }}
+          ></i>
+        ) : null}
+      </Fragment>
+    );
+
+    if (this.props.id) {
+      this.idEdit = this.props.id;
+    }
+    let className = AnterosUtils.buildClassNames(
+      "input-group",
+      this.props.className ? this.props.className : "",
+      colClasses
+    );
+
+    let _width = this.props.width;
+    if (colClasses.length > 0) {
+      _width = "";
+    }
+
+    if (this.props.icon && colClasses.length > 0) {
+      return (
+        <div
+          className={className}
+          style={{ ...this.props.style, width: _width }}
+          ref={(ref) => (this.divInput = ref)}
+        >
+          {input}
+        </div>
+      );
+    } else {
+      if (colClasses.length > 0) {
+        return (
+          <div className={AnterosUtils.buildClassNames(colClasses)}>
+            {input}
+          </div>
+        );
+      } else {
+        return (
+          <div
+            className={className}
+            style={{
+              ...this.props.style,
+              width: _width,
+              marginBottom: "4px",
+              marginTop: "4px",
+            }}
+            ref={(ref) => (this.divInput = ref)}
+          >
+            {input}
+          </div>
+        );
+      }
+    }
+  }
+}
+
 AnterosDateRangePicker.propTypes = {
-  dataSource: PropTypes.oneOfType([
-    PropTypes.instanceOf(AnterosLocalDatasource),
-    PropTypes.instanceOf(AnterosRemoteDatasource),
-  ]),
-  dataField: PropTypes.string.isRequired,
-  lookupField: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  placeHolder: PropTypes.string,
-  disabled: PropTypes.bool,
-  maxLenght: PropTypes.number.isRequired,
-  extraSmall: columnProps,
-  small: columnProps,
-  medium: columnProps,
-  large: columnProps,
-  extraLarge: columnProps,
-  icon: PropTypes.any,
-  iconColor: PropTypes.string,
-  image: PropTypes.string,
-  style: PropTypes.object,
-  readOnly: PropTypes.bool.isRequired,
+  weekPicker: PropTypes.bool.isRequired,
+  onlyMonthPicker: PropTypes.bool.isRequired,
+  onlyYearPicker: PropTypes.bool.isRequired,
+  numberOfMonths: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  minDate: PropTypes.any,
+  maxDate: PropTypes.any,
+  width: PropTypes.any,
+  format: PropTypes.string.isRequired,
+  primary: PropTypes.bool.isRequired,
   clear: PropTypes.bool.isRequired,
 };
 
 AnterosDateRangePicker.defaultProps = {
-  readOnly: false,
-  icon: "fa fa-calendar",
-  clear: true,
+  weekPicker: false,
+  onlyMonthPicker: false,
+  onlyYearPicker: false,
+  numberOfMonths: 2,
+  onChange: noop,
+  width: "250px",
+  format: "DD/MM/YYYY",
   primary: true,
-  dateFormat: DatePickerDefaults.dateFormat,
-  portal: false,
-  initialDate: dayjs(),
-  showMonthCnt: 2,
-  startText: "",
-  endText: "",
-  placeHolder: DatePickerDefaults.dateFormat,
+  icon: "fa fa-calendar-alt",
+  onOpenPickNewDate: false,
+  clear: true,
 };
 
-class AnterosTimePicker extends React.Component {
+class AnterosDateTimeRangePicker extends Component {
   constructor(props) {
     super(props);
-    autoBind(this);
-  }
-  render() {
-    return (
-      <AnterosDatePicker
-        {...this.props}
-        showTimeOnly
-        icon="fa fa-clock"
-      ></AnterosDatePicker>
-    );
-  }
-}
-
-AnterosTimePicker.propTypes = AnterosDatePicker.propTypes;
-AnterosTimePicker.defaultProps = AnterosDatePicker.defaultProps;
-
-class AnterosRangePickerInput extends React.Component {
-  constructor(props) {
-    super(props);
+    this.dateRef = React.createRef();
+    this.state = { calendarOpened: false };
     autoBind(this);
   }
 
-  handleChange(fieldType, e) {
-    ifExistCall(this.props.onChange, fieldType, e.currentTarget.value);
+  onOpen() {
+    this.setState({ ...this.state, calendarOpened: true });
   }
 
-  handleBlur(fieldType, e) {
-    ifExistCall(this.props.onBlur, fieldType, e.currentTarget.value);
-  }
-  handleClick(fieldType) {
-    ifExistCall(this.props.onClick, fieldType);
-  }
-  handleClear(fieldType) {
-    ifExistCall(this.props.onClear, fieldType);
+  onClose() {
+    this.setState({ ...this.state, calendarOpened: false });
   }
 
-  renderStartInput() {
-    const { startValue, startPlaceholder } = this.props;
-    return this.renderPickerInput(
-      FieldType.START,
-      startValue,
-      startPlaceholder
-    );
+  onButtonClick(event) {
+    event.preventDefault();
+    if (this.state.calendarOpened) {
+      this.dateRef.current.closeCalendar();
+    } else {
+      this.dateRef.current.openCalendar();
+    }
+    this.setState({
+      ...this.state,
+      calendarOpened: !this.state.calendarOpened,
+    });
   }
 
-  renderEndInput() {
-    const { endValue, endPlaceholder } = this.props;
-    return this.renderPickerInput(FieldType.END, endValue, endPlaceholder);
-  }
-
-  renderPickerInput(fieldType, value, placeholder) {
-    const { readOnly, disabled, clear } = this.props;
-    return (
-      <AnterosPickerInput
-        value={value}
-        readOnly={readOnly}
-        disabled={disabled}
-        clear={clear}
-        className="date-range"
-        onClear={(e) => this.handleClear(fieldType, e)}
-        onClick={(e) => this.handleClick(fieldType, e)}
-        onChange={(e) => this.handleChange(fieldType, e)}
-        onBlur={(e) => this.handleBlur(fieldType, e)}
-        placeholder={placeholder}
-        paddingLeft="10px"
-      />
-    );
+  onClearValue() {
+    this.setState({...this.state, value: [], update:Math.random()},()=>{
+      if (this.props.onChange){
+        this.props.onChange([]);
+      }
+    });    
   }
 
   render() {
-    return (
-      <div className="date-range-picker-input">
-        <span className="date-range-picker-input__start">
-          {this.renderStartInput()}
-        </span>
-        <span className="date-range-picker-input__icon">
-          <SVGIcon id="right-arrow" />
-        </span>
-        <span className="date-range-picker-input__end">
-          {this.renderEndInput()}
-        </span>
-      </div>
+    const {
+      readOnly,
+      disabled,
+      format,
+      numberOfMonths,
+      weekPicker,
+      onlyMonthPicker,
+      onChange,
+      minDate,
+      maxDate,
+      clear,
+      onOpenPickNewDate,
+      style,
+      width,
+    } = this.props;
+    let classNameAddOn = AnterosUtils.buildClassNames(
+      "input-group-addon",
+      disabled || readOnly ? "disabled" : "",
+      this.props.primary || this.props.fullPrimary ? "btn btn-primary" : "",
+      this.props.success || this.props.fullSucces ? "btn btn-success" : "",
+      this.props.info || this.props.fullInfo ? "btn btn-info" : "",
+      this.props.danger || this.props.fullDanger ? "btn btn-danger" : "",
+      this.props.warning || this.props.fullWarning ? "btn btn-warning" : "",
+      this.props.secondary || this.props.fullSecondary
+        ? "btn btn-secondary"
+        : ""
     );
+
+    const colClasses = buildGridClassNames(this.props, false, []);
+
+    let input = (
+      <Fragment>
+        <DatePicker
+          onlyMonthPicker={onlyMonthPicker}
+          weekPicker={weekPicker}
+          numberOfMonths={numberOfMonths}
+          weekDays={weekDays}
+          months={months}
+          onChange={onChange}
+          minDate={minDate}
+          maxDate={maxDate}
+          includeTime={true}
+          hideOnScroll={true}
+          onOpenPickNewDate={onOpenPickNewDate}
+          portal={true}
+          format={format}
+          value={this.state.value}
+          ref={this.dateRef}
+          containerStyle={{
+            width:
+              colClasses.length > 0
+                ? `calc(100% - 42px)`
+                : `calc(${width} - 38px)`,
+          }}
+          style={{
+            height: "38px",
+            padding: "3px",
+            border: "1px solid rgb(204, 212, 219)",
+            borderTopLeftRadius: "4px",
+            borderBottomLeftRadius: "4px",
+            borderBottomRightRadius: 0,
+            borderTopRightRadius: 0,
+            width: `100%`,
+            ...style,
+          }}
+          range={true}
+          plugins={[<DatePanel header="Datas" />]}
+        />
+        <div
+          className={classNameAddOn}
+          style={{ margin: 0, width: "38px" }}
+          onClick={this.onButtonClick}
+        >
+          <span>
+            <i
+              onClick={this.onButtonClick}
+              className={
+                this.props.icon ? this.props.icon : "fa fa-calendar-alt"
+              }
+              style={{ color: this.props.iconColor }}
+            ></i>
+            {this.props.image ? (
+              <img
+                alt=" "
+                src={this.props.image}
+                onClick={this.onButtonClick}
+              />
+            ) : null}
+          </span>
+        </div>
+        {clear ? (
+          <i
+            onClick={this.onClearValue}
+            className={"far fa-times"}
+            style={{
+              cursor: "pointer",
+              color: "#6565cd",
+              position: "absolute",
+              right: 48,
+              top: 12,
+            }}
+          ></i>
+        ) : null}
+      </Fragment>
+    );
+
+    if (this.props.id) {
+      this.idEdit = this.props.id;
+    }
+    let className = AnterosUtils.buildClassNames(
+      "input-group",
+      this.props.className ? this.props.className : "",
+      colClasses
+    );
+
+    let _width = this.props.width;
+    if (colClasses.length > 0) {
+      _width = "";
+    }
+
+    if (this.props.icon && colClasses.length > 0) {
+      return (
+        <div
+          className={className}
+          style={{ ...this.props.style, width: _width }}
+          ref={(ref) => (this.divInput = ref)}
+        >
+          {input}
+        </div>
+      );
+    } else {
+      if (colClasses.length > 0) {
+        return (
+          <div className={AnterosUtils.buildClassNames(colClasses)}>
+            {input}
+          </div>
+        );
+      } else {
+        return (
+          <div
+            className={className}
+            style={{
+              ...this.props.style,
+              width: _width,
+              marginBottom: "4px",
+              marginTop: "4px",
+            }}
+            ref={(ref) => (this.divInput = ref)}
+          >
+            {input}
+          </div>
+        );
+      }
+    }
   }
 }
 
+AnterosDateTimeRangePicker.propTypes = {
+  weekPicker: PropTypes.bool.isRequired,
+  onlyMonthPicker: PropTypes.bool.isRequired,
+  onlyYearPicker: PropTypes.bool.isRequired,
+  numberOfMonths: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  minDate: PropTypes.any,
+  maxDate: PropTypes.any,
+  width: PropTypes.any,
+  format: PropTypes.string.isRequired,
+  primary: PropTypes.bool.isRequired,
+  clear: PropTypes.bool.isRequired,
+};
 
-class TimeContainer extends React.Component {
-  
-  constructor(props){
-      super(props);
-      this.state = {
-        hour: this.props.hour || 0,
-        minute: this.props.minute || 0,
-      };
-      autoBind(this);
+AnterosDateTimeRangePicker.defaultProps = {
+  weekPicker: false,
+  onlyMonthPicker: false,
+  onlyYearPicker: false,
+  numberOfMonths: 2,
+  onChange: noop,
+  width: "250px",
+  format: "DD/MM/YYYY HH:mm:ss",
+  primary: true,
+  icon: "fa fa-calendar-alt",
+  onOpenPickNewDate: false,
+  clear: true,
+};
+
+class AnterosDateMultiplePicker extends Component {
+  constructor(props) {
+    super(props);
+    this.dateRef = React.createRef();
+    this.state = { calendarOpened: false };
+    autoBind(this);
   }
 
-  handleChange(item, e) {
-    const min = 0;
-    const max = item === "hour" ? 23 : 59;
-    let value = parseInt(e.currentTarget.value, 10);
+  onOpen() {
+    this.setState({ ...this.state, calendarOpened: true });
+  }
 
-    if (isNaN(value)) {
-      value = 0;
+  onClose() {
+    this.setState({ ...this.state, calendarOpened: false });
+  }
+
+  onButtonClick(event) {
+    event.preventDefault();
+    if (this.state.calendarOpened) {
+      this.dateRef.current.closeCalendar();
+    } else {
+      this.dateRef.current.openCalendar();
     }
-
-    if (max < value) {
-      value = max;
-    }
-
-    if (min > value) {
-      value = min;
-    }
-
-    this.setState(
-      {
-        ...this.state,
-        [item]: value,
-      },
-      () => this.invokeOnChange()
-    );
+    this.setState({
+      ...this.state,
+      calendarOpened: !this.state.calendarOpened,
+    });
   }
 
-  handleUp(item) {
-    const max = item === "hour" ? 23 : 59;
-
-    const value = this.state[item];
-
-    this.setState(
-      {
-        ...this.state,
-        [item]: Math.min(value + 1, max),
-      },
-      () => this.invokeOnChange()
-    );
-  }
-
-  handleDown(item) {
-    const min = 0;
-    const value = this.state[item];
-    this.setState(
-      {
-        ...this.state,
-        [item]: Math.max(value - 1, min),
-      },
-      () => this.invokeOnChange()
-    );
-  }
-
-  handleBlur() {
-    const { onBlur } = this.props;
-    const { hour, minute } = this.state;
-    ifExistCall(onBlur, hour, minute);
-  }
-
-  invokeOnChange() {
-    const { onChange } = this.props;
-    const { hour, minute } = this.state;
-    ifExistCall(onChange, hour, minute);
+  onClearValue() {
+    this.setState({...this.state, value: [], update:Math.random()},()=>{
+      if (this.props.onChange){
+        this.props.onChange([]);
+      }
+    });    
   }
 
   render() {
-    const { hour, minute } = this.state;
-    return (
-      <div className="date-time__container">
-        <AnterosTimeInput
-          onUp={() => this.handleUp("hour")}
-          onDown={() => this.handleDown("hour")}
-          onChange={(event) => this.handleChange("hour", event)}
-          onBlur={this.handleBlur}
-          value={hour}
-        />
-        <div className="date-time__container__div">:</div>
-        <AnterosTimeInput
-          onUp={() => this.handleUp("minute")}
-          onDown={() => this.handleDown("minute")}
-          onChange={(event) => this.handleChange("minute", event)}
-          onBlur={this.handleBlur}
-          value={minute}
-        />
-      </div>
+    const {
+      readOnly,
+      disabled,
+      format,
+      numberOfMonths,
+      weekPicker,
+      onlyMonthPicker,
+      onChange,
+      minDate,
+      maxDate,
+      clear,
+      onOpenPickNewDate,
+      style,
+      width,
+    } = this.props;
+    let classNameAddOn = AnterosUtils.buildClassNames(
+      "input-group-addon",
+      disabled || readOnly ? "disabled" : "",
+      this.props.primary || this.props.fullPrimary ? "btn btn-primary" : "",
+      this.props.success || this.props.fullSucces ? "btn btn-success" : "",
+      this.props.info || this.props.fullInfo ? "btn btn-info" : "",
+      this.props.danger || this.props.fullDanger ? "btn btn-danger" : "",
+      this.props.warning || this.props.fullWarning ? "btn btn-warning" : "",
+      this.props.secondary || this.props.fullSecondary
+        ? "btn btn-secondary"
+        : ""
     );
+
+    const colClasses = buildGridClassNames(this.props, false, []);
+
+    let input = (
+      <Fragment>
+        <DatePicker
+          onlyMonthPicker={onlyMonthPicker}
+          weekPicker={weekPicker}
+          numberOfMonths={numberOfMonths}
+          weekDays={weekDays}
+          months={months}
+          onChange={onChange}
+          minDate={minDate}
+          maxDate={maxDate}
+          multiple={true}
+          onOpenPickNewDate={onOpenPickNewDate}
+          hideOnScroll={true}
+          portal={true}
+          format={format}
+          value={this.state.value}
+          ref={this.dateRef}
+          containerStyle={{
+            width:
+              colClasses.length > 0
+                ? `calc(100% - 42px)`
+                : `calc(${width} - 38px)`,
+          }}
+          style={{
+            height: "38px",
+            padding: "3px",
+            border: "1px solid rgb(204, 212, 219)",
+            borderTopLeftRadius: "6px",
+            borderBottomLeftRadius: "6px",
+            borderBottomRightRadius: 0,
+            borderTopRightRadius: 0,
+            width: `100%`,
+            ...style,
+          }}
+          plugins={[<DatePanel header="Datas" />]}
+        />
+        <div
+          className={classNameAddOn}
+          style={{ margin: 0, width: "38px" }}
+          onClick={this.onButtonClick}
+        >
+          <span>
+            <i
+              onClick={this.onButtonClick}
+              className={
+                this.props.icon ? this.props.icon : "fa fa-calendar-alt"
+              }
+              style={{ color: this.props.iconColor }}
+            ></i>
+            {this.props.image ? (
+              <img
+                alt=" "
+                src={this.props.image}
+                onClick={this.onButtonClick}
+              />
+            ) : null}
+          </span>
+        </div>
+        {clear ? (
+          <i
+            onClick={this.onClearValue}
+            className={"far fa-times"}
+            style={{
+              cursor: "pointer",
+              color: "#6565cd",
+              position: "absolute",
+              right: 48,
+              top: 12,
+            }}
+          ></i>
+        ) : null}
+      </Fragment>
+    );
+
+    if (this.props.id) {
+      this.idEdit = this.props.id;
+    }
+    let className = AnterosUtils.buildClassNames(
+      "input-group",
+      this.props.className ? this.props.className : "",
+      colClasses
+    );
+
+    let _width = this.props.width;
+    if (colClasses.length > 0) {
+      _width = "";
+    }
+
+    if (this.props.icon && colClasses.length > 0) {
+      return (
+        <div
+          className={className}
+          style={{ ...this.props.style, width: _width }}
+          ref={(ref) => (this.divInput = ref)}
+        >
+          {input}
+        </div>
+      );
+    } else {
+      if (colClasses.length > 0) {
+        return (
+          <div className={AnterosUtils.buildClassNames(colClasses)}>
+            {input}
+          </div>
+        );
+      } else {
+        return (
+          <div
+            className={className}
+            style={{
+              ...this.props.style,
+              width: _width,
+              marginBottom: "4px",
+              marginTop: "4px",
+            }}
+            ref={(ref) => (this.divInput = ref)}
+          >
+            {input}
+          </div>
+        );
+      }
+    }
   }
 }
 
-const AnterosTimeInput = ({ onUp, onDown, onChange, onBlur, value }) => {
-  return (
-    <div className="date-time-input">
-      <div className="date-time-input__up">
-        <button onClick={onUp} type="button">
-          <SVGIcon id="up" />
-        </button>
-      </div>
-      <div className="date-time-input__text">
-        <input type="text" value={value} onChange={onChange} onBlur={onBlur} />
-      </div>
-      <div className="date-time-input__down">
-        <button onClick={onDown} type="button">
-          <SVGIcon id="down" />
-        </button>
-      </div>
-    </div>
-  );
+AnterosDateMultiplePicker.propTypes = {
+  weekPicker: PropTypes.bool.isRequired,
+  onlyMonthPicker: PropTypes.bool.isRequired,
+  onlyYearPicker: PropTypes.bool.isRequired,
+  numberOfMonths: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  minDate: PropTypes.any,
+  maxDate: PropTypes.any,
+  width: PropTypes.any,
+  format: PropTypes.string.isRequired,
+  primary: PropTypes.bool.isRequired,
+  clear: PropTypes.bool.isRequired,
 };
 
-AnterosTimeInput.defaultProps = {
-  value: 0,
+AnterosDateMultiplePicker.defaultProps = {
+  weekPicker: false,
+  onlyMonthPicker: false,
+  onlyYearPicker: false,
+  numberOfMonths: 2,
+  onChange: noop,
+  width: "250px",
+  format: "DD/MM/YYYY",
+  primary: true,
+  icon: "fa fa-calendar-alt",
+  onOpenPickNewDate: false,
+  clear: true
 };
 
-const TodayPanel = ({ today, show, onClick }) => (
-  <div
-    className={classNames("date-calendar__panel--today", {
-      "date-calendar__panel--show": show,
-    })}
-  >
-    <h2 onClick={onClick}>{today}</h2>
-  </div>
-);
+class AnterosDateTimeMultiplePicker extends Component {
+  constructor(props) {
+    super(props);
+    this.dateRef = React.createRef();
+    this.state = { calendarOpened: false };
+    autoBind(this);
+  }
+
+  onOpen() {
+    this.setState({ ...this.state, calendarOpened: true });
+  }
+
+  onClose() {
+    this.setState({ ...this.state, calendarOpened: false });
+  }
+
+  onButtonClick(event) {
+    event.preventDefault();
+    if (this.state.calendarOpened) {
+      this.dateRef.current.closeCalendar();
+    } else {
+      this.dateRef.current.openCalendar();
+    }
+    this.setState({
+      ...this.state,
+      calendarOpened: !this.state.calendarOpened,
+    });
+  }
+
+  onClearValue() {
+    this.setState({...this.state, value: [], update:Math.random()},()=>{
+      if (this.props.onChange){
+        this.props.onChange([]);
+      }
+    });    
+  }
+
+  render() {
+    const {
+      readOnly,
+      disabled,
+      format,
+      numberOfMonths,
+      weekPicker,
+      onlyMonthPicker,
+      onChange,
+      minDate,
+      maxDate,
+      clear,
+      onOpenPickNewDate,
+      style,
+      width,
+    } = this.props;
+    let classNameAddOn = AnterosUtils.buildClassNames(
+      "input-group-addon",
+      disabled || readOnly ? "disabled" : "",
+      this.props.primary || this.props.fullPrimary ? "btn btn-primary" : "",
+      this.props.success || this.props.fullSucces ? "btn btn-success" : "",
+      this.props.info || this.props.fullInfo ? "btn btn-info" : "",
+      this.props.danger || this.props.fullDanger ? "btn btn-danger" : "",
+      this.props.warning || this.props.fullWarning ? "btn btn-warning" : "",
+      this.props.secondary || this.props.fullSecondary
+        ? "btn btn-secondary"
+        : ""
+    );
+
+    const colClasses = buildGridClassNames(this.props, false, []);
+
+    let input = (
+      <Fragment>
+        <DatePicker
+          onlyMonthPicker={onlyMonthPicker}
+          weekPicker={weekPicker}
+          numberOfMonths={numberOfMonths}
+          weekDays={weekDays}
+          months={months}
+          onChange={onChange}
+          minDate={minDate}
+          maxDate={maxDate}
+          multiple={true}
+          onOpenPickNewDate={onOpenPickNewDate}
+          hideOnScroll={true}
+          portal={true}
+          format={format}
+          ref={this.dateRef}
+          value={this.state.value}
+          containerStyle={{
+            width:
+              colClasses.length > 0
+                ? `calc(100% - 42px)`
+                : `calc(${width} - 38px)`,
+          }}
+          style={{
+            height: "38px",
+            padding: "3px",
+            border: "1px solid rgb(204, 212, 219)",
+            borderTopLeftRadius: "6px",
+            borderBottomLeftRadius: "6px",
+            borderBottomRightRadius: 0,
+            borderTopRightRadius: 0,
+            width: `100%`,
+            ...style,
+          }}
+          plugins={[<DatePanel header="Datas" />]}
+        />
+        <div
+          className={classNameAddOn}
+          style={{ margin: 0, width: "38px" }}
+          onClick={this.onButtonClick}
+        >
+          <span>
+            <i
+              onClick={this.onButtonClick}
+              className={
+                this.props.icon ? this.props.icon : "fa fa-calendar-alt"
+              }
+              style={{ color: this.props.iconColor }}
+            ></i>
+            {this.props.image ? (
+              <img
+                alt=" "
+                src={this.props.image}
+                onClick={this.onButtonClick}
+              />
+            ) : null}
+          </span>
+        </div>
+        {clear ? (
+          <i
+            onClick={this.onClearValue}
+            className={"far fa-times"}
+            style={{
+              cursor: "pointer",
+              color: "#6565cd",
+              position: "absolute",
+              right: 48,
+              top: 12,
+            }}
+          ></i>
+        ) : null}
+      </Fragment>
+    );
+
+    if (this.props.id) {
+      this.idEdit = this.props.id;
+    }
+    let className = AnterosUtils.buildClassNames(
+      "input-group",
+      this.props.className ? this.props.className : "",
+      colClasses
+    );
+
+    let _width = this.props.width;
+    if (colClasses.length > 0) {
+      _width = "";
+    }
+
+    if (this.props.icon && colClasses.length > 0) {
+      return (
+        <div
+          className={className}
+          style={{ ...this.props.style, width: _width }}
+          ref={(ref) => (this.divInput = ref)}
+        >
+          {input}
+        </div>
+      );
+    } else {
+      if (colClasses.length > 0) {
+        return (
+          <div className={AnterosUtils.buildClassNames(colClasses)}>
+            {input}
+          </div>
+        );
+      } else {
+        return (
+          <div
+            className={className}
+            style={{
+              ...this.props.style,
+              width: _width,
+              marginBottom: "4px",
+              marginTop: "4px",
+            }}
+            ref={(ref) => (this.divInput = ref)}
+          >
+            {input}
+          </div>
+        );
+      }
+    }
+  }
+}
+
+AnterosDateMultiplePicker.propTypes = {
+  weekPicker: PropTypes.bool.isRequired,
+  onlyMonthPicker: PropTypes.bool.isRequired,
+  onlyYearPicker: PropTypes.bool.isRequired,
+  numberOfMonths: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  minDate: PropTypes.any,
+  maxDate: PropTypes.any,
+  width: PropTypes.any,
+  format: PropTypes.string.isRequired,
+  primary: PropTypes.bool.isRequired,
+  clear: PropTypes.bool.isRequired,
+};
+
+AnterosDateTimeMultiplePicker.defaultProps = {
+  weekPicker: false,
+  onlyMonthPicker: false,
+  onlyYearPicker: false,
+  numberOfMonths: 2,
+  onChange: noop,
+  width: "250px",
+  format: "DD/MM/YYYY HH:mm:ss",
+  primary: true,
+  icon: "fa fa-calendar-alt",
+  onOpenPickNewDate: false,
+  clear: true
+};
 
 export {
   AnterosDatePicker,
-  AnterosDateRangePicker,
   AnterosDateTimePicker,
+  AnterosTimeInput,
   AnterosTimePicker,
+  AnterosDateRangePicker,
+  AnterosDateTimeRangePicker,
+  AnterosDateMultiplePicker,
+  AnterosDateTimeMultiplePicker
 };

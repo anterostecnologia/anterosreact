@@ -819,7 +819,11 @@ class AnterosLocalDatasource extends AnterosDatasource {
     }
 
     open(data, cloneOnEdit) {
-        super.open();
+        this.close();
+        this.dispatchEvent(dataSourceEvents.BEFORE_OPEN);
+        this.data = [];
+        this.allData = [];
+        this.active = true;
         this.allData = data;
         if (!data) {
             this.data = [];
@@ -1025,7 +1029,11 @@ class AnterosRemoteDatasource extends AnterosDatasource {
     }
 
     open(config, callback) {
-        super.open();
+        this.close();
+        this.dispatchEvent(dataSourceEvents.BEFORE_OPEN);
+        this.data = [];
+        this.allData = [];
+        this.active = true;
         if (config && config != null) {
             this.executeAjax((config ? config : this.config), dataSourceEvents.AFTER_OPEN, callback);
         } else {

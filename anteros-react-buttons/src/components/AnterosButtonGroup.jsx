@@ -13,10 +13,9 @@ export default class AnterosButtonGroup extends Component {
     render() {
         let children = [];
         if (this.props.children) {
-            let _this = this;
             let arrChildren = Children.toArray(this.props.children);
             arrChildren.forEach(function (child) {
-                if (child.type && (!(child.type.componentName === 'AnterosButton'))) {
+                if (child.type && (child.type.componentName !== 'AnterosButton')) {
                     children.push(child);
                 } else {
                     children.push(createElement(AnterosButton, {

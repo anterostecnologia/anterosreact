@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-theme",
-  "version": "2.0.28",
+  "version": "2.0.30",
   "description": "Anteros components for React - Theme",
   "main": "lib/@anterostecnologia/anteros-react-theme.js",
   "scripts": {

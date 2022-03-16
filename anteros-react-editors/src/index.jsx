@@ -4,10 +4,14 @@ import AnterosCheckboxToggle from './components/AnterosCheckboxToggle';
 import AnterosClockPicker from './components/AnterosClockPicker';
 import AnterosColorPicker from './components/AnterosColorPicker';
 import {
-    AnterosDatePicker,
-    AnterosDateRangePicker,
-    AnterosDateTimePicker,
-    AnterosTimePicker,
+  AnterosDatePicker,
+  AnterosDateTimePicker,
+  AnterosTimeInput,
+  AnterosTimePicker,
+  AnterosDateRangePicker,
+  AnterosDateTimeRangePicker,
+  AnterosDateMultiplePicker,
+  AnterosDateTimeMultiplePicker
   } from './components/AnterosDatePicker';
 import AnterosEdit from './components/AnterosEdit';
 import AnterosEmojiArea from './components/AnterosEmojiArea';
@@ -34,10 +38,11 @@ import {AnterosMultiSelect,AnterosMultiSelectOption} from './components/AnterosM
 import AnterosInputTag from './components/AnterosInputTag';
 
 export {
-    AnterosMultiSelect,AnterosMultiSelectOption, AnterosCheckbox, AnterosCheckboxSlide, AnterosCheckboxToggle,
-    AnterosClockPicker, AnterosColorPicker, AnterosDatePicker,
-    AnterosDateRangePicker, AnterosEdit,
-    AnterosEmojiArea, AnterosMaskEdit, AnterosNumber,AnterosPassword,
+    AnterosMultiSelect,AnterosMultiSelectOption, AnterosCheckbox, AnterosCheckboxSlide, 
+    AnterosCheckboxToggle,AnterosDateTimeMultiplePicker,
+    AnterosClockPicker, AnterosColorPicker, AnterosDatePicker,AnterosTimeInput,
+    AnterosDateRangePicker, AnterosEdit,AnterosDateTimeRangePicker,
+    AnterosDateMultiplePicker, AnterosEmojiArea, AnterosMaskEdit, AnterosNumber,AnterosPassword,
     AnterosRadioGroup, AnterosRadio, AnterosSelect, AnterosSelectOption,
     AnterosTagsInput, AnterosTextArea, AnterosTimePicker, AnterosLookupEdit,
     AnterosLookupNumber, AnterosLookupCombobox, AnterosCombobox, AnterosComboboxOption, AnterosHtmlEditor, AnterosCreditCard,

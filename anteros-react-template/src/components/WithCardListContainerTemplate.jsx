@@ -26,8 +26,8 @@ import {
 } from "@anterostecnologia/anteros-react-containers";
 import {
   AnterosBlockUi,
-  AnterosLoader,
 } from "@anterostecnologia/anteros-react-loaders";
+import { TailSpin } from 'react-loader-spinner';
 import {
   AnterosCol,
   AnterosRow,
@@ -529,19 +529,6 @@ export default function WithCardListContainerTemplate(_loadingProps) {
 
       onToggleExpandedFilter(expanded) {
         this.setState({...this.state, filterExpanded: expanded});
-        setTimeout(() => {
-          if (
-            this.state.newHeight !== undefined &&
-            this.state.width !== undefined
-          ) {
-            if (this.table1) {
-              this.table1.resize(this.state.width - 360, this.state.newHeight);
-            }
-            if (this.table2) {
-              this.table2.resize("100%", this.state.newHeight);
-            }
-          }
-        }, 500);
       }
 
       onSelectedFilter(filter, index) {
@@ -572,8 +559,13 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       }
 
       getData(currentFilter,page){
-        if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
-           (currentFilter.filter.rules.length > 0)) {
+        if (
+          currentFilter &&
+          currentFilter.filter &&
+          (currentFilter.filter.filterType === "advanced" || 
+           currentFilter.filter.filterType === "normal") &&
+          currentFilter.filter.rules.length > 0
+        ) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
                      (currentFilter.filter.quickFilterText !== "")) {
@@ -673,6 +665,11 @@ export default function WithCardListContainerTemplate(_loadingProps) {
       render() {
         let CardItem = this.getCardItem();
         let ViewItem = this.getViewItem();
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomMessageLoading"
+        )
+          ? this.getCustomMessageLoading()
+          : loadingProps.messageLoading;
         return (
           <AnterosCard
             withScroll={false}
@@ -704,24 +701,33 @@ export default function WithCardListContainerTemplate(_loadingProps) {
               />
             </HeaderActions>
             <AnterosBlockUi
-              styleBlockMessage={{
-                border: "2px solid white",
-                width: "200px",
-                backgroundColor: "#8BC34A",
-                borderRadius: "8px",
-                color: "white",
-              }}
-              styleOverlay={{
-                opacity: 0.1,
-                backgroundColor: "black",
-              }}
-              tag="div"
-              blocking={this.loading}
-              message={loadingProps.messageLoading}
-              loader={
-                <AnterosLoader active type="ball-pulse" color="#02a17c" />
-              }
-            >
+                tagStyle={{
+                  height: "100%",
+                }}
+                styleBlockMessage={{
+                  border: "2px solid white",
+                  width: "200px",
+                  height:'80px',
+                  padding:'8px',
+                  backgroundColor: "rgb(56 70 112)",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+                styleOverlay={{
+                  opacity: 0.1,
+                  backgroundColor: "black",
+                }}
+                tag="div"
+                blocking={this.state.loading}
+                message={messageLoading}
+                loader={
+                  customLoader ? (
+                    customLoader
+                  ) : (
+                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                  )
+                }
+              >
               {loadingProps.withFilter ? (
                 <div
                   style={{

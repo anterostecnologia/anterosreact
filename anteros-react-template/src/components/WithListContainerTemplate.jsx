@@ -26,8 +26,8 @@ import {
 } from "@anterostecnologia/anteros-react-containers";
 import {
   AnterosBlockUi,
-  AnterosLoader,
 } from "@anterostecnologia/anteros-react-loaders";
+import { TailSpin } from 'react-loader-spinner';
 import {
   AnterosCol,
   AnterosRow,
@@ -356,8 +356,13 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
       }
 
       getData(currentFilter,page){
-        if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
-           (currentFilter.filter.rules.length > 0)) {
+        if (
+          currentFilter &&
+          currentFilter.filter &&
+          (currentFilter.filter.filterType === "advanced" || 
+           currentFilter.filter.filterType === "normal") &&
+          currentFilter.filter.rules.length > 0
+        ) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
                      (currentFilter.filter.quickFilterText !== "")) {
@@ -483,6 +488,11 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
       }
 
       render() {
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomMessageLoading"
+        )
+          ? this.getCustomMessageLoading()
+          : loadingProps.messageLoading;
         return (
           <AnterosCard
             caption={loadingProps.caption}
@@ -513,24 +523,33 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
               />
             </HeaderActions>
             <AnterosBlockUi
-              styleBlockMessage={{
-                border: "2px solid white",
-                width: "200px",
-                backgroundColor: "#8BC34A",
-                borderRadius: "8px",
-                color: "white",
-              }}
-              styleOverlay={{
-                opacity: 0.1,
-                backgroundColor: "black",
-              }}
-              tag="div"
-              blocking={this.state.loading}
-              message={loadingProps.messageLoading}
-              loader={
-                <AnterosLoader active type="ball-pulse" color="#02a17c" />
-              }
-            >
+                tagStyle={{
+                  height: "100%",
+                }}
+                styleBlockMessage={{
+                  border: "2px solid white",
+                  width: "200px",
+                  height:'80px',
+                  padding:'8px',
+                  backgroundColor: "rgb(56 70 112)",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+                styleOverlay={{
+                  opacity: 0.1,
+                  backgroundColor: "black",
+                }}
+                tag="div"
+                blocking={this.state.loading}
+                message={messageLoading}
+                loader={
+                  customLoader ? (
+                    customLoader
+                  ) : (
+                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                  )
+                }
+              >
               <div
                 style={{
                   display: "flex",

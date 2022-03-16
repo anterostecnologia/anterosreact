@@ -208,8 +208,12 @@ export default class AnterosTextArea extends React.Component {
 
     render() {
         let readOnly = this.props.readOnly;
+        let disabled = this.props.disabled;
         if (this.props.dataSource && !readOnly) {
             readOnly = (this.props.dataSource.getState() == 'dsBrowse');
+        }
+        if (this.props.dataSource && !disabled) {
+            disabled = (this.props.dataSource.getState() == 'dsBrowse');
         }
         const colClasses = buildGridClassNames(this.props, false, []);
         const className = AnterosUtils.buildClassNames(
@@ -222,7 +226,7 @@ export default class AnterosTextArea extends React.Component {
         let textArea = <textarea maxLength={this.props.maxLenght > 0 ? this.props.maxLenght : ""}
             id={this.idTextArea}
             placeholder={this.props.placeHolder}
-            disabled={(this.props.disabled ? true : false)}
+            disabled={disabled}
             style={{ ...this.props.style, width: this.props.width, height: this.props.height }}
             ref={ref => this.input = ref}
             value={this.state.value}

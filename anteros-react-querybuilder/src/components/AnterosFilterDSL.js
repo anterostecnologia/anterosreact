@@ -1,24 +1,24 @@
 import {
   Anteros,
   AnterosStringUtils,
-  AnterosDateUtils
-} from '@anterostecnologia/anteros-react-core';
+  AnterosDateUtils,
+} from "@anterostecnologia/anteros-react-core";
 
 export const Operator = {
-  IS: 'IS',
-  BETWEEN: 'BETWEEN',
-  LIKE: 'LIKE',
-  EQ: 'EQ',
-  NEQ: 'NEQ',
-  GEQ: 'GEQ',
-  LEQ: 'LEQ',
-  GT: 'GT',
-  LT: 'LT',
-  NOT: 'NOT',
-  IN: 'IN',
-  IS_NOT: 'IS_NOT',
-  AND: 'AND',
-  OR: 'OR'
+  IS: "IS",
+  BETWEEN: "BETWEEN",
+  LIKE: "LIKE",
+  EQ: "EQ",
+  NEQ: "NEQ",
+  GEQ: "GEQ",
+  LEQ: "LEQ",
+  GT: "GT",
+  LT: "LT",
+  NOT: "NOT",
+  IN: "IN",
+  IS_NOT: "IS_NOT",
+  AND: "AND",
+  OR: "OR",
 };
 
 function is(type, obj) {
@@ -46,20 +46,20 @@ function isOperator(operator) {
 }
 
 export const ExpressionType = {
-  FIELD: 'FIELD',
-  FILTER: 'FILTER',
-  GROUP: 'GROUP',
-  OPERATION: 'OPERATION',
-  AND: 'AND',
-  OR: 'OR',
-  IN: 'IN',
-  BETWEEN: 'BETWEEN'
+  FIELD: "FIELD",
+  FILTER: "FILTER",
+  GROUP: "GROUP",
+  OPERATION: "OPERATION",
+  AND: "AND",
+  OR: "OR",
+  IN: "IN",
+  BETWEEN: "BETWEEN",
 };
 
 export class FilterException {
   constructor(message) {
     this.message = message;
-    this.name = 'FilterException';
+    this.name = "FilterException";
   }
 }
 
@@ -103,22 +103,22 @@ class FilterExpression {
 
   applyOperation(operator, value) {
     throw new FilterException(
-      'applyOperation só pode ser usado nas classes concretas.'
+      "applyOperation só pode ser usado nas classes concretas."
     );
   }
   applyInOperation() {
     throw new FilterException(
-      'applyInOperation só pode ser usado nas classes concretas.'
+      "applyInOperation só pode ser usado nas classes concretas."
     );
   }
   applyNotInOperation() {
     throw new FilterException(
-      'applyNotInOperation só pode ser usado nas classes concretas.'
+      "applyNotInOperation só pode ser usado nas classes concretas."
     );
   }
   applyBetweenOperation() {
     throw new FilterException(
-      'applyBetweenOperation só pode ser usado nas classes concretas.'
+      "applyBetweenOperation só pode ser usado nas classes concretas."
     );
   }
   EQ(value) {
@@ -148,10 +148,10 @@ class FilterExpression {
         new OperationExpression(arguments[0], arguments[1], arguments[2])
       );
     } else if (arguments.length === 1) {
-      if (typeof arguments[0] === 'object') {
+      if (typeof arguments[0] === "object") {
         if (arguments[0].expressionType === undefined) {
           throw new FilterException(
-            'Tipo de parâmetro incorreto para uso de AND. Parâmetro ' +
+            "Tipo de parâmetro incorreto para uso de AND. Parâmetro " +
               arguments[0]
           );
         } else {
@@ -165,11 +165,11 @@ class FilterExpression {
           }
         }
       } else {
-        throw new FilterException('Parâmetro deve ser do tipo Object.');
+        throw new FilterException("Parâmetro deve ser do tipo Object.");
       }
     } else {
       throw new FilterException(
-        'Número de parâmetros incorretos para a chamade de AND'
+        "Número de parâmetros incorretos para a chamade de AND"
       );
     }
   }
@@ -181,10 +181,10 @@ class FilterExpression {
         new OrExpression(arguments[0], arguments[1], arguments[2])
       );
     } else if (arguments.length === 1) {
-      if (typeof arguments[0] === 'object') {
+      if (typeof arguments[0] === "object") {
         if (arguments[0].expressionType === undefined) {
           throw new FilterException(
-            'Tipo de parâmetro incorreto para uso de OR. Parâmetro ' +
+            "Tipo de parâmetro incorreto para uso de OR. Parâmetro " +
               arguments[0]
           );
         } else {
@@ -198,11 +198,11 @@ class FilterExpression {
           }
         }
       } else {
-        throw new FilterException('Parâmetro deve ser do tipo Object.');
+        throw new FilterException("Parâmetro deve ser do tipo Object.");
       }
     } else {
       throw new FilterException(
-        'Número de parâmetros incorretos para a chamade de OR'
+        "Número de parâmetros incorretos para a chamade de OR"
       );
     }
   }
@@ -221,25 +221,25 @@ class FilterExpression {
 
   STARTSWITH(value) {
     if (AnterosStringUtils.isEmpty(value)) {
-      throw new FilterException('Para usar STARTSWITH informe um valor.');
+      throw new FilterException("Para usar STARTSWITH informe um valor.");
     }
-    value = value.concat('%');
+    value = value.concat("%");
     return this.applyOperation(Operator.LIKE, value);
   }
 
   ENDSWITH(value) {
     if (AnterosStringUtils.isEmpty(value)) {
-      throw new FilterException('Para usar ENDSWITH informe um valor.');
+      throw new FilterException("Para usar ENDSWITH informe um valor.");
     }
-    value = '%'.concat(value);
+    value = "%".concat(value);
     return this.applyOperation(Operator.LIKE, value);
   }
 
   CONTAINS(value) {
     if (AnterosStringUtils.isEmpty(value)) {
-      throw new FilterException('Para usar v informe um valor.');
+      throw new FilterException("Para usar v informe um valor.");
     }
-    value = '%'.concat(value.concat('%'));
+    value = "%".concat(value.concat("%"));
     return this.applyOperation(Operator.LIKE, value);
   }
 
@@ -252,15 +252,15 @@ class FilterExpression {
   }
 
   ISNULL() {
-    return this.applyOperation(Operator.IS, 'NULL');
+    return this.applyOperation(Operator.IS, "NULL");
   }
 
   ISNOTNULL() {
-    return this.applyOperation(Operator.IS_NOT, 'NULL');
+    return this.applyOperation(Operator.IS_NOT, "NULL");
   }
   toJSON(sb) {
     throw new FilterException(
-      'toJSON deve ser implementado nas classes concretas herdadas de FilterExpression.'
+      "toJSON deve ser implementado nas classes concretas herdadas de FilterExpression."
     );
   }
 }
@@ -281,16 +281,16 @@ class OperationExpression extends FilterExpression {
 
   applyOperation(newOperator, newRhsValue) {
     if (!isOperator(newOperator)) {
-      throw new FilterException(newOperator + ' não é um operador válido.');
+      throw new FilterException(newOperator + " não é um operador válido.");
     }
 
     if (this.operator !== undefined) {
       throw new FilterException(
-        'Não é possível aplicar ' +
+        "Não é possível aplicar " +
           newOperator +
-          ' operation on an ' +
+          " operation on an " +
           this.operator +
-          ' expression.'
+          " expression."
       );
     }
 
@@ -300,7 +300,7 @@ class OperationExpression extends FilterExpression {
   applyInOperation() {
     if (arguments[0].length === 0) {
       throw new FilterException(
-        'Para usar operação IN é necessário informar os valores.'
+        "Para usar operação IN é necessário informar os valores."
       );
     }
 
@@ -315,7 +315,7 @@ class OperationExpression extends FilterExpression {
   applyNotInOperation() {
     if (arguments[0].length === 0) {
       throw new FilterException(
-        'Para usar operação NOT IN é necessário informar os valores.'
+        "Para usar operação NOT IN é necessário informar os valores."
       );
     }
 
@@ -330,13 +330,13 @@ class OperationExpression extends FilterExpression {
   applyBetweenOperation(valueStart, valueEnd) {
     if (valueStart === undefined) {
       throw new FilterException(
-        'Para usar operação BETWEEN é necessário informar o valor inicial.'
+        "Para usar operação BETWEEN é necessário informar o valor inicial."
       );
     }
 
     if (valueEnd === undefined) {
       throw new FilterException(
-        'Para usar operação BETWEEN é necessário informar o valor final.'
+        "Para usar operação BETWEEN é necessário informar o valor final."
       );
     }
 
@@ -351,9 +351,9 @@ class OperationExpression extends FilterExpression {
     sb.append('"type" : "OP",');
     sb.append('"lhsValue" : {');
     this.lhsValue.toJSON(sb);
-    sb.append('},');
-    if (is('Number', this.rhsValue)) {
-      sb.append('"rhsValue" : ' + this.rhsValue + ',');
+    sb.append("},");
+    if (is("Number", this.rhsValue)) {
+      sb.append('"rhsValue" : ' + this.rhsValue + ",");
     } else {
       sb.append('"rhsValue" : "' + this.rhsValue + '",');
     }
@@ -380,7 +380,7 @@ class GroupExpression extends FilterExpression {
 
   getOperator() {
     throw new FilterException(
-      'Uso incorreto do método. Este método deve ser implementado por classes concretas que herdam de GroupExpression.'
+      "Uso incorreto do método. Este método deve ser implementado por classes concretas que herdam de GroupExpression."
     );
   }
   applyOperation(operator, value) {
@@ -416,15 +416,15 @@ class GroupExpression extends FilterExpression {
     let appendDelimiter = false;
     for (let i = 0; i < this.expressions.length; i++) {
       if (appendDelimiter) {
-        sb.append(',');
+        sb.append(",");
       }
-      sb.append('{');
+      sb.append("{");
       this.expressions[i].toJSON(sb);
-      sb.append('}');
+      sb.append("}");
 
       appendDelimiter = true;
     }
-    sb.append(']');
+    sb.append("]");
   }
 }
 
@@ -437,7 +437,7 @@ class InExpression extends FilterExpression {
     super();
     if (arguments.length < 3) {
       throw new FilterException(
-        'Para usar a expressão IN informe os parâmetros corretamente.'
+        "Para usar a expressão IN informe os parâmetros corretamente."
       );
     }
 
@@ -453,43 +453,43 @@ class InExpression extends FilterExpression {
 
   applyOperation(operator, value) {
     throw new FilterException(
-      'Não é possível aplicar a operação ' + operator + ' na expressão IN.'
+      "Não é possível aplicar a operação " + operator + " na expressão IN."
     );
   }
   applyInOperation() {
     throw new FilterException(
-      'Não é possível aplicar a operação IN na expressão IN.'
+      "Não é possível aplicar a operação IN na expressão IN."
     );
   }
   applyNotInOperation() {
     throw new FilterException(
-      'Não é possível aplicar a operação NOT IN na expressão IN.'
+      "Não é possível aplicar a operação NOT IN na expressão IN."
     );
   }
   applyBetweenOperation(valueStart, valueEnd) {
     throw new FilterException(
-      'Não é possível aplicar a operação BETWEEEN na expressão IN.'
+      "Não é possível aplicar a operação BETWEEEN na expressão IN."
     );
   }
   toJSON(sb) {
     sb.append('"type" : "IN",');
     sb.append('"field" : {');
     this.field.toJSON(sb);
-    sb.append('},');
+    sb.append("},");
     sb.append('"values" : [');
     let appendDelimiter = false;
 
     for (let i = 0; i < this.values.length; i++) {
-      if (appendDelimiter) sb.append(',');
+      if (appendDelimiter) sb.append(",");
 
-      if (is('Number', this.values[i])) {
+      if (is("Number", this.values[i])) {
         sb.append(this.values[i]);
       } else {
         sb.append('"' + this.values[i] + '"');
       }
       appendDelimiter = true;
     }
-    sb.append('],');
+    sb.append("],");
     sb.append('"negative" : ' + this.negative);
   }
 }
@@ -502,13 +502,13 @@ class BetweenExpression extends FilterExpression {
   constructor(field, valueStart, valueEnd) {
     super();
     if (field === undefined) {
-      throw new FilterException('Informe o valor do field para usar BETWEEN.');
+      throw new FilterException("Informe o valor do field para usar BETWEEN.");
     }
     if (valueStart === undefined) {
-      throw new FilterException('Informe o valor inicial para usar BETWEEN.');
+      throw new FilterException("Informe o valor inicial para usar BETWEEN.");
     }
     if (valueEnd === undefined) {
-      throw new FilterException('Informe o valor final para usar BETWEEN.');
+      throw new FilterException("Informe o valor final para usar BETWEEN.");
     }
 
     this.field = field;
@@ -519,35 +519,35 @@ class BetweenExpression extends FilterExpression {
 
   applyOperation(operator, value) {
     throw new FilterException(
-      'Não é possível aplicar a operação ' + operator + ' na expressão BETWEEN.'
+      "Não é possível aplicar a operação " + operator + " na expressão BETWEEN."
     );
   }
   applyInOperation() {
     throw new FilterException(
-      'Não é possível aplicar a operação IN na expressão BETWEEN.'
+      "Não é possível aplicar a operação IN na expressão BETWEEN."
     );
   }
   applyNotInOperation() {
     throw new FilterException(
-      'Não é possível aplicar a operação NOT IN na expressão BETWEEN.'
+      "Não é possível aplicar a operação NOT IN na expressão BETWEEN."
     );
   }
   applyBetweenOperation(valueStart, valueEnd) {
     throw new FilterException(
-      'Não é possível aplicar a operação BETWEEEN na expressão BETWEEN.'
+      "Não é possível aplicar a operação BETWEEEN na expressão BETWEEN."
     );
   }
   toJSON(sb) {
     sb.append('"type" : "BETWEEN",');
     sb.append('"field" : {');
     this.field.toJSON(sb);
-    sb.append('},');
-    if (is('Number', this.valueStart)) {
-      sb.append('"valueStart" : ' + this.valueStart + ',');
+    sb.append("},");
+    if (is("Number", this.valueStart)) {
+      sb.append('"valueStart" : ' + this.valueStart + ",");
     } else {
       sb.append('"valueStart" : "' + this.valueStart + '",');
     }
-    if (is('Number', this.valueEnd)) {
+    if (is("Number", this.valueEnd)) {
       sb.append('"valueEnd" : ' + this.valueEnd);
     } else {
       sb.append('"valueEnd" : "' + this.valueEnd + '"');
@@ -640,7 +640,7 @@ export class AnterosFilterDSL {
       if (sort && sort.sortFields) {
         sort.sortFields.forEach(function(field) {
           if (field.selected) {
-            _this.fieldsToSort.push(field.name + ' ' + field.asc_desc);
+            _this.fieldsToSort.push(field.name + " " + field.asc_desc);
           }
         });
       }
@@ -649,105 +649,120 @@ export class AnterosFilterDSL {
 
   processRules(condition, rules, addWhere) {
     let _this = this;
-    rules.forEach(function(rule) {
+    rules.forEach((rule) => {
       if (rule.field && !rule.disabled) {
         let CONDITION = _this.AND;
-        if (condition === 'or') {
+        if (condition === "or") {
           CONDITION = _this.OR;
         }
         if (addWhere) {
           CONDITION = _this.WHERE;
         }
-        addWhere = false;
         let newValue = rule.value;
         let newValue2 = rule.value2;
-        if (rule.dataType === 'date') {
-          newValue = AnterosDateUtils.formatDate(
-            AnterosDateUtils.parseDateWithFormat(newValue, 'DD/MM/YYYY'),
-            Anteros.dataSourceDatetimeFormat
-          );
-        } else if (rule.dataType === 'date_time') {
-          newValue = AnterosDateUtils.formatDate(
-            AnterosDateUtils.parseDateWithFormat(
-              newValue,
-              'DD/MM/YYYY hh:mm:ss'
-            ),
-            Anteros.dataSourceDatetimeFormat
-          );
-        }
-
-        if (newValue2) {
-          if (rule.dataType === 'date') {
-            newValue2 = AnterosDateUtils.formatDate(
-              AnterosDateUtils.parseDateWithFormat(newValue2, 'DD/MM/YYYY'),
+        if (newValue && newValue !== "") {
+          if (rule.dataType === "date") {
+            newValue = AnterosDateUtils.formatDate(
+              AnterosDateUtils.parseDateWithFormat(newValue, "DD/MM/YYYY"),
               Anteros.dataSourceDatetimeFormat
             );
-          } else if (rule.dataType === 'date_time') {
-            newValue2 = AnterosDateUtils.formatDate(
+          } else if (rule.dataType === "date_time") {
+            newValue = AnterosDateUtils.formatDate(
               AnterosDateUtils.parseDateWithFormat(
-                newValue2,
-                'DD/MM/YYYY hh:mm:ss'
+                newValue,
+                "DD/MM/YYYY hh:mm:ss"
               ),
               Anteros.dataSourceDatetimeFormat
             );
           }
         }
 
-        if (rule.operator === 'null') {
+        if (newValue2 && newValue2 !== "") {
+          if (rule.dataType === "date") {
+            newValue2 = AnterosDateUtils.formatDate(
+              AnterosDateUtils.parseDateWithFormat(newValue2, "DD/MM/YYYY"),
+              Anteros.dataSourceDatetimeFormat
+            );
+          } else if (rule.dataType === "date_time") {
+            newValue2 = AnterosDateUtils.formatDate(
+              AnterosDateUtils.parseDateWithFormat(
+                newValue2,
+                "DD/MM/YYYY hh:mm:ss"
+              ),
+              Anteros.dataSourceDatetimeFormat
+            );
+          }
+        }
+
+        if (rule.operator === "null") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).ISNULL();
-        } else if (rule.operator === 'notNull') {
+          addWhere = false;
+        } else if (rule.operator === "notNull") {
           CONDITION(
             _this.EXP(_this.FIELD(rule.field, rule.fieldSql))
           ).ISNOTNULL();
-        } else if (rule.operator === 'contains') {
+          addWhere = false;
+        } else if (rule.operator === "contains" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).CONTAINS(
             newValue
           );
-        } else if (rule.operator === 'startsWith') {
+          addWhere = false;
+        } else if (rule.operator === "startsWith" && newValue && newValue !== "") {
           CONDITION(
             _this.EXP(_this.FIELD(rule.field, rule.fieldSql))
           ).STARTSWITH(newValue);
-        } else if (rule.operator === 'endsWith') {
+          addWhere = false;
+        } else if (rule.operator === "endsWith" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).ENDSWITH(
             newValue
           );
-        } else if (rule.operator === '=') {
+          addWhere = false;
+        } else if (rule.operator === "=" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).EQ(
             newValue
           );
-        } else if (rule.operator === '!=') {
+          addWhere = false;
+        } else if (rule.operator === "!=" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).NEQ(
             newValue
           );
-        } else if (rule.operator === '<') {
+          addWhere = false;
+        } else if (rule.operator === "<" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).LT(
             newValue
           );
-        } else if (rule.operator === '>') {
+          addWhere = false;
+        } else if (rule.operator === ">" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).GT(
             newValue
           );
-        } else if (rule.operator === '<=') {
+          addWhere = false;
+        } else if (rule.operator === "<=" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).LEQ(
             newValue
           );
-        } else if (rule.operator === '>=') {
+          addWhere = false;
+        } else if (rule.operator === ">=" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).GEQ(
             newValue
           );
-        } else if (rule.operator === 'between') {
+          addWhere = false;
+        } else if (rule.operator === "between" && newValue && newValue !== "" && newValue2 && newValue2 !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).BETWEEN(
             newValue,
             newValue2
           );
-        } else if (rule.operator === 'inList') {
+          addWhere = false;
+        } else if (rule.operator === "inList" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).IN(
             newValue
           );
-        } else if (rule.operator === 'notInList') {
+          addWhere = false;
+        } else if (rule.operator === "notInList" && newValue && newValue !== "") {
           CONDITION(_this.EXP(_this.FIELD(rule.field, rule.fieldSql))).NOTIN(
             newValue
           );
+          addWhere = false;
         }
       }
     });
@@ -768,7 +783,7 @@ export class AnterosFilterDSL {
   WHERE() {
     if (arguments.length < 1) {
       throw new FilterException(
-        'Para criar uma condição WHERE informe ao menos um parâmetro.'
+        "Para criar uma condição WHERE informe ao menos um parâmetro."
       );
     }
     if (arguments.length === 3) {
@@ -791,37 +806,37 @@ export class AnterosFilterDSL {
     return this;
   }
   EQ(value) {
-    this.assertWhereClauseIsInitialized('eq');
+    this.assertWhereClauseIsInitialized("eq");
     this.filterExpression = this.filterExpression.EQ(value);
     return this;
   }
   NEQ(value) {
-    this.assertWhereClauseIsInitialized('neq');
+    this.assertWhereClauseIsInitialized("neq");
     this.filterExpression = this.filterExpression.NEQ(value);
     return this;
   }
   GEQ(value) {
-    this.assertWhereClauseIsInitialized('geq');
+    this.assertWhereClauseIsInitialized("geq");
     this.filterExpression = this.filterExpression.GEQ(value);
     return this;
   }
   LEQ(value) {
-    this.assertWhereClauseIsInitialized('leq');
+    this.assertWhereClauseIsInitialized("leq");
     this.filterExpression = this.filterExpression.LEQ(value);
     return this;
   }
   GT(value) {
-    this.assertWhereClauseIsInitialized('gt');
+    this.assertWhereClauseIsInitialized("gt");
     this.filterExpression = this.filterExpression.GT(value);
     return this;
   }
   LT(value) {
-    this.assertWhereClauseIsInitialized('lt');
+    this.assertWhereClauseIsInitialized("lt");
     this.filterExpression = this.filterExpression.LT(value);
     return this;
   }
   LIKE(value) {
-    this.assertWhereClauseIsInitialized('like');
+    this.assertWhereClauseIsInitialized("like");
     this.filterExpression = this.filterExpression.LIKE(value);
     return this;
   }
@@ -830,7 +845,7 @@ export class AnterosFilterDSL {
     for (let i = 0; i < arguments.length; i++) {
       values.push(arguments[i]);
     }
-    this.assertWhereClauseIsInitialized('in');
+    this.assertWhereClauseIsInitialized("in");
     this.filterExpression = this.filterExpression.IN(values);
     return this;
   }
@@ -839,27 +854,27 @@ export class AnterosFilterDSL {
     for (let i = 0; i < arguments.length; i++) {
       values.push(arguments[i]);
     }
-    this.assertWhereClauseIsInitialized('not in');
+    this.assertWhereClauseIsInitialized("not in");
     this.filterExpression = this.filterExpression.NOTIN(values);
     return this;
   }
   AND(columnOrExpression) {
-    this.assertWhereClauseIsInitialized('and');
+    this.assertWhereClauseIsInitialized("and");
     this.filterExpression = this.filterExpression.AND(columnOrExpression);
     return this;
   }
   OR(columnOrExpression) {
-    this.assertWhereClauseIsInitialized('or');
+    this.assertWhereClauseIsInitialized("or");
     this.filterExpression = this.filterExpression.OR(columnOrExpression);
     return this;
   }
   ISNULL() {
-    this.assertWhereClauseIsInitialized('isNull');
+    this.assertWhereClauseIsInitialized("isNull");
     this.filterExpression = this.filterExpression.ISNULL();
     return this;
   }
   ISNOTNULL() {
-    this.assertWhereClauseIsInitialized('isNotNull');
+    this.assertWhereClauseIsInitialized("isNotNull");
     this.filterExpression = this.filterExpression.ISNOTNULL();
     return this;
   }
@@ -873,7 +888,7 @@ export class AnterosFilterDSL {
     return this;
   }
   BETWEEN(valueStart, valueEnd) {
-    this.assertWhereClauseIsInitialized('between');
+    this.assertWhereClauseIsInitialized("between");
     this.filterExpression = this.filterExpression.BETWEEN(valueStart, valueEnd);
     return this;
   }
@@ -886,12 +901,12 @@ export class AnterosFilterDSL {
     return this;
   }
   STARTSWITH(value) {
-    this.assertWhereClauseIsInitialized('startsWith');
+    this.assertWhereClauseIsInitialized("startsWith");
     this.filterExpression = this.filterExpression.STARTSWITH(value);
     return this;
   }
   CONTAINS(value) {
-    this.assertWhereClauseIsInitialized('contains');
+    this.assertWhereClauseIsInitialized("contains");
     this.filterExpression = this.filterExpression.CONTAINS(value);
     return this;
   }
@@ -899,33 +914,33 @@ export class AnterosFilterDSL {
   SORTBY(field, desc) {
     if (field instanceof FieldExpression) {
       this.fieldsToSort.push(
-        field.getFieldName + (desc === true ? ' DESC' : ' ASC')
+        field.getFieldName + (desc === true ? " DESC" : " ASC")
       );
     } else {
-      this.fieldsToSort.push(field + (desc === true ? ' DESC' : ' ASC'));
+      this.fieldsToSort.push(field + (desc === true ? " DESC" : " ASC"));
     }
   }
 
   toJSON() {
     if (this.filterExpression !== undefined) {
       const sb = AnterosStringUtils.createStringBuilder();
-      sb.append('{');
+      sb.append("{");
       sb.append('   "filterExpression" : {');
       this.filterExpression.toJSON(sb);
-      sb.append('}, ');
+      sb.append("}, ");
       sb.append('    "fieldsToSort" : [');
       let appendDelimiter = false;
       this.fieldsToSort.forEach(function(field) {
         if (appendDelimiter === true) {
-          sb.append(', ');
+          sb.append(", ");
         }
         sb.append('{ "field" : "' + field + '" }');
         appendDelimiter = true;
       });
-      sb.append(']');
-      sb.append('}');
+      sb.append("]");
+      sb.append("}");
       return sb.toString();
     }
-    return '';
+    return "";
   }
 }

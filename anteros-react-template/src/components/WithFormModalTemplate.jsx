@@ -312,7 +312,7 @@ export default function WithFormModalTemplate(_loadingProps) {
                         showHeaderColor={true}
                         showContextIcon={false}
                         style={{ height: loadingProps.modalContentHeight, width: loadingProps.modalContentWidth }}
-                        isOpen={this.props.modalOpen === loadingProps.viewName}
+                        isOpen={this.props.modalOpen === loadingProps.viewName || this.props.isOpen}
                         onClose={this.onClose}
                     >
                         <AnterosAlert

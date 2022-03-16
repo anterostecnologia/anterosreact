@@ -1,5 +1,4 @@
 import React from "react";
-import { autoBind } from "@anterostecnologia/anteros-react-core";
 import {
   AnterosRemoteDatasource,
   dataSourceEvents,
@@ -8,13 +7,12 @@ import {
 } from "@anterostecnologia/anteros-react-datasource";
 import {
   AnterosSweetAlert,
-  AnterosError,
+  AnterosError,AnterosResizeDetector,autoBind,processErrorMessage
 } from "@anterostecnologia/anteros-react-core";
 import { connect } from "react-redux";
-import { processErrorMessage } from "@anterostecnologia/anteros-react-core";
 import {
   AnterosFilterDSL,
-  AnterosQueryBuilderData,
+  AnterosQueryBuilderData,AnterosQueryBuilder
 } from "@anterostecnologia/anteros-react-querybuilder";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import {
@@ -23,10 +21,7 @@ import {
   FooterActions,
 } from "@anterostecnologia/anteros-react-containers";
 import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
-import { AnterosResizeDetector } from "@anterostecnologia/anteros-react-core";
 import { AnterosBlockUi } from "@anterostecnologia/anteros-react-loaders";
-import { AnterosLoader } from "@anterostecnologia/anteros-react-loaders";
-import { AnterosQueryBuilder } from "@anterostecnologia/anteros-react-querybuilder";
 import {
   AnterosCol,
   AnterosRow,
@@ -34,6 +29,7 @@ import {
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
 import { AnterosPagination } from "@anterostecnologia/anteros-react-navigation";
 import { AnterosMasonry } from "@anterostecnologia/anteros-react-masonry";
+import { TailSpin } from 'react-loader-spinner';
 
 const defaultValues = {
   openDataSourceFilter: true,
@@ -281,19 +277,6 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           this.props.activeFilterIndex,
           expanded
         );
-        setTimeout(() => {
-          if (
-            this.state.newHeight !== undefined &&
-            this.state.width !== undefined
-          ) {
-            if (this.table1) {
-              this.table1.resize(this.state.width - 360, this.state.newHeight);
-            }
-            if (this.table2) {
-              this.table2.resize("100%", this.state.newHeight);
-            }
-          }
-        }, 500);
       }
 
       onSelectedFilter(filter, index) {
@@ -476,7 +459,8 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         if (
           currentFilter &&
           currentFilter.filter &&
-          currentFilter.filter.filterType === "advanced" &&
+          (currentFilter.filter.filterType === "advanced" || 
+           currentFilter.filter.filterType === "normal") &&
           currentFilter.filter.rules.length > 0
         ) {
           return this.getDataWithFilter(currentFilter, page);
@@ -640,6 +624,11 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       }
 
       render() {
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomMessageLoading"
+        )
+          ? this.getCustomMessageLoading()
+          : loadingProps.messageLoading;
         return (
           <AnterosCard
             caption={loadingProps.caption}
@@ -679,27 +668,33 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
               />
             </HeaderActions>
             <AnterosBlockUi
-              tagStyle={{
-                height: this.state.filterExpanded ? "100%" : "auto",
-              }}
-              styleBlockMessage={{
-                border: "2px solid white",
-                width: "200px",
-                backgroundColor: "#8BC34A",
-                borderRadius: "8px",
-                color: "white",
-              }}
-              styleOverlay={{
-                opacity: 0.1,
-                backgroundColor: "black",
-              }}
-              tag="div"
-              blocking={this.state.loading}
-              message={loadingProps.messageLoading}
-              loader={
-                <AnterosLoader active type="ball-pulse" color="#02a17c" />
-              }
-            >
+                tagStyle={{
+                  height: "100%",
+                }}
+                styleBlockMessage={{
+                  border: "2px solid white",
+                  width: "200px",
+                  height:'80px',
+                  padding:'8px',
+                  backgroundColor: "rgb(56 70 112)",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+                styleOverlay={{
+                  opacity: 0.1,
+                  backgroundColor: "black",
+                }}
+                tag="div"
+                blocking={this.state.loading}
+                message={messageLoading}
+                loader={
+                  customLoader ? (
+                    customLoader
+                  ) : (
+                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                  )
+                }
+              >
               <div
                 style={{
                   display: "flex",

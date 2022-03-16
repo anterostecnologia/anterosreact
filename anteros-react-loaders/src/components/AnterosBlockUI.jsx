@@ -4,7 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 export default class AnterosBlockUi extends Component {
   constructor(props) {
-    super(props);
+    super(props); 
 
     this.tabbedUpTop = this.tabbedUpTop.bind(this);
     this.tabbedDownTop = this.tabbedDownTop.bind(this);
@@ -210,9 +210,14 @@ export default class AnterosBlockUi extends Component {
                 top: keepInView ? this.state.top : undefined
               }}
             >
-              <div className="block-ui-message" style={styleBlockMessage}>
-                {message}
-                {React.isValidElement(Loader) ? Loader : <DefaultLoader />}
+              <div className="block-ui-message" style={styleBlockMessage}> 
+                <div style={{width:'100%', height:"40px",display:'flex', justifyContent:"center"}}>
+                  {React.isValidElement(Loader) ? Loader : <DefaultLoader />}
+                </div>
+                <div style={{width:'100%', display:'flex', justifyContent:"center"}}>
+                  {message}
+                </div>
+                
               </div>
             </div>
           </div>

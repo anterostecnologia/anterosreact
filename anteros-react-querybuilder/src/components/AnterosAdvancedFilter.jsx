@@ -6,11 +6,14 @@ import {
   AnterosCheckbox,
   AnterosCombobox,
   AnterosComboboxOption,
-  AnterosDatePicker,
-  AnterosDatetimePicker,
-  AnterosDateRangePicker,
   AnterosEdit,
-  AnterosTimePicker,
+  AnterosDatePicker,
+  AnterosDateTimePicker,
+  AnterosDateRangePicker,
+  AnterosDateTimeRangePicker,
+  AnterosDateMultiplePicker,
+  AnterosDateTimeMultiplePicker,
+  AnterosTimePicker 
 } from "@anterostecnologia/anteros-react-editors";
 import {
   AnterosButton,
@@ -21,10 +24,7 @@ import {
   AnterosError,
   AnterosUtils,
   If,
-  Then,
-} from "@anterostecnologia/anteros-react-core";
-import {
-  autoBind,
+  Then,autoBind,
   AnterosStringUtils,
 } from "@anterostecnologia/anteros-react-core";
 import {
@@ -33,6 +33,7 @@ import {
 } from "@anterostecnologia/anteros-react-layout";
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
 import { AnterosList } from "@anterostecnologia/anteros-react-list";
+import {getDefaultEmptyFilter, defaultOperators, defaultConditions} from './AnterosFilterCommons';
 
 
 class AnterosAdvancedFilter extends Component {
@@ -40,122 +41,13 @@ class AnterosAdvancedFilter extends Component {
     super(props);
     this.state = {
       modalOpen: "",
-      currentFilter: props.currentFilter?props.currentFilter:this.getDefaultFilter(),
+      currentFilter: props.currentFilter?props.currentFilter:getDefaultEmptyFilter(),
       schema: this.createSchema()
     };
     autoBind(this);
   }
 
-  getDefaultFilter() {
-    let result = {
-      id: 0,
-      name: "",
-      formName: "",
-      apiVersion: "",
-      filter: {
-        id: "root",
-        selectedFields: [],
-        quickFilterText: "",
-        rules: [],
-        condition: "",
-        filterType: "normal",
-      },
-      sort: {
-        quickFilterSort: "",
-        sortFields: [],
-        activeIndex: -1,
-      },
-    };
-    return result;
-  }
-
-  static get defaultOperators() {
-    return [
-      {
-        name: "null",
-        label: "Em branco",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "notNull",
-        label: "Preenchido",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "contains",
-        label: "Contém",
-        dataTypes: ["string"],
-      },
-      {
-        name: "startsWith",
-        label: "Iniciado com",
-        dataTypes: ["string"],
-      },
-      {
-        name: "endsWith",
-        label: "Terminado com",
-        dataTypes: ["string"],
-      },
-      {
-        name: "=",
-        label: "Igual",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "!=",
-        label: "Diferente",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "<",
-        label: "Menor",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: ">",
-        label: "Maior",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "<=",
-        label: "Menor igual",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: ">=",
-        label: "Maior igual",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "between",
-        label: "Entre",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "inList",
-        label: "Na lista",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-      {
-        name: "notInList",
-        label: "Fora da lista",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
-      },
-    ];
-  }
-
-  static get defaultConditions() {
-    return [
-      {
-        name: "and",
-        label: "E",
-      },
-      {
-        name: "or",
-        label: "Ou",
-      },
-    ];
-  }
+  
 
   getQuickFields() {
     let result = [];
@@ -197,7 +89,7 @@ class AnterosAdvancedFilter extends Component {
         rules: [],
         condition: this.props.conditions[0].name
     };
-}
+  } 
 
   createSchema() {
     const { operators, conditions } = this.props;
@@ -523,7 +415,6 @@ class AnterosAdvancedFilter extends Component {
     if (fn) {
       fn.call(this, ...args);
     }
-
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
       onFilterChanged(this.state.currentFilter);
@@ -645,8 +536,8 @@ AnterosAdvancedFilter.propTypes = {
 };
 
 AnterosAdvancedFilter.defaultProps = {
-  operators: AnterosAdvancedFilter.defaultOperators,
-  conditions: AnterosAdvancedFilter.defaultConditions,
+  operators: defaultOperators(),
+  conditions: defaultConditions(),
   getOperators: null,
   onFilterChanged: null,
   allowSort: true,
@@ -705,7 +596,7 @@ FilterFieldValue.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-class CustomSortItem extends React.Component {
+export class CustomSortItem extends React.Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
@@ -1012,6 +903,14 @@ class Rule extends React.Component {
     }
   }
 
+  getSearchField(field, fields) {
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].name === field) {
+        return fields[i].dataType;
+      }
+    }
+  }
+
   getFieldSql(field, fields) {
     for (var i = 0; i < fields.length; i++) {
       if (fields[i].name === field) {
@@ -1038,8 +937,11 @@ class Rule extends React.Component {
       onSearchButtonClick,
       schema: { fields, getOperators, getLevel },
     } = this.props;
-    var level = getLevel(this.props.id);
     let dt = this.getDataType(field, fields);
+    let searchField = this.getSearchField(field,fields);
+    let twoFields = operator === "between" &&
+    dt !== "date" && dt !== "date_time" && dt !== "time";
+    var level = getLevel(this.props.id);    
     let listValues = this.getFieldValues(field, fields);
     return (
       <li className={"rule-container"}>
@@ -1075,10 +977,12 @@ class Rule extends React.Component {
           value2={value2}
           listValues={listValues}
           disabled={disabled}
+          searchField={searchField}
           className="rule-value"
           handleOnChange={this.onValueChanged}
           onSearchButtonClick={onSearchButtonClick}
           level={level}
+          twoFields={twoFields}
         />{" "}
         {operator === "between" &&
         dt !== "date" && dt !== "date_time" && dt !== "time" ? (
@@ -1089,10 +993,12 @@ class Rule extends React.Component {
             value={value2}
             listValues={listValues}
             disabled={disabled}
+            searchField={searchField}
             className="rule-value"
             handleOnChange={this.onValue2Changed}
             onSearchButtonClick={onSearchButtonClick}
             level={level}
+            twoFields={twoFields}
           />
         ) : (
           ""
@@ -1142,13 +1048,23 @@ class Rule extends React.Component {
       operator === "between" &&
       (dt === "date" || dt === "date_time" || dt === "time")
     ) {
-      let values = value.split(" - ");
-      if (values.length > 0) {
-        this.onElementChanged("value", values[0]);
+      if (value && value.length > 1) {
+        this.onElementChanged("value", value[0].toString());
+        this.onElementChanged("value2", value[1].toString());
+      } else {
+        this.onElementChanged("value", "");
+        this.onElementChanged("value2", "");
+      }    
+    } else if ((operator === "inList" || operator === "notInList") &&
+    (dt === "date" || dt === "date_time" || dt === "time")) {
+      if (!value) {
+        value = "";
       }
-
-      if (values.length > 1) this.onElementChanged("value2", values[1]);
+      this.onElementChanged("value", value);   
     } else if (operator === "inList" || operator === "notInList") {
+      if (!value){
+         value = "";
+      }
       let values = value.split(",");
       if (values.length > 0) {
         let appendDelimiter = false;
@@ -1222,7 +1138,7 @@ ActionElement.propTypes = {
   handleOnClick: PropTypes.func,
 };
 
-class ValueEditor extends React.Component {
+export class ValueEditor extends React.Component {
   constructor(props) {
     super(props);
     this.onButtonClick = this.onButtonClick.bind(this);
@@ -1237,7 +1153,9 @@ class ValueEditor extends React.Component {
       this.props.onSearchButtonClick(
         this.props.field,
         event,
-        this.props.handleOnChange
+        this.props.handleOnChange,
+        this.props.operator,
+        this.props.searchField
       );
     }
   }
@@ -1263,52 +1181,62 @@ class ValueEditor extends React.Component {
       if (dataType === "date") {
         if (operator === "between") {
           if (newValue === "" && newValue2 === "") newValue = "";
-          else newValue = newValue + " - " + newValue2;
+          else newValue = [newValue,newValue2];
           return (
             <AnterosDateRangePicker
               disabled={disabled}
-              style={{
-                minWidth: "150px",
-              }}
               value={newValue}
-              onChange={(e, value) => handleOnChange(value)}
+              width={this.props.twoFields?"128px":"260px"}
+              onChange={(value) => handleOnChange(value)}
+            />
+          );
+        } else if (operator === "notInList" || operator === "inList") {    
+          return (
+            <AnterosDateMultiplePicker
+              disabled={disabled}
+              value={newValue}
+              width={this.props.twoFields?"128px":"260px"}
+              onChange={(value) => handleOnChange(value)}
             />
           );
         } else {
           return (
             <AnterosDatePicker
               disabled={disabled}
-              style={{
-                minWidth: "150px",
-              }}
               value={newValue}
-              onChange={(e, value) => handleOnChange(value)}
+              width={this.props.twoFields?"128px":"260px"}
+              onChange={(value) => handleOnChange(value)}
             />
           );
         }
       } else if (dataType === "date_time") {
         if (operator === "between") {
           if (newValue === "" && newValue2 === "") newValue = "";
-          else newValue = newValue + " - " + newValue2;
+          else newValue = [newValue,newValue2];
           return (
-            <AnterosDateRangePicker
+            <AnterosDateTimeRangePicker
               disabled={disabled}
-              style={{
-                minWidth: "150px",
-              }}
               value={newValue}
-              onChange={(e, value) => handleOnChange(value)}
+              width={this.props.twoFields?"128px":"260px"}
+              onChange={(value) => handleOnChange(value)}
+            />
+          );
+        } else if (operator === "notInList" || operator === "inList") {  
+          return (
+            <AnterosDateTimeMultiplePicker
+              disabled={disabled}
+              value={newValue}
+              width={this.props.twoFields?"128px":"260px"}
+              onChange={(value) => handleOnChange(value)}
             />
           );
         } else {
           return (
-            <AnterosDatetimePicker
+            <AnterosDateTimePicker
               disabled={disabled}
-              style={{
-                minWidth: "150px",
-              }}
               value={newValue}
-              onChange={(e, value) => handleOnChange(value)}
+              width={this.props.twoFields?"128px":"260px"}
+              onChange={(value) => handleOnChange(value)}
             />
           );
         }
@@ -1318,11 +1246,9 @@ class ValueEditor extends React.Component {
         return (
           <AnterosTimePicker
             disabled={disabled}
-            style={{
-              minWidth: "150px",
-            }}
+            width={this.props.twoFields?"128px":"260px"}
             value={newValue}
-            onChange={(e) => handleOnChange(e.target.value)}
+            onChange={(value) => handleOnChange(value)}
           />
         );
       } else {
@@ -1333,7 +1259,7 @@ class ValueEditor extends React.Component {
           return (
             <AnterosCombobox
               disabled={disabled}
-              width="150px"
+              width={this.props.twoFields?"128px":"260px"}
               onChangeSelect={(value) => handleOnChange(value)}
               multiple={true}
             >
@@ -1352,7 +1278,7 @@ class ValueEditor extends React.Component {
           return (
             <AnterosCombobox
               disabled={disabled}
-              width="150px"
+              width={this.props.twoFields?"128px":"260px"}
               onChangeSelect={(value) => handleOnChange(value)}
             >
               {listValues.map((v) => {
@@ -1370,14 +1296,13 @@ class ValueEditor extends React.Component {
           return (
             <AnterosEdit
               disabled={disabled}
-              width="150px"
+              width={this.props.twoFields?"128px":"260px"}
               icon="fa fa-search"
-              classNameInput="value-editor-edit"
-              styleButton={{ height: "28px", width: "28px", margin: "0" }}
               onButtonClick={this.onButtonClick}
+              clear={true}
               primary
               value={newValue}
-              onChange={(e) => handleOnChange(e.target.value)}
+              onChange={(e) => handleOnChange(e?e.target.value:undefined)}
             />
           );
         }
@@ -1386,10 +1311,8 @@ class ValueEditor extends React.Component {
       return (
         <input
           type="text"
+          width={this.props.twoFields?"128px":"260px"}
           value={newValue}
-          style={{
-            minWidth: "150px",
-          }}
           onChange={(e) => handleOnChange(e.target.value)}
         />
       );
@@ -1459,7 +1382,6 @@ class ValueSelector extends React.Component {
         disabled={disabled}
         value={value}
         tabIndex={-1}
-        style={{ width: this.state.width }}
         onBlur={this.onBlur}
         onChange={this.handleOnChange}
       >

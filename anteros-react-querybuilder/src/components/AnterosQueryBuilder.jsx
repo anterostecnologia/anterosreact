@@ -1,44 +1,28 @@
 import React from "react";
-import moment from "moment";
 import PropTypes from "prop-types";
-
+import DateObject from "react-date-object";
 import {
-  AnterosError,
   autoBind,
   processErrorMessage,
-  AnterosSweetAlert,
-} from "@anterostecnologia/anteros-react-core";
-import {
-  AnterosEdit,
-  AnterosCheckbox,
-} from "@anterostecnologia/anteros-react-editors";
-import { AnterosFormGroup } from "@anterostecnologia/anteros-react-containers";
-import { AnterosCalendar } from "@anterostecnologia/anteros-react-calendar";
-import {
-  AnterosButton,
-  AnterosDropdownButton,
-  AnterosDropdownMenuItem,
-  AnterosDropdownMenu,
-} from "@anterostecnologia/anteros-react-buttons";
-import { AnterosText } from "@anterostecnologia/anteros-react-label";
-import { AnterosList } from "@anterostecnologia/anteros-react-list";
+  AnterosSweetAlert} from "@anterostecnologia/anteros-react-core";
+import { AnterosEdit } from "@anterostecnologia/anteros-react-editors";
+import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import shallowCompare from "react-addons-shallow-compare";
-import {
-  AnterosAdvancedFilter,
-  FilterField,
-  FilterFieldValue,
-  FilterFields,
-} from "./AnterosAdvancedFilter";
-import AnterosSaveFilter from "./AnterosSaveFilter";
 import {
   dataSourceEvents,
   AnterosLocalDatasource,
   AnterosRemoteDatasource,
 } from "@anterostecnologia/anteros-react-datasource";
+import AnterosCompositeFilter from "./AnterosCompositeFilter";
 import {
-  AnterosRow,
-  AnterosCol,
-} from "@anterostecnologia/anteros-react-layout";
+  getDefaultFilter,
+  getQuickFilterFields,
+  getFields,
+  getQuickFields,
+} from "./AnterosFilterCommons";
+import { AnterosFilterSelectRange } from "./AnterosFilterSelectRange";
+import { endOfMonth } from "date-fns";
+import { AnterosFilterSelectFields } from "./AnterosFilterSelectFields";
 
 const DATASOURCE_EVENTS = [
   dataSourceEvents.AFTER_CLOSE,
@@ -59,9 +43,11 @@ export class AnterosQueryBuilder extends React.Component {
     this.state = {
       currentFilter: this.props.currentFilter
         ? this.props.currentFilter
-        : this.getDefaultFilter(),
+        : getDefaultFilter(props, props.currentFilter),
+      currentFastFilter: this.props.currentFastFilter
+        ? this.props.currentFastFilter
+        : getDefaultFilter(props, props.currentFastFilter),
       modalOpen: "",
-      showAdvancedFilter: this.props.showAdvancedFilter,
       expandedFilter: this.props.expandedFilter,
       activeFilterIndex: 0,
     };
@@ -79,66 +65,6 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  getDefaultFilter() {
-    let result = {
-      id: 0,
-      name: "",
-      formName: "",
-      apiVersion: "",
-      filter: {
-        id: "root",
-        selectedFields: [],
-        quickFilterText: "",
-        quickFilterFieldsText: "",
-        rules: [],
-        condition: "",
-        filterType: "normal",
-      },
-      sort: {
-        quickFilterSort: "",
-        sortFields: [],
-        activeIndex: -1,
-      },
-    };
-    result.filter.selectedFields = this.getQuickFields();
-    result.filter.quickFilterFieldsText = this.getQuickFilterFields();
-    result.sort.sortFields = this.mergeSortWithFields([]);
-    result.sort.quickFilterSort = this.getQuickFilterSort();
-    return result;
-  }
-
-  mergeSortWithFields(sort) {
-    let result = [];
-    let flds = this.getFields(this.props);
-    if (flds) {
-      flds.forEach(function (field, index) {
-        let selected = false;
-        let asc_desc = "asc";
-        let order = index;
-        if (sort) {
-          sort.forEach(function (item) {
-            if (item.name === field.name) {
-              selected = item.selected;
-              asc_desc = item.asc_desc;
-              order = item.order;
-            }
-          });
-        }
-        result.push({
-          name: field.name,
-          selected: selected,
-          order: order,
-          asc_desc: asc_desc,
-          label: field.label,
-        });
-      });
-      result = result.sort(function (a, b) {
-        return a.order - b.order;
-      });
-    }
-    return result;
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   }
@@ -148,14 +74,17 @@ export class AnterosQueryBuilder extends React.Component {
       ...this.state,
       currentFilter: nextProps.currentFilter
         ? nextProps.currentFilter
-        : this.getDefaultFilter(),
-      showAdvancedFilter: nextProps.showAdvancedFilter,
+        : getDefaultFilter(nextProps, nextProps.currentFilter),
       activeFilterIndex: nextProps.activeFilterIndex,
       expandedFilter: nextProps.expandedFilter,
+      currentFastFilter: nextProps.currentFastFilter
+        ? nextProps.currentFastFilter
+        : getDefaultFilter(nextProps, nextProps.currentFastFilter),
     });
   }
 
   componentDidMount() {
+    window.addEventListener("resize", this.onResize);
     let _this = this;
     if (this.props.dataSource != null) {
       this.props.dataSource.open(null, () => {
@@ -173,6 +102,7 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
     if (
       this.props.dataSource instanceof AnterosRemoteDatasource ||
       this.props.dataSource instanceof AnterosLocalDatasource
@@ -186,115 +116,28 @@ export class AnterosQueryBuilder extends React.Component {
 
   toggleExpandedFilter() {
     let newExpandedFilter = !this.state.expandedFilter;
-    this.setState({ ...this.state, expandedFilter: newExpandedFilter });
+    let position = this.getPosition("filter");
+    this.setState({
+      ...this.state,
+      expandedFilter: newExpandedFilter,
+      isOpenSelectRange: false,
+      isOpenSelectFields: false,
+      detailsTop: position.top,
+      detailsLeft: position.left,
+      detailsHeight: position.height,
+    });
     if (this.props.onToggleExpandedFilter) {
       this.props.onToggleExpandedFilter(newExpandedFilter);
     }
   }
 
   clearFilter() {
-    let currentFilter = this.getDefaultFilter();
-    this.setState({...this.state, currentFilter, activeFilterIndex: -1});
+    let currentFilter = getDefaultFilter(this.props, this.state.currentFilter);
+    this.setState({ ...this.state, currentFilter, activeFilterIndex: -1 });
     if (this.props.onClearFilter) {
       this.props.onClearFilter(this);
     }
-    this.onFilterChanged(currentFilter,-1);
-  }
-
-  getQuickFields() {
-    let result = [];
-    this.getFields(this.props).forEach(function (field) {
-      if (field.quickFilter === true) {
-        result.push({ name: field.name, label: field.label });
-      }
-    }, this);
-    return result;
-  }
-
-  getFields(props) {
-    let result = [];
-    if (props.children) {
-      let arrChildren = React.Children.toArray(props.children);
-      arrChildren.forEach(function (child) {
-        if (child.type && child.type.componentName === "QueryFields") {
-          if (child.props.children) {
-            let arrChild = React.Children.toArray(child.props.children);
-            arrChild.forEach(function (chd) {
-              if (chd.type && chd.type.componentName !== "QueryField") {
-                throw new AnterosError(
-                  "Somente filhos do tipo QueryField podem ser usados com QueryFields."
-                );
-              }
-              let values = [];
-              let chld = React.Children.toArray(chd.props.children);
-              chld.forEach(function (val) {
-                if (val.type && val.type.componentName !== "QueryFieldValue") {
-                  throw new AnterosError(
-                    "Somente filhos do tipo QueryFieldValue podem ser usados com QueryFields"
-                  );
-                }
-                values.push({ label: val.props.label, value: val.props.value });
-              });
-              result.push({
-                name: chd.props.name,
-                label: chd.props.label,
-                dataType: chd.props.dataType,
-                quickFilter: chd.props.quickFilter,
-                quickFilterSort: chd.props.quickFilterSort,
-                sortable: chd.props.sortable,
-                listValues: values,
-              });
-            });
-          }
-        }
-      });
-    }
-    return result;
-  }
-
-  getQuickFilterFields() {
-    let result = "";
-    let appendDelimiter = false;
-
-    if (this.state && this.state.currentFilter && this.state.currentFilter.filter) {
-      if (
-        !this.state.currentFilter.filter.selectedFields ||
-        this.state.currentFilter.filter.selectedFields.length === 0
-      ) {
-        this.getFields(this.props).forEach(function (item) {
-          if (item.quickFilter === true) {
-            if (appendDelimiter) {
-              result = result + ",";
-            }
-            result = result + item.name;
-          }
-          appendDelimiter = true;
-        }, this);
-      } else {
-        this.state.currentFilter.filter.selectedFields.forEach(function (item) {
-          if (appendDelimiter) {
-            result = result + ",";
-          }
-          result = result + item.name;
-          appendDelimiter = true;
-        }, this);
-      }
-    }
-
-    return result;
-  }
-
-  getQuickFilterSort() {
-    let result = "";
-    let appendDelimiter = false;
-    this.getFields(this.props).forEach(function (field) {
-      if (field.quickFilterSort === true) {
-        if (appendDelimiter) result += ",";
-        result += field.name;
-        appendDelimiter = true;
-      }
-    }, this);
-    return result;
+    this.onFilterChanged(currentFilter, -1);
   }
 
   onSearchClick() {
@@ -303,41 +146,16 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  onClickOkCalendar = (event, startDate, endDate) => {
-    let currentFilter = this.state.currentFilter;
-    currentFilter.filter.quickFilterText = "";
-    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
-    this.setState({ ...this.state, currentFilter });
-
-    if (this.props.onSelectDateRange) {
-      this.props.onSelectDateRange(startDate, endDate);
-    }
-    let qf = currentFilter.filter.quickFilterText;
-    if (qf && qf !== "") {
-      qf = qf + ",";
-    } else {
-      qf = "";
-    }
-    qf =
-      qf + startDate.format("DD/MM/YYYY") + ":" + endDate.format("DD/MM/YYYY");
-    currentFilter.filter.quickFilterText = qf;
-    this.setState(
-      {
-        ...this.state,
-        currentFilter,
-      },
-      () => this.onSearchClick()
-    );
-    this.onFilterChanged(currentFilter, this.state.activeFilterIndex);
-  };
-
   onChangeQuickFilter(event, value) {
-    let currentFilter = this.state.currentFilter;
-    currentFilter.filter.quickFilterText = value;
-    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
+    let currentFastFilter = this.state.currentFastFilter;
+    currentFastFilter.filter.quickFilterText = value;
+    currentFastFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+      currentFastFilter,
+      getFields(this.props)
+    );
     this.setState({
       ...this.state,
-      currentFilter,
+      currentFastFilter,
     });
   }
 
@@ -347,26 +165,76 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  onChangeSelectedFields(selectedFields) {
-    let currentFilter = this.state.currentFilter;
-    if (!currentFilter) {
-      currentFilter = {};
-    }
-    currentFilter.filter.selectedFields = selectedFields;
-    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
-    this.setState({ ...this.state, currentFilter }, () => this.onSearchClick());
-    if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex);
-    }
-  }
-
   getQuickFilterText() {
-    return this.state.currentFilter.filter.quickFilterText;
+    return this.state.currentFastFilter.filter.quickFilterText;
   }
 
   onFilterChanged(currentFilter, activeFilterIndex) {
+    let result = [];
+    if (currentFilter.id) {
+      this.convertFilterToListValues(
+        "root",
+        currentFilter.filter.rules,
+        result
+      );
+      let filter = {filter: result, sort:currentFilter.sort.sortFields};
+      localStorage.setItem("filter" + currentFilter.id, JSON.stringify(filter));
+    }
+
     if (this.props.onFilterChanged) {
       this.props.onFilterChanged(currentFilter, activeFilterIndex);
+    }
+    this.setState({ ...this.state, update: Math.random() });
+  }
+
+  loadSort(sortFields, sort){
+    for (let i = 0; i < sortFields.length; i++) {
+      for (let j = 0; j < sort.length; j++) {
+        if (sort[j].name === sortFields[i].name){
+          sortFields[i].selected = sort[j].selected;
+          sortFields[i].order = sort[j].order;
+          sortFields[i].asc_desc = sort[j].asc_desc;
+        }
+      }
+    }
+  }
+
+  loadListValuesToFilter(parent, rules, values) {
+    for (let i = 0; i < rules.length; i++) {
+      let rule = rules[i];
+      if (rule.rules) {
+        this.loadListValuesToFilter(rule.id, rule.rules, values);
+      } else {
+        let vl = this.getItemListById(values, parent, rule.id);
+        if (vl) {
+          rule.value = vl.value;
+          rule.value2 = vl.value2;
+        }
+      }
+    }
+  }
+
+  getItemListById(values, parent, id) {
+    for (let i = 0; i < values.length; i++) {
+      if (values[i].parent === parent && values[i].id === id) {
+        return values[i];
+      }
+    }
+  }
+
+  convertFilterToListValues(parent, rules, result) {
+    for (let i = 0; i < rules.length; i++) {
+      let rule = rules[i];
+      if (rule.rules) {
+        this.convertFilterToListValues(rule.id, rule.rules, result);
+      } else {
+        result.push({
+          parent: parent,
+          id: rule.id,
+          value: rule.value,
+          value2: rule.value2,
+        });
+      }
     }
   }
 
@@ -386,9 +254,12 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Não",
         focusCancel: false,
       })
-        .then(function () {
+        .then(function() {
           let currentFilter = _this.state.currentFilter;
-          currentFilter.filter.quickFilterFieldsText = _this.getQuickFilterFields();
+          currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+            currentFilter,
+            getFields(_this.props)
+          );
           if (
             _this.props.dataSource.locate({
               idFilter: currentFilter.id,
@@ -424,7 +295,10 @@ export class AnterosQueryBuilder extends React.Component {
       })
         .then((result) => {
           let currentFilter = _this.state.currentFilter;
-          currentFilter.filter.quickFilterFieldsText = _this.getQuickFilterFields();
+          currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+            currentFilter,
+            getFields(_this.props)
+          );
           _this.props.dataSource.insert();
           _this.props.dataSource.setFieldByName(
             "componentFilter",
@@ -461,18 +335,28 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  onChangeFilterType(value, checked) {
+  onChangeFilterType(index) {
     let currentFilter = this.state.currentFilter;
-    currentFilter.filter.filterType = checked ? "advanced" : "normal";
-    currentFilter.filter.quickFilterFieldsText = this.getQuickFilterFields();
-    this.setState({ ...this.state, currentFilter });
+    currentFilter.filter.filterType = index === 0 ? "normal" : "advanced";
+    currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+      currentFilter,
+      getFields(this.props)
+    );
+    this.setState({ ...this.state, currentFilter, update: Math.random() });
     if (this.props.onFilterChanged) {
       this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex);
     }
   }
+
   onChangeSelectedFilter(filter, index) {
     if (this.props.onSelectedFilter) {
       this.props.onSelectedFilter(filter, index);
+    }
+    let item = localStorage.getItem("filter" + filter.id);
+    if (item && item !== null){
+      let _item = JSON.parse(item);
+      this.loadListValuesToFilter('root',filter.filter.rules,_item.filter);
+      this.loadSort(filter.sort.sortFields,_item.sort);
     }
     this.setState({
       ...this.state,
@@ -482,7 +366,7 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   addNewFilter() {
-    let currentFilter = this.getDefaultFilter();
+    let currentFilter = getDefaultFilter(this.props, this.state.currentFilter);
     this.setState({ ...this.state, currentFilter, activeFilterIndex: -1 });
     if (this.props.onSelectedFilter) {
       this.props.onSelectedFilter(currentFilter, -1);
@@ -503,7 +387,7 @@ export class AnterosQueryBuilder extends React.Component {
         cancelButtonText: "Não",
         focusCancel: false,
       })
-        .then(function () {
+        .then(function() {
           let currentFilter = _this.state.currentFilter;
           if (
             _this.props.dataSource.locate({
@@ -539,118 +423,476 @@ export class AnterosQueryBuilder extends React.Component {
         });
     } else if (button.props.id === "btnApply") {
       this.onSearchClick();
+    } else if (button.props.id === "btnClose") {
+      this.onCloseFilterClick();
     }
   }
 
+  onCloseFilterClick(){
+    this.setState({
+      ...this.state,
+      isOpenSelectRange: false,
+      selectRangeType: undefined,
+      expandedFilter: false,
+      isOpenSelectFields: false,
+    });
+    if (this.props.onToggleExpandedFilter) {
+      this.props.onToggleExpandedFilter(false);
+    }
+  }
+
+  getPosition(type, rangeType) {
+    let width = parseFloat(this.props.width.replace(/\D/g, "")) * 1;
+    if (type === "range") {
+      if (rangeType === "month") {
+        width = 260;
+      } else {
+        width = 510;
+      }
+    } else if (type === "fields") {
+      width = 480;
+    }
+    let bb = this.divMain.getBoundingClientRect();
+    const { innerHeight: height } = window;
+    let left = bb.left;
+    if (bb.left + width > window.innerWidth - 100) {
+      left = bb.right - width;
+    }
+    return { left, top: bb.bottom + 2, height: height - bb.bottom - 30 };
+  }
+
+  onResize() {
+    let type = "filter";
+    let rangeType;
+    if (this.state.isOpenSelectFields) {
+      type = "fields";
+    } else if (this.state.isOpenSelectRange) {
+      type = "range";
+      rangeType = this.state.selectRangeType;
+    }
+    let position = this.getPosition(type, rangeType);
+    this.setState({
+      ...this.state,
+      detailsTop: position.top,
+      detailsLeft: position.left,
+      detailsHeight: position.height,
+    });
+  }
+
+  onSelectRange(value) {
+    if (this.state.isOpenSelectRange) {
+      this.onCancelSelectRange();
+    } else {
+      let position = this.getPosition("range", value);
+      this.setState({
+        ...this.state,
+        detailsTop: position.top,
+        detailsLeft: position.left,
+        detailsHeight: position.height,
+        isOpenSelectRange: true,
+        selectRangeType: value,
+        expandedFilter: false,
+        isOpenSelectFields: false,
+      });
+    }
+  }
+
+  onCancelSelectRange() {
+    this.setState({
+      ...this.state,
+      isOpenSelectRange: false,
+      selectRangeType: undefined,
+      expandedFilter: false,
+      isOpenSelectFields: false,
+    });
+  }
+
+  onConfirmSelectRange(values) {
+    let newValue;
+    if (this.state.selectRangeType === "month") {
+      let first = values[0].toString();
+      let last = new DateObject({
+        date: endOfMonth(values[1].toDate()),
+        format: "DD/MM/YYYY",
+      }).toString();
+      newValue = `${first}:${last}`;
+    } else if (
+      this.state.selectRangeType === "range" ||
+      this.state.selectRangeType === "week"
+    ) {
+      let first = values[0].toString();
+      let last = values[1].toString();
+      newValue = `${first}:${last}`;
+    } else if (this.state.selectRangeType === "day") {
+      let appendDelimiter = false;
+      newValue = "";
+      values.forEach((item) => {
+        if (appendDelimiter) {
+          newValue += ",";
+        }
+        newValue += item.toString();
+        appendDelimiter = true;
+      });
+    }
+    let currentFastFilter = this.state.currentFastFilter;
+    currentFastFilter.filter.quickFilterText = newValue;
+    currentFastFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+      currentFastFilter,
+      getFields(this.props)
+    );
+    this.setState({
+      ...this.state,
+      currentFastFilter,
+      selectRangeType: undefined,
+      isOpenSelectRange: false,
+      isOpenSelectFields: false,
+      expandedFilter: false,
+    });
+  }
+
+  selectFields() {
+    if (this.state.isOpenSelectFields) {
+      this.onCancelSelectFields();
+    } else {
+      let position = this.getPosition("fields");
+      this.setState({
+        ...this.state,
+        detailsTop: position.top,
+        detailsLeft: position.left,
+        detailsHeight: position.height,
+        isOpenSelectFields: true,
+        isOpenSelectRange: false,
+        expandedFilter: false,
+      });
+    }
+  }
+
+  onCancelSelectFields() {
+    this.setState({
+      ...this.state,
+      isOpenSelectFields: false,
+      isOpenSelectRange: false,
+      expandedFilter: false,
+    });
+  }
+
+  onConfirmSelectFields(selectedFields, sortFields, activeIndex) {
+    let currentFastFilter = this.state.currentFastFilter;
+    currentFastFilter.filter.selectedFields = selectedFields;
+    currentFastFilter.sort.sortFields = sortFields;
+    currentFastFilter.sort.activeIndex = activeIndex;
+    this.setState({
+      ...this.state,
+      isOpenSelectFields: false,
+      isOpenSelectRange: false,
+      expandedFilter: false,
+      currentFastFilter,
+    });
+  }
+
+  onFocusEdit() {
+    this.setState({
+      ...this.state,
+      isOpenSelectFields: false,
+      isOpenSelectRange: false,
+      expandedFilter: false,
+    });
+  }
+
+  onClickOk = (event, selectedRecords) => {
+    if (selectedRecords && selectedRecords.length > 0) {
+      let result = "";
+      if (
+        this.state.modalOperator === "notInList" ||
+        this.state.modalOperator === "inList"
+      ) {
+        let appendDelimiter = false;
+        selectedRecords.forEach((record) => {
+          if (appendDelimiter) {
+            result += ",";
+          }
+          result += record[this.state.modalSearchField];
+          appendDelimiter = true;
+        });
+      } else {
+        result = selectedRecords[0][this.state.modalSearchField];
+      }
+
+      if (this.state.modalHandleOnChange) {
+        this.state.modalHandleOnChange(result);
+      }
+    }
+    this.setState({
+      ...this.state,
+      modalOpen: "",
+      modalHandleOnChange: undefined,
+      modalOperator: undefined,
+      modalSearchField: undefined,
+    });
+  };
+
+  onClickCancel(event) {
+    this.setState({
+      ...this.state,
+      modalOpen: "",
+      modalHandleOnChange: undefined,
+      modalOperator: undefined,
+      modalSearchField: undefined,
+    });
+  }
+
+  onSearchButtonClick(field, event, handleOnChange, operator, searchField) {
+    this.setState({
+      ...this.state,
+      modalOpen: "modal" + field,
+      modalHandleOnChange: handleOnChange,
+      modalOperator: operator,
+      modalSearchField: searchField,
+    });
+  }
+
+  buildSearchModals() {
+    let fields = getFields(this.props);
+    let result = [];
+    let _this = this;
+    fields.forEach((field) => {
+      if (field.searchComponent && field.searchField) {
+        let SearchComponent = field.searchComponent;
+        result.push(
+          <SearchComponent
+            key={"modal" + field.name}
+            isOpen={
+              _this.state.modalOpen &&
+              _this.state.modalOpen === "modal" + field.name
+            }
+            user={this.props.user}
+            onClickOk={this.onClickOk}
+            onClickCancel={this.onClickCancel}
+            selectedRecords={[]}
+          />
+        );
+      }
+    });
+    return result;
+  }
+
   render() {
-    const heightFilter = this.state.expandedFilter ? "calc(100%)" : "0px";
     return (
       <div
+        ref={(ref) => (this.divMain = ref)}
         style={{
           minWidth: this.props.width,
           maxWidth: this.props.width,
-          height: heightFilter,
+          height: "50px",
           backgroundColor: "white",
-          border: this.state.expandedFilter
-            ? "1px solid #cfd8dc"
-            : "1px solid transparent",
           position: "relative",
           display: "flex",
           flexFlow: "column nowrap",
-          WebkitTransition: this.state.expandedFilter ? "height .5s" : "none",
-          MozTransition: this.state.expandedFilter ? "height .5s" : "none",
-          msTransition: this.state.expandedFilter ? "height .5s" : "none",
-          OTransition: this.state.expandedFilter ? "height .5s" : "none",
-          transition: this.state.expandedFilter ? "height .5s" : "none",
-          zIndex: this.props.zIndex,
-          overflow: this.state.expandedFilter ? "hidden auto" : "unset",
         }}
       >
         <div
           style={{
             padding: 3,
             width: "100%",
-            height: 51,
+            height: 50,
             display: "flex",
             flexFlow: "row nowrap",
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "white",
-            position: this.state.expandedFilter ? "absolute" : "relative",
+            position: "relative",
           }}
         >
           <AnterosEdit
             onChange={this.onChangeQuickFilter}
             width={"100%"}
+            onFocus={this.onFocusEdit}
             onKeyDown={this.handleQuickFilter}
-            value={this.state.currentFilter.filter.quickFilterText}
+            value={this.state.currentFastFilter.filter.quickFilterText}
             placeHolder={this.props.placeHolder}
             style={{
               height: "36px",
               padding: "3px",
-              border: '1px solid #ccd4db',
-              borderRadius: '6px'
+              border: "1px solid #ccd4db",
+              borderRadius: "6px",
             }}
           />
           <AnterosButton
             primary
-            caption="Filtrar"
-            icon="fal fa-filter"
+            caption=""
+            icon="far fa-sync-alt"
             hint="Filtrar"
             hintPosition="down"
+            style={{ width: "38px", height: "38px" }}
             onClick={() => {
               this.onSearchClick();
             }}
           />
+          <div
+            style={{
+              width: "38px",
+              height: "38px",
+              display: "block",
+              marginLeft: "4px",
+            }}
+          >
+            <div style={{ width: "38px", height: "19px", display: "flex" }}>
+              <AnterosButton
+                primary
+                icon="far fa-calendar"
+                iconSize="12px"
+                hint="Selecionar período"
+                hintPosition="down"
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  padding: 0,
+                  margin: 0,
+                  marginRight: 2,
+                  marginBottom: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  this.onSelectRange("range");
+                }}
+              />
+              <AnterosButton
+                primary
+                caption=""
+                icon="far fa-calendar-alt"
+                iconSize="12px"
+                hint="Mês"
+                hintPosition="down"
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  padding: 0,
+                  margin: 0,
+                  marginRight: 0,
+                  marginBottom: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  this.onSelectRange("month");
+                }}
+              />
+            </div>
+            <div style={{ width: "38px", height: "19px", display: "flex" }}>
+              <AnterosButton
+                primary
+                caption=""
+                icon="far fa-calendar-week"
+                iconSize="12px"
+                hint="Semana"
+                hintPosition="down"
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  padding: 0,
+                  margin: 0,
+                  marginRight: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  this.onSelectRange("week");
+                }}
+              />
+              <AnterosButton
+                primary
+                caption=""
+                icon="far fa-calendar-day"
+                iconSize="12px"
+                hint="Selecionar dias"
+                hintPosition="down"
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  padding: 0,
+                  margin: 0,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  this.onSelectRange("day");
+                }}
+              />
+            </div>
+          </div>
           <AnterosButton
             primary
-            icon="fal fa-expand-alt"
+            icon="fal fa-tasks"
+            hint="Selecionar campos filtro rápido"
+            style={{ width: "38px", height: "38px" }}
+            onClick={this.selectFields}
+          />
+          <AnterosButton
+            primary
+            icon="fal fa-filter"
             hint="Filtro avançado"
+            style={{ width: "38px", height: "38px" }}
             visible={this.props.showToggleButton}
             onClick={this.toggleExpandedFilter}
           />
           <AnterosButton
             primary
-            icon="far fa-eraser"
+            icon="far fa-times"
             hint="Limpar filtro"
             hintPosition="down"
+            style={{ width: "38px", height: "38px" }}
             visible={this.props.showClearButton}
             onClick={this.clearFilter}
           />
         </div>
-        <div
-          style={{
-            display: "flex",
-            pointerEvents: this.state.expandedFilter ? "all" : "none",
-            opacity: this.state.expandedFilter ? 1 : 0,
-            flexFlow: "column nowrap",
-            marginTop: "51px",
-            WebkitTransition: this.state.expandedFilter
-              ? "opacity .75s"
-              : "none",
-            MozTransition: this.state.expandedFilter ? "opacity .75s" : "none",
-            msTransition: this.state.expandedFilter ? "opacity .75s" : "none",
-            OTransition: this.state.expandedFilter ? "opacity .75s" : "none",
-            transition: this.state.expandedFilter ? "opacity .75s" : "none",
-          }}
+        <AnterosCompositeFilter
+          update={this.state.update}
+          isOpen={this.state.expandedFilter}
+          currentFilter={this.state.currentFilter}
+          activeIndex={this.state.activeFilterIndex}
+          dataSource={this.props.dataSource}
+          onFilterChanged={this.onFilterChanged}
+          onSaveFilter={this.onSaveFilter}
+          onActionClick={this.onActionClick}
+          onChangeFilterType={this.onChangeFilterType}
+          onChangeSelectedFilter={this.onChangeSelectedFilter}
+          onSearchButtonClick={this.onSearchButtonClick}
+          left={this.state.detailsLeft}
+          top={this.state.detailsTop}
+          width={this.props.width}
+          height={this.state.detailsHeight}
         >
-          <AnterosDetailFilter
-            dataSource={this.props.dataSource}
-            onChangeCalendar={this.onClickOkCalendar}
-            selectedOptions={this.getQuickFields()}
-            onChangeSelectedFields={this.onChangeSelectedFields}
-            onChangeSelectedFilter={this.onChangeSelectedFilter}
-            onApplyFilter={this.onApplyFilter}
-            onSaveFilter={this.onSaveFilter}
-            onFilterChanged={this.onFilterChanged}
-            onChangeFilterType={this.onChangeFilterType}
-            onActionClick={this.onActionClick}
-            currentFilter={this.state.currentFilter}
-            activeIndex={this.state.activeFilterIndex}
-          >
-            {this.props.children}
-          </AnterosDetailFilter>
-        </div>
+          {this.props.children}
+        </AnterosCompositeFilter>
+
+        <AnterosFilterSelectFields
+          isOpen={this.state.isOpenSelectFields}
+          left={this.state.detailsLeft}
+          currentFilter={this.state.currentFastFilter}
+          selectedOptions={getQuickFields(getFields(this.props))}
+          onConfirmSelectFields={this.onConfirmSelectFields}
+          onCancelSelectFields={this.onCancelSelectFields}
+          width={this.props.width}
+          top={this.state.detailsTop}
+        />
+
+        <AnterosFilterSelectRange
+          selectRangeType={this.state.selectRangeType}
+          isOpen={this.state.isOpenSelectRange}
+          currentFilter={this.state.currentFilter}
+          activeIndex={this.state.activeFilterIndex}
+          left={this.state.detailsLeft}
+          onConfirmSelectRange={this.onConfirmSelectRange}
+          onCancelSelectRange={this.onCancelSelectRange}
+          width={this.props.width}
+          top={this.state.detailsTop}
+        />
+        {this.buildSearchModals()}
       </div>
     );
   }
@@ -668,331 +910,12 @@ AnterosQueryBuilder.propTypes = {
   formName: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   apiVersion: PropTypes.string.isRequired,
-  width: PropTypes.string.isRequired
+  width: PropTypes.string.isRequired,
 };
 
 AnterosQueryBuilder.defaultProps = {
   showClearButton: true,
   showToggleButton: true,
-  width: "550px"
-};
-
-class AnterosDetailFilter extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { modalOpen: "" };
-    autoBind(this);
-  }
-
-  convertQueryFields(children) {
-    let result = [];
-    let arrChildren = React.Children.toArray(children);
-    arrChildren.forEach(function (child) {
-      if (child.type && child.type.componentName === "QueryFields") {
-        if (child.props.children) {
-          let arrChild = React.Children.toArray(child.props.children);
-          arrChild.forEach(function (chd, index) {
-            let childs = [];
-            let arrChildren2 = React.Children.toArray(chd.children);
-            arrChildren2.forEach(function (child2) {
-              childs.push(
-                <FilterFieldValue key={"fld" + index} {...child2.props} />
-              );
-            });
-            result.push(
-              <FilterField key={"fld" + index} {...chd.props}>
-                {childs}
-              </FilterField>
-            );
-          });
-        }
-      }
-    });
-    return result;
-  }
-
-  onSelectMenuItem(item) {
-    this.props.onSaveFilter(item);
-  }
-
-  onSelectItem(index, data) {
-    if (this.props.onChangeSelectedFilter && data && data.filter) {
-      let filter = JSON.parse(atob(data.filter));
-      filter.id = data.idFilter;
-      filter.name = data.filterName;
-      filter.formName = data.formName;
-      this.props.onChangeSelectedFilter(filter, index);
-    }
-    this.setState({ ...this.state, update: Math.random() });
-  }
-
-  render() {
-    let fieldsFilter = this.convertQueryFields(this.props.children);
-    return (
-      <div style={{ padding: "10px" }}>
-        <AnterosText fontWeight="bold" text="Filtros salvos" />
-        <AnterosList
-          height="105px"
-          activeIndex={this.props.activeIndex}
-          dataSource={this.props.dataSource}
-          onSelectListItem={this.onSelectItem}
-          component={FilterItem}
-        />
-        <div className="filter-apply">
-          <AnterosButton
-            id="btnNew"
-            hint="Novo filtro"
-            primary
-            icon="far fa-plus"
-            onButtonClick={this.props.onActionClick}
-            caption=""
-          />
-          <AnterosButton
-            id="btnRemove"
-            hint="Remover filtro"
-            danger
-            disabled={
-              !this.props.currentFilter.id || this.props.currentFilter.id <= 0
-            }
-            icon="far fa-trash-alt"
-            onButtonClick={this.props.onActionClick}
-            caption=""
-          />
-          <AnterosButton
-            id="btnApply"
-            hint="Aplicar filtro"
-            success
-            icon="far fa-filter"
-            onButtonClick={this.props.onActionClick}
-            caption="Aplicar"
-          />
-          <AnterosDropdownButton primary caption="Salvar" icon="far fa-save">
-            <AnterosDropdownMenu>
-              <AnterosDropdownMenuItem
-                icon="far fa-save"
-                id="mnuItemSalvar"
-                caption="Salvar"
-                onSelectMenuItem={this.onSelectMenuItem}
-              />
-              <AnterosDropdownMenuItem
-                icon="far fa-save"
-                id="mnuItemSalvarComo"
-                caption="Salvar como..."
-                onSelectMenuItem={this.onSelectMenuItem}
-              />
-            </AnterosDropdownMenu>
-          </AnterosDropdownButton>
-        </div>
-        <AnterosCheckbox
-          style={{ color: "crimson" }}
-          value="Avançado"
-          checked={this.props.currentFilter.filter.filterType === "advanced"}
-          valueChecked={true}
-          valueUnchecked={false}
-          onCheckboxChange={this.props.onChangeFilterType}
-        />
-        {this.props.currentFilter.filter.filterType === "advanced" ? (
-          <AnterosAdvancedFilter
-            onFilterChanged={this.props.onFilterChanged}
-            width={"100%"}
-            horizontal={false}
-            currentFilter={this.props.currentFilter}
-            border={"none"}
-          >
-            <FilterFields>{fieldsFilter}</FilterFields>
-          </AnterosAdvancedFilter>
-        ) : (
-          <AnterosFastFilter {...this.props} />
-        )}
-        <AnterosSaveFilter
-          id="modalSaveFilter"
-          title="Salvar filtro"
-          modalOpen={this.state.modalOpen}
-          onClickOk={this.onClickOkSaveFilter}
-          onClickCancel={this.onClickCancelSaveFilter}
-        />
-      </div>
-    );
-  }
-}
-
-class FilterItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { update: Math.random() };
-    autoBind(this);
-  }
-
-  onClick(event, button) {
-    event.preventDefault();
-    if (!this.props.disabled) {
-      if (this.props.handleSelectItem) {
-        event.preventDefault();
-        this.props.handleSelectItem(this.props.index, this.props.recordData);
-        event.preventDefault();
-      }
-      if (this.props.onSelectListItem) {
-        this.props.onSelectListItem(this.props.index, this.props.recordData);
-      }
-    }
-  }
-
-  render() {
-    let className = "list-group-item list-group-item-action";
-    let style = { maxHeight: "24px", padding: "2px 2px 2px 8px" };
-    if (this.props.active) {
-      className += " active";
-      style = { ...style, border: "1px dashed blue", fontWeight: "bold" };
-    }
-
-    if (this.props.recordData.disabled) className += " disabled";
-    return (
-      <div className={className} style={style} onClick={this.onClick}>
-        <AnterosText text={this.props.recordData.filterName} />
-      </div>
-    );
-  }
-}
-
-class AnterosFastFilter extends React.Component {
-  constructor(props) {
-    super(props);
-    autoBind(this);
-  }
-
-  onCheckboxChange(value, _checked, item) {
-    let selectedFields = [...this.props.currentFilter.filter.selectedFields];
-    if (_checked) {
-      selectedFields.push(item.props.option);
-    } else {
-      selectedFields = this.props.currentFilter.filter.selectedFields.filter(
-        (it) => it.name !== item.props.option.name
-      );
-    }
-    if (this.props.onChangeSelectedFields) {
-      this.props.onChangeSelectedFields(selectedFields);
-    }
-  }
-
-  renderCheckboxFields() {
-    const selectedOptions = this.props.selectedOptions;
-
-    if (selectedOptions) {
-      return selectedOptions.map((sl) => {
-        let checked = false;
-        this.props.currentFilter.filter.selectedFields.forEach((element) => {
-          if (sl.name === element.name) {
-            checked = true;
-          }
-        });
-
-        return (
-          <AnterosCheckbox
-            value={sl.label}
-            checked={checked}
-            option={sl}
-            valueChecked={true}
-            valueUnchecked={false}
-            onCheckboxChange={this.onCheckboxChange}
-          />
-        );
-      });
-    }
-  }
-
-  render() {
-    const { calendarClassName, ...calendarProps } = this.props;
-    return (
-      <AnterosRow
-        style={{
-          paddingBottom: "10px",
-          overflowY: "auto",
-          display: "block",
-          overflowX: "hidden",
-        }}
-      >
-        <AnterosCol
-          style={{
-            height: "128px",
-            overflowY: "auto",
-            overflowX: "hidden",
-          }}
-        >
-          <AnterosFormGroup row={false}>
-            {this.renderCheckboxFields()}
-          </AnterosFormGroup>
-        </AnterosCol>
-        <AnterosCol
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <AnterosCalendar
-            className={calendarClassName}
-            selectRange
-            onChange={(value) => {
-              this.props.onChangeCalendar(
-                null,
-                moment(value[0]),
-                moment(value[1])
-              );
-            }}
-            value={null}
-            {...calendarProps}
-          />
-        </AnterosCol>
-      </AnterosRow>
-    );
-  }
-}
-
-export class QueryFields extends React.Component {
-  static get componentName() {
-    return "QueryFields";
-  }
-
-  render() {
-    return <div>{this.props.children}</div>;
-  }
-}
-
-export class QueryField extends React.Component {
-  static get componentName() {
-    return "QueryField";
-  }
-  render() {
-    return null;
-  }
-}
-
-QueryField.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  dataType: PropTypes.oneOf(["string", "number", "date", "date_time", "time"])
-    .isRequired,
-  sortable: PropTypes.bool.isRequired,
-  quickFilter: PropTypes.bool.isRequired,
-  quickFilterSort: PropTypes.bool.isRequired,
-};
-
-QueryField.defaultProps = {
-  sortable: true,
-  quickFilter: true,
-  quickFilterSort: false,
-};
-
-export class QueryFieldValue extends React.Component {
-  static get componentName() {
-    return "QueryFieldValue";
-  }
-  render() {
-    return null;
-  }
-}
-
-QueryFieldValue.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  width: "50px",
+  height: "500px",
 };

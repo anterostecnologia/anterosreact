@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   AnterosBlockUi,
-  AnterosLoader,
 } from "@anterostecnologia/anteros-react-loaders";
+import { TailSpin } from 'react-loader-spinner';
 import {
   AnterosRemoteDatasource,
   dataSourceEvents,
@@ -292,7 +292,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
         if (
           currentFilter &&
           currentFilter.filter &&
-          currentFilter.filter.filterType === "advanced" &&
+          (currentFilter.filter.filterType === "advanced" || 
+           currentFilter.filter.filterType === "normal") &&
           currentFilter.filter.rules.length > 0
         ) {
           return this.getDataWithFilter(currentFilter, page);
@@ -501,10 +502,12 @@ export default function WithSearchModalTemplate(_loadingProps) {
               alertMessage: "Selecione um registro para continuar.",
             });
           } else {
-            if (this.props.selectedRecords.length === 0) {
-              this.props.selectedRecords.push(
-                this.dataSource.getCurrentRecord()
-              );
+            if (this.props.selectedRecords){
+              if (this.props.selectedRecords.length === 0) {
+                this.props.selectedRecords.push(
+                  this.dataSource.getCurrentRecord()
+                );
+              }
             }
             this.props.onClickOk(event, this.props.selectedRecords);
           }
@@ -540,6 +543,11 @@ export default function WithSearchModalTemplate(_loadingProps) {
         } else if (loadingProps.modalSize === "full") {
           modalSize = { full: true };
         }
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomMessageLoading"
+        )
+          ? this.getCustomMessageLoading()
+          : loadingProps.messageLoading;
         return (
           <AnterosModal
             id={loadingProps.viewName}
@@ -548,7 +556,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
             {...modalSize}
             showHeaderColor={true}
             showContextIcon={false}
-            isOpen={modalOpen === loadingProps.viewName}
+            isOpen={modalOpen === loadingProps.viewName || this.props.isOpen}
             onCloseButton={this.onCloseButton}
             withScroll={false}
             hideExternalScroll={true}
@@ -580,27 +588,33 @@ export default function WithSearchModalTemplate(_loadingProps) {
                 : null}
             </ModalActions>
             <AnterosBlockUi
-              tagStyle={{
-                height: this.state.filterExpanded ? "100%" : "auto",
-              }}
-              styleBlockMessage={{
-                border: "2px solid white",
-                width: "200px",
-                backgroundColor: "#8BC34A",
-                borderRadius: "8px",
-                color: "white",
-              }}
-              styleOverlay={{
-                opacity: 0.1,
-                backgroundColor: "black",
-              }}
-              tag="div"
-              blocking={this.state.loading}
-              message={loadingProps.messageLoading}
-              loader={
-                <AnterosLoader active type="ball-pulse" color="#02a17c" />
-              }
-            >
+                tagStyle={{
+                  height: "100%",
+                }}
+                styleBlockMessage={{
+                  border: "2px solid white",
+                  width: "200px",
+                  height:'80px',
+                  padding:'8px',
+                  backgroundColor: "rgb(56 70 112)",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+                styleOverlay={{
+                  opacity: 0.1,
+                  backgroundColor: "black",
+                }}
+                tag="div"
+                blocking={this.state.loading}
+                message={messageLoading}
+                loader={
+                  customLoader ? (
+                    customLoader
+                  ) : (
+                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                  )
+                }
+              >
               <div>
                 {loadingProps.withFilter ? (
                   <div

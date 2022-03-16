@@ -1,6 +1,6 @@
 import AnterosDatasourceNavigator from './components/AnterosDatasourceNavigator';
-import {AnterosPagination, AnterosPaginationPage} from "./components/AnterosPagination";
+import {AnterosPagination} from "./components/AnterosPagination";
 
 export {
-   AnterosDatasourceNavigator, AnterosPagination, AnterosPaginationPage  
+   AnterosDatasourceNavigator, AnterosPagination  
 };

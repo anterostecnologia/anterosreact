@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {AnterosError} from "@anterostecnologia/anteros-react-core";
+import {AnterosError, AnterosUtils} from "@anterostecnologia/anteros-react-core";
 import lodash from "lodash";
-import {AnterosUtils} from "@anterostecnologia/anteros-react-core";
 import {buildGridClassNames, columnProps} from "@anterostecnologia/anteros-react-layout";
 import 'script-loader!jquery.inputmask/dist/jquery.inputmask.bundle.js';
 import {AnterosLocalDatasource, AnterosRemoteDatasource, dataSourceEvents} from "@anterostecnologia/anteros-react-datasource";

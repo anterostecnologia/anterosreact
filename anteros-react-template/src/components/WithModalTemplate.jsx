@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { AnterosModal, ModalActions } from '@anterostecnologia/anteros-react-containers';
 import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
 import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
@@ -7,8 +7,8 @@ import {
   dataSourceEvents,
   dataSourceConstants, DATASOURCE_EVENTS
 } from '@anterostecnologia/anteros-react-datasource';
-import { autoBind } from '@anterostecnologia/anteros-react-core';
-import { processErrorMessage } from '@anterostecnologia/anteros-react-core';
+import { autoBind,processErrorMessage } from '@anterostecnologia/anteros-react-core';
+
 
 const defaultValues = {
   withDatasource: false,
@@ -212,7 +212,7 @@ export default function WithModalTemplate(_loadingProps) {
             showHeaderColor={true}
             showContextIcon={false}
             style={{height:loadingProps.modalContentHeight, width:loadingProps.modalContentWidth}}
-            isOpen={this.props.modalOpen === loadingProps.viewName}
+            isOpen={this.props.modalOpen === loadingProps.viewName || this.props.isOpen}
             onClose={this.onClose}
           >
             <AnterosAlert

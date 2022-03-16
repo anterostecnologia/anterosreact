@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import { TailSpin } from 'react-loader-spinner';
 
 import {
   AnterosRemoteDatasource,
@@ -24,10 +25,7 @@ import {
   HeaderActions,
   FooterActions,
 } from "@anterostecnologia/anteros-react-containers";
-import {
-  AnterosBlockUi,
-  AnterosLoader,
-} from "@anterostecnologia/anteros-react-loaders";
+import {AnterosBlockUi} from '@anterostecnologia/anteros-react-loaders';
 import {
   AnterosCol,
   AnterosRow,
@@ -285,15 +283,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
           }
         }
 
-        if (this.table1) {
-          this.table1.refreshData();
+        if (this.table) {
+          this.table.refreshData();
         }
-
-        if (this.table2) {
-          this.table2.refreshData();
-        }
-
-
 
         if (WrappedComponent.prototype.hasOwnProperty("onDidMount") === true) {
           this.onDidMount();
@@ -325,17 +317,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
         );
 
         if (this.dataSource) {
-          if (this.table1) {
-            this.table1.refreshData();
+          if (this.table) {
+            this.table.refreshData();
           }
-          if (this.table2) {
-            this.table2.refreshData();
-          }
-        }
-
-        if (this.table1){
-          let click_event = new CustomEvent('click');
-          this.table1.dispatchEvent(click_event);
         }
       }
 
@@ -349,20 +333,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onToggleExpandedFilter(expanded) {
-        this.setState({ ...this.state, filterExpanded: expanded, update: Math.random() });
-        setTimeout(() => {
-          if (
-            this.state.newHeight !== undefined &&
-            this.state.width !== undefined
-          ) {
-            if (this.table1) {
-              this.table1.resize(this.state.width - 360, this.state.newHeight);
-            }
-            if (this.table2) {
-              this.table2.resize("100%", this.state.newHeight);
-            }
-          }
-        }, 500);
+        this.setState({
+          ...this.state,
+          filterExpanded: expanded,
+          update: Math.random(),
+        });
       }
 
       onSelectedFilter(filter, index) {
@@ -371,20 +346,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onBeforePageChanged(currentPage, newPage) {
-        this.setState({
-          ...this.state,
-          update: Math.random(),
-          loading: true,
-        });
+        //
       }
 
       handlePageChanged(newPage) {
-        this.setState({
-          ...this.state,
-          update: Math.random(),
-          currentPage: newPage,
-          loading: false,
-        });
+        //
       }
 
       getSortFields() {
@@ -399,12 +365,16 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       onDatasourceEvent(event, error) {
-        let _loading = this.state.loading;
         if (
           event === dataSourceEvents.BEFORE_OPEN ||
           event === dataSourceEvents.BEFORE_GOTO_PAGE
         ) {
-          _loading = true;
+          this.setState({
+            ...this.state,
+            update: Math.random(),
+            alertIsOpen: false,
+            loading: true,
+          });
         }
 
         if (event === dataSourceEvents.BEFORE_POST) {
@@ -425,9 +395,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
             ...this.state,
             update: Math.random(),
             alertIsOpen: false,
-            loading: false
+            loading: false,
           });
-          _loading = false;
         }
 
         if (event === dataSourceEvents.AFTER_INSERT) {
@@ -512,7 +481,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             cancelButtonText: "Não",
             focusCancel: true,
           })
-            .then(function () {
+            .then(function() {
               _this.dataSource.delete((error) => {
                 if (error) {
                   _this.setState({
@@ -557,7 +526,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
         if (
           currentFilter &&
           currentFilter.filter &&
-          currentFilter.filter.filterType === "advanced" &&
+          (currentFilter.filter.filterType === "advanced" ||
+            currentFilter.filter.filterType === "normal") &&
           currentFilter.filter.rules.length > 0
         ) {
           return this.getDataWithFilter(currentFilter, page);
@@ -673,7 +643,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       onShowHideLoad(show) {
         this.setState({
           ...this.state,
-          loading: show,          
+          loading: show,
           update: Math.random(),
         });
       }
@@ -714,12 +684,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       onResize(width, height) {
         let newHeight = height - 120;
-
-        if (this.table1) {
-          this.table1.resize(width - 550, newHeight);
-        }
-        if (this.table2) {
-          this.table2.resize("100%", newHeight);
+        if (this.table) {
+          this.table.resize("100%", newHeight);
         }
         this.setState({
           ...this.state,
@@ -731,7 +697,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
 
       changeState(state, callback) {
         if (callback) {
-          this.setState({ ...this.state, ...state, update: Math.random() }, callback);
+          this.setState(
+            { ...this.state, ...state, update: Math.random() },
+            callback
+          );
         } else {
           this.setState({ ...this.state, ...state, update: Math.random() });
         }
@@ -742,13 +711,17 @@ export default function WithTableContainerTemplate(_loadingProps) {
           ? this.getModals()
           : null;
 
-        const customLoader = WrappedComponent.prototype.hasOwnProperty("getCustomLoader")
+        const customLoader = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomLoader"
+        )
           ? this.getCustomLoader()
           : null;
 
-        const messageLoading = WrappedComponent.prototype.hasOwnProperty("getCustomMessageLoading")
-        ? this.getCustomMessageLoading()
-        : loadingProps.messageLoading;
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomMessageLoading"
+        )
+          ? this.getCustomMessageLoading()
+          : loadingProps.messageLoading;
 
         return (
           <Fragment>
@@ -776,27 +749,30 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 {this.state.alertMessage}
               </AnterosAlert>
               <HeaderActions>
-                <AnterosButton
-                  id="btnClose"
-                  onButtonClick={this.onButtonClick}
-                  route={loadingProps.routes.close}
-                  visible={loadingProps.routes.close !== undefined}
-                  icon="fa fa-times"
-                  small
-                  circle
-                  disabled={
-                    this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
-                  }
-                />
-              </HeaderActions>
+                  <AnterosButton
+                    id="btnClose"
+                    onButtonClick={this.onButtonClick}
+                    route={loadingProps.routes.close}
+                    visible={loadingProps.routes.close !== undefined}
+                    icon="fa fa-times"
+                    small
+                    circle
+                    disabled={
+                      this.dataSource.getState() !==
+                      dataSourceConstants.DS_BROWSE
+                    }
+                  />
+                </HeaderActions>
               <AnterosBlockUi
                 tagStyle={{
-                  height: this.state.filterExpanded ? "100%" : "auto",
+                  height: "100%",
                 }}
                 styleBlockMessage={{
                   border: "2px solid white",
                   width: "200px",
-                  backgroundColor: "#8BC34A",
+                  height:'80px',
+                  padding:'8px',
+                  backgroundColor: "rgb(56 70 112)",
                   borderRadius: "8px",
                   color: "white",
                 }}
@@ -808,7 +784,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 blocking={this.state.loading}
                 message={messageLoading}
                 loader={
-                  customLoader?customLoader:<AnterosLoader active type="ball-pulse" color="#02a17c" />
+                  customLoader ? (
+                    customLoader
+                  ) : (
+                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                  )
                 }
               >
                 {loadingProps.withFilter ? (
@@ -817,15 +797,11 @@ export default function WithTableContainerTemplate(_loadingProps) {
                       display: "flex",
                       flexFlow: "row nowrap",
                       justifyContent: "space-between",
-                      width: "calc(100%)",
-                      height: "calc(100%)",
                     }}
                   >
                     <div
                       style={{
-                        width: this.state.filterExpanded
-                          ? "calc(100% - 550px)"
-                          : "calc(100%)",
+                        width: "calc(100%)",
                       }}
                     >
                       <UserActions
@@ -843,29 +819,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
                           this.hasUserActions ? (
                             this.getUserActions()
                           ) : (
-                            <div><AnterosButton visible={false}/></div>
+                            <div>
+                              <AnterosButton visible={false} />
+                            </div>
                           )
                         }
                       />
-                      {this.state.filterExpanded ? (
-                        <AnterosDataTable
-                          id={"table" + loadingProps.viewName}
-                          height={"200px"}
-                          ref={(ref) => (this.table1 = ref)}
-                          dataSource={this.dataSource}
-                          width="100%"
-                          enablePaging={false}
-                          enableSearching={false}
-                          showExportButtons={false}
-                          onDoubleClick={this.onDoubleClickTable}
-                          onSelectRecord={this.handleOnSelectRecord}
-                          onUnSelectRecord={this.handleOnUnselectRecord}
-                          onSelectAllRecords={this.handleOnSelectAllRecords}
-                          onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                        >
-                          {this.getColumns()}
-                        </AnterosDataTable>
-                      ) : null}
                     </div>
                     <AnterosQueryBuilder
                       zIndex={50}
@@ -917,25 +876,23 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   </div>
                 )}
 
-                {!this.state.filterExpanded ? (
-                  <AnterosDataTable
-                    id={"table" + loadingProps.viewName}
-                    height={"200px"}
-                    ref={(ref) => (this.table2 = ref)}
-                    dataSource={this.dataSource}
-                    width="100%"
-                    enablePaging={false}
-                    enableSearching={false}
-                    showExportButtons={false}
-                    onDoubleClick={this.onDoubleClickTable}
-                    onSelectRecord={this.handleOnSelectRecord}
-                    onUnSelectRecord={this.handleOnUnselectRecord}
-                    onSelectAllRecords={this.handleOnSelectAllRecords}
-                    onUnSelectAllRecords={this.handleOnUnselectAllRecords}
-                  >
-                    {this.getColumns()}
-                  </AnterosDataTable>
-                ) : null}
+                <AnterosDataTable
+                  id={"table" + loadingProps.viewName}
+                  height={"200px"}
+                  ref={(ref) => (this.table = ref)}
+                  dataSource={this.dataSource}
+                  width="100%"
+                  enablePaging={false}
+                  enableSearching={false}
+                  showExportButtons={false}
+                  onDoubleClick={this.onDoubleClickTable}
+                  onSelectRecord={this.handleOnSelectRecord}
+                  onUnSelectRecord={this.handleOnUnselectRecord}
+                  onSelectAllRecords={this.handleOnSelectAllRecords}
+                  onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                >
+                  {this.getColumns()}
+                </AnterosDataTable>
                 <WrappedComponent
                   {...this.props}
                   ref={(ref) => (this.wrappedRef = ref)}

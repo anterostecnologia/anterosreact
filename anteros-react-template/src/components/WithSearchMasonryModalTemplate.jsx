@@ -30,6 +30,7 @@ import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
 import { AnterosMasonry } from "@anterostecnologia/anteros-react-masonry";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 
+
 const defaultValues = {
   allowEmpty: false,
   openDataSourceFilter: true,
@@ -276,8 +277,13 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
       }
 
       getData(currentFilter,page){
-        if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "advanced") && 
-           (currentFilter.filter.rules.length > 0)) {
+        if (
+          currentFilter &&
+          currentFilter.filter &&
+          (currentFilter.filter.filterType === "advanced" || 
+           currentFilter.filter.filterType === "normal") &&
+          currentFilter.filter.rules.length > 0
+        ) {
               return this.getDataWithFilter(currentFilter,page);
           } else if ((currentFilter && currentFilter.filter && currentFilter.filter.filterType === "normal") &&
                      (currentFilter.filter.quickFilterText !== "")) {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { AnterosSweetAlert, AnterosError } from '@anterostecnologia/anteros-react-core';
 import {
   AnterosCard,
   HeaderActions,
@@ -8,11 +7,10 @@ import {
 import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
 import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import { connect } from 'react-redux';
-import { processErrorMessage, processDetailErrorMessage } from '@anterostecnologia/anteros-react-core';
+import { AnterosSweetAlert, AnterosError, processErrorMessage, processDetailErrorMessage, autoBind } from '@anterostecnologia/anteros-react-core';
 import { dataSourceConstants } from '@anterostecnologia/anteros-react-datasource';
-import { autoBind } from '@anterostecnologia/anteros-react-core';
 import { AnterosBlockUi } from '@anterostecnologia/anteros-react-loaders';
-import { AnterosLoader } from '@anterostecnologia/anteros-react-loaders';
+import { TailSpin } from 'react-loader-spinner';
 
 const defaultValues = { messageSaving: 'Aguarde... salvando.', forceRefresh: true };
 
@@ -332,6 +330,11 @@ export default function WithFormTemplate(_loadingProps) {
       }
 
       render() {
+        const messageLoading = WrappedComponent.prototype.hasOwnProperty(
+          "getCustomMessageLoading"
+        )
+          ? this.getCustomMessageLoading()
+          : loadingProps.messageLoading;
         return (
           <AnterosCard
             caption={loadingProps.caption}
@@ -363,24 +366,33 @@ export default function WithFormTemplate(_loadingProps) {
               : this.state.alertMessage}
             </AnterosAlert>
             <AnterosBlockUi
-              styleBlockMessage={{
-                border: '2px solid white',
-                width: '200px',
-                backgroundColor: '#8BC34A',
-                borderRadius: '8px',
-                color: 'white'
-              }}
-              styleOverlay={{
-                opacity: 0.1,
-                backgroundColor: 'black'
-              }}
-              tag="div"
-              blocking={this.state.saving || this.state.loading}
-              message={this.state.messageLoader}
-              loader={
-                <AnterosLoader active type="ball-pulse" color="#02a17c" />
-              }
-            >
+                tagStyle={{
+                  height: "100%",
+                }}
+                styleBlockMessage={{
+                  border: "2px solid white",
+                  width: "200px",
+                  height:'80px',
+                  padding:'8px',
+                  backgroundColor: "rgb(56 70 112)",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+                styleOverlay={{
+                  opacity: 0.1,
+                  backgroundColor: "black",
+                }}
+                tag="div"
+                blocking={this.state.loading}
+                message={messageLoading}
+                loader={
+                  customLoader ? (
+                    customLoader
+                  ) : (
+                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                  )
+                }
+              >
               <AnterosForm id={loadingProps.formName}>
                 <WrappedComponent
                   {...this.props}
