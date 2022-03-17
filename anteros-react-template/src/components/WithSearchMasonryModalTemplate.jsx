@@ -566,9 +566,7 @@ export default function WithSearchMasonryModalTemplate(_loadingProps) {
                 >
                   <div
                     style={{
-                      width: this.state.filterExpanded
-                        ? "calc(100% - 550px)"
-                        : "calc(100%)",
+                      width: '100%',
                     }}
                   >
                     {this.state.filterExpanded ? (

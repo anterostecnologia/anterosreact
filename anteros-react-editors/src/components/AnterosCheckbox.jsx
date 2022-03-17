@@ -96,7 +96,8 @@ class AnterosCheckbox extends Component {
 		}
 	}
 
-	toggleCheckboxChange() {
+	toggleCheckboxChange(event) {
+		event.preventDefault();
 		if (!this.props.readOnly) {
 			let checked = !this.state.isChecked;
 			if (
@@ -173,7 +174,7 @@ class AnterosCheckbox extends Component {
 						checked={isChecked}
 						disabled={disabled}
 						readOnly={readOnly}
-						onChange={this.toggleCheckboxChange}
+						onChange={(event)=>this.toggleCheckboxChange(event)}
 						onClick={this.onClick}
 						data-toggle={dataToggle}
 						aria-haspopup={ariaHaspopup}

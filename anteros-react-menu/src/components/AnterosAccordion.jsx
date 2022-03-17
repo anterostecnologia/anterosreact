@@ -107,8 +107,12 @@ export class AnterosAccordionItem extends Component {
   }
 
   onClick(event) {
-    if (this.props.onSelectAccordionItem) {
-      this.props.onSelectAccordionItem(event, this);
+    if (this.props.disabled===true){
+      event.preventDefault();
+    } else {
+      if (this.props.onSelectAccordionItem) {
+        this.props.onSelectAccordionItem(event, this);
+      }
     }
   }
 
@@ -156,7 +160,7 @@ export class AnterosAccordionItem extends Component {
     }
 
     return (
-      <div className={className} onClick={this.onClick}>
+      <div className={className} style={{opacity:this.props.disabled?0.5:1}} onClick={this.onClick}>
         <div
           className="card-header justify-content-between"
           style={this.props.headerStyle}

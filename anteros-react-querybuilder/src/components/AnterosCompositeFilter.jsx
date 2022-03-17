@@ -48,10 +48,6 @@ class AnterosCompositeFilter extends React.Component {
     this.props.onSaveFilter(item);
   }
 
-  onShowEditor() {
-    this.setState({ ...this.state, showEditor: !this.state.showEditor });
-  }
-
   onChangeFilterType(index) {
     this.props.onChangeFilterType(index);
   }
@@ -94,7 +90,7 @@ class AnterosCompositeFilter extends React.Component {
             background: "rgb(255, 255, 255)",
             borderRadius: "4px",
             outline: "none",
-            zIndex:3
+            zIndex: 3
           },
         }}
         centered={true}
@@ -102,15 +98,6 @@ class AnterosCompositeFilter extends React.Component {
         <div style={{ padding: "10px", width: "100%" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <AnterosText fontWeight="bold" text="Filtros salvos" />
-            <AnterosButton
-              id="btnEditFilter"
-              caption={this.state.showEditor ? "Ocultar" : "Editar"}
-              small
-              link
-              hint="Editar"
-              icon={this.state.showEditor ? "fa fa-eye-slash" : "fa fa-pencil"}
-              onClick={this.onShowEditor}
-            />
           </div>
           <AnterosList
             height="105px"
@@ -121,8 +108,7 @@ class AnterosCompositeFilter extends React.Component {
             component={FilterItem}
           />
           <div className="filter-apply">
-            {this.state.showEditor ? (
-              <Fragment>
+            <Fragment>
                 <AnterosButton
                   id="btnNew"
                   hint="Novo filtro"
@@ -164,8 +150,7 @@ class AnterosCompositeFilter extends React.Component {
                     />
                   </AnterosDropdownMenu>
                 </AnterosDropdownButton>
-              </Fragment>
-            ) : null}
+            </Fragment>
             <AnterosButton
               id="btnApply"
               hint="Aplicar filtro"

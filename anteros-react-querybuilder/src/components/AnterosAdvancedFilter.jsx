@@ -13,7 +13,8 @@ import {
   AnterosDateTimeRangePicker,
   AnterosDateMultiplePicker,
   AnterosDateTimeMultiplePicker,
-  AnterosTimePicker 
+  AnterosTimePicker,
+  AnterosCheckboxToggle,
 } from "@anterostecnologia/anteros-react-editors";
 import {
   AnterosButton,
@@ -1251,6 +1252,9 @@ export class ValueEditor extends React.Component {
             onChange={(value) => handleOnChange(value)}
           />
         );
+      } else if (dataType==='boolean'){
+        return <AnterosCheckboxToggle checked={newValue}
+        onCheckboxChange={(value,checked) => handleOnChange(checked)}/>    
       } else {
         if (
           listValues.length > 0 &&

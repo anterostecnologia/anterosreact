@@ -15,7 +15,9 @@ import {
   AnterosDateMultiplePicker,
   AnterosDateTimeMultiplePicker,
   AnterosEdit,
-  AnterosTimePicker
+  AnterosTimePicker,
+  AnterosCheckboxToggle,
+  AnterosCheckbox
 } from "@anterostecnologia/anteros-react-editors";
 import {
   AnterosStringUtils,
@@ -337,6 +339,10 @@ class AnterosSimpleFilter extends React.Component {
     this.onElementChanged("value2", "", rule.id);
   }
 
+  onDisabledChanged(value, checked) {
+    this.onElementChanged("disabled", !checked);
+  }
+
   onValueChanged(rule, value) {
     const { field, operator } = rule;
     const {
@@ -441,7 +447,7 @@ class AnterosSimpleFilter extends React.Component {
           dataType: child.dataType,
           value: "",
           value2: "",
-          disabled: false,
+          disabled: child.disabled,
           operator: child.operator ? child.operator : operators[0].name,
         };
         currentFilter.filter.rules.push(rule);
@@ -453,8 +459,16 @@ class AnterosSimpleFilter extends React.Component {
           : textValue;
       result.push(
         <AnterosAccordionItem
+          disabled={rule.disabled}
           caption={
-            <div>
+            <div style={{display:'flex'}}>
+              <AnterosCheckbox
+                value=""
+                width="24px"
+                height="32px"
+                checked={!child.disabled}
+                onCheckboxChange={_this.onDisabledChanged}
+              />
               {child.label}
               <SimpleValueSelector
                 field={child.name}
@@ -486,7 +500,7 @@ class AnterosSimpleFilter extends React.Component {
             value2={rule.value2}
             listValues={[]}
             searchField={child.searchField}
-            disabled={false}
+            disabled={rule.disabled}
             className="rule-value"
             handleOnChange={(value) => _this.onValueChanged(rule, value)}
             onSearchButtonClick={props.onSearchButtonClick}
@@ -503,7 +517,7 @@ class AnterosSimpleFilter extends React.Component {
               value={rule.value2}
               listValues={listValues}
               searchField={child.searchField}
-              disabled={false}
+              disabled={rule.disabled}
               className="rule-value"
               handleOnChange={(value) => _this.onValue2Changed(rule, value)}
               onSearchButtonClick={props.onSearchButtonClick}
@@ -739,6 +753,9 @@ class SimpleValueEditor extends React.Component {
             onChange={(value) => handleOnChange(value)}
           />
         );
+      } else if (dataType==='boolean'){
+        return <AnterosCheckboxToggle checked={newValue}
+        onCheckboxChange={(value,checked) => handleOnChange(checked)}/>
       } else {
         if (
           listValues.length > 0 &&

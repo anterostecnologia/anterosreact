@@ -705,15 +705,12 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
                   display: "flex",
                   flexFlow: "row nowrap",
                   justifyContent: "space-between",
-                  width: "calc(100%)",
-                  height: "calc(100%)",
+                  width: "100%",
                 }}
               >
                 <div
                   style={{
-                    width: this.props.filterExpanded
-                      ? "calc(100% - 550px)"
-                      : "calc(100%)",
+                    width: '100%',
                   }}
                 >
                   <div>

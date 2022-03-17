@@ -207,12 +207,12 @@ export const defaultOperators =() => {
       {
         name: "null",
         label: "Em branco",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
+        dataTypes: ["string", "number", "date", "date_time", "time","boolean"],
       },
       {
         name: "notNull",
         label: "Preenchido",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
+        dataTypes: ["string", "number", "date", "date_time", "time","boolean"],
       },
       {
         name: "contains",
@@ -232,12 +232,12 @@ export const defaultOperators =() => {
       {
         name: "=",
         label: "Igual",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
+        dataTypes: ["string", "number", "date", "date_time", "time","boolean"],
       },
       {
         name: "!=",
         label: "Diferente",
-        dataTypes: ["string", "number", "date", "date_time", "time"],
+        dataTypes: ["string", "number", "date", "date_time", "time","boolean"],
       },
       {
         name: "<",
@@ -290,7 +290,7 @@ export const defaultOperators =() => {
     ];
   }
 
-  export const getDefaultFilter = (props,currentFilter) => {
+  export const getDefaultFilter = (props,currentFilter,type) => {
     let fields = getFields(props);
     let result = {
       id: 0,
@@ -304,7 +304,7 @@ export const defaultOperators =() => {
         quickFilterFieldsText: "",
         rules: [],
         condition: "",
-        filterType: "normal",
+        filterType: type,
       },
       sort: {
         quickFilterSort: "",
@@ -312,6 +312,7 @@ export const defaultOperators =() => {
         activeIndex: -1,
       },
     };
+    result.filter.type = currentFilter?currentFilter.type:result.filter.type;
     result.filter.selectedFields = getQuickFields(fields);
     result.filter.quickFilterFieldsText = getQuickFilterFields(currentFilter, fields);
     result.sort.sortFields = mergeSortWithFields([],fields);

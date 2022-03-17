@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-querybuilder",
-  "version": "2.0.30",
+  "version": "2.0.37",
   "description": "Anteros components for React - Query Builder",
   "main": "lib/@anterostecnologia/anteros-react-querybuilder.js",
   "scripts": {
@@ -15,11 +15,11 @@
     "@anterostecnologia/anteros-react-containers": "^2.0.9",
     "@anterostecnologia/anteros-react-core": "^2.0.20",
     "@anterostecnologia/anteros-react-datasource": "^2.0.20",
-    "@anterostecnologia/anteros-react-editors": "^2.0.46",
+    "@anterostecnologia/anteros-react-editors": "^2.0.47",
     "@anterostecnologia/anteros-react-label": "^2.0.5",
     "@anterostecnologia/anteros-react-layout": "^2.0.9",
     "@anterostecnologia/anteros-react-list": "^2.0.7",
-    "@anterostecnologia/anteros-react-menu": "^2.0.31",
+    "@anterostecnologia/anteros-react-menu": "^2.0.33",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",

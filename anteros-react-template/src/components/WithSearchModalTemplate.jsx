@@ -548,7 +548,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
         )
           ? this.getCustomLoader()
           : null;
-          
+
         const messageLoading = WrappedComponent.prototype.hasOwnProperty(
           "getCustomMessageLoading"
         )
@@ -630,16 +630,14 @@ export default function WithSearchModalTemplate(_loadingProps) {
                       justifyContent: "space-between",
                       paddingBottom: "15px",
                       overflowY: "auto",
-                      width: "calc(100%)",
+                      width: "100%",
                       height: this.state.filterExpanded ? "500px" : "55px",
                       maxHeight: this.state.filterExpanded ? "500px" : "150px",
                     }}
                   >
                     <div
                       style={{
-                        width: this.state.filterExpanded
-                          ? "calc(100% - 550px)"
-                          : "calc(100%)",
+                        width: '100%',
                       }}
                     >
                       {this.state.filterExpanded ? (

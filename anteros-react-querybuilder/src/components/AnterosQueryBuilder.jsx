@@ -43,13 +43,14 @@ export class AnterosQueryBuilder extends React.Component {
     this.state = {
       currentFilter: this.props.currentFilter
         ? this.props.currentFilter
-        : getDefaultFilter(props, props.currentFilter),
+        : getDefaultFilter(props, props.currentFilter,'normal'),
       currentFastFilter: this.props.currentFastFilter
         ? this.props.currentFastFilter
-        : getDefaultFilter(props, props.currentFastFilter),
+        : getDefaultFilter(props, props.currentFastFilter,'quick'),
       modalOpen: "",
       expandedFilter: this.props.expandedFilter,
-      activeFilterIndex: 0,
+      activeFilterIndex: -1,
+      latestFilter: undefined
     };
 
     if (this.props.dataSource) {
@@ -74,12 +75,12 @@ export class AnterosQueryBuilder extends React.Component {
       ...this.state,
       currentFilter: nextProps.currentFilter
         ? nextProps.currentFilter
-        : getDefaultFilter(nextProps, nextProps.currentFilter),
+        : getDefaultFilter(nextProps, nextProps.currentFilter,'normal'),
       activeFilterIndex: nextProps.activeFilterIndex,
       expandedFilter: nextProps.expandedFilter,
       currentFastFilter: nextProps.currentFastFilter
         ? nextProps.currentFastFilter
-        : getDefaultFilter(nextProps, nextProps.currentFastFilter),
+        : getDefaultFilter(nextProps, nextProps.currentFastFilter,'quick'),
     });
   }
 
@@ -95,7 +96,7 @@ export class AnterosQueryBuilder extends React.Component {
           filter.id = _this.props.dataSource.fieldByName("idFilter");
           filter.name = _this.props.dataSource.fieldByName("filterName");
           filter.formName = _this.props.dataSource.fieldByName("formName");
-          _this.onChangeSelectedFilter(filter, 0);
+          _this.onChangeSelectedFilter(filter, -1);
         }
       });
     }
@@ -132,21 +133,27 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   clearFilter() {
-    let currentFilter = getDefaultFilter(this.props, this.state.currentFilter);
-    this.setState({ ...this.state, currentFilter, activeFilterIndex: -1 });
+    let currentFilter = getDefaultFilter(this.props, this.state.currentFilter,'normal');
+    let currentFastFilter = getDefaultFilter(nextProps, nextProps.currentFastFilter,'quick');
+    this.setState({ ...this.state, latestFilter: undefined, currentFilter, currentFastFilter, activeFilterIndex: -1 });
     if (this.props.onClearFilter) {
       this.props.onClearFilter(this);
     }
     this.onFilterChanged(currentFilter, -1);
   }
 
-  onSearchClick() {
+  onSearchClick(currentFilter) {
+    this.setState({...this.state, latestFilter: currentFilter});
     if (this.props.onSearchByFilter) {
-      this.props.onSearchByFilter(this.state.currentFilter);
+        this.props.onSearchByFilter(currentFilter);
     }
   }
 
   onChangeQuickFilter(event, value) {
+    this.changeQuickFilter(value);  
+  }
+
+  changeQuickFilter(value){
     let currentFastFilter = this.state.currentFastFilter;
     currentFastFilter.filter.quickFilterText = value;
     currentFastFilter.filter.quickFilterFieldsText = getQuickFilterFields(
@@ -422,7 +429,10 @@ export class AnterosQueryBuilder extends React.Component {
           AnterosSweetAlert(processErrorMessage(error));
         });
     } else if (button.props.id === "btnApply") {
-      this.onSearchClick();
+      if (this.state.currentFastFilter.quickFilterFieldsText != '') {
+        this.changeQuickFilter('');  
+      }
+      this.onSearchClick(this.state.currentFilter);
     } else if (button.props.id === "btnClose") {
       this.onCloseFilterClick();
     }
@@ -725,7 +735,12 @@ export class AnterosQueryBuilder extends React.Component {
             hintPosition="down"
             style={{ width: "38px", height: "38px" }}
             onClick={() => {
-              this.onSearchClick();
+              if (this.state.currentFastFilter.quickFilterFieldsText && 
+                this.state.currentFastFilter.quickFilterFieldsText != ''){
+                this.onSearchClick(this.state.currentFastFilter);
+              } else {
+                this.onSearchClick(this.state.latestFilter);
+              }
             }}
           />
           <div
