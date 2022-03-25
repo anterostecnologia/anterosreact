@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-misc",
-  "version": "2.0.17",
+  "version": "2.0.22",
   "description": "Anteros components for React - Misc",
   "main": "lib/@anterostecnologia/anteros-react-misc.js",
   "scripts": {
@@ -68,6 +68,7 @@
     "react-async-script": "^1.0.1",
     "react-dom": "^16.11.0",
     "react-joyride": "^2.0.0-11",
+    "react-loader-spinner": "^6.0.0-0",
     "react-pdf-js": "^3.0.0",
     "react-transition-group": "^2.2.1",
     "sass-loader": "^6.0.6",

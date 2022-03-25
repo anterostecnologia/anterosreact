@@ -1,0 +1,48 @@
+import { IBlock, IBlockData } from '../../../typings';
+import { CSSProperties } from 'react';
+export declare type ISocial = IBlockData<{
+    align?: string;
+    color?: string;
+    'container-background-color'?: string;
+    'border-radius'?: string;
+    'icon-height'?: string;
+    'icon-size'?: string;
+    mode?: 'vertical' | 'horizontal';
+    'icon-padding': string;
+    'text-padding': string;
+    'text-decoration'?: string;
+    padding?: string;
+    'inner-padding'?: string;
+    'font-family'?: string;
+    'font-size'?: string;
+    'font-style'?: string;
+    'font-weight'?: CSSProperties['fontWeight'];
+    'line-height'?: string | number;
+}, {
+    elements: Array<{
+        content: string;
+        src: string;
+        align?: string;
+        alt?: string;
+        'background-color'?: string;
+        'border-radius'?: string;
+        color?: string;
+        'font-family'?: string;
+        'font-size'?: string;
+        'font-style'?: string;
+        'font-weight'?: string;
+        href?: string;
+        'icon-height'?: string;
+        'icon-size'?: string;
+        'line-height'?: string;
+        name?: string;
+        padding?: string;
+        'icon-padding'?: string;
+        'text-padding'?: string;
+        target?: string;
+        title?: string;
+        'text-decoration'?: string;
+        'vertical-align'?: string;
+    }>;
+}>;
+export declare const Social: IBlock<ISocial>;

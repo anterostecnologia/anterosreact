@@ -1,5 +1,6 @@
 import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
-import { AnterosModal, AnterosPanel, ModalActions } from "@anterostecnologia/anteros-react-containers";
+import { AnterosModal, AnterosPanel, ModalActions,
+    AnterosFlexContainer, AnterosFlexElement, AnterosFlexSplitter } from "@anterostecnologia/anteros-react-containers";
 import { boundClass } from "@anterostecnologia/anteros-react-core";
 import { AnterosDropzone } from "@anterostecnologia/anteros-react-dropzone";
 import { AnterosCheckbox } from '@anterostecnologia/anteros-react-editors';
@@ -10,7 +11,7 @@ import { AnterosMasonry } from "@anterostecnologia/anteros-react-masonry";
 import { AnterosAlert } from '@anterostecnologia/anteros-react-notification';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { AnterosFlexContainer, AnterosFlexElement, AnterosFlexSplitter } from "@anterostecnologia/anteros-react-containers";
+import { TailSpin } from "react-loader-spinner";
 import { AnterosTreeView } from '@anterostecnologia/anteros-react-treeview';
 
 var djsConfig = {
@@ -137,24 +138,34 @@ class AnterosFileManager extends Component {
                 style={{ border: 'none', borderBottom: "1px solid rgba(0, 0, 0, 0.08)" }}>
             </AnterosFileToolbar>
             <AnterosBlockUi
+                tagStyle={{
+                  height: "100%",
+                }}
                 styleBlockMessage={{
-                    border: '2px solid white',
-                    width: '200px',
-                    backgroundColor: '#8BC34A',
-                    borderRadius: '8px',
-                    color: 'white'
+                  border: "2px solid white",
+                  width: "200px",
+                  height: "80px",
+                  padding: "8px",
+                  backgroundColor: "rgb(56 70 112)",
+                  borderRadius: "8px",
+                  color: "white",
                 }}
                 styleOverlay={{
-                    opacity: 0.1,
-                    backgroundColor: 'black'
+                  opacity: 0.1,
+                  backgroundColor: "black",
                 }}
                 tag="div"
                 blocking={this.props.loading}
                 message={"Aguarde..."}
                 loader={
-                    <AnterosLoader active type="ball-pulse" color="#02a17c" />
+                    <TailSpin
+                      width="40px"
+                      height="40px"
+                      ariaLabel="loading-indicator"
+                      color="#f2d335"
+                    />
                 }
-            >
+              >
                 <AnterosFlexContainer orientation="vertical" style={{ height: this.props.contentHeight, backgroundColor: "white" }}>
 
                     <AnterosFlexElement className="left-pane" minSize="300" size="300">
@@ -425,20 +436,20 @@ class AnterosFileToolbar extends Component {
             </div>
             <AnterosToolbar style={{width:'300px', backgroundColor:'transparent', border:'0'}}>
                 <AnterosToolbarItem>
-                    <AnterosButton hint="Nova pasta" hintPosition="down" primary style={{ width: "38px" }} icon="far fa-folder-plus" onButtonClick={this.props.onAddFolder} />
+                    <AnterosButton hint="Nova pasta" hintPosition="down" primary style={{ width: "38px", color: '#10c1de', fontSize: '20px' }} icon="far fa-folder-plus" onButtonClick={this.props.onAddFolder} />
                 </AnterosToolbarItem>
                 <AnterosToolbarItem>
-                    <AnterosButton hint="Remover pasta" hintPosition="down" primary style={{ width: "38px" }} icon="far fa-folder-minus" onButtonClick={this.props.onRemoveFolder} disabled={this.props.disabledRemoveFolder} />
+                    <AnterosButton hint="Remover pasta" hintPosition="down" primary style={{ width: "38px", color: '#e47777', fontSize: '20px' }} icon="far fa-folder-minus" onButtonClick={this.props.onRemoveFolder} disabled={this.props.disabledRemoveFolder} />
                 </AnterosToolbarItem>
                 <AnterosToolbarItem separate={true} />
                 <AnterosToolbarItem>
-                    <AnterosButton hint="Remover arquivo" hintPosition="down" primary style={{ width: "38px" }} icon="far fa-trash" onButtonClick={this.props.onRemoveFiles} disabled={this.props.disabledRemoveFile} />
+                    <AnterosButton hint="Remover arquivo" hintPosition="down" primary style={{ width: "38px", color: '#e47777', fontSize: '20px' }} icon="far fa-trash" onButtonClick={this.props.onRemoveFiles} disabled={this.props.disabledRemoveFile} />
                 </AnterosToolbarItem>
                 <AnterosToolbarItem>
-                    <AnterosButton hint="Upload arquivo" hintPosition="down" primary style={{ width: "38px" }} icon="far fa-cloud-upload-alt" onButtonClick={this.onUpLoadFiles} disabled={this.props.disabledUploadFiles} />
+                    <AnterosButton hint="Upload arquivo" hintPosition="down" primary style={{ width: "38px", color: '#28a745', fontSize: '20px', paddingLeft: '6px' }} icon="far fa-cloud-upload-alt" onButtonClick={this.onUpLoadFiles} disabled={this.props.disabledUploadFiles} />
                 </AnterosToolbarItem>
                 <AnterosToolbarItem>
-                    <AnterosButton  hint="Download arquivo" hintPosition="down" primary style={{ width: "38px" }} icon="far fa-cloud-download-alt" onButtonClick={this.onDownloadClick} disabled={this.props.disabledDownloadFiles} />
+                    <AnterosButton  hint="Download arquivo" hintPosition="down" primary style={{ width: "38px", color: '#dfec19', fontSize: '20px', paddingLeft: '6px' }} icon="far fa-cloud-download-alt" onButtonClick={this.onDownloadClick} disabled={this.props.disabledDownloadFiles} />
                 </AnterosToolbarItem>
                 <AnterosToolbarItem separate={true} />
                 <AnterosToolbarItem>

@@ -100,6 +100,7 @@ export class AnterosAccordionItem extends Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
+    this.ignoreEvent = this.ignoreEvent.bind(this);
   }
 
   static get componentName() {
@@ -107,13 +108,26 @@ export class AnterosAccordionItem extends Component {
   }
 
   onClick(event) {
-    if (this.props.disabled===true){
-      event.preventDefault();
-    } else {
-      if (this.props.onSelectAccordionItem) {
-        this.props.onSelectAccordionItem(event, this);
+    if (!this.ignoreEvent(event)){
+      if (this.props.disabled===true){
+        event.preventDefault();
+      } else {
+        if (this.props.onSelectAccordionItem) {
+          this.props.onSelectAccordionItem(event, this);
+        }
       }
     }
+  }
+
+  ignoreEvent(event){
+    let result = true;
+    for (let i = 0; i < this.itemRef.childElementCount-1;i++) {
+      let item = this.itemRef.children[i];
+      if (item === event.target){
+        result = false;
+      }
+    }
+    return result;
   }
 
   render() {
@@ -160,12 +174,11 @@ export class AnterosAccordionItem extends Component {
     }
 
     return (
-      <div className={className} style={{opacity:this.props.disabled?0.5:1}} onClick={this.onClick}>
+      <div id={this.props.ownerId + "_heading" + this.props.id} ref={(ref)=>this.itemRef=ref} className={className} style={{opacity:this.props.disabled?0.5:1}} onClick={this.onClick}>
         <div
           className="card-header justify-content-between"
           style={this.props.headerStyle}
-          role="tab"
-          id={this.props.ownerId + "_heading" + this.props.id}
+          role="tab"          
           data-toggle="collapse"
           data-parent={"#" + this.props.ownerId}
           href={"#" + this.props.ownerId + "_collapse" + this.props.id}

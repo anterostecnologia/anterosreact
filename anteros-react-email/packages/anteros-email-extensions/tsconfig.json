@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "vite/client",
+      "node"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "alwaysStrict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": false,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "outDir": "lib",
+    "paths": {
+      "@core": [
+        "../anteros-email-core/src"
+      ],
+      "@core/*": [
+        "../anteros-email-core/src/*"
+      ],
+      "@": [
+        "../anteros-email-editor/src"
+      ],
+      "@/*": [
+        "../anteros-email-editor/src/*"
+      ],
+      "@extensions": [
+        "./src"
+      ],
+      "@extensions/*": [
+        "./src/*"
+      ],
+      "@anterostecnologia/anteros-email-core": [
+        "../anteros-email-core/src/index.tsx"
+      ],
+      "@anterostecnologia/anteros-email-editor": [
+        "../anteros-email-editor/src/index.tsx"
+      ]
+    }
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/utils/__tests__"
+  ]
+}

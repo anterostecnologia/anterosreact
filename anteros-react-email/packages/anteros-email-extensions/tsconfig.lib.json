@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "paths": {
+      "@extensions": [
+        "./src"
+      ],
+      "@extensions/*": [
+        "./src/*"
+      ],
+      "@anterostecnologia/anteros-email-core": [
+        "../anteros-email-core"
+      ],
+      "@anterostecnologia/anteros-email-editor": [
+        "../anteros-email-editor"
+      ]
+    }
+  }
+}
