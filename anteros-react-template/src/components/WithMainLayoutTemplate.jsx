@@ -155,7 +155,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         if (element) {
           element.style.height = "auto";
           setTimeout(() => {
-            element.style.height = "calc(100vh - 60px)";
+            element.style.height = "calc(100vh - 70px)";
             this.setState({ ...this.state, update: Math.random() });
           }, 200);
         } else {

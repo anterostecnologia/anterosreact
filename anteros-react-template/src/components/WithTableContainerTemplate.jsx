@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { TailSpin } from 'react-loader-spinner';
+import { TailSpin } from "react-loader-spinner";
 
 import {
   AnterosRemoteDatasource,
@@ -15,17 +15,13 @@ import {
   processErrorMessage,
   AnterosResizeDetector,
 } from "@anterostecnologia/anteros-react-core";
-import {
-  AnterosQueryBuilder,
-  AnterosFilterDSL,
-  AnterosQueryBuilderData,
-} from "@anterostecnologia/anteros-react-querybuilder";
+import { AnterosQueryBuilder, NORMAL, QUICK, ADVANCED,AnterosFilterDSL,AnterosQueryBuilderData  } from "@anterostecnologia/anteros-react-querybuilder";
 import {
   AnterosCard,
   HeaderActions,
   FooterActions,
 } from "@anterostecnologia/anteros-react-containers";
-import {AnterosBlockUi} from '@anterostecnologia/anteros-react-loaders';
+import { AnterosBlockUi } from "@anterostecnologia/anteros-react-loaders";
 import {
   AnterosCol,
   AnterosRow,
@@ -36,6 +32,7 @@ import { AnterosDataTable } from "@anterostecnologia/anteros-react-table";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
 import shallowCompare from "react-addons-shallow-compare";
+import { noop } from "lodash";
 
 const defaultValues = {
   openDataSourceFilter: true,
@@ -267,6 +264,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
       }
 
       componentDidMount() {
+        setTimeout(()=>{
         if (loadingProps.openMainDataSource) {
           if (!this.dataSource.isOpen()) {
             this.dataSource.open(this.getData(this.props.currentFilter, 0));
@@ -283,13 +281,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
           }
         }
 
-        if (this.table) {
-          this.table.refreshData();
-        }
-
         if (WrappedComponent.prototype.hasOwnProperty("onDidMount") === true) {
           this.onDidMount();
         }
+      },100);
       }
 
       componentWillUnmount() {
@@ -310,26 +305,13 @@ export default function WithTableContainerTemplate(_loadingProps) {
         this.props.hideTour();
       }
 
-      componentWillReceiveProps(nextProps) {
-        this.onResize(
-          this.card.getCardBlockWidth(),
-          this.card.getCardBlockHeight()
-        );
-
-        if (this.dataSource) {
-          if (this.table) {
-            this.table.refreshData();
-          }
-        }
-      }
-
       shouldComponentUpdate(nextProps, nextState) {
         return shallowCompare(this, nextProps, nextState);
       }
 
-      onFilterChanged(filter, activeFilterIndex) {
-        this.props.setFilter(filter, activeFilterIndex);
-        this.setState({ ...this.state, update: Math.random() });
+      onFilterChanged(filter, activeFilterIndex, callback=noop) {
+          this.props.setFilter(filter, activeFilterIndex);
+          this.setState({ ...this.state, update: Math.random() },callback);
       }
 
       onToggleExpandedFilter(expanded) {
@@ -514,10 +496,9 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
       }
 
-      onSearchByFilter(currentFilter) {
-        this.props.setFilter(currentFilter, this.props.activeFilterIndex);
+      onSearchByFilter() {
         this.onShowHideLoad(true);
-        this.dataSource.open(this.getData(currentFilter, 0), () => {
+        this.dataSource.open(this.getData(this.props.currentFilter, 0), () => {
           this.onShowHideLoad(false);
         });
       }
@@ -525,19 +506,17 @@ export default function WithTableContainerTemplate(_loadingProps) {
       getData(currentFilter, page) {
         if (
           currentFilter &&
-          currentFilter.filter &&
-          (currentFilter.filter.filterType === "advanced" ||
-            currentFilter.filter.filterType === "normal") &&
-          currentFilter.filter.rules.length > 0
-        ) {
-          return this.getDataWithFilter(currentFilter, page);
-        } else if (
-          currentFilter &&
-          currentFilter.filter &&
-          currentFilter.filter.filterType === "normal" &&
-          currentFilter.filter.quickFilterText !== ""
+          currentFilter.filter.filterType === QUICK &&
+            currentFilter.filter.quickFilterText &&
+            currentFilter.filter.quickFilterText !== ""
         ) {
           return this.getDataWithQuickFilter(currentFilter, page);
+        } else if (
+          currentFilter &&
+          (currentFilter.filter.filterType === NORMAL ||
+            currentFilter.filter.filterType === ADVANCED)
+        ) {
+          return this.getDataWithFilter(currentFilter, page);
         } else {
           return this.getDataWithoutFilter(page);
         }
@@ -546,26 +525,32 @@ export default function WithTableContainerTemplate(_loadingProps) {
       getDataWithFilter(currentFilter, page) {
         var filter = new AnterosFilterDSL();
         filter.buildFrom(currentFilter.filter, currentFilter.sort);
-        if (
-          WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") === true
-        ) {
-          return this.onFindWithFilter(
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getSortFields(),
-            this.getUser(),
-            loadingProps.fieldsToForceLazy
-          );
+        let filterStr = filter.toJSON();
+        if (filterStr) {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") ===
+            true
+          ) {
+            return this.onFindWithFilter(
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+          } else {
+            return loadingProps.endPoints.findWithFilter(
+              loadingProps.resource,
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+          }
         } else {
-          return loadingProps.endPoints.findWithFilter(
-            loadingProps.resource,
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getUser(),
-            loadingProps.fieldsToForceLazy
-          );
+          return this.getDataWithoutFilter(page);
         }
       }
 
@@ -749,20 +734,19 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 {this.state.alertMessage}
               </AnterosAlert>
               <HeaderActions>
-                  <AnterosButton
-                    id="btnClose"
-                    onButtonClick={this.onButtonClick}
-                    route={loadingProps.routes.close}
-                    visible={loadingProps.routes.close !== undefined}
-                    icon="fa fa-times"
-                    small
-                    circle
-                    disabled={
-                      this.dataSource.getState() !==
-                      dataSourceConstants.DS_BROWSE
-                    }
-                  />
-                </HeaderActions>
+                <AnterosButton
+                  id="btnClose"
+                  onButtonClick={this.onButtonClick}
+                  route={loadingProps.routes.close}
+                  visible={loadingProps.routes.close !== undefined}
+                  icon="fa fa-times"
+                  small
+                  circle
+                  disabled={
+                    this.dataSource.getState() !== dataSourceConstants.DS_BROWSE
+                  }
+                />
+              </HeaderActions>
               <AnterosBlockUi
                 tagStyle={{
                   height: "100%",
@@ -770,8 +754,8 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 styleBlockMessage={{
                   border: "2px solid white",
                   width: "200px",
-                  height:'80px',
-                  padding:'8px',
+                  height: "80px",
+                  padding: "8px",
                   backgroundColor: "rgb(56 70 112)",
                   borderRadius: "8px",
                   color: "white",
@@ -787,7 +771,12 @@ export default function WithTableContainerTemplate(_loadingProps) {
                   customLoader ? (
                     customLoader
                   ) : (
-                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                    <TailSpin
+                      width="40px"
+                      height="40px"
+                      ariaLabel="loading-indicator"
+                      color="#f2d335"
+                    />
                   )
                 }
               >
@@ -832,6 +821,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                       formName={loadingProps.viewName}
                       ref={this.filterRef}
                       expandedFilter={this.state.filterExpanded}
+                      update={this.state.update}
                       dataSource={this.dsFilter}
                       currentFilter={this.props.currentFilter}
                       activeFilterIndex={this.props.activeFilterIndex}
@@ -839,7 +829,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                       onFilterChanged={this.onFilterChanged}
                       onSearchByFilter={this.onSearchByFilter}
                       onToggleExpandedFilter={this.onToggleExpandedFilter}
-                      width={"550px"}
+                      width={"660px"}
                       height="170px"
                       allowSort={true}
                       disabled={
@@ -904,7 +894,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 />
               </AnterosBlockUi>
               <FooterActions className="versatil-card-footer">
-                <AnterosRow>
+                <AnterosRow className="row justify-content-start align-items-center">
                   <AnterosCol medium={4}>
                     <AnterosLabel
                       caption={`Total ${
@@ -912,7 +902,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
                       } ${this.dataSource.getGrandTotalRecords()}`}
                     />
                   </AnterosCol>
-                  <AnterosCol medium={7}>
+                  <AnterosCol medium={7}> 
                     <AnterosPagination
                       horizontalEnd
                       dataSource={this.dataSource}
