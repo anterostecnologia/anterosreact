@@ -20,9 +20,10 @@ import {
   convertQueryFields,
   getFields,
   getQuickFields,
-  defaultOperators,
+  defaultOperators,QUICK_FILTER_INDEX, ADVANCED, NORMAL, NEW_FILTER_INDEX
 } from "./AnterosFilterCommons";
 import { AnterosSimpleFilter } from "./AnterosSimpleFilter";
+import shallowCompare from 'react-addons-shallow-compare';
 
 class AnterosCompositeFilter extends React.Component {
   constructor(props) {
@@ -30,17 +31,21 @@ class AnterosCompositeFilter extends React.Component {
     autoBind(this);
     this.state = {
       modalOpen: "",
-      activeIndex: props.activeIndex,
+      activeFilterIndex: props.activeFilterIndex,
       fields: getFields(props),
       showEditor: false,
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  } 
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       ...this.state,
       fields: getFields(nextProps),
-      activeIndex: nextProps.activeIndex,
+      activeFilterIndex: nextProps.activeFilterIndex,
     });
   }
 
@@ -80,6 +85,7 @@ class AnterosCompositeFilter extends React.Component {
             top: this.props.top,
             width: this.props.width,
             height: this.props.height,
+            zIndex: 3,
             backgroundColor: "rgba(255, 255, 255, 0.75)",
           },
           content: {
@@ -90,7 +96,6 @@ class AnterosCompositeFilter extends React.Component {
             background: "rgb(255, 255, 255)",
             borderRadius: "4px",
             outline: "none",
-            zIndex: 3
           },
         }}
         centered={true}
@@ -101,7 +106,7 @@ class AnterosCompositeFilter extends React.Component {
           </div>
           <AnterosList
             height="105px"
-            activeIndex={this.state.activeIndex}
+            activeIndex={this.state.activeFilterIndex}
             dataSource={this.props.dataSource}
             onSelectListItem={this.onSelectItem}
             style={{ borderRadius: "6px", marginBottom: "4px" }}
@@ -134,18 +139,27 @@ class AnterosCompositeFilter extends React.Component {
                   primary
                   caption="Salvar"
                   icon="far fa-save"
+                  disabled={
+                    this.props.activeFilterIndex === QUICK_FILTER_INDEX
+                  }
                 >
                   <AnterosDropdownMenu>
                     <AnterosDropdownMenuItem
                       icon="far fa-save"
                       id="mnuItemSalvar"
                       caption="Salvar"
+                      disabled={
+                        this.props.activeFilterIndex === QUICK_FILTER_INDEX
+                      }
                       onSelectMenuItem={this.onSelectMenuItem}
                     />
                     <AnterosDropdownMenuItem
                       icon="far fa-save"
                       id="mnuItemSalvarComo"
                       caption="Salvar como..."
+                      disabled={
+                        this.props.activeFilterIndex === QUICK_FILTER_INDEX
+                      }
                       onSelectMenuItem={this.onSelectMenuItem}
                     />
                   </AnterosDropdownMenu>
@@ -156,6 +170,9 @@ class AnterosCompositeFilter extends React.Component {
               hint="Aplicar filtro"
               success
               icon="far fa-filter"
+              disabled={
+                this.props.activeFilterIndex === QUICK_FILTER_INDEX
+              }
               onButtonClick={this.props.onActionClick}
               caption="Aplicar"
             />
@@ -168,7 +185,7 @@ class AnterosCompositeFilter extends React.Component {
               caption="Fechar"
             />
           </div>
-          {this.props.currentFilter && this.props.currentFilter.id === 0 ? (
+          {this.props.activeFilterIndex === NEW_FILTER_INDEX ? (
             <AnterosRadioButton
               small
               primary
@@ -186,19 +203,19 @@ class AnterosCompositeFilter extends React.Component {
               />
             </AnterosRadioButton>
           ) : null}
-          {filterType === "normal" ? (
+          {filterType === NORMAL ? (
             <AnterosSimpleFilter
               allowSort={true}
               update={this.props.update}
               operators={defaultOperators()}
               currentFilter={this.props.currentFilter}
-              activeIndex={this.props.activeFilterIndex}
+              activeFilterIndex={this.props.activeFilterIndex}
               onFilterChanged={this.props.onFilterChanged}
               onSearchButtonClick={this.props.onSearchButtonClick}
               fields={this.state.fields}
             />
-          ) : (
-            <AnterosDetailedFilter
+          ):null}
+          {filterType === ADVANCED ? (<AnterosDetailedFilter
               isOpen={this.state.expandedFilter}
               update={this.props.update}
               width={"100%"}
@@ -212,11 +229,11 @@ class AnterosCompositeFilter extends React.Component {
               onSearchButtonClick={this.props.onSearchButtonClick}
               onActionClick={this.onActionClick}
               currentFilter={this.props.currentFilter}
-              activeIndex={this.props.activeFilterIndex}
+              activeFilterIndex={this.props.activeFilterIndex}
             >
               {convertQueryFields(this.props.children)}
             </AnterosDetailedFilter>
-          )}
+          ):null}
         </div>
       </Modal>
     );
@@ -252,6 +269,7 @@ class AnterosDetailedFilter extends React.Component {
           width={"100%"}
           horizontal={false}
           currentFilter={this.props.currentFilter}
+          activeFilterIndex={this.props.activeFilterIndex}
           border={"none"}
         >
           {this.props.children}

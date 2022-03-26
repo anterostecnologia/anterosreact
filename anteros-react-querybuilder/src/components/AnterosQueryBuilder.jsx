@@ -4,7 +4,8 @@ import DateObject from "react-date-object";
 import {
   autoBind,
   processErrorMessage,
-  AnterosSweetAlert} from "@anterostecnologia/anteros-react-core";
+  AnterosSweetAlert,
+} from "@anterostecnologia/anteros-react-core";
 import { AnterosEdit } from "@anterostecnologia/anteros-react-editors";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import shallowCompare from "react-addons-shallow-compare";
@@ -19,6 +20,11 @@ import {
   getQuickFilterFields,
   getFields,
   getQuickFields,
+  QUICK_FILTER_INDEX,
+  NEW_FILTER_INDEX,
+  NORMAL,
+  QUICK,
+  ADVANCED,
 } from "./AnterosFilterCommons";
 import { AnterosFilterSelectRange } from "./AnterosFilterSelectRange";
 import { endOfMonth } from "date-fns";
@@ -43,14 +49,12 @@ export class AnterosQueryBuilder extends React.Component {
     this.state = {
       currentFilter: this.props.currentFilter
         ? this.props.currentFilter
-        : getDefaultFilter(props, props.currentFilter,'normal'),
-      currentFastFilter: this.props.currentFastFilter
-        ? this.props.currentFastFilter
-        : getDefaultFilter(props, props.currentFastFilter,'quick'),
+        : getDefaultFilter(props, QUICK),
       modalOpen: "",
       expandedFilter: this.props.expandedFilter,
-      activeFilterIndex: -1,
-      latestFilter: undefined
+      activeFilterIndex: this.props.currentFilter
+        ? this.props.activeFilterIndex
+        : QUICK_FILTER_INDEX,
     };
 
     if (this.props.dataSource) {
@@ -75,30 +79,20 @@ export class AnterosQueryBuilder extends React.Component {
       ...this.state,
       currentFilter: nextProps.currentFilter
         ? nextProps.currentFilter
-        : getDefaultFilter(nextProps, nextProps.currentFilter,'normal'),
-      activeFilterIndex: nextProps.activeFilterIndex,
+        : getDefaultFilter(nextProps, QUICK),
+      modalOpen: "",
       expandedFilter: nextProps.expandedFilter,
-      currentFastFilter: nextProps.currentFastFilter
-        ? nextProps.currentFastFilter
-        : getDefaultFilter(nextProps, nextProps.currentFastFilter,'quick'),
+      activeFilterIndex: nextProps.currentFilter
+        ? nextProps.activeFilterIndex
+        : QUICK_FILTER_INDEX,
     });
   }
 
+
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
-    let _this = this;
     if (this.props.dataSource != null) {
-      this.props.dataSource.open(null, () => {
-        if (!_this.props.dataSource.isEmpty()) {
-          let filter = JSON.parse(
-            atob(_this.props.dataSource.fieldByName("filter"))
-          );
-          filter.id = _this.props.dataSource.fieldByName("idFilter");
-          filter.name = _this.props.dataSource.fieldByName("filterName");
-          filter.formName = _this.props.dataSource.fieldByName("formName");
-          _this.onChangeSelectedFilter(filter, -1);
-        }
-      });
+      this.props.dataSource.open(null, () => {});
     }
   }
 
@@ -118,52 +112,99 @@ export class AnterosQueryBuilder extends React.Component {
   toggleExpandedFilter() {
     let newExpandedFilter = !this.state.expandedFilter;
     let position = this.getPosition("filter");
-    this.setState({
-      ...this.state,
-      expandedFilter: newExpandedFilter,
-      isOpenSelectRange: false,
-      isOpenSelectFields: false,
-      detailsTop: position.top,
-      detailsLeft: position.left,
-      detailsHeight: position.height,
-    });
+    this.setState(
+      {
+        ...this.state,
+        expandedFilter: newExpandedFilter,
+        isOpenSelectRange: false,
+        isOpenSelectFields: false,
+        detailsTop: position.top,
+        detailsLeft: position.left,
+        detailsHeight: position.height,
+      },
+      () => {
+        if (
+          !this.state.currentFilter ||
+          this.state.currentFilter.filter.filterType === QUICK
+        ) {
+          if (!this.props.dataSource.isEmpty()) {
+            let filter = JSON.parse(
+              atob(this.props.dataSource.fieldByName("filter"))
+            );
+            filter.id = this.props.dataSource.fieldByName("idFilter");
+            filter.name = this.props.dataSource.fieldByName("filterName");
+            filter.formName = this.props.dataSource.fieldByName("formName");
+            this.onChangeSelectedFilter(filter, 0);
+          } else {
+            this.addNewFilter();
+          }
+        }
+      }
+    );
     if (this.props.onToggleExpandedFilter) {
       this.props.onToggleExpandedFilter(newExpandedFilter);
     }
   }
 
   clearFilter() {
-    let currentFilter = getDefaultFilter(this.props, this.state.currentFilter,'normal');
-    let currentFastFilter = getDefaultFilter(nextProps, nextProps.currentFastFilter,'quick');
-    this.setState({ ...this.state, latestFilter: undefined, currentFilter, currentFastFilter, activeFilterIndex: -1 });
-    if (this.props.onClearFilter) {
-      this.props.onClearFilter(this);
+    if (this.props.onToggleExpandedFilter) {
+      this.props.onToggleExpandedFilter(false);
     }
-    this.onFilterChanged(currentFilter, -1);
+    let currentFilter = getDefaultFilter(this.props, QUICK);
+    this.setState(
+      {
+        ...this.state,
+        currentFilter,
+        expandedFilter: false,
+        activeFilterIndex: QUICK_FILTER_INDEX,
+      },
+      () => {
+        this.onFilterChanged(currentFilter, QUICK_FILTER_INDEX, () => {
+          if (this.props.onClearFilter) {
+            this.props.onClearFilter(this);
+          }
+          this.onSearchClick();
+        });
+      }
+    );
   }
 
-  onSearchClick(currentFilter) {
-    this.setState({...this.state, latestFilter: currentFilter});
+  onSearchClick() {
     if (this.props.onSearchByFilter) {
-        this.props.onSearchByFilter(currentFilter);
+      this.props.onSearchByFilter();
     }
   }
 
   onChangeQuickFilter(event, value) {
-    this.changeQuickFilter(value);  
+    this.changeQuickFilter(value);
   }
 
-  changeQuickFilter(value){
-    let currentFastFilter = this.state.currentFastFilter;
-    currentFastFilter.filter.quickFilterText = value;
-    currentFastFilter.filter.quickFilterFieldsText = getQuickFilterFields(
-      currentFastFilter,
+  changeQuickFilter(value) {
+    let currentFilter = this.state.currentFilter;
+    if (this.state.currentFilter && this.state.currentFilter.type !== QUICK) {
+      currentFilter = getDefaultFilter(this.props, QUICK);
+    }
+
+    currentFilter.filter.quickFilterText = value;
+    currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+      currentFilter,
       getFields(this.props)
     );
     this.setState({
       ...this.state,
-      currentFastFilter,
+      currentFilter,
+      expandedFilter: false,
+      activeFilterIndex: QUICK_FILTER_INDEX,
     });
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      if (this.props.onToggleExpandedFilter) {
+        this.props.onToggleExpandedFilter(false);
+      }
+      if (this.props.onFilterChanged) {
+        this.props.onFilterChanged(currentFilter, QUICK_FILTER_INDEX);
+      }
+    }, 200);
   }
 
   handleQuickFilter(event) {
@@ -173,10 +214,10 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   getQuickFilterText() {
-    return this.state.currentFastFilter.filter.quickFilterText;
+    return this.state.current.filter.quickFilterText;
   }
 
-  onFilterChanged(currentFilter, activeFilterIndex) {
+  onFilterChanged(currentFilter, activeFilterIndex, callback) {
     let result = [];
     if (currentFilter.id) {
       this.convertFilterToListValues(
@@ -184,20 +225,23 @@ export class AnterosQueryBuilder extends React.Component {
         currentFilter.filter.rules,
         result
       );
-      let filter = {filter: result, sort:currentFilter.sort.sortFields};
+      let filter = { filter: result, sort: currentFilter.sort.sortFields };
       localStorage.setItem("filter" + currentFilter.id, JSON.stringify(filter));
     }
 
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter, activeFilterIndex);
+      this.props.onFilterChanged(currentFilter, activeFilterIndex, () => {
+        this.setState({ ...this.state, update: Math.random() }, callback);
+      });
+    } else {
+      this.setState({ ...this.state, update: Math.random() }, callback);
     }
-    this.setState({ ...this.state, update: Math.random() });
   }
 
-  loadSort(sortFields, sort){
+  loadSort(sortFields, sort) {
     for (let i = 0; i < sortFields.length; i++) {
       for (let j = 0; j < sort.length; j++) {
-        if (sort[j].name === sortFields[i].name){
+        if (sort[j].name === sortFields[i].name) {
           sortFields[i].selected = sort[j].selected;
           sortFields[i].order = sort[j].order;
           sortFields[i].asc_desc = sort[j].asc_desc;
@@ -344,7 +388,7 @@ export class AnterosQueryBuilder extends React.Component {
 
   onChangeFilterType(index) {
     let currentFilter = this.state.currentFilter;
-    currentFilter.filter.filterType = index === 0 ? "normal" : "advanced";
+    currentFilter.filter.filterType = index === 0 ? NORMAL : ADVANCED;
     currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(
       currentFilter,
       getFields(this.props)
@@ -360,10 +404,10 @@ export class AnterosQueryBuilder extends React.Component {
       this.props.onSelectedFilter(filter, index);
     }
     let item = localStorage.getItem("filter" + filter.id);
-    if (item && item !== null){
+    if (item && item !== null) {
       let _item = JSON.parse(item);
-      this.loadListValuesToFilter('root',filter.filter.rules,_item.filter);
-      this.loadSort(filter.sort.sortFields,_item.sort);
+      this.loadListValuesToFilter("root", filter.filter.rules, _item.filter);
+      this.loadSort(filter.sort.sortFields, _item.sort);
     }
     this.setState({
       ...this.state,
@@ -373,10 +417,14 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   addNewFilter() {
-    let currentFilter = getDefaultFilter(this.props, this.state.currentFilter);
-    this.setState({ ...this.state, currentFilter, activeFilterIndex: -1 });
+    let currentFilter = getDefaultFilter(this.props, NORMAL);
+    this.setState({
+      ...this.state,
+      currentFilter,
+      activeFilterIndex: NEW_FILTER_INDEX,
+    });
     if (this.props.onSelectedFilter) {
-      this.props.onSelectedFilter(currentFilter, -1);
+      this.props.onSelectedFilter(currentFilter, NEW_FILTER_INDEX);
     }
   }
 
@@ -429,16 +477,13 @@ export class AnterosQueryBuilder extends React.Component {
           AnterosSweetAlert(processErrorMessage(error));
         });
     } else if (button.props.id === "btnApply") {
-      if (this.state.currentFastFilter.quickFilterFieldsText != '') {
-        this.changeQuickFilter('');  
-      }
-      this.onSearchClick(this.state.currentFilter);
+      this.onSearchClick();
     } else if (button.props.id === "btnClose") {
       this.onCloseFilterClick();
     }
   }
 
-  onCloseFilterClick(){
+  onCloseFilterClick() {
     this.setState({
       ...this.state,
       isOpenSelectRange: false,
@@ -544,20 +589,31 @@ export class AnterosQueryBuilder extends React.Component {
         appendDelimiter = true;
       });
     }
-    let currentFastFilter = this.state.currentFastFilter;
-    currentFastFilter.filter.quickFilterText = newValue;
-    currentFastFilter.filter.quickFilterFieldsText = getQuickFilterFields(
-      currentFastFilter,
+    let currentFilter = this.state.currentFilter;
+    if (this.state.currentFilter && this.state.currentFilter.type !== QUICK) {
+      currentFilter = getDefaultFilter(this.props, QUICK);
+    }
+    currentFilter.filter.quickFilterText = newValue;
+    currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(
+      currentFilter,
       getFields(this.props)
     );
-    this.setState({
-      ...this.state,
-      currentFastFilter,
-      selectRangeType: undefined,
-      isOpenSelectRange: false,
-      isOpenSelectFields: false,
-      expandedFilter: false,
-    });
+    this.setState(
+      {
+        ...this.state,
+        currentFilter,
+        activeFilterIndex: QUICK_FILTER_INDEX,
+        selectRangeType: undefined,
+        isOpenSelectRange: false,
+        isOpenSelectFields: false,
+        expandedFilter: false,
+      },
+      () => {
+        if (this.props.onFilterChanged) {
+          this.props.onFilterChanged(currentFilter, QUICK_FILTER_INDEX);
+        }
+      }
+    );
   }
 
   selectFields() {
@@ -587,26 +643,44 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   onConfirmSelectFields(selectedFields, sortFields, activeIndex) {
-    let currentFastFilter = this.state.currentFastFilter;
-    currentFastFilter.filter.selectedFields = selectedFields;
-    currentFastFilter.sort.sortFields = sortFields;
-    currentFastFilter.sort.activeIndex = activeIndex;
-    this.setState({
-      ...this.state,
-      isOpenSelectFields: false,
-      isOpenSelectRange: false,
-      expandedFilter: false,
-      currentFastFilter,
-    });
+    let currentFilter = this.state.currentFilter;
+    if (this.state.currentFilter && this.state.currentFilter.type !== QUICK) {
+      currentFilter = getDefaultFilter(this.props, QUICK);
+    }
+    currentFilter.filter.selectedFields = selectedFields;
+    currentFilter.sort.sortFields = sortFields;
+    currentFilter.sort.activeIndex = activeIndex;
+    this.setState(
+      {
+        ...this.state,
+        isOpenSelectFields: false,
+        isOpenSelectRange: false,
+        expandedFilter: false,
+        currentFilter,
+        activeFilterIndex: QUICK_FILTER_INDEX,
+      },
+      () => {
+        if (this.props.onFilterChanged) {
+          this.props.onFilterChanged(currentFilter, QUICK_FILTER_INDEX);
+        }
+      }
+    );
   }
 
   onFocusEdit() {
-    this.setState({
-      ...this.state,
-      isOpenSelectFields: false,
-      isOpenSelectRange: false,
-      expandedFilter: false,
-    });
+    if (this.state.expandedFilter) {
+      this.setState(
+        {
+          ...this.state,
+          isOpenSelectFields: false,
+          isOpenSelectRange: false,
+          expandedFilter: false,
+        },
+        () => {
+          this.refEdit.setFocus(true);
+        }
+      );
+    }
   }
 
   onClickOk = (event, selectedRecords) => {
@@ -687,6 +761,15 @@ export class AnterosQueryBuilder extends React.Component {
   }
 
   render() {
+    let type = "R";
+    let backgroundColor = '#f0ad4e';
+    if (this.state.currentFilter.filter.filterType === NORMAL) {
+      type = "S";
+      backgroundColor = '#72ac18';
+    } else if (this.state.currentFilter.filter.filterType === ADVANCED) {
+      type = "A";
+      backgroundColor = '#007bff';
+    }
     return (
       <div
         ref={(ref) => (this.divMain = ref)}
@@ -713,20 +796,42 @@ export class AnterosQueryBuilder extends React.Component {
             position: "relative",
           }}
         >
-          <AnterosEdit
-            onChange={this.onChangeQuickFilter}
-            width={"100%"}
-            onFocus={this.onFocusEdit}
-            onKeyDown={this.handleQuickFilter}
-            value={this.state.currentFastFilter.filter.quickFilterText}
-            placeHolder={this.props.placeHolder}
-            style={{
-              height: "36px",
-              padding: "3px",
-              border: "1px solid #ccd4db",
-              borderRadius: "6px",
-            }}
-          />
+          <div style={{ display: "flex", width: "100%" }}>
+            <AnterosEdit
+              onChange={this.onChangeQuickFilter}
+              ref={(ref) => (this.refEdit = ref)}
+              width={"100%"}
+              onFocus={this.onFocusEdit}
+              onKeyDown={this.handleQuickFilter}
+              value={this.state.currentFilter.filter.quickFilterText}
+              placeHolder={this.props.placeHolder}
+              style={{
+                height: "36px",
+                padding: "3px",
+                border: "1px solid #ccd4db",
+                borderRadius: "6px",
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                top: "8px",
+                right: "25px",
+                background: backgroundColor,
+                color: "white",
+                border: "1px solid silver",
+                width: "20px",
+                height: "20px",
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50px",
+              }}
+            >
+              {type}
+            </span>
+          </div>
           <AnterosButton
             primary
             caption=""
@@ -735,12 +840,7 @@ export class AnterosQueryBuilder extends React.Component {
             hintPosition="down"
             style={{ width: "38px", height: "38px" }}
             onClick={() => {
-              if (this.state.currentFastFilter.quickFilterFieldsText && 
-                this.state.currentFastFilter.quickFilterFieldsText != ''){
-                this.onSearchClick(this.state.currentFastFilter);
-              } else {
-                this.onSearchClick(this.state.latestFilter);
-              }
+              this.onSearchClick();
             }}
           />
           <div
@@ -869,7 +969,7 @@ export class AnterosQueryBuilder extends React.Component {
           update={this.state.update}
           isOpen={this.state.expandedFilter}
           currentFilter={this.state.currentFilter}
-          activeIndex={this.state.activeFilterIndex}
+          activeFilterIndex={this.state.activeFilterIndex}
           dataSource={this.props.dataSource}
           onFilterChanged={this.onFilterChanged}
           onSaveFilter={this.onSaveFilter}
@@ -888,7 +988,7 @@ export class AnterosQueryBuilder extends React.Component {
         <AnterosFilterSelectFields
           isOpen={this.state.isOpenSelectFields}
           left={this.state.detailsLeft}
-          currentFilter={this.state.currentFastFilter}
+          currentFilter={this.state.currentFilter}
           selectedOptions={getQuickFields(getFields(this.props))}
           onConfirmSelectFields={this.onConfirmSelectFields}
           onCancelSelectFields={this.onCancelSelectFields}
@@ -900,7 +1000,7 @@ export class AnterosQueryBuilder extends React.Component {
           selectRangeType={this.state.selectRangeType}
           isOpen={this.state.isOpenSelectRange}
           currentFilter={this.state.currentFilter}
-          activeIndex={this.state.activeFilterIndex}
+          activeFilterIndex={this.state.activeFilterIndex}
           left={this.state.detailsLeft}
           onConfirmSelectRange={this.onConfirmSelectRange}
           onCancelSelectRange={this.onCancelSelectRange}

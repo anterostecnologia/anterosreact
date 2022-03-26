@@ -35,7 +35,7 @@ import {
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
 import { AnterosList } from "@anterostecnologia/anteros-react-list";
 import {getDefaultEmptyFilter, defaultOperators, defaultConditions} from './AnterosFilterCommons';
-
+import shallowCompare from 'react-addons-shallow-compare';
 
 class AnterosAdvancedFilter extends Component {
   constructor(props) {
@@ -43,12 +43,15 @@ class AnterosAdvancedFilter extends Component {
     this.state = {
       modalOpen: "",
       currentFilter: props.currentFilter?props.currentFilter:getDefaultEmptyFilter(),
+      activeFilterIndex: props.currentFilter?props.activeFilterIndex:-1,
       schema: this.createSchema()
     };
     autoBind(this);
   }
 
-  
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  } 
 
   getQuickFields() {
     let result = [];
@@ -75,12 +78,15 @@ class AnterosAdvancedFilter extends Component {
 
   componentWillReceiveProps(nextProps) {
     let currentFilter = nextProps.currentFilter;
+    let activeFilterIndex = nextProps.activeFilterIndex;
     if (!currentFilter || !currentFilter.hasOwnProperty('filter')) {
       currentFilter = this.getDefaultFilter();
+      activeFilterIndex = -1;
     }
     this.setState({
       ...this.state,
       currentFilter,
+      activeFilterIndex
     });
   }
 
@@ -166,7 +172,7 @@ class AnterosAdvancedFilter extends Component {
   propagateFilterChanged() {
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
-      onFilterChanged(this.state.currentFilter);
+      onFilterChanged(this.state.currentFilter, this.state.activeFilterIndex);
     }
   }
 
@@ -418,7 +424,7 @@ class AnterosAdvancedFilter extends Component {
     }
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
-      onFilterChanged(this.state.currentFilter);
+      onFilterChanged(this.state.currentFilter, this.state.activeFilterIndex);
     }
   }
 
@@ -427,7 +433,7 @@ class AnterosAdvancedFilter extends Component {
     currentFilter.sort.activeIndex = index;
     this.setState({...this.state, currentFilter});
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter);
+      this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex);
     }
   }
 
@@ -603,10 +609,15 @@ export class CustomSortItem extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.onCheckboxChange = this.onCheckboxChange.bind(this);
     this.onDoubleClick = this.onDoubleClick.bind(this);
+    this.state = {update: Math.random()};
   }
 
   static get componentName() {
     return "CustomSortItem";
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({update: Math.random()});
   }
 
   onClick(event) {
@@ -1254,7 +1265,7 @@ export class ValueEditor extends React.Component {
         );
       } else if (dataType==='boolean'){
         return <AnterosCheckboxToggle checked={newValue}
-        onCheckboxChange={(value,checked) => handleOnChange(checked)}/>    
+          onCheckboxChange={(value,checked) => handleOnChange(checked)}/>  
       } else {
         if (
           listValues.length > 0 &&

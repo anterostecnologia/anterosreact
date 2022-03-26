@@ -3,7 +3,27 @@ import { AnterosError } from "@anterostecnologia/anteros-react-core";
 import { FilterField, FilterFields, FilterFieldValue } from "./AnterosAdvancedFilter";
 import PropTypes from "prop-types";
 
-export const convertQueryFields = (children) => {
+const QUICK_FILTER_INDEX = -2;
+const NEW_FILTER_INDEX = -1;
+const NORMAL = 'normal';
+const QUICK = 'quick';
+const ADVANCED = 'advanced';
+const OPERATORS = {OP_NULL:"null",
+   OP_NOT_NULL: "notNull",
+   OP_CONTAINS: "contains",
+   OP_STARTSWITH: "startsWith",
+   OP_ENDSWITH: "endsWith",
+   OP_EQUALS: "=",
+   OP_NOT_EQUALS : "!=",
+   OP_GREATER: ">",
+   OP_LESS:  "<",
+   OP_GREATER_OR_EQUAL: ">=",
+   OP_LESS_OR_EQUAL: "<=",
+   OP_BETWEEN: "between",
+   OP_IN_LIST: "inList",
+   OP_NOT_IN_LIST: "notInList"};
+
+const convertQueryFields = (children) => {
   let result = [];
   let arrChildren = React.Children.toArray(children);
   arrChildren.forEach(function(child) {
@@ -12,7 +32,7 @@ export const convertQueryFields = (children) => {
         let arrChild = React.Children.toArray(child.props.children);
         arrChild.forEach(function(chd, index) {
           let childs = [];
-          let arrChildren2 = React.Children.toArray(chd.children);
+          let arrChildren2 = React.Children.toArray(chd.props.children);
           arrChildren2.forEach(function(child2) {
             childs.push(
               <FilterFieldValue key={"fld" + index} {...child2.props} />
@@ -30,7 +50,7 @@ export const convertQueryFields = (children) => {
   return <FilterFields>{result}</FilterFields>;
 };
 
-export const getFields = (props) => {
+const getFields = (props) => {
   let result = [];
   let children = convertQueryFields(props.children);
   if (children) {
@@ -75,7 +95,7 @@ export const getFields = (props) => {
   return result;
 };
 
-export const getFieldSql = (field, fields) => {
+const getFieldSql = (field, fields) => {
   for (var i = 0; i < fields.length; i++) {
     if (fields[i].name === field) {
       return fields[i].nameSql;
@@ -83,7 +103,7 @@ export const getFieldSql = (field, fields) => {
   }
 };
 
-export const getFieldValues = (field, fields) => {
+const getFieldValues = (field, fields) => {
   for (var i = 0; i < fields.length; i++) {
     if (fields[i].name === field) {
       return fields[i].listValues;
@@ -91,7 +111,7 @@ export const getFieldValues = (field, fields) => {
   }
 };
 
-export const getQuickFields = (fields) => {
+const getQuickFields = (fields) => {
   let result = [];
   fields.forEach(function(field) {
     if (field.quickFilter === true) {
@@ -102,7 +122,7 @@ export const getQuickFields = (fields) => {
 };
 
 
-export const getQuickFilterSort = (fields) => {
+const getQuickFilterSort = (fields) => {
     let result = "";
     let appendDelimiter = false;
     fields.forEach(function(field) {
@@ -116,7 +136,7 @@ export const getQuickFilterSort = (fields) => {
   }
 
 
-  export const mergeSortWithFields = (sort, fields) => {
+  const mergeSortWithFields = (sort, fields) => {
     let result = [];
     if (fields) {
         fields.forEach(function(field, index) {
@@ -147,7 +167,7 @@ export const getQuickFilterSort = (fields) => {
     return result;
   }
 
-  export const getQuickFilterFields = (currentFilter, fields) => {
+  const getQuickFilterFields = (currentFilter, fields) => {
     let result = "";
     let appendDelimiter = false;
     if (
@@ -180,7 +200,7 @@ export const getQuickFilterSort = (fields) => {
     return result;
   }
 
-  export const getDefaultEmptyFilter =() => {
+  const getDefaultEmptyFilter =() => {
     return {
       id: 0,
       name: "",
@@ -202,7 +222,7 @@ export const getQuickFilterSort = (fields) => {
     };
   }
 
-export const defaultOperators =() => {
+const defaultOperators =() => {
     return [
       {
         name: "null",
@@ -277,7 +297,7 @@ export const defaultOperators =() => {
     ];
   }
 
-  export const defaultConditions = () => {
+  const defaultConditions = () => {
     return [
       {
         name: "and",
@@ -290,7 +310,7 @@ export const defaultOperators =() => {
     ];
   }
 
-  export const getDefaultFilter = (props,currentFilter,type) => {
+  const getDefaultFilter = (props,type) => {
     let fields = getFields(props);
     let result = {
       id: 0,
@@ -312,16 +332,15 @@ export const defaultOperators =() => {
         activeIndex: -1,
       },
     };
-    result.filter.type = currentFilter?currentFilter.type:result.filter.type;
     result.filter.selectedFields = getQuickFields(fields);
-    result.filter.quickFilterFieldsText = getQuickFilterFields(currentFilter, fields);
+    result.filter.quickFilterFieldsText = getQuickFilterFields(null, fields);
     result.sort.sortFields = mergeSortWithFields([],fields);
     result.sort.quickFilterSort = getQuickFilterSort(fields);
     return result;
   }
 
 
-  export class QueryFields extends React.Component {
+  class QueryFields extends React.Component {
     static get componentName() {
       return "QueryFields";
     }
@@ -331,7 +350,7 @@ export const defaultOperators =() => {
     }
   }
   
-  export class QueryField extends React.Component {
+  class QueryField extends React.Component {
     static get componentName() {
       return "QueryField";
     }
@@ -359,7 +378,7 @@ export const defaultOperators =() => {
     operator: '='
   };
   
-  export class QueryFieldValue extends React.Component {
+  class QueryFieldValue extends React.Component {
     static get componentName() {
       return "QueryFieldValue";
     }
@@ -375,3 +394,8 @@ export const defaultOperators =() => {
   
 
 
+export {QueryFieldValue,QueryField,QueryFields,getDefaultFilter,defaultConditions,
+  defaultOperators, getDefaultEmptyFilter,getQuickFilterFields, mergeSortWithFields,
+  getQuickFilterSort,getQuickFields,getFieldValues,getFieldSql, getFields,
+  convertQueryFields, QUICK_FILTER_INDEX, NEW_FILTER_INDEX, NORMAL,
+  QUICK, ADVANCED, OPERATORS}

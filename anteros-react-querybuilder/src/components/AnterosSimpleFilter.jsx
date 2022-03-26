@@ -28,7 +28,6 @@ import {
 } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosList } from "@anterostecnologia/anteros-react-list";
 import { CustomSortItem } from "./AnterosAdvancedFilter";
-import { dataSourceEvents } from "@anterostecnologia/anteros-react-datasource";
 import {
   AnterosRow,
   AnterosCol,
@@ -42,19 +41,7 @@ import {
   defaultConditions,
   defaultOperators,
 } from "./AnterosFilterCommons";
-
-const DATASOURCE_EVENTS = [
-  dataSourceEvents.AFTER_CLOSE,
-  dataSourceEvents.AFTER_CANCEL,
-  dataSourceEvents.AFTER_POST,
-  dataSourceEvents.AFTER_EDIT,
-  dataSourceEvents.AFTER_INSERT,
-  dataSourceEvents.AFTER_OPEN,
-  dataSourceEvents.AFTER_SCROLL,
-  dataSourceEvents.AFTER_GOTO_PAGE,
-  dataSourceEvents.AFTER_DELETE,
-];
-
+import shallowCompare from 'react-addons-shallow-compare';
 
 class AnterosSimpleFilter extends React.Component {
   constructor(props) {
@@ -64,15 +51,26 @@ class AnterosSimpleFilter extends React.Component {
     let currentFilter = props.currentFilter
       ? props.currentFilter
       : getDefaultEmptyFilter();
+    let activeFilterIndex = props.currentFilter
+    ? props.activeFilterIndex
+    : 0;
+
     let simpleFields = this.createFilterFields(props, schema, currentFilter);
-    this.state = { simpleFields, currentFilter, schema };
+    this.state = { simpleFields, currentFilter, schema, activeFilterIndex, update: Math.random() };
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  } 
 
   componentWillReceiveProps(nextProps) {
     let schema = this.createSchema();
     let currentFilter = nextProps.currentFilter
       ? nextProps.currentFilter
       : getDefaultEmptyFilter();
+    let activeFilterIndex = nextProps.currentFilter
+      ? nextProps.activeFilterIndex
+      : 0;  
     let simpleFields = this.createFilterFields(
       nextProps,
       schema,
@@ -82,7 +80,9 @@ class AnterosSimpleFilter extends React.Component {
       ...this.state,
       simpleFields,
       currentFilter,
+      activeFilterIndex,
       schema,
+      update: Math.random()
     });
   }
 
@@ -155,15 +155,15 @@ class AnterosSimpleFilter extends React.Component {
       ...this.state,
       update: Math.random(),
       currentFilter,
+    },()=>{
+      this.propagateFilterChanged();
     });
-
-    this.propagateFilterChanged();
   }
 
   propagateFilterChanged() {
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
-      onFilterChanged(this.state.currentFilter);
+      onFilterChanged(this.state.currentFilter,this.state.activeFilterIndex,()=>{});
     }
   }
 
@@ -320,7 +320,7 @@ class AnterosSimpleFilter extends React.Component {
     }
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
-      onFilterChanged(this.state.currentFilter);
+      onFilterChanged(this.state.currentFilter,this.state.activeFilterIndex,()=>{});
     }
   }
 
@@ -329,7 +329,7 @@ class AnterosSimpleFilter extends React.Component {
     currentFilter.sort.activeIndex = index;
     this.setState({ ...this.state, currentFilter });
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter);
+      this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex,()=>{});
     }
   }
 
@@ -339,9 +339,9 @@ class AnterosSimpleFilter extends React.Component {
     this.onElementChanged("value2", "", rule.id);
   }
 
-  onDisabledChanged(value, checked) {
-    this.onElementChanged("disabled", !checked);
-  }
+  onDisabledChanged(value, checked, rule) {
+    this.onElementChanged("disabled", !checked, rule.id);
+  } 
 
   onValueChanged(rule, value) {
     const { field, operator } = rule;
@@ -409,6 +409,7 @@ class AnterosSimpleFilter extends React.Component {
         return fields[i].listValues;
       }
     }
+    return [];
   }
 
   getSortString(currentFilter) {
@@ -437,7 +438,7 @@ class AnterosSimpleFilter extends React.Component {
     let result = [];
     let arrChildren = props.fields;
     arrChildren.forEach(function(child, index) {
-      let listValues = _this.getFieldValues(child, props.fields);
+      let listValues = _this.getFieldValues(child.name, props.fields);
       let rule = _this._findRule(`r-${child.name}`, currentFilter.filter);
       if (!rule) {
         rule = {
@@ -457,25 +458,20 @@ class AnterosSimpleFilter extends React.Component {
         rule.value2 && rule.value2 !== ""
           ? `${textValue} a ${rule.value2}`
           : textValue;
+      if (child.name==="categoria.descricaoCategoria")    {
+      console.log(rule.disabled);
+      }
       result.push(
         <AnterosAccordionItem
-          disabled={rule.disabled}
           caption={
-            <div style={{display:'flex'}}>
-              <AnterosCheckbox
-                value=""
-                width="24px"
-                height="32px"
-                checked={!child.disabled}
-                onCheckboxChange={_this.onDisabledChanged}
-              />
+            <div style={{display:'flex', alignItems:'center'}}>
               {child.label}
               <SimpleValueSelector
                 field={child.name}
                 options={_this.getOperators(child.name)}
                 value={rule.operator}
                 className="custom-select-operator"
-                disabled={child.disabled}
+                disabled={true}
                 handleOnChange={(value) => _this.onOperatorChanged(rule, value)}
                 level={0}
               />
@@ -492,13 +488,32 @@ class AnterosSimpleFilter extends React.Component {
           blockStyle={{ padding: "4px", overflow: "hidden" }}
           headerStyle={{ paddingRight: "10px", minHeight: "20px!important" }}
         >
+          <div style={{display:"flex", alignItems:"center",justifyContent:"space-between"}}>
+          <AnterosCheckbox
+            value={!rule.disabled}
+            width="24px"
+            height="32px"
+            update={_this.state && _this.state.update? _this.state.update: Math.random()}
+            checked={!rule.disabled}
+            onCheckboxChange={(value,checked)=>_this.onDisabledChanged(value,checked,rule)}
+          />
+          <SimpleValueSelector
+            field={child.name}
+            options={_this.getOperators(child.name)}
+            value={rule.operator}
+            className="custom-select-operator"
+            disabled={child.disabled}
+            handleOnChange={(value) => _this.onOperatorChanged(rule, value)}
+            level={0}
+          />
           <SimpleValueEditor
+            key={'svf1_'+index}
             field={child.name}
             dataType={child.dataType}
             operator={rule.operator}
             value={rule.value}
             value2={rule.value2}
-            listValues={[]}
+            listValues={listValues}
             searchField={child.searchField}
             disabled={rule.disabled}
             className="rule-value"
@@ -511,6 +526,7 @@ class AnterosSimpleFilter extends React.Component {
           child.dataType !== "date_time" &&
           child.dataType !== "time" ? (
             <SimpleValueEditor
+            key={'svf2_'+index}
               field={child.name}
               dataType={child.dataType}
               operator={rule.operator}
@@ -526,6 +542,7 @@ class AnterosSimpleFilter extends React.Component {
           ) : (
             ""
           )}
+          </div>
         </AnterosAccordionItem>
       );
     });
@@ -537,6 +554,7 @@ class AnterosSimpleFilter extends React.Component {
             <div style={{ fontWeight: "bold", color: "#3d3d69" }}>
               {"Ordenação  "}
               <AnterosText
+                key={'txto_'+9999}
                 fontSize="12px"
                 truncate
                 color="blue"
@@ -754,8 +772,10 @@ class SimpleValueEditor extends React.Component {
           />
         );
       } else if (dataType==='boolean'){
-        return <AnterosCheckboxToggle checked={newValue}
+        return <div style={{display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
+          <AnterosCheckboxToggle checked={newValue}
         onCheckboxChange={(value,checked) => handleOnChange(checked)}/>
+        </div>
       } else {
         if (
           listValues.length > 0 &&

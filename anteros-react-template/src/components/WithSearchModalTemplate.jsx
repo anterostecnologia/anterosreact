@@ -10,11 +10,7 @@ import {
   DATASOURCE_EVENTS,
   dataSourceConstants,
 } from "@anterostecnologia/anteros-react-datasource";
-import {
-  AnterosQueryBuilder,
-  AnterosQueryBuilderData,
-  AnterosFilterDSL,
-} from "@anterostecnologia/anteros-react-querybuilder";
+import { AnterosQueryBuilder, NORMAL, QUICK, ADVANCED,AnterosFilterDSL,AnterosQueryBuilderData  } from "@anterostecnologia/anteros-react-querybuilder";
 import {
   autoBind,
   processErrorMessage,
@@ -291,19 +287,17 @@ export default function WithSearchModalTemplate(_loadingProps) {
       getData(currentFilter, page) {
         if (
           currentFilter &&
-          currentFilter.filter &&
-          (currentFilter.filter.filterType === "advanced" || 
-           currentFilter.filter.filterType === "normal") &&
-          currentFilter.filter.rules.length > 0
-        ) {
-          return this.getDataWithFilter(currentFilter, page);
-        } else if (
-          currentFilter &&
-          currentFilter.filter &&
-          currentFilter.filter.filterType === "normal" &&
-          currentFilter.filter.quickFilterText !== ""
+          currentFilter.filter.filterType === QUICK &&
+            currentFilter.filter.quickFilterText &&
+            currentFilter.filter.quickFilterText !== ""
         ) {
           return this.getDataWithQuickFilter(currentFilter, page);
+        } else if (
+          currentFilter &&
+          (currentFilter.filter.filterType === NORMAL ||
+            currentFilter.filter.filterType === ADVANCED)
+        ) {
+          return this.getDataWithFilter(currentFilter, page);
         } else {
           return this.getDataWithoutFilter(page);
         }
@@ -312,26 +306,32 @@ export default function WithSearchModalTemplate(_loadingProps) {
       getDataWithFilter(currentFilter, page) {
         var filter = new AnterosFilterDSL();
         filter.buildFrom(currentFilter.filter, currentFilter.sort);
-        if (
-          WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") === true
-        ) {
-          return this.onFindWithFilter(
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getSortFields(),
-            this.getUser(),
-            loadingProps.fieldsToForceLazy
-          );
+        let filterStr = filter.toJSON();
+        if (filterStr) {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") ===
+            true
+          ) {
+            return this.onFindWithFilter(
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+          } else {
+            return loadingProps.endPoints.findWithFilter(
+              loadingProps.resource,
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+          }
         } else {
-          return loadingProps.endPoints.findWithFilter(
-            loadingProps.resource,
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getUser(),
-            loadingProps.fieldsToForceLazy
-          );
+          return this.getDataWithoutFilter(page);
         }
       }
 

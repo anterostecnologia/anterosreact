@@ -922,7 +922,7 @@ export class AnterosFilterDSL {
   }
 
   toJSON() {
-    if (this.filterExpression !== undefined) {
+    if (this.filterExpression !== undefined && this.filterExpression != null) {
       const sb = AnterosStringUtils.createStringBuilder();
       sb.append("{");
       sb.append('   "filterExpression" : {');
@@ -941,6 +941,5 @@ export class AnterosFilterDSL {
       sb.append("}");
       return sb.toString();
     }
-    return "";
   }
 }

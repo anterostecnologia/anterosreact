@@ -10,10 +10,7 @@ import {
   AnterosError,AnterosResizeDetector,autoBind,processErrorMessage
 } from "@anterostecnologia/anteros-react-core";
 import { connect } from "react-redux";
-import {
-  AnterosFilterDSL,
-  AnterosQueryBuilderData,AnterosQueryBuilder
-} from "@anterostecnologia/anteros-react-querybuilder";
+import { AnterosQueryBuilder, NORMAL, QUICK, ADVANCED,AnterosFilterDSL,AnterosQueryBuilderData  } from "@anterostecnologia/anteros-react-querybuilder";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import {
   AnterosCard,
@@ -458,19 +455,17 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       getData(currentFilter, page) {
         if (
           currentFilter &&
-          currentFilter.filter &&
-          (currentFilter.filter.filterType === "advanced" || 
-           currentFilter.filter.filterType === "normal") &&
-          currentFilter.filter.rules.length > 0
-        ) {
-          return this.getDataWithFilter(currentFilter, page);
-        } else if (
-          currentFilter &&
-          currentFilter.filter &&
-          currentFilter.filter.filterType === "normal" &&
-          currentFilter.filter.quickFilterText !== ""
+          currentFilter.filter.filterType === QUICK &&
+            currentFilter.filter.quickFilterText &&
+            currentFilter.filter.quickFilterText !== ""
         ) {
           return this.getDataWithQuickFilter(currentFilter, page);
+        } else if (
+          currentFilter &&
+          (currentFilter.filter.filterType === NORMAL ||
+            currentFilter.filter.filterType === ADVANCED)
+        ) {
+          return this.getDataWithFilter(currentFilter, page);
         } else {
           return this.getDataWithoutFilter(page);
         }
@@ -479,26 +474,32 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       getDataWithFilter(currentFilter, page) {
         var filter = new AnterosFilterDSL();
         filter.buildFrom(currentFilter.filter, currentFilter.sort);
-        if (
-          WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") === true
-        ) {
-          return this.onFindWithFilter(
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getSortFields(),
-            this.getUser(),
-            loadingProps.fieldsToForceLazy
-          );
+        let filterStr = filter.toJSON();
+        if (filterStr) {
+          if (
+            WrappedComponent.prototype.hasOwnProperty("onFindWithFilter") ===
+            true
+          ) {
+            return this.onFindWithFilter(
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getSortFields(),
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+          } else {
+            return loadingProps.endPoints.findWithFilter(
+              loadingProps.resource,
+              filter.toJSON(),
+              page,
+              loadingProps.pageSize,
+              this.getUser(),
+              loadingProps.fieldsToForceLazy
+            );
+          }
         } else {
-          return loadingProps.endPoints.findWithFilter(
-            loadingProps.resource,
-            filter.toJSON(),
-            page,
-            loadingProps.pageSize,
-            this.getUser(),
-            loadingProps.fieldsToForceLazy
-          );
+          return this.getDataWithoutFilter(page);
         }
       }
 
