@@ -179,8 +179,25 @@ export class AnterosUserService {
   getQueryOwners(owners, onError, onSuccess) {
     return new Promise((resolve, reject) => {
       return axios({
-          url: `${versatilSaaSBaseURL}/validation/queryTenants/${owners}`,
+          url: `${this.config.url_baseSaas}/validation/queryTenants/${owners}`,
           method: "get",
+        })
+        .then(function (response) {
+          let list = AnterosJacksonParser.convertJsonToObject(response.data);
+          onSuccess(list);
+        })
+        .catch(function (error) {
+          onError(processErrorMessage(error));
+        });
+    });
+  }
+
+  getQueryOwnersByUser(user, onError, onSuccess) {
+    return new Promise((resolve, reject) => {
+      return axios({
+        url: `${this.config.url_baseSaas}/validation/queryTenantsByUserWeb`,
+        method: "post",
+        data:  encode(user)
         })
         .then(function (response) {
           let list = AnterosJacksonParser.convertJsonToObject(response.data);
@@ -313,5 +330,5 @@ export class AnterosUserService {
     return plainText.toString(CryptoJS.enc.Utf8);
   }
 }
-
+ 
 export const userService = new AnterosUserService();
