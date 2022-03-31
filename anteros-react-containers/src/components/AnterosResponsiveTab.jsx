@@ -172,7 +172,9 @@ class AnterosResponsiveTabs extends Component {
       let result = [];
       let arrChildren = React.Children.toArray(this.props.children);
       arrChildren.forEach(function (child, index) {
-        if (child.type && child.type.componentName === "AnterosResponsiveTab") {
+        if (child.type.componentName === "AnterosSecurityRoute"){
+          result.push(child);
+        } else if (child.type && child.type.componentName === "AnterosResponsiveTab") {
           if (child.props.visible === true) {
             result.push({
               title: child.props.title,

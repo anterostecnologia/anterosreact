@@ -7,7 +7,6 @@ import {
   AnterosPivotTable,
   AnterosPivotTableField,
 } from "./components/AnterosPivotTable";
-import { AnterosPivotTableAdvanced } from "./components/AnterosPivotTableAdvanced";
 
 export {
   AnterosDataTable,
@@ -17,5 +16,4 @@ export {
   AnterosTableColumn,
   AnterosPivotTable,
   AnterosPivotTableField,
-  AnterosPivotTableAdvanced,
 };

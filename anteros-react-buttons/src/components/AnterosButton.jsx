@@ -230,7 +230,7 @@ export default class AnterosButton extends Component {
             );
         }
 
-        let btn = (
+        return (
             <button
                 id={this.props.id ? this.props.id : this.idButton}
                 data-placement={this.props.hintPosition}
@@ -313,10 +313,6 @@ export default class AnterosButton extends Component {
                 {this.props.children}
             </button>
         );
-        // if (this.props.hint) {
-        //     btn = <AnterosFloater event="hover" content={this.props.hint}>{btn}</AnterosFloater>;
-        // }
-        return btn;
     }
 }
 

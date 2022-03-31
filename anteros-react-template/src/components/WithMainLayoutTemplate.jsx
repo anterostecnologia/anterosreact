@@ -8,6 +8,7 @@ import {
   AnterosMainHeader,
   UserActions,
   QuickLinks,
+  ButtonQuickLinks,
   ToolbarEnd,
   ToolbarCenter,
 } from "@anterostecnologia/anteros-react-admin";
@@ -321,6 +322,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               }
               avatarWidth={loadingProps.avatarWidth}
               avatarHeight={loadingProps.avatarHeight}
+              onQuickLinkClick={this.onOpenQuickLinkMenu}
               avatar={this.props.authenticated ? this.getAvatar() : null}
             >
               {Actions ? <UserActions>{Actions}</UserActions> : null}

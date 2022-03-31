@@ -35,3 +35,5 @@ export default class AnterosSecurityRoute extends Component {
     );
   }
 }
+
+AnterosSecurityRoute.componentName = "AnterosSecurityRoute";

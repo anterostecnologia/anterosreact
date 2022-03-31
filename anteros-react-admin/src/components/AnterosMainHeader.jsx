@@ -19,6 +19,72 @@ import { AnterosInputSearch } from "@anterostecnologia/anteros-react-querybuilde
 import { AnterosImage } from "@anterostecnologia/anteros-react-image";
 import AnterosUserMenu from "./AnterosUserMenu";
 import { autoBind } from "@anterostecnologia/anteros-react-core";
+import CommandPalette from "react-command-palette";
+import sublime from "react-command-palette/dist/themes/sublime-theme";
+import "react-command-palette/dist/themes/chrome.css";
+
+const wrapperStyle = {
+  fontFamily: "arial",
+  fontSize: "12px",
+  color: "rgb(172, 172, 172)",
+  marginBottom: "6px",
+  display: "inline-block",
+};
+
+const kbdStyle = {
+  backgroundColor: "rgb(23, 23, 23)",
+  fontSize: "12px",
+  color: "#b9b9b9",
+  padding: "2px 4px",
+  marginRight: "6px",
+  borderRadius: "4px",
+};
+
+function CommandHeader() {
+  const itemStyle = { paddingRight: "32px" };
+
+  return (
+    <div style={wrapperStyle}>
+      <span style={itemStyle}>Digite um comando</span>
+      <span style={itemStyle}>
+        <kbd style={kbdStyle}>↑↓</kbd> p/navegar
+      </span>
+      <span style={itemStyle}>
+        <kbd style={kbdStyle}>enter</kbd> p/selecionar
+      </span>
+      <span style={itemStyle}>
+        <kbd style={kbdStyle}>esc</kbd> p/sair
+      </span>
+    </div>
+  );
+}
+
+function chromeCommand(suggestion) {
+  const { name, highlight = [], category, shortcut, color } = suggestion;
+
+  // handle simple highlight when searching a single key
+  if (!Array.isArray(highlight)) {
+    return (
+      <div className="chrome-suggestion">
+        <span style={{backgroundColor:color.backgroundColor, color: color.color}}
+         className={`chrome-category`}>{category}</span>
+        <span dangerouslySetInnerHTML={{ __html: highlight || name }} />
+        <kbd className="chrome-shortcut">{shortcut}</kbd>
+      </div>
+    );
+  }
+
+  return (
+    <div className="chrome-suggestion">
+      <span style={{backgroundColor:color.backgroundColor, color: color.color}}
+        dangerouslySetInnerHTML={{ __html: highlight[1] || category }}
+        className={`chrome-category ${category}`}
+      />
+      <span dangerouslySetInnerHTML={{ __html: highlight[0] || name }} />
+      <kbd className="chrome-shortcut">{shortcut}</kbd>
+    </div>
+  );
+}
 
 function isBase64(str) {
   try {
@@ -92,6 +158,13 @@ export default class AnterosMainHeader extends Component {
     return "AnterosMainHeader";
   }
 
+  onButtonClick(event, button) {
+    let bb = this.btnQuickLinkRef.button.getBoundingClientRect();
+    if (this.props.onQuickLinkClick) {
+      this.props.onQuickLinkClick(bb.left, bb.top);
+    }
+  }
+
   render() {
     let userActions;
     let quickLinks;
@@ -112,7 +185,13 @@ export default class AnterosMainHeader extends Component {
       });
     }
 
-    const { horizontalMenu, logoNormal, sidebarOpen } = this.props;
+    const {
+      horizontalMenu,
+      logoNormal,
+      sidebarOpen,
+      onQuickLinkClick,
+      commands,
+    } = this.props;
     let imgUser = this.props.avatar;
     let isB64 = isBase64(imgUser);
     return (
@@ -141,12 +220,12 @@ export default class AnterosMainHeader extends Component {
               medium
               icon="fab fa-buromobelexperte"
               iconSize="24px"
-              backgroundColor= {this.props.toolbarIconBackgroundColor}
+              backgroundColor={this.props.toolbarIconBackgroundColor}
               color={this.props.toolbarIconColor}
               hintPosition="bottom"
             >
               <AnterosDropdownMenu
-                style={{ paddingTop: "0px", border:'1px solid #e0e0e0' }}
+                style={{ paddingTop: "0px", border: "1px solid #e0e0e0" }}
                 styleHeader={{
                   backgroundColor: this.props.quickLinkHeaderColor,
                   color: this.props.toolbarIconColor,
@@ -156,6 +235,27 @@ export default class AnterosMainHeader extends Component {
                 {quickLinks}
               </AnterosDropdownMenu>
             </AnterosDropdownButton>
+          ) : null}
+
+          {onQuickLinkClick ? (
+            <AnterosButton
+              medium
+              ref={(ref) => (this.btnQuickLinkRef = ref)}
+              icon="fab fa-buromobelexperte"
+              iconSize="24px"
+              backgroundColor={this.props.toolbarIconBackgroundColor}
+              color={this.props.toolbarIconColor}
+              onButtonClick={this.onButtonClick}
+              hintPosition="bottom"
+            ></AnterosButton>
+          ) : null}
+
+          {commands && commands.length > 0 ? (
+            <CommandPaletteButton
+              toolbarIconColor={this.props.toolbarIconColor}
+              toolbarIconBackgroundColor={this.props.toolbarIconBackgroundColor}
+              commands={commands}
+            />
           ) : null}
 
           {this.props.showInputSearch ? (
@@ -223,6 +323,81 @@ export class QuickLinks extends Component {
 
   static get componentName() {
     return "QuickLinks";
+  }
+
+  render() {
+    return null;
+  }
+}
+
+
+
+class CommandPaletteButton extends Component {
+  constructor(props){
+    super(props);
+    this.state = {commandOpen: false};
+    autoBind(this);
+  }
+  onButtonClick(event) {
+    this.setState({...this.state, commandOpen: !this.state.commandOpen});
+  }
+
+  onRequestClose(){
+    this.setState({...this.state, commandOpen: false});
+  }
+
+  onAfterOpen(){
+    this.setState({...this.state, commandOpen: true});
+  }
+
+  render() {
+    return (
+      <CommandPalette
+        alwaysRenderCommands
+        closeOnSelect={true}
+        highlightFirstSuggestion
+        hotKeys="command+shift+p"
+        maxDisplayed={10}
+        commands={this.props.commands}
+        options={{
+          keys: [
+            'name',
+            'category'
+          ]
+        }}
+        placeholder=""
+        resetInputOnOpen
+        reactModalParentSelector="body"
+        shouldReturnFocusAfterClose
+        renderCommand={chromeCommand}
+        trigger={
+          <AnterosButton
+            medium
+            icon="far fa-terminal"
+            iconSize="24px"
+            hint="Comandos ⇧⌘P"
+            backgroundColor={this.props.toolbarIconBackgroundColor}
+            color={this.props.toolbarIconColor}
+            hintPosition="bottom"
+            onButtonClick={this.onButtonClick}
+          ></AnterosButton>
+        }
+        open={this.state.commandOpen}
+        header={<CommandHeader />}
+        theme={sublime}
+      />
+    );
+  }
+}
+
+export class ButtonQuickLinks extends Component {
+  constructor(props) {
+    super(props);
+    autobind(this);
+  }
+
+  static get componentName() {
+    return "ButtonQuickLinks";
   }
 
   render() {
