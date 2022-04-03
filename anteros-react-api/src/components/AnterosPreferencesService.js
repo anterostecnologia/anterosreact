@@ -102,9 +102,6 @@ export class AnterosPreferencesService {
           }
         }
   
-        if (remindMe && !hasOwner) {
-          dataStorage.push(credentialsToStorage[0]);
-        }
   
         this._localStorage.setItem(
           key,

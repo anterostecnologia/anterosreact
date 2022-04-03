@@ -1,5 +1,17 @@
 export function processErrorMessage(error) {
 	var msgErro = "";
+	if ((
+		error &&
+		error.response &&
+		error.response.status &&
+		error.response.status == 401
+	) || (
+		error &&
+		error.status &&
+		error.status == 401
+	)){
+		return "Usuário/senha não encontrados. Não autorizado.";
+	}
 	if (error.response && error.response.data && error.response.data.apierror) {
 		msgErro = error.response.data.apierror.message;
 		if (error.response.data.apierror.subErrors) {

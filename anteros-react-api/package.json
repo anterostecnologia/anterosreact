@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-api",
-  "version": "1.0.49",
+  "version": "1.0.51",
   "description": "Anteros Remote API",
   "main": "lib/@anterostecnologia/anteros-react-api.js",
   "scripts": {

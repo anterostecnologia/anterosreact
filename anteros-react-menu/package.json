@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-menu",
-  "version": "2.0.39",
+  "version": "2.0.40",
   "description": "Anteros components for React - Menu",
   "main": "lib/@anterostecnologia/anteros-react-menu.js",
   "scripts": {
@@ -52,6 +52,7 @@
     "react": "^16.11.0",
     "react-addons-shallow-compare": "^15.6.3",
     "react-dom": "^16.11.0",
+    "react-simple-horizontal-scroller": "^1.0.10",
     "react-slidedown": "^2.4.5",
     "react-transition-group": "^2.2.1",
     "resize-observer-polyfill": "^1.5.1",

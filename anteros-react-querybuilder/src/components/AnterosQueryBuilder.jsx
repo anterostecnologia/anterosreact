@@ -843,6 +843,15 @@ export class AnterosQueryBuilder extends React.Component {
               this.onSearchClick();
             }}
           />
+          <AnterosButton
+            primary
+            icon="far fa-backspace"
+            hint="Limpar filtro"
+            hintPosition="down"
+            style={{ width: "38px", height: "38px" }}
+            visible={this.props.showClearButton}
+            onClick={this.clearFilter}
+          />
           <div
             style={{
               width: "38px",
@@ -954,15 +963,6 @@ export class AnterosQueryBuilder extends React.Component {
             style={{ width: "38px", height: "38px" }}
             visible={this.props.showToggleButton}
             onClick={this.toggleExpandedFilter}
-          />
-          <AnterosButton
-            primary
-            icon="far fa-times"
-            hint="Limpar filtro"
-            hintPosition="down"
-            style={{ width: "38px", height: "38px" }}
-            visible={this.props.showClearButton}
-            onClick={this.clearFilter}
           />
         </div>
         <AnterosCompositeFilter

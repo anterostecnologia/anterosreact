@@ -8,7 +8,6 @@ import {
   AnterosMainHeader,
   UserActions,
   QuickLinks,
-  ButtonQuickLinks,
   ToolbarEnd,
   ToolbarCenter,
 } from "@anterostecnologia/anteros-react-admin";
@@ -16,6 +15,9 @@ import { AnterosNotificationContainer } from "@anterostecnologia/anteros-react-n
 import { connect } from "react-redux";
 import { autoBind, AnterosError } from "@anterostecnologia/anteros-react-core";
 import shallowCompare from "react-addons-shallow-compare";
+import { RoutedTabs, NavTab } from "react-router-tabs";
+import "react-router-tabs/styles/react-router-tabs.css";
+
 
 const defaultProps = {
   menuHorizontal: false,
@@ -30,6 +32,8 @@ const defaultProps = {
   quickLinkHeaderColor:'blue',
   toolbarIconBackgroundColor: 'rgb(255,255,255,0.2'
 };
+
+
 
 export default function WithMainLayoutTemplate(_loadingProps) {
   let loadingProps = { ...defaultProps, ..._loadingProps };
@@ -74,6 +78,15 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         ) {
           throw new AnterosError(
             "Implemente o método getQuickLinks na classe " +
+              WrappedComponent.type
+          );
+        }
+
+        if (
+          WrappedComponent.prototype.hasOwnProperty("getCommands") === false
+        ) {
+          throw new AnterosError(
+            "Implemente o método getCommands na classe " +
               WrappedComponent.type
           );
         }
@@ -271,6 +284,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
         const horizontal = loadingProps.menuHorizontal;
         const Actions = this.getUserActions();
         const Links = this.getQuickLinks();
+        const commands = this.getCommands();
         const ToolbarCenterContent = this.getToolbarCenterContent();
         const ToolbarEndContent = this.getToolbarEndContent();
         const MainMenu = this.getMainMenu();
@@ -308,7 +322,7 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             <AnterosMainHeader
               horizontalMenu={horizontal}
               logoNormal={logo}
-              onSetOpenSidebar={this.onSetOpen}
+              onSetOpenSidebar={this.onSetOpen} 
               sidebarOpen={this.state.sidebarOpen}
               toolbarIconColor={loadingProps.toolbarIconColor}
               toolbarIconBackgroundColor={loadingProps.toolbarIconBackgroundColor}
@@ -323,12 +337,13 @@ export default function WithMainLayoutTemplate(_loadingProps) {
               avatarWidth={loadingProps.avatarWidth}
               avatarHeight={loadingProps.avatarHeight}
               onQuickLinkClick={this.onOpenQuickLinkMenu}
+              commands={commands}
               avatar={this.props.authenticated ? this.getAvatar() : null}
             >
               {Actions ? <UserActions>{Actions}</UserActions> : null}
 
               {Links ? <QuickLinks>{Links}</QuickLinks> : null}
-
+              
               <ToolbarCenter>{ToolbarCenterContent}</ToolbarCenter>
               <ToolbarEnd>{ToolbarEndContent}</ToolbarEnd>
             </AnterosMainHeader>
@@ -395,6 +410,9 @@ export default function WithMainLayoutTemplate(_loadingProps) {
             )}
 
             <AnterosMainContent>
+            {/* <NavTab to="/home/business/cadastros/equipamento/consulta">Admins</NavTab>
+            <NavTab to="/home/business/cadastros/pessoa/consulta">Moderators</NavTab>
+            <NavTab to="/home/business/cadastros/produto/consulta">Users</NavTab> */}
               {Switch}
               <WrappedComponent
                 {...this.props}
