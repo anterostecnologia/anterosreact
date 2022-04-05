@@ -334,7 +334,7 @@ export default function WithFormTemplate(_loadingProps) {
           "getCustomMessageLoading"
         )
           ? this.getCustomMessageLoading()
-          : loadingProps.messageLoading;
+          : this.state.saving?loadingProps.messageLoading:"Salvando...";
         const customLoader = WrappedComponent.prototype.hasOwnProperty(
             "getCustomLoader"
           )
@@ -388,7 +388,7 @@ export default function WithFormTemplate(_loadingProps) {
                   backgroundColor: "black",
                 }}
                 tag="div"
-                blocking={this.state.loading}
+                blocking={this.state.loading || this.state.saving}
                 message={messageLoading}
                 loader={
                   customLoader ? (

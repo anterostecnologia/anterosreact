@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-image",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "description": "Anteros components for React - Image",
   "main": "lib/@anterostecnologia/anteros-react-image.js",
   "scripts": {

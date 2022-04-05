@@ -303,7 +303,7 @@ export default class AnterosImagePicker extends React.Component {
         const colClasses = buildGridClassNames(this.props, false, []);
         let className = AnterosUtils.buildClassNames(
             colClasses.length > 0 || this.props.icon ? 'form-control' : '',
-            'fileUpload'
+            'fileUpload',colClasses
         );
 
         let readOnly = this.props.readOnly;
