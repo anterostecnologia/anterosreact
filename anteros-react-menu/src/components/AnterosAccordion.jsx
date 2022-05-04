@@ -176,7 +176,7 @@ export class AnterosAccordionItem extends Component {
     return (
       <div id={this.props.ownerId + "_heading" + this.props.id} ref={(ref)=>this.itemRef=ref} className={className} style={{opacity:this.props.disabled?0.5:1}} onClick={this.onClick}>
         <div
-          className="card-header justify-content-between"
+          className={`card-header justify-content-between ${this.props.headerClassName}`}
           style={this.props.headerStyle}
           role="tab"          
           data-toggle="collapse"
@@ -204,7 +204,7 @@ export class AnterosAccordionItem extends Component {
           role="tabpanel"
           aria-labelledby={this.props.ownerId + "_heading" + this.props.id}
         >
-          <div className="card-block" style={this.props.blockStyle}>
+          <div className={`card-block ${this.props.blockClassName}`} style={this.props.blockStyle}>
             {this.props.children}
           </div>
         </div>
@@ -227,6 +227,8 @@ AnterosAccordionItem.propTypes = {
   image: PropTypes.string,
   caption: PropTypes.string, 
   blockStyle: PropTypes.object,
+  blockClassName: PropTypes.object,
   headerStyle: PropTypes.object,
+  headerClassName: PropTypes.object,
   onSelectAccordionItem: PropTypes.func,
 };

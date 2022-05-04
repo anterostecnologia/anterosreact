@@ -175,7 +175,6 @@ export default class AnterosEdit extends AnterosBaseInputControl {
                 primary: child.props.primary,
                 info: child.props.info,
                 danger: child.props.danger,
-                warning: child.props.warning,
                 secondary: child.props.secondary,
                 default: child.props.default,
                 when: child.props.when,

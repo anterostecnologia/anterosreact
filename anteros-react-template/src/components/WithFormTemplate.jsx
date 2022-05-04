@@ -274,7 +274,6 @@ export default function WithFormTemplate(_loadingProps) {
                 }
                 _this.props.history.push(button.props.route);
               }
-              return;
             })
             .catch(function (reason) {
               // quando apertar o botao "cancelar" cai aqui. Apenas ignora. (sem processamento necessario)

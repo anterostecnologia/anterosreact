@@ -254,7 +254,7 @@ class AnterosCheckbox extends Component {
     }
 
     const colClasses = buildGridClassNames(this.props, false, []);
-    const { name, id, value, disabled } = this.props;
+    const { name, id, value, disabled, containerStyle, style } = this.props;
     const { isChecked } = this.state;
 
     return (
@@ -263,13 +263,14 @@ class AnterosCheckbox extends Component {
         style={{
           width: this.props.width,
           height: this.props.height,
-          ...this.props.style,
+          ...containerStyle,
         }}
       >
         <Checkbox
           id={id}
           label={value}
-		  icon={<i className="far fa-check"/>}
+          containerStyle={style}
+		      icon={<i className="far fa-check"/>}
           disabled={disabled}
           onChange={(event) => this.toggleCheckboxChange(event)}
           onClick={this.onClick}

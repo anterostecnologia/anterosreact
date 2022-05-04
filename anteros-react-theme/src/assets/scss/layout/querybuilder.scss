@@ -380,7 +380,8 @@
     -ms-appearance: none;
     -o-appearance: none;
     appearance: none;
-    font-size: 14px
+    font-size: 14px;
+    max-width: 150px;
 }
 
 .custom-select-operator {
