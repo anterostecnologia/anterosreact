@@ -455,3 +455,11 @@
   .chosen-choices {
     margin-bottom: 0px;
   }
+
+  .simple-filter-enabled {
+    background-color: $color-success !important;
+}
+
+.simple-filter-disabled {
+    opacity: 0.4 !important;
+}

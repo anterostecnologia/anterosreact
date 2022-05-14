@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-api",
-  "version": "1.0.51",
+  "version": "1.0.54",
   "description": "Anteros Remote API",
   "main": "lib/@anterostecnologia/anteros-react-api.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "axios": "^0.21.4",
+    "axios-retry": "^3.2.5",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

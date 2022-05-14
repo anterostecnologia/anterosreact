@@ -108,7 +108,7 @@ export class AnterosUserService {
     this.config.localStorage.setItem(KEY_OWNER_INFO, _owner);
   }
 
-  _getUserInformation(credentials, token, ownerUrl, onError, onSuccess) {
+  _getUserInformation(credentials, token, ownerUrl, onError, onSuccess, tryCount = 1) {
     let url_user = this.config.url_user_with_owner;
     if (ownerUrl) {
       url_user = ownerUrl.urlAPI + '/v1';
@@ -139,9 +139,9 @@ export class AnterosUserService {
           }
         })
         .catch(error => {
-          if (error.response.status === 401){
+          if (error.response.status === 401 && tryCount <= 3){
             tokenService.refreshToken(credentials, onError,(tokenResult)=>{
-              _this._getUserInformation(credentials,tokenResult,ownerUrl,onError,onSuccess);
+              _this._getUserInformation(credentials,tokenResult,ownerUrl,onError,onSuccess,tryCount+1);
             })
           } else {
             onError('Usuário/senha não encontrados!');
@@ -209,7 +209,7 @@ export class AnterosUserService {
     });
   }
 
-  getUserSocial(credentials, token, profile, ownerUrl, onError, onSuccess) {
+  getUserSocial(credentials, token, profile, ownerUrl, onError, onSuccess, tryCount =1) {
     let userInfo = {};
     const KEY_USER_SOCIAL = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_userSocial`;
     userInfo = this.config.localStorage.getItem(KEY_USER_SOCIAL);
@@ -247,9 +247,9 @@ export class AnterosUserService {
             }
           })
           .catch(error => {
-            if (error.response.status === 401){
+            if (error.response.status === 401 && tryCount <= 3){
               tokenService.refreshToken(credentials, onError,(tokenResult)=>{
-                _this.getUserSocial(credentials,tokenResult,ownerUrl,profile,onError,onSuccess);
+                _this.getUserSocial(credentials,tokenResult,ownerUrl,profile,onError,onSuccess,tryCount+1);
               })
             } else {
               onError(processErrorMessage(error));
@@ -259,7 +259,7 @@ export class AnterosUserService {
     }
   }
 
-  getOwnerInfo(credentials, token, profile, ownerUrl, onError, onSuccess) {
+  getOwnerInfo(credentials, token, profile, ownerUrl, onError, onSuccess, tryCount = 1) {
     let ownerInfo = {};
     const KEY_ONWER_INFO = `${(credentials.owner ? credentials.owner + "_" : "") + credentials.username}_ownerInfo`;
     ownerInfo = this.config.localStorage.getItem(KEY_ONWER_INFO);
@@ -294,7 +294,19 @@ export class AnterosUserService {
             }
           })
           .catch(error => {
-            onError('Proprietário do sistema não encontrado!');
+            if (error.response.status === 400){
+              if (error.response.data.apierror && 
+                error.response.data.apierror.message.startsWith('Invalid refresh token') &&
+                tryCount <= 3){
+                tokenService.refreshToken(credentials, onError,(tokenResult)=>{
+                  _this.getOwnerInfo(credentials, tokenResult, profile, ownerUrl, onError, onSuccess, tryCount+1);
+                })
+              } else {
+                onError('Proprietário do sistema não encontrado!');
+              }
+            } else {
+              onError('Proprietário do sistema não encontrado!');
+            }            
           });
       });
     }

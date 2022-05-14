@@ -65,6 +65,8 @@ export default class AnterosAccordion extends Component {
             image: child.props.image,
             caption: child.props.caption,
             ownerId: _this.props.id,
+            bodyClassName: child.props.bodyClassName,
+            headerClassName: child.props.headerClassName,
             onSelectAccordionItem:
               child.props.onSelectAccordionItem == undefined
                 ? _this.props.onSelectAccordionItem
