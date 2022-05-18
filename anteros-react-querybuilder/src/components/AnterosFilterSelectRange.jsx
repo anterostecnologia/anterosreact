@@ -49,6 +49,7 @@ class AnterosFilterSelectRange extends React.Component {
             position: "fixed",
             left: this.props.left,
             top: this.props.top,
+            zIndex: 99,
             width: this.props.selectRangeType==='month'?'260px':this.props.width,
             height: this.props.selectRangeType==='month'?'350px':'320px',
             backgroundColor: "rgba(255, 255, 255, 0.75)",

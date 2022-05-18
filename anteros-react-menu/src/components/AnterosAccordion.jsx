@@ -103,6 +103,7 @@ export class AnterosAccordionItem extends Component {
     super(props);
     this.onClick = this.onClick.bind(this);
     this.ignoreEvent = this.ignoreEvent.bind(this);
+    this.refItem = React.createRef();
   }
 
   static get componentName() {
@@ -120,6 +121,7 @@ export class AnterosAccordionItem extends Component {
       }
     }
   }
+
 
   ignoreEvent(event){
     let result = true;
@@ -178,6 +180,8 @@ export class AnterosAccordionItem extends Component {
     return (
       <div id={this.props.ownerId + "_heading" + this.props.id} ref={(ref)=>this.itemRef=ref} className={className} style={{opacity:this.props.disabled?0.5:1}} onClick={this.onClick}>
         <div
+          ref={this.refItem}
+          id={this.props.id}
           className={`card-header justify-content-between ${this.props.headerClassName}`}
           style={this.props.headerStyle}
           role="tab"          

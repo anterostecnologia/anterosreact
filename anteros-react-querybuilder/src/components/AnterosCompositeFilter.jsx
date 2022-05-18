@@ -85,7 +85,7 @@ class AnterosCompositeFilter extends React.Component {
             top: this.props.top,
             width: this.props.width,
             height: this.props.height,
-            zIndex: 3,
+            zIndex: 99,
             backgroundColor: "rgba(255, 255, 255, 0.75)",
           },
           content: {

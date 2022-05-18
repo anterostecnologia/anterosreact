@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import uniqueId from "uuid/v4";
@@ -5,10 +6,7 @@ import {
   AnterosLabel,
   AnterosText,
 } from "@anterostecnologia/anteros-react-label";
-import {
-  AnterosCombobox,
-  AnterosComboboxOption,
-  AnterosDatePicker,
+import {  AnterosCombobox, AnterosComboboxOption, AnterosDatePicker,
   AnterosDateTimePicker,
   AnterosDateRangePicker,
   AnterosDateTimeRangePicker,
@@ -17,15 +15,13 @@ import {
   AnterosEdit,
   AnterosTimePicker,
   AnterosCheckboxToggle,
-  AnterosCheckbox
+  AnterosCheckbox,
 } from "@anterostecnologia/anteros-react-editors";
 import {
   AnterosStringUtils,
   autoBind,
 } from "@anterostecnologia/anteros-react-core";
-import {
-  AnterosButton,
-} from "@anterostecnologia/anteros-react-buttons";
+import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosList } from "@anterostecnologia/anteros-react-list";
 import { CustomSortItem } from "./AnterosAdvancedFilter";
 import {
@@ -33,35 +29,66 @@ import {
   AnterosCol,
 } from "@anterostecnologia/anteros-react-layout";
 import {
-  AnterosAccordion,
-  AnterosAccordionItem,
-} from "@anterostecnologia/anteros-react-menu";
-import {
   getDefaultEmptyFilter,
   defaultConditions,
   defaultOperators,
 } from "./AnterosFilterCommons";
-import shallowCompare from 'react-addons-shallow-compare';
+import shallowCompare from "react-addons-shallow-compare";
+
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemButton,
+  AccordionItemHeading,
+  AccordionItemPanel,
+} from "react-accessible-accordion";
+
+const rnd = (() => {
+  const gen = (min, max) =>
+    max++ && [...Array(max - min)].map((s, i) => String.fromCharCode(min + i));
+
+  const sets = {
+    num: gen(48, 57),
+    alphaLower: gen(97, 122),
+    alphaUpper: gen(65, 90),
+    special: [...`~!@#$%^&*()_+-=[]\{}|;:'",./<>?`],
+  };
+
+  function* iter(len, set) {
+    if (set.length < 1) set = Object.values(sets).flat();
+    for (let i = 0; i < len; i++) yield set[(Math.random() * set.length) | 0];
+  }
+
+  return Object.assign(
+    (len, ...set) => [...iter(len, set.flat())].join(""),
+    sets
+  );
+})();
 
 class AnterosSimpleFilter extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
+    this.prefixId = rnd(12, rnd.alphaLower);
     let schema = this.createSchema();
     let currentFilter = props.currentFilter
       ? props.currentFilter
       : getDefaultEmptyFilter();
-    let activeFilterIndex = props.currentFilter
-    ? props.activeFilterIndex
-    : 0;
+    let activeFilterIndex = props.currentFilter ? props.activeFilterIndex : 0;
 
     let simpleFields = this.createFilterFields(props, schema, currentFilter);
-    this.state = { simpleFields, currentFilter, schema, activeFilterIndex, update: Math.random() };
+    this.state = {
+      simpleFields,
+      currentFilter,
+      schema,
+      activeFilterIndex,
+      update: Math.random(),
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
-  } 
+  }
 
   componentWillReceiveProps(nextProps) {
     let schema = this.createSchema();
@@ -70,7 +97,7 @@ class AnterosSimpleFilter extends React.Component {
       : getDefaultEmptyFilter();
     let activeFilterIndex = nextProps.currentFilter
       ? nextProps.activeFilterIndex
-      : 0;  
+      : 0;
     let simpleFields = this.createFilterFields(
       nextProps,
       schema,
@@ -82,7 +109,7 @@ class AnterosSimpleFilter extends React.Component {
       currentFilter,
       activeFilterIndex,
       schema,
-      update: Math.random()
+      update: Math.random(),
     });
   }
 
@@ -151,19 +178,26 @@ class AnterosSimpleFilter extends React.Component {
     });
     let currentFilter = this.state.currentFilter;
     currentFilter.sort.sortFields = sortFields;
-    this.setState({
-      ...this.state,
-      update: Math.random(),
-      currentFilter,
-    },()=>{
-      this.propagateFilterChanged();
-    });
+    this.setState(
+      {
+        ...this.state,
+        update: Math.random(),
+        currentFilter,
+      },
+      () => {
+        this.propagateFilterChanged();
+      }
+    );
   }
 
   propagateFilterChanged() {
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
-      onFilterChanged(this.state.currentFilter,this.state.activeFilterIndex,()=>{});
+      onFilterChanged(
+        this.state.currentFilter,
+        this.state.activeFilterIndex,
+        () => {}
+      );
     }
   }
 
@@ -320,7 +354,11 @@ class AnterosSimpleFilter extends React.Component {
     }
     const { onFilterChanged } = this.props;
     if (onFilterChanged) {
-      onFilterChanged(this.state.currentFilter,this.state.activeFilterIndex,()=>{});
+      onFilterChanged(
+        this.state.currentFilter,
+        this.state.activeFilterIndex,
+        () => {}
+      );
     }
   }
 
@@ -329,7 +367,11 @@ class AnterosSimpleFilter extends React.Component {
     currentFilter.sort.activeIndex = index;
     this.setState({ ...this.state, currentFilter });
     if (this.props.onFilterChanged) {
-      this.props.onFilterChanged(currentFilter, this.state.activeFilterIndex,()=>{});
+      this.props.onFilterChanged(
+        currentFilter,
+        this.state.activeFilterIndex,
+        () => {}
+      );
     }
   }
 
@@ -339,9 +381,10 @@ class AnterosSimpleFilter extends React.Component {
     this.onElementChanged("value2", "", rule.id);
   }
 
-  onDisabledChanged(value, checked, rule) {
+  onDisabledChanged(value, checked, rule, id) {
     this.onElementChanged("disabled", !checked, rule.id);
-  } 
+    window.$(`#${id}`).collapse();
+  }
 
   onValueChanged(rule, value) {
     const { field, operator } = rule;
@@ -360,15 +403,17 @@ class AnterosSimpleFilter extends React.Component {
         this.onElementChanged("value", "", rule.id);
         this.onElementChanged("value2", "", rule.id);
       }
-    } else if ((operator === "inList" || operator === "notInList") &&
-      (dt === "date" || dt === "date_time" || dt === "time")) {
-        if (!value) {
-          value = "";
-        }
-        this.onElementChanged("value", value, rule.id);
+    } else if (
+      (operator === "inList" || operator === "notInList") &&
+      (dt === "date" || dt === "date_time" || dt === "time")
+    ) {
+      if (!value) {
+        value = "";
+      }
+      this.onElementChanged("value", value, rule.id);
     } else if (operator === "inList" || operator === "notInList") {
       if (!value) {
-           value = "";
+        value = "";
       }
       let values = value.split(",");
       if (values.length > 0) {
@@ -446,6 +491,7 @@ class AnterosSimpleFilter extends React.Component {
           field: child.name,
           fieldSql: child.nameSql,
           dataType: child.dataType,
+          expanded: false,
           value: "",
           value2: "",
           disabled: child.disabled,
@@ -458,171 +504,229 @@ class AnterosSimpleFilter extends React.Component {
         rule.value2 && rule.value2 !== ""
           ? `${textValue} a ${rule.value2}`
           : textValue;
-      if (child.name==="categoria.descricaoCategoria")    {
-      console.log(rule.disabled);
-      }
       result.push(
-        <AnterosAccordionItem
-          caption={
-            <div style={{display:'flex', alignItems:'center'}}>
-              {child.label}
+        <AccordionItem
+          uuid={_this.prefixId + "_" + index}
+          id={_this.prefixId + "_" + index}
+          key={"flk" + index}
+          disabled={rule.disabled}
+          dangerouslySetExpanded={!rule.disabled}
+          label={child.label}
+        >
+          <AccordionItemHeading
+            className={
+              rule.disabled === true
+                ? "simple-filter-disabled"
+                : "simple-filter-enabled"
+            }
+          >
+            <AccordionItemButton
+              className={
+                rule.disabled === true
+                  ? "accordion__button simple-filter-disabled"
+                  : "accordion__button simple-filter-enabled"
+              }
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <AnterosCheckbox
+                  value={!rule.disabled}
+                  width="24px"
+                  height="32px"
+                  containerStyle={{ display: "flex", margin:0 }}
+                  style={{ margin: 0 }}
+                  update={
+                    _this.state && _this.state.update
+                      ? _this.state.update
+                      : Math.random()
+                  }
+                  checked={!rule.disabled}
+                  onCheckboxChange={(value, checked) =>
+                    _this.onDisabledChanged(
+                      value,
+                      checked,
+                      rule,
+                      _this.prefixId + "_" + index
+                    )
+                  }
+                />
+                {child.label}
+                <SimpleValueSelector
+                  field={child.name}
+                  options={_this.getOperators(child.name)}
+                  value={rule.operator}
+                  className="custom-select-operator"
+                  disabled={true}
+                  handleOnChange={(value) =>
+                    _this.onOperatorChanged(rule, value)
+                  }
+                  level={0}
+                />
+                <AnterosText
+                  fontSize="12px"
+                  truncate
+                  color="blue"
+                  text={textValue}
+                />
+              </div>
+            </AccordionItemButton>
+          </AccordionItemHeading>
+          <AccordionItemPanel
+            className={
+              rule.disabled === true
+                ? "simple-filter-disabled"
+                : "simple-filter-enabled"
+            }
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <SimpleValueSelector
                 field={child.name}
                 options={_this.getOperators(child.name)}
                 value={rule.operator}
                 className="custom-select-operator"
-                disabled={true}
+                disabled={child.disabled}
                 handleOnChange={(value) => _this.onOperatorChanged(rule, value)}
                 level={0}
               />
-              <AnterosText
-                fontSize="12px"
-                truncate
-                color="blue"
-                text={textValue}
-              />
+              <SimpleValueEditor
+                key={"svf1_" + index}
+                field={child.name}
+                dataType={child.dataType}
+                operator={rule.operator}
+                value={rule.value}
+                value2={rule.value2}
+                listValues={listValues}
+                searchField={child.searchField}
+                disabled={rule.disabled}
+                className="rule-value"
+                handleOnChange={(value) => _this.onValueChanged(rule, value)}
+                onSearchButtonClick={props.onSearchButtonClick}
+                searchComponent={child.searchComponent}
+                level={0}
+              />{" "}
+              {rule.operator === "between" &&
+              rule.dataType !== "date" &&
+              rule.dataType !== "date_time" &&
+              rule.dataType !== "time" ? (
+                <SimpleValueEditor
+                  key={"svf2_" + index}
+                  field={child.name}
+                  dataType={rule.dataType}
+                  operator={rule.operator}
+                  value={rule.value2}
+                  listValues={listValues}
+                  searchField={child.searchField}
+                  disabled={rule.disabled}
+                  className="rule-value"
+                  handleOnChange={(value) => _this.onValue2Changed(rule, value)}
+                  onSearchButtonClick={props.onSearchButtonClick}
+                  searchComponent={child.searchComponent}
+                  level={0}
+                />
+              ) : (
+                ""
+              )}
             </div>
-          }
-          id={"fld" + index}
-          key={"flk" + index}
-          blockStyle={{ padding: "4px", overflow: "hidden" }}
-          headerStyle={{ paddingRight: "10px", minHeight: "20px!important" }}
-        >
-          <div style={{display:"flex", alignItems:"center",justifyContent:"space-between"}}>
-          <AnterosCheckbox
-            value={!rule.disabled}
-            width="24px"
-            height="32px"
-            update={_this.state && _this.state.update? _this.state.update: Math.random()}
-            checked={!rule.disabled}
-            onCheckboxChange={(value,checked)=>_this.onDisabledChanged(value,checked,rule)}
-          />
-          <SimpleValueSelector
-            field={child.name}
-            options={_this.getOperators(child.name)}
-            value={rule.operator}
-            className="custom-select-operator"
-            disabled={child.disabled}
-            handleOnChange={(value) => _this.onOperatorChanged(rule, value)}
-            level={0}
-          />
-          <SimpleValueEditor
-            key={'svf1_'+index}
-            field={child.name}
-            dataType={child.dataType}
-            operator={rule.operator}
-            value={rule.value}
-            value2={rule.value2}
-            listValues={listValues}
-            searchField={child.searchField}
-            disabled={rule.disabled}
-            className="rule-value"
-            handleOnChange={(value) => _this.onValueChanged(rule, value)}
-            onSearchButtonClick={props.onSearchButtonClick}
-            level={0}
-          />{" "}
-          {child.operator === "between" &&
-          child.dataType !== "date" &&
-          child.dataType !== "date_time" &&
-          child.dataType !== "time" ? (
-            <SimpleValueEditor
-            key={'svf2_'+index}
-              field={child.name}
-              dataType={child.dataType}
-              operator={rule.operator}
-              value={rule.value2}
-              listValues={listValues}
-              searchField={child.searchField}
-              disabled={rule.disabled}
-              className="rule-value"
-              handleOnChange={(value) => _this.onValue2Changed(rule, value)}
-              onSearchButtonClick={props.onSearchButtonClick}
-              level={0}
-            />
-          ) : (
-            ""
-          )}
-          </div>
-        </AnterosAccordionItem>
+          </AccordionItemPanel>
+        </AccordionItem>
       );
+    });
+
+    result.sort((a, b) => {
+      if (a.props.disabled && b.props.disabled) {
+        return 0;
+      } else if (a.props.disabled) {
+        return -1;
+      }
+      return 1;
     });
 
     if (this.props.allowSort === true) {
       result.push(
-        <AnterosAccordionItem
-          caption={
-            <div style={{ fontWeight: "bold", color: "#3d3d69" }}>
-              {"Ordenação  "}
-              <AnterosText
-                key={'txto_'+9999}
-                fontSize="12px"
-                truncate
-                color="blue"
-                style={{
-                  wordBreak: "break-word",
-                  display: "block",
-                  wordWrap: "break-word",
-                  width: "100%",
-                  whiteSpace: "normal",
-                }}
-                text={this.getSortString(currentFilter)}
-              />
-            </div>
-          }
-          id={"fld" + 9999}
+        <AccordionItem
+          uuid={_this.prefixId + "_" + 9999}
           key={"flk" + 9999}
+          label="Ordenação"
           blockStyle={{ padding: "4px", overflow: "hidden" }}
           headerStyle={{ paddingRight: "10px", minHeight: "20px!important" }}
         >
-          <AnterosRow>
-            <AnterosCol style={{ padding: 13 }}>
-              <div
-                className="sort-group-container"
-                style={{
-                  height: "auto",
-                }}
-              >
-                <div className="sort-header">
-                  <div>
-                    <AnterosButton
-                      id="btnFilterSortDown"
-                      circle
-                      small
-                      link
-                      hint="Para baixo"
-                      icon="fa fa-arrow-down"
-                      onClick={this.onSortDown}
-                    />
-                    <AnterosButton
-                      id="btnFilterSortUp"
-                      circle
-                      small
-                      link
-                      hint="Para cima"
-                      icon="fa fa-arrow-up"
-                      onClick={this.onSortUp}
+          <AccordionItemHeading>
+            <AccordionItemButton>
+              <div style={{ fontWeight: "bold", color: "#3d3d69" }}>
+                {"Ordenação  "}
+                <AnterosText
+                  key={"txto_" + 9999}
+                  fontSize="12px"
+                  truncate
+                  color="blue"
+                  style={{
+                    wordBreak: "break-word",
+                    display: "block",
+                    wordWrap: "break-word",
+                    width: "100%",
+                    whiteSpace: "normal",
+                  }}
+                  text={this.getSortString(currentFilter)}
+                />
+              </div>
+            </AccordionItemButton>
+          </AccordionItemHeading>
+          <AccordionItemPanel>
+            <AnterosRow>
+              <AnterosCol style={{ padding: 13 }}>
+                <div
+                  className="sort-group-container"
+                  style={{
+                    height: "auto",
+                  }}
+                >
+                  <div className="sort-header">
+                    <div>
+                      <AnterosButton
+                        id="btnFilterSortDown"
+                        circle
+                        small
+                        link
+                        hint="Para baixo"
+                        icon="fa fa-arrow-down"
+                        onClick={this.onSortDown}
+                      />
+                      <AnterosButton
+                        id="btnFilterSortUp"
+                        circle
+                        small
+                        link
+                        hint="Para cima"
+                        icon="fa fa-arrow-up"
+                        onClick={this.onSortUp}
+                      />
+                    </div>
+                    <AnterosLabel caption="Ordenação" />
+                  </div>
+                  <div className="sort-body">
+                    <AnterosList
+                      height="100%"
+                      width="100%"
+                      dataSource={this.props.currentFilter.sort.sortFields}
+                      dataFieldId="name"
+                      dataFieldText="name"
+                      activeIndex={this.props.currentFilter.sort.activeIndex}
+                      sortFocused={this.props.sortFocused}
+                      onChangeSortItem={this.onChangeSortItem}
+                      onSelectListItem={this.onSelectListItem}
+                      component={CustomSortItem}
                     />
                   </div>
-                  <AnterosLabel caption="Ordenação" />
                 </div>
-                <div className="sort-body">
-                  <AnterosList
-                    height="100%"
-                    width="100%"
-                    dataSource={this.props.currentFilter.sort.sortFields}
-                    dataFieldId="name"
-                    dataFieldText="name"
-                    activeIndex={this.props.currentFilter.sort.activeIndex}
-                    sortFocused={this.props.sortFocused}
-                    onChangeSortItem={this.onChangeSortItem}
-                    onSelectListItem={this.onSelectListItem}
-                    component={CustomSortItem}
-                  />
-                </div>
-              </div>
-            </AnterosCol>
-          </AnterosRow>
-        </AnterosAccordionItem>
+              </AnterosCol>
+            </AnterosRow>
+          </AccordionItemPanel>
+        </AccordionItem>
       );
     }
 
@@ -630,14 +734,38 @@ class AnterosSimpleFilter extends React.Component {
   }
 
   render() {
+    let items=[];
+    let preExpandedItems = [];
+    {this.state.simpleFields.forEach((item) => {
+      if (!item.props.disabled && item.props.label !== "Ordenação") {
+        items.push(item);
+        preExpandedItems.push(item.props.uuid);
+      }
+    })}
+    {this.state.simpleFields.forEach((item) => {
+      if (item.props.label === "Ordenação") {
+        items.push(item);
+      }
+    })}
+    {this.state.simpleFields.forEach((item) => {
+      if (item.props.disabled && item.props.label !== "Ordenação") {
+        items.push(item);
+      }
+    })}
+
+    
+
     return (
       <Fragment>
-        <AnterosAccordion
+        <Accordion
+          allowZeroExpanded={true}
+          allowMultipleExpanded={true}
+          preExpanded={preExpandedItems}
           id="acc1"
           onSelectAccordionItem={this.onSelectAccordionItem}
         >
-          {this.state.simpleFields}
-        </AnterosAccordion>
+          {items}
+        </Accordion>
       </Fragment>
     );
   }
@@ -656,7 +784,6 @@ AnterosSimpleFilter.defaultProps = {
   onFilterChanged: null,
   onError: null,
 };
-
 
 class SimpleValueEditor extends React.Component {
   constructor(props) {
@@ -680,6 +807,25 @@ class SimpleValueEditor extends React.Component {
     }
   }
 
+  convertValueCombobox(value,dataType){
+    if (!value || value.length === 0) {
+      return value;
+    }
+    if (dataType==='string') {
+        let result = value.split(",");
+        let _value = [];
+        if (result.length>0){
+            result.forEach(item=>{
+               _value.push(item.replaceAll('\'','')); 
+            })
+            return _value;
+        }
+    } else {
+        return value.split(",");
+    }
+    return value;
+  }
+
   render() {
     const {
       disabled,
@@ -688,6 +834,7 @@ class SimpleValueEditor extends React.Component {
       value,
       value2,
       listValues,
+      searchComponent,
       handleOnChange,
     } = this.props;
     let newValue = value === null || value === undefined ? "" : value;
@@ -701,7 +848,7 @@ class SimpleValueEditor extends React.Component {
       if (dataType === "date") {
         if (operator === "between") {
           if (newValue === "" && newValue2 === "") newValue = "";
-          else newValue = [newValue,newValue2];
+          else newValue = [newValue, newValue2];
           return (
             <AnterosDateRangePicker
               disabled={disabled}
@@ -710,7 +857,7 @@ class SimpleValueEditor extends React.Component {
               onChange={(value) => handleOnChange(value)}
             />
           );
-        } else if (operator === "notInList" || operator === "inList") {    
+        } else if (operator === "notInList" || operator === "inList") {
           return (
             <AnterosDateMultiplePicker
               disabled={disabled}
@@ -732,7 +879,7 @@ class SimpleValueEditor extends React.Component {
       } else if (dataType === "date_time") {
         if (operator === "between") {
           if (newValue === "" && newValue2 === "") newValue = "";
-          else newValue = [newValue,newValue2];
+          else newValue = [newValue, newValue2];
           return (
             <AnterosDateTimeRangePicker
               disabled={disabled}
@@ -741,7 +888,7 @@ class SimpleValueEditor extends React.Component {
               onChange={(value) => handleOnChange(value)}
             />
           );
-        } else if (operator === "notInList" || operator === "inList") {  
+        } else if (operator === "notInList" || operator === "inList") {
           return (
             <AnterosDateTimeMultiplePicker
               disabled={disabled}
@@ -771,22 +918,35 @@ class SimpleValueEditor extends React.Component {
             onChange={(value) => handleOnChange(value)}
           />
         );
-      } else if (dataType==='boolean'){
-        return <div style={{display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
-          <AnterosCheckboxToggle checked={newValue}
-        onCheckboxChange={(value,checked) => handleOnChange(checked)}/>
-        </div>
+      } else if (dataType === "boolean") {
+        return (
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <AnterosCheckboxToggle
+              checked={newValue}
+              onCheckboxChange={(value, checked) => handleOnChange(checked)}
+            />
+          </div>
+        );
       } else {
         if (
           listValues.length > 0 &&
           (operator === "notInList" || operator === "inList")
         ) {
+          let _value = this.convertValueCombobox(newValue,dataType);
           return (
             <AnterosCombobox
               disabled={disabled}
               width={"100%"}
               onChangeSelect={(value) => handleOnChange(value)}
-              multiple={true}
+              multi={true}
+              value={_value}
             >
               {listValues.map((v) => {
                 return (
@@ -804,6 +964,7 @@ class SimpleValueEditor extends React.Component {
             <AnterosCombobox
               disabled={disabled}
               width={"100%"}
+              value={newValue}
               onChangeSelect={(value) => handleOnChange(value)}
             >
               {listValues.map((v) => {
@@ -822,12 +983,13 @@ class SimpleValueEditor extends React.Component {
             <AnterosEdit
               disabled={disabled}
               width={"100%"}
-              icon="fa fa-search"
+              icon={searchComponent ? "fa fa-search" : null}
+              onlyInput={searchComponent ? false : true}
               onButtonClick={this.onButtonClick}
               clear={true}
               primary
               value={newValue}
-              onChange={(e) => handleOnChange(e?e.target.value:undefined)}
+              onChange={(e) => handleOnChange(e ? e.target.value : undefined)}
             />
           );
         }
@@ -836,7 +998,7 @@ class SimpleValueEditor extends React.Component {
       return (
         <input
           type="text"
-          width={this.props.twoFields?"128px":"260px"}
+          width={this.props.twoFields ? "128px" : "260px"}
           value={newValue}
           onChange={(e) => handleOnChange(e.target.value)}
         />
@@ -862,8 +1024,11 @@ class SimpleValueSelector extends React.Component {
     this.uuid = uniqueId();
     this.getTextWidth = this.getTextWidth.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    let wdt = props.options && props.options.length > 0 && props.options[0]?this.getTextWidth(props.options[0].name):'100px';
-    this.state = { width: wdt, value: undefined };    
+    let wdt =
+      props.options && props.options.length > 0 && props.options[0]
+        ? this.getTextWidth(props.options[0].name)
+        : "100px";
+    this.state = { width: wdt, value: undefined };
   }
 
   getLabelByName(name) {
@@ -931,4 +1096,4 @@ SimpleValueSelector.propTypes = {
   width: PropTypes.string,
 };
 
-export {AnterosSimpleFilter};
+export { AnterosSimpleFilter };

@@ -961,6 +961,8 @@ class Rule extends React.Component {
           value=""
           width="24px"
           height="32px"
+          containerStyle={{ display: "flex", margin:0 }}
+          style={{ margin: 0 }}
           checked={!disabled}
           onCheckboxChange={this.onDisabledChanged}
         />
@@ -1172,6 +1174,25 @@ export class ValueEditor extends React.Component {
     }
   }
 
+  convertValueCombobox(value,dataType){
+    if (!value || value.length === 0) {
+      return value;
+    }
+    if (dataType==='string') {
+        let result = value.split(",");
+        let _value = [];
+        if (result.length>0){
+            result.forEach(item=>{
+               _value.push(item.replaceAll('\'','')); 
+            })
+            return _value;
+        }
+    } else {
+        return value.split(",");
+    }
+    return value;
+  }
+
   render() {
     const {
       disabled,
@@ -1271,12 +1292,14 @@ export class ValueEditor extends React.Component {
           listValues.length > 0 &&
           (operator === "notInList" || operator === "inList")
         ) {
+          let _value = this.convertValueCombobox(newValue,dataType);
           return (
             <AnterosCombobox
               disabled={disabled}
               width={this.props.twoFields?"128px":"260px"}
               onChangeSelect={(value) => handleOnChange(value)}
-              multiple={true}
+              multi={true}
+              value={_value}
             >
               {listValues.map((v) => {
                 return (
@@ -1293,6 +1316,7 @@ export class ValueEditor extends React.Component {
           return (
             <AnterosCombobox
               disabled={disabled}
+              value={newValue}
               width={this.props.twoFields?"128px":"260px"}
               onChangeSelect={(value) => handleOnChange(value)}
             >

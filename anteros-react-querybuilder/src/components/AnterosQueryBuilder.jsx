@@ -173,6 +173,7 @@ export class AnterosQueryBuilder extends React.Component {
     if (this.props.onSearchByFilter) {
       this.props.onSearchByFilter();
     }
+    this.onCloseFilterClick();
   }
 
   onChangeQuickFilter(event, value) {
@@ -238,17 +239,6 @@ export class AnterosQueryBuilder extends React.Component {
     }
   }
 
-  loadSort(sortFields, sort) {
-    for (let i = 0; i < sortFields.length; i++) {
-      for (let j = 0; j < sort.length; j++) {
-        if (sort[j].name === sortFields[i].name) {
-          sortFields[i].selected = sort[j].selected;
-          sortFields[i].order = sort[j].order;
-          sortFields[i].asc_desc = sort[j].asc_desc;
-        }
-      }
-    }
-  }
 
   loadListValuesToFilter(parent, rules, values) {
     for (let i = 0; i < rules.length; i++) {
@@ -407,7 +397,6 @@ export class AnterosQueryBuilder extends React.Component {
     if (item && item !== null) {
       let _item = JSON.parse(item);
       this.loadListValuesToFilter("root", filter.filter.rules, _item.filter);
-      this.loadSort(filter.sort.sortFields, _item.sort);
     }
     this.setState({
       ...this.state,
@@ -432,55 +421,57 @@ export class AnterosQueryBuilder extends React.Component {
     if (button.props.id === "btnNew") {
       this.addNewFilter();
     } else if (button.props.id === "btnRemove") {
-      let _this = this;
-      AnterosSweetAlert({
-        title: "Deseja remover o Filtro ?",
-        text: "",
-        type: "question",
-        showCancelButton: true,
-        confirmButtonText: "Sim",
-        cancelButtonText: "Não",
-        focusCancel: false,
-      })
-        .then(function() {
-          let currentFilter = _this.state.currentFilter;
-          if (
-            _this.props.dataSource.locate({
-              idFilter: currentFilter.id,
-            })
-          ) {
-            _this.props.dataSource.delete((error) => {
-              if (error) {
-                AnterosSweetAlert(processErrorMessage(error));
-              } else {
-                if (!_this.props.dataSource.isEmpty()) {
-                  _this.props.dataSource.first();
-                  let filter = JSON.parse(
-                    atob(_this.props.dataSource.fieldByName("filter"))
-                  );
-                  filter.id = _this.props.dataSource.fieldByName("idFilter");
-                  filter.name = _this.props.dataSource.fieldByName(
-                    "filterName"
-                  );
-                  filter.formName = _this.props.dataSource.fieldByName(
-                    "formName"
-                  );
-                  _this.onChangeSelectedFilter(filter, 0);
-                } else {
-                  _this.addNewFilter();
-                }
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          AnterosSweetAlert(processErrorMessage(error));
-        });
+      this.removeFilter();
     } else if (button.props.id === "btnApply") {
       this.onSearchClick();
     } else if (button.props.id === "btnClose") {
       this.onCloseFilterClick();
     }
+  }
+
+  removeFilter() {
+    let _this = this;
+    AnterosSweetAlert({
+      title: "Deseja remover o Filtro ?",
+      text: "",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      focusCancel: false,
+    })
+      .then(function () {
+        let currentFilter = _this.state.currentFilter;
+        if (_this.props.dataSource.locate({
+          idFilter: currentFilter.id,
+        })) {
+          _this.props.dataSource.delete((error) => {
+            if (error) {
+              AnterosSweetAlert(processErrorMessage(error));
+            } else {
+              if (!_this.props.dataSource.isEmpty()) {
+                _this.props.dataSource.first();
+                let filter = JSON.parse(
+                  atob(_this.props.dataSource.fieldByName("filter"))
+                );
+                filter.id = _this.props.dataSource.fieldByName("idFilter");
+                filter.name = _this.props.dataSource.fieldByName(
+                  "filterName"
+                );
+                filter.formName = _this.props.dataSource.fieldByName(
+                  "formName"
+                );
+                _this.onChangeSelectedFilter(filter, 0);
+              } else {
+                _this.addNewFilter();
+              }
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        AnterosSweetAlert(processErrorMessage(error));
+      });
   }
 
   onCloseFilterClick() {
@@ -513,7 +504,7 @@ export class AnterosQueryBuilder extends React.Component {
     if (bb.left + width > window.innerWidth - 100) {
       left = bb.right - width;
     }
-    return { left, top: bb.bottom + 2, height: height - bb.bottom - 30 };
+    return { left, top: bb.bottom + 2, height: this.props.detailsHeight ? this.props.detailsHeight : height - bb.bottom - 30 };
   }
 
   onResize() {
@@ -1026,6 +1017,7 @@ AnterosQueryBuilder.propTypes = {
   id: PropTypes.string.isRequired,
   apiVersion: PropTypes.string.isRequired,
   width: PropTypes.string.isRequired,
+  detailsHeight: PropTypes.string
 };
 
 AnterosQueryBuilder.defaultProps = {

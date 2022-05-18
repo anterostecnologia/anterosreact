@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-menu",
-  "version": "2.0.43",
+  "version": "2.0.46",
   "description": "Anteros components for React - Menu",
   "main": "lib/@anterostecnologia/anteros-react-menu.js",
   "scripts": {

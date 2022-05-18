@@ -64,8 +64,13 @@ function CustomInput({
   icon,
   right,
   onClearValue,
+  disabled
 }) {
   let _format = format.replace(/[`~DMYhs]/gi, "9");
+  let backgroundColor = 'white';
+  if (disabled){
+    backgroundColor = '#e9ecef';
+  }
   return (
     <div style={{ display: "flex" }}>
       <InputMask
@@ -73,6 +78,7 @@ function CustomInput({
         style={{
           height: "38px",
           padding: "3px",
+          backgroundColor: backgroundColor,
           border: "1px solid rgb(204, 212, 219)",
           borderTopLeftRadius: "4px",
           borderBottomLeftRadius: "4px",
@@ -307,6 +313,10 @@ class AnterosDatePicker extends Component {
       readOnly = this.props.dataSource.getState() === "dsBrowse";
     }
 
+    if (this.props.dataSource && !disabled) {
+      disabled = this.props.dataSource.getState() === "dsBrowse";
+    } 
+
     const colClasses = buildGridClassNames(this.props, false, []);
 
     if (this.props.id) {
@@ -378,6 +388,7 @@ class AnterosDatePicker extends Component {
           <CustomInput
             clear={clear}
             icon={this.props.icon}
+            disabled={disabled}
             right={64}
             onClearValue={this.onClearValue}
             closeCalendar={this.closeCalendar}
@@ -453,6 +464,7 @@ class AnterosDatePicker extends Component {
                 <CustomInput
                   clear={clear}
                   icon={this.props.icon}
+                  disabled={disabled}
                   right={48}
                   onClearValue={this.onClearValue}
                   closeCalendar={this.closeCalendar}
@@ -968,6 +980,10 @@ class AnterosTimeInput extends Component {
       readOnly = this.props.dataSource.getState() === "dsBrowse";
     }
 
+    if (this.props.dataSource && !disabled) {
+      disabled = this.props.dataSource.getState() === "dsBrowse";
+    }    
+
     const colClasses = buildGridClassNames(this.props, false, []);
     if (colClasses.length > 0) {
       style.width = "calc(100% - 38px)";
@@ -1218,6 +1234,10 @@ function CustomTimePicker(props) {
   if (props.dataSource && !readOnly) {
     readOnly = props.dataSource.getState() === "dsBrowse";
   }
+
+  if (this.props.dataSource && !disabled) {
+    disabled = this.props.dataSource.getState() === "dsBrowse";
+  } 
 
   if (colClasses.length > 0) {
     width = "";

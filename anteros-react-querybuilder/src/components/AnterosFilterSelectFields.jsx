@@ -29,11 +29,11 @@ class AnterosFilterSelectFields extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      selectedFields: [...cloneDeep(nextProps.currentFilter.filter.selectedFields)],
-      sortFields: [...cloneDeep(nextProps.currentFilter.sort.sortFields)],
-      activeIndex: nextProps.currentFilter.sort.activeIndex,
-    });
+    // this.setState({
+    //   selectedFields: [...cloneDeep(nextProps.currentFilter.filter.selectedFields)],
+    //   sortFields: [...cloneDeep(nextProps.currentFilter.sort.sortFields)],
+    //   activeIndex: nextProps.currentFilter.sort.activeIndex,
+    // });
   }
 
   onCheckboxChange(value, _checked, item) {
@@ -183,7 +183,8 @@ class AnterosFilterSelectFields extends React.Component {
             left: this.props.left,
             top: this.props.top,
             width: this.props.width,
-            height: "540px",
+            height: "570px",
+            zIndex: 99,
             backgroundColor: "rgba(255, 255, 255, 0.75)",
           },
           content: {

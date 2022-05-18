@@ -45,7 +45,7 @@ const defaultValues = {
 };
 
 export default function WithSearchModalTemplate(_loadingProps) {
-  let loadingProps = { ...defaultValues, ..._loadingProps };
+  let loadingProps = { ...defaultValues, ..._loadingProps};
 
   const mapStateToProps = (state) => {
     let currentFilter, user, activeFilterIndex;
@@ -251,6 +251,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
       handlePageChanged(newPage) {
         this.setState({
           ...this.state,
+          update: Math.random(),
           currentPage: newPage,
         });
       }
@@ -261,7 +262,11 @@ export default function WithSearchModalTemplate(_loadingProps) {
       }
 
       onToggleExpandedFilter(expanded) {
-        this.setState({ ...this.state, filterExpanded: expanded });
+        this.setState({
+          ...this.state,
+          filterExpanded: expanded,
+          update: Math.random(),
+        });
       }
 
       onSelectedFilter(filter, index) {
@@ -423,6 +428,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
               ...this.state,
               alertIsOpen: true,
               loading: false,
+              update: Math.random(),
               alertMessage: processErrorMessage(error),
             });
           }
@@ -489,6 +495,7 @@ export default function WithSearchModalTemplate(_loadingProps) {
         this.setState({
           ...this.state,
           alertIsOpen: false,
+          update: Math.random(),
           alertMessage: "",
         });
       }
@@ -600,8 +607,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
                 styleBlockMessage={{
                   border: "2px solid white",
                   width: "200px",
-                  height:'80px',
-                  padding:'8px',
+                  height: "80px",
+                  padding: "8px",
                   backgroundColor: "rgb(56 70 112)",
                   borderRadius: "8px",
                   color: "white",
@@ -617,120 +624,80 @@ export default function WithSearchModalTemplate(_loadingProps) {
                   customLoader ? (
                     customLoader
                   ) : (
-                    <TailSpin width='40px' height="40px" ariaLabel="loading-indicator" color="#f2d335"/>
+                    <TailSpin
+                      width="40px"
+                      height="40px"
+                      ariaLabel="loading-indicator"
+                      color="#f2d335"
+                    />
                   )
                 }
               >
-              <div>
                 {loadingProps.withFilter ? (
                   <div
                     style={{
                       display: "flex",
                       flexFlow: "row nowrap",
-                      justifyContent: "space-between",
-                      paddingBottom: "15px",
-                      overflowY: "auto",
-                      width: "100%",
-                      height: this.state.filterExpanded ? "500px" : "55px",
-                      maxHeight: this.state.filterExpanded ? "500px" : "150px",
+                      justifyContent: "end",
                     }}
                   >
-                    <div
-                      style={{
-                        width: '100%',
-                      }}
-                    >
-                      {this.state.filterExpanded ? (
-                        <AnterosDataTable
-                          id={"tb" + loadingProps.viewName}
-                          height="296px"
-                          dataSource={this.dataSource}
-                          width="100%"
-                          enablePaging={false}
-                          enableSearching={false}
-                          showExportButtons={false}
-                          onSelectRecord={this.onSelectRecord}
-                          onUnSelectRecord={this.onUnSelectRecord}
-                          onSelectAllRecords={this.onSelectAllRecords}
-                          onUnSelectAllRecords={this.onUnSelectAllRecords}
-                        >
-                          {this.getColumns()}
-                        </AnterosDataTable>
-                      ) : null}
-                    </div>
-
                     <AnterosQueryBuilder
                       zIndex={50}
-                      id={loadingProps.filtroDispositivos}
+                      id={loadingProps.filterName}
                       formName={loadingProps.viewName}
                       ref={this.filterRef}
                       expandedFilter={this.state.filterExpanded}
-                      activeSortIndex={this.props.activeSortIndex}
+                      update={this.state.update}
                       dataSource={this.dsFilter}
                       currentFilter={this.props.currentFilter}
                       activeFilterIndex={this.props.activeFilterIndex}
                       onSelectedFilter={this.onSelectedFilter}
                       onFilterChanged={this.onFilterChanged}
+                      onSearchByFilter={this.onSearchByFilter}
+                      onToggleExpandedFilter={this.onToggleExpandedFilter}
+                      width={"660px"}
                       height="170px"
-                      width={"550px"}
+                      detailsHeight="550px"
                       allowSort={true}
                       disabled={
                         this.dataSource.getState() !==
                         dataSourceConstants.DS_BROWSE
                       }
-                      onSearchByFilter={this.onSearchByFilter}
-                      onToggleExpandedFilter={this.onToggleExpandedFilter}
                     >
                       {this.getFieldsFilter()}
                     </AnterosQueryBuilder>
                   </div>
-                ) : null}
+                ) : 
+                  null
+                }
 
-                {this.state.filterExpanded ? null : (
-                  <AnterosDataTable
-                    id={"tb" + loadingProps.viewName}
-                    height="350px"
-                    dataSource={this.dataSource}
-                    width="100%"
-                    enablePaging={false}
-                    enableSearching={false}
-                    showExportButtons={false}
-                    onSelectRecord={this.onSelectRecord}
-                    onUnSelectRecord={this.onUnSelectRecord}
-                    onSelectAllRecords={this.onSelectAllRecords}
-                    onUnSelectAllRecords={this.onUnSelectAllRecords}
-                  >
-                    {this.getColumns()}
-                  </AnterosDataTable>
-                )}
-                <AnterosRow>
-                  <AnterosCol medium={12}>
-                    <AnterosPagination
-                      horizontalEnd
-                      dataSource={this.dataSource}
-                      visiblePages={3}
-                      onPageChanged={this.handlePageChanged}
-                    />
-                  </AnterosCol>
-                </AnterosRow>
-                <div style={{height: '55px', maxHeight:'120px', overflowY: 'auto'}}>
-                  {loadingProps.cumulativeSelection ? (
-                    <AnterosTags
-                      addTags={false}
-                      tags={this.props.selectedRecords}
-                      labelField={loadingProps.labelField}
-                      handleDelete={this.handleDelete}
-                      allowUnique={true}
-                      onClear={this.onClear}
-                    />
-                  ) : null}
-                </div>
+                <AnterosDataTable
+                  id={"table" + loadingProps.viewName}
+                  height={"450px"}
+                  ref={(ref) => (this.table = ref)}
+                  dataSource={this.dataSource}
+                  width="100%"
+                  enablePaging={false}
+                  enableSearching={false}
+                  showExportButtons={false}
+                  onDoubleClick={this.onDoubleClickTable}
+                  onSelectRecord={this.handleOnSelectRecord}
+                  onUnSelectRecord={this.handleOnUnselectRecord}
+                  onSelectAllRecords={this.handleOnSelectAllRecords}
+                  onUnSelectAllRecords={this.handleOnUnselectAllRecords}
+                >
+                  {this.getColumns()}
+                </AnterosDataTable>
                 <WrappedComponent
                   {...this.props}
+                  ref={(ref) => (this.wrappedRef = ref)}
+                  state={this.state}
+                  user={this.props.user}
+                  ownerTemplate={this}
+                  history={this.props.history}
                   dataSource={this.dataSource}
                 />
-              </div>
-            </AnterosBlockUi>
+              </AnterosBlockUi>
           </AnterosModal>
         );
       }
