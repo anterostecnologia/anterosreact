@@ -113,11 +113,25 @@ const getFieldValues = (field, fields) => {
 
 const getQuickFields = (fields) => {
   let result = [];
-  fields.forEach(function(field) {
-    if (field.quickFilter === true) {
-      result.push({ name: field.name, label: field.label });
-    }
-  }, this);
+  if (fields){
+    fields.forEach(function(field) {
+      if (field.quickFilter === true) {
+        result.push({ name: field.name, label: field.label });
+      }
+    }, this);
+  }
+  return result;
+};
+
+const getQuickFieldsSort = (fields) => {
+  let result = [];
+  if (fields){
+    fields.forEach(function(field) {
+      if (field.quickFilterSort === true) {
+        result.push({ name: field.name, label: field.label });
+      }
+    }, this);
+  }
   return result;
 };
 
@@ -127,11 +141,29 @@ const getQuickFilterSort = (fields) => {
     let appendDelimiter = false;
     fields.forEach(function(field) {
       if (field.quickFilterSort === true) {
-        if (appendDelimiter) result += ",";
+        if (appendDelimiter) {
+          result += ",";
+        }
         result += field.name;
         appendDelimiter = true;
       }
-    }, this);
+    });
+    return result;
+  }
+
+
+  const getQuickFilterSortBySelectedFields = (fields) => {
+    let result = "";
+    let appendDelimiter = false;
+    fields.forEach(function(field) {
+        if (field.selected) {
+          if (appendDelimiter) {
+            result += ",";
+          }
+        }
+        result += field.name;
+        appendDelimiter = true;
+    });
     return result;
   }
 
@@ -156,7 +188,7 @@ const getQuickFilterSort = (fields) => {
           name: field.name,
           selected: selected,
           order: order,
-          asc_desc: asc_desc,
+          asc_desc: !asc_desc?'asc':asc_desc,
           label: field.label,
         });
       });
@@ -396,6 +428,6 @@ const defaultOperators =() => {
 
 export {QueryFieldValue,QueryField,QueryFields,getDefaultFilter,defaultConditions,
   defaultOperators, getDefaultEmptyFilter,getQuickFilterFields, mergeSortWithFields,
-  getQuickFilterSort,getQuickFields,getFieldValues,getFieldSql, getFields,
-  convertQueryFields, QUICK_FILTER_INDEX, NEW_FILTER_INDEX, NORMAL,
+  getQuickFilterSort,getQuickFields,getFieldValues,getFieldSql, getFields,getQuickFieldsSort,
+  getQuickFilterSortBySelectedFields, convertQueryFields, QUICK_FILTER_INDEX, NEW_FILTER_INDEX, NORMAL,
   QUICK, ADVANCED, OPERATORS}

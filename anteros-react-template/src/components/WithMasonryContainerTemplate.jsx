@@ -299,13 +299,14 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.state.currentFilter &&
-          this.state.currentFilter.sort
+          this.props.currentFilter &&
+          this.props.currentFilter.sort
         ) {
-          return this.state.currentFilter.sort.quickFilterSort;
+          return this.props.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
+
 
       handlePageChanged(newPage) {
         this.setState({
@@ -444,10 +445,9 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         }
         this.props.history.push(button.props.route);
       }
-      onSearchByFilter(currentFilter) {
-        this.props.setFilter(currentFilter,this.props.activeFilterIndex);
+      onSearchByFilter() {
         this.onShowHideLoad(true);
-        this.dataSource.open(this.getData(currentFilter, 0), () => {
+        this.dataSource.open(this.getData(this.props.currentFilter, 0), () => {
           this.onShowHideLoad(false);
         });
       }
@@ -524,7 +524,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
         }
       }
 
-      getDataWithQuickFilter(currentFilter) {
+      getDataWithQuickFilter(currentFilter, page) {
         if (
           WrappedComponent.prototype.hasOwnProperty("onFindMultipleFields") ===
           true
@@ -532,7 +532,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
           return this.onFindMultipleFields(
             currentFilter.filter.quickFilterText,
             currentFilter.filter.quickFilterFieldsText,
-            0,
+            page,
             loadingProps.pageSize,
             this.getSortFields(),
             this.getUser(),

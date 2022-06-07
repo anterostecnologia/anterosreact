@@ -338,10 +338,10 @@ export default function WithTableContainerTemplate(_loadingProps) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.state.currentFilter &&
-          this.state.currentFilter.sort
+          this.props.currentFilter &&
+          this.props.currentFilter.sort
         ) {
-          return this.state.currentFilter.sort.quickFilterSort;
+          return this.props.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
@@ -575,7 +575,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
         }
       }
 
-      getDataWithQuickFilter(currentFilter) {
+      getDataWithQuickFilter(currentFilter, page) {
         if (
           WrappedComponent.prototype.hasOwnProperty("onFindMultipleFields") ===
           true
@@ -594,7 +594,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
             loadingProps.resource,
             currentFilter.filter.quickFilterText,
             currentFilter.filter.quickFilterFieldsText,
-            0,
+            page,
             loadingProps.pageSize,
             this.getSortFields(),
             this.getUser(),

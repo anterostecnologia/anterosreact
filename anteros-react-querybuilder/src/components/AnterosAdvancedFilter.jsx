@@ -667,7 +667,7 @@ export class CustomSortItem extends React.Component {
     let asc = true;
     this.props.dataSource.forEach(function(item) {
       if (item.name === field) {
-        asc = item.asc_desc === "asc";
+        asc = !item.asc_desc || item.asc_desc === "asc";
       }
     });
     return asc;

@@ -57,19 +57,7 @@ export class AnterosUserService {
   }
 
   getUserInformation(credentials, token, ownerUrl, onError, onSuccess) {
-    let userInfo = {};
-    const KEY_USER_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userInfo";
-    userInfo = this.config.localStorage.getItem(KEY_USER_INFO);
-    if (userInfo) {
-      userInfo = this.decryptionWithCryptoJS(userInfo);
-      userInfo = AnterosJacksonParser.convertJsonToObject(qs.parse(userInfo));
-      return new Promise((resolve, reject) => {
-        onSuccess(userInfo);
-        return;
-      });
-    } else {
-      return this._getUserInformation(credentials, token, ownerUrl, onError, onSuccess);
-    }
+     return this._getUserInformation(credentials, token, ownerUrl, onError, onSuccess);
   }
 
   clear(credentials) {
@@ -90,11 +78,7 @@ export class AnterosUserService {
     this.config.localStorage.setItem(KEY_ENDPOINT_INFO, _endpoints);
   }
 
-  updateUserInformation(credentials, user) {
-    const KEY_USER_INFO = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userInfo";
-    const _user = this.encryptWithCryptoJS(qs.stringify(user));
-    this.config.localStorage.setItem(KEY_USER_INFO, _user);
-  }
+  
 
   updateUserSocialInformation(credentials, user) {
     const KEY_USER_SOCIAL = (credentials.owner ? credentials.owner + "_" : "") + credentials.username + "_userSocialInfo";
@@ -133,7 +117,6 @@ export class AnterosUserService {
           if (response.data === '' || response.data === undefined) {
             onError('Usuário/senha não encontrados!');
           } else {
-            _this.updateUserInformation(credentials, response.data);
             let data = AnterosJacksonParser.convertJsonToObject(response.data);
             onSuccess(data);
           }

@@ -13,28 +13,28 @@ import {
   AnterosCol,
 } from "@anterostecnologia/anteros-react-layout";
 import { CustomSortItem } from "./AnterosAdvancedFilter";
-import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
+import { AnterosLabel, AnterosText } from "@anterostecnologia/anteros-react-label";
 import { AnterosList } from "@anterostecnologia/anteros-react-list";
 import {cloneDeep} from 'lodash';
+import {
+  getQuickFieldsSort,
+  getQuickFields
+} from "./AnterosFilterCommons";
 
 class AnterosFilterSelectFields extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
+    let quickFields = cloneDeep(getQuickFields(props.fields));
+    let sortFields = cloneDeep(getQuickFieldsSort(props.fields));
     this.state = {
-      selectedFields: [...cloneDeep(props.currentFilter.filter.selectedFields)],
-      sortFields: [...cloneDeep(props.currentFilter.sort.sortFields)],
+      selectedFields: [...quickFields],
+      sortFields: [...sortFields],
+      allChecked: true,
       activeIndex: props.currentFilter.sort.activeIndex,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    // this.setState({
-    //   selectedFields: [...cloneDeep(nextProps.currentFilter.filter.selectedFields)],
-    //   sortFields: [...cloneDeep(nextProps.currentFilter.sort.sortFields)],
-    //   activeIndex: nextProps.currentFilter.sort.activeIndex,
-    // });
-  }
 
   onCheckboxChange(value, _checked, item) {
     let selectedFields = [...this.state.selectedFields];
@@ -170,6 +170,12 @@ class AnterosFilterSelectFields extends React.Component {
     this.setState({ ...this.state, activeIndex: index });
   }
 
+  selectAllFields(checked){
+    let quickFields = cloneDeep(getQuickFields(this.props.fields));
+    let selectedFields = checked?quickFields:[];
+    this.setState({ ...this.state, selectedFields, allChecked: checked });
+  }
+
   render() {
     return (
       <Modal
@@ -208,6 +214,24 @@ class AnterosFilterSelectFields extends React.Component {
               overflowX: "hidden",
             }}
           >
+            <AnterosPanel
+                border={false}
+                style={{
+                  padding: "10px",
+                  width: "100%",
+                }}
+                >
+                <AnterosText fontWeight="700" text={"Selecione os campos p/ o filtro rápido:"} />
+                <AnterosCheckbox
+                  checked={this.state.allChecked}
+                  valueChecked={true}
+                  valueUnchecked={false}
+                  onCheckboxChange={(value, checked) =>{
+                    this.selectAllFields(checked);
+                  }}
+                  value="Selecionar todos ?"
+                />
+              </AnterosPanel>
             <AnterosCol
               style={{
                 height: "128px",
@@ -225,7 +249,7 @@ class AnterosFilterSelectFields extends React.Component {
               <div
                 className="sort-group-container"
                 style={{
-                  height: "auto",
+                  height: "200px",
                 }}
               >
                 <div className="sort-header">

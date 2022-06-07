@@ -20,6 +20,7 @@ import {
   getQuickFilterFields,
   getFields,
   getQuickFields,
+  getQuickFilterSortBySelectedFields,
   QUICK_FILTER_INDEX,
   NEW_FILTER_INDEX,
   NORMAL,
@@ -182,7 +183,7 @@ export class AnterosQueryBuilder extends React.Component {
 
   changeQuickFilter(value) {
     let currentFilter = this.state.currentFilter;
-    if (this.state.currentFilter && this.state.currentFilter.type !== QUICK) {
+    if (this.state.currentFilter && this.state.currentFilter.type && this.state.currentFilter.type !== QUICK) {
       currentFilter = getDefaultFilter(this.props, QUICK);
     }
 
@@ -581,7 +582,7 @@ export class AnterosQueryBuilder extends React.Component {
       });
     }
     let currentFilter = this.state.currentFilter;
-    if (this.state.currentFilter && this.state.currentFilter.type !== QUICK) {
+    if (this.state.currentFilter && this.state.currentFilter.type && this.state.currentFilter.type !== QUICK) {
       currentFilter = getDefaultFilter(this.props, QUICK);
     }
     currentFilter.filter.quickFilterText = newValue;
@@ -633,14 +634,33 @@ export class AnterosQueryBuilder extends React.Component {
     });
   }
 
+  getSortString(currentFilter) {
+    let result = [];
+    let appendDelimiter = false;
+    currentFilter.sort.sortFields.forEach((field) => {
+      if (field.selected) {
+        if (appendDelimiter) {
+          result += ", ";
+        }
+        result =
+          result +
+          field.name+ ":"+field.asc_desc;
+        appendDelimiter = true;
+      }
+    });
+    return result;
+  }
+
   onConfirmSelectFields(selectedFields, sortFields, activeIndex) {
     let currentFilter = this.state.currentFilter;
-    if (this.state.currentFilter && this.state.currentFilter.type !== QUICK) {
+    if (this.state.currentFilter && this.state.currentFilter.type && this.state.currentFilter.type !== QUICK) {
       currentFilter = getDefaultFilter(this.props, QUICK);
     }
     currentFilter.filter.selectedFields = selectedFields;
+    currentFilter.filter.quickFilterFieldsText = getQuickFilterFields(currentFilter)
     currentFilter.sort.sortFields = sortFields;
     currentFilter.sort.activeIndex = activeIndex;
+    currentFilter.sort.quickFilterSort = this.getSortString(currentFilter);
     this.setState(
       {
         ...this.state,
@@ -981,6 +1001,7 @@ export class AnterosQueryBuilder extends React.Component {
           left={this.state.detailsLeft}
           currentFilter={this.state.currentFilter}
           selectedOptions={getQuickFields(getFields(this.props))}
+          fields={getFields(this.props)}
           onConfirmSelectFields={this.onConfirmSelectFields}
           onCancelSelectFields={this.onCancelSelectFields}
           width={this.props.width}

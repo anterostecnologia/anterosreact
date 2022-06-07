@@ -70,8 +70,8 @@ export default class AnterosImagePicker extends React.Component {
         this.idImage = lodash.uniqueId('imagePicker');
         this.state = { value: '', modal: false };
 
-        if (this.props.dataSource && this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-            if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly) {
+        if (this.props.dataSource) {
+            if (this.props.dataSource.isEmptyField(this.props.dataField) && !this.props.readOnly && this.props.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
                 this.props.dataSource.setFieldByName(this.props.dataField, '');
             }
             let value = this.props.dataSource.fieldByName(this.props.dataField);
@@ -99,8 +99,8 @@ export default class AnterosImagePicker extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         let value = nextProps.value;
-        if (nextProps.dataSource && nextProps.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-            if (nextProps.dataSource.isEmptyField(nextProps.dataField) && !nextProps.readOnly) {
+        if (nextProps.dataSource) {
+            if (nextProps.dataSource.isEmptyField(nextProps.dataField) && !nextProps.readOnly && nextProps.dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
                 nextProps.dataSource.setFieldByName(nextProps.dataField, '');
             }
             value = nextProps.dataSource.fieldByName(nextProps.dataField);

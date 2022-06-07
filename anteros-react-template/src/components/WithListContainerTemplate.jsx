@@ -14,6 +14,7 @@ import {
   AnterosRemoteDatasource,
   DATASOURCE_EVENTS,
   dataSourceEvents,
+  dataSourceConstants
 } from "@anterostecnologia/anteros-react-datasource";
 import {
   AnterosCard,
@@ -423,7 +424,7 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
         }
       }
 
-      getDataWithQuickFilter(currentFilter) {
+      getDataWithQuickFilter(currentFilter, page) {
         if (
           WrappedComponent.prototype.hasOwnProperty("onFindMultipleFields") ===
           true
@@ -431,7 +432,7 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
           return this.onFindMultipleFields(
             currentFilter.filter.quickFilterText,
             currentFilter.filter.quickFilterFieldsText,
-            0,
+            page,
             loadingProps.pageSize,
             this.getSortFields(),
             this.getUser(),
@@ -454,13 +455,14 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.state.currentFilter &&
-          this.state.currentFilter.sort
+          this.props.currentFilter &&
+          this.props.currentFilter.sort
         ) {
-          return this.state.currentFilter.sort.quickFilterSort;
+          return this.props.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
+
 
       pageConfigHandler(page) {
         return this.getData(this.props.currentFilter,page);
@@ -701,6 +703,6 @@ export default function WithListContainerTemplate(_loadingProps, ViewItem) {
         );
       }
     }
-    return connect(mapStateToProps, mapDispatchToProps)(MasonryContainerView);
+    return connect(mapStateToProps, mapDispatchToProps)(ListContainerView);
   };
 }

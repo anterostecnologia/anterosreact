@@ -688,6 +688,18 @@ export default function WithSearchModalTemplate(_loadingProps) {
                 >
                   {this.getColumns()}
                 </AnterosDataTable>
+                <div style={{height: '55px', maxHeight:'120px', overflowY: 'auto'}}>
+                  {loadingProps.cumulativeSelection ? (
+                    <AnterosTags
+                      addTags={false}
+                      tags={this.props.selectedRecords}
+                      labelField={loadingProps.labelField}
+                      handleDelete={this.handleDelete}
+                      allowUnique={true}
+                      onClear={this.onClear}
+                    />
+                  ) : null}
+                </div>
                 <WrappedComponent
                   {...this.props}
                   ref={(ref) => (this.wrappedRef = ref)}

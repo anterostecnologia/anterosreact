@@ -6,7 +6,7 @@ import {
   AnterosLabel,
   AnterosText,
 } from "@anterostecnologia/anteros-react-label";
-import {  AnterosCombobox, AnterosComboboxOption, AnterosDatePicker,
+import {  AnterosDatePicker,
   AnterosDateTimePicker,
   AnterosDateRangePicker,
   AnterosDateTimeRangePicker,
@@ -16,6 +16,7 @@ import {  AnterosCombobox, AnterosComboboxOption, AnterosDatePicker,
   AnterosTimePicker,
   AnterosCheckboxToggle,
   AnterosCheckbox,
+  AnterosCombobox,AnterosComboboxOption
 } from "@anterostecnologia/anteros-react-editors";
 import {
   AnterosStringUtils,
