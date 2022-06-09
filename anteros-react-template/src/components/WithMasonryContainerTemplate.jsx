@@ -602,7 +602,7 @@ export default function WithMasonryContainerTemplate(_loadingProps) {
 
       onClickOk(event, selectedRecords) {
         this.setState({ ...this.state, modalOpen: null });
-        this._openMainDataSource();
+        this.onSearchByFilter();
       }
 
       onClickCancel(event) {

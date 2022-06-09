@@ -7191,7 +7191,8 @@ function MobileEmailPreview() {
       alignItems: "center",
       justifyContent: "center",
       overflow: "auto",
-      padding: "10px 0px"
+      padding: "10px 0px",
+      boxSizing: "border-box"
     }
   }, /* @__PURE__ */ React.createElement("div", {
     style: {

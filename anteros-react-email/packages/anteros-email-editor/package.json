@@ -2,7 +2,7 @@
   "name": "@anterostecnologia/anteros-email-editor",
   "license": "MIT",
   "description": "Email editor",
-  "version": "1.0.14",
+  "version": "1.0.16",
   "author": "Edson",
   "keywords": [
     "email editor core"

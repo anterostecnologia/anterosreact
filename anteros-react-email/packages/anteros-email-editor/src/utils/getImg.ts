@@ -2,7 +2,7 @@ import { ImageManager } from '@anterostecnologia/anteros-email-core';
 
 const defaultImagesMap = {
   IMAGE_59:
-    'https://infra.relevantsolutions.com.br/nextcloud/index.php/s/MZPr8r9RXxScSoL/download',
+    'https://versatil-salescloud.relevantsolutions.com.br/images/8e0e07e2-3f84-4426-84c1-2add355c558b-image.png',
 };
 
 ImageManager.add(defaultImagesMap);
