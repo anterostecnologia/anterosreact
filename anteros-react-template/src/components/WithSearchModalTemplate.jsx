@@ -28,7 +28,7 @@ import { AnterosPagination } from "@anterostecnologia/anteros-react-navigation";
 import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
 import { AnterosDataTable } from "@anterostecnologia/anteros-react-table";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
-import { AnterosTags } from "@anterostecnologia/anteros-react-label";
+import { AnterosTags, AnterosLabel } from "@anterostecnologia/anteros-react-label";
 
 const defaultValues = {
   openDataSourceFilter: true,
@@ -248,12 +248,12 @@ export default function WithSearchModalTemplate(_loadingProps) {
         }
       }
 
+      onBeforePageChanged(currentPage, newPage) {
+        //
+      }
+
       handlePageChanged(newPage) {
-        this.setState({
-          ...this.state,
-          update: Math.random(),
-          currentPage: newPage,
-        });
+        //
       }
 
       onFilterChanged(filter, activeFilterIndex) {
@@ -282,9 +282,9 @@ export default function WithSearchModalTemplate(_loadingProps) {
         });
       }
 
-      onSearchByFilter(currentFilter) {
+      onSearchByFilter() {
         this.onShowHideLoad(true);
-        this.dataSource.open(this.getData(currentFilter, 0), () => {
+        this.dataSource.open(this.getData(this.props.currentFilter, 0), () => {
           this.onShowHideLoad(false);
         });
       }
@@ -392,10 +392,10 @@ export default function WithSearchModalTemplate(_loadingProps) {
       getSortFields() {
         if (
           loadingProps.withFilter &&
-          this.state.currentFilter &&
-          this.state.currentFilter.sort
+          this.props.currentFilter &&
+          this.props.currentFilter.sort
         ) {
-          return this.state.currentFilter.sort.quickFilterSort;
+          return this.props.currentFilter.sort.quickFilterSort===""?loadingProps.defaultSortFields:this.props.currentFilter.sort.quickFilterSort;
         }
         return loadingProps.defaultSortFields;
       }
@@ -688,6 +688,24 @@ export default function WithSearchModalTemplate(_loadingProps) {
                 >
                   {this.getColumns()}
                 </AnterosDataTable>
+                <AnterosRow className="row justify-content-start align-items-center">
+                  <AnterosCol medium={4}>
+                    <AnterosLabel
+                      caption={`Total ${
+                        loadingProps.caption
+                      } ${this.dataSource.getGrandTotalRecords()}`}
+                    />
+                  </AnterosCol>
+                  <AnterosCol medium={7}> 
+                    <AnterosPagination
+                      horizontalEnd
+                      dataSource={this.dataSource}
+                      visiblePages={8}
+                      onBeforePageChanged={this.onBeforePageChanged}
+                      onPageChanged={this.handlePageChanged}
+                    />
+                  </AnterosCol>
+                </AnterosRow>
                 <div style={{height: '55px', maxHeight:'120px', overflowY: 'auto'}}>
                   {loadingProps.cumulativeSelection ? (
                     <AnterosTags

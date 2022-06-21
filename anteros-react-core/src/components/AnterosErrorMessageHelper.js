@@ -56,7 +56,11 @@ export function processErrorMessage(error) {
       if (error.message && error.message === "Network Error") {
         msgErro = "Servidor não disponível ou algum problema na rede.";
       } else {
-        msgErro = error.message;
+        if (error.message){
+          msgErro = error.message;
+        } else {
+          msgErro = error+"";
+        }
       }
     }
   }

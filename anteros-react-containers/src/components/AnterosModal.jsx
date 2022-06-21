@@ -644,7 +644,7 @@ AnterosModal.propTypes = {
     role: 'dialog',
     backdrop: true,
     keyboard: true,
-    zIndex: 99,
+    zIndex: 500,
     fade: true,
     onOpened: noop,
     onClosed: noop,

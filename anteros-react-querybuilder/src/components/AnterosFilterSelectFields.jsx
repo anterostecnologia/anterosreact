@@ -190,7 +190,7 @@ class AnterosFilterSelectFields extends React.Component {
             top: this.props.top,
             width: this.props.width,
             height: "570px",
-            zIndex: 99,
+            zIndex: 600,
             backgroundColor: "rgba(255, 255, 255, 0.75)",
           },
           content: {
