@@ -927,7 +927,7 @@ export default function WithTableContainerTemplate(_loadingProps) {
 class UserActions extends Component {
   render() {
     return (
-      <div>
+      <div style={{display:'flex'}}>
         {this.props.positionUserActions === "first"
           ? this.props.userActions
           : null}
