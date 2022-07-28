@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import ReactCSSTransitionReplace from "react-css-transition-replace";
 import PropTypes from "prop-types";
 
 const FirstChild = ({ children }) =>
@@ -170,7 +170,7 @@ export class AnterosAlert extends Component {
 
 
     return (
-      <ReactCSSTransitionGroup
+      <ReactCSSTransitionReplace
         component={FirstChild}
         transitionName={{
           appear: "fade",
@@ -210,7 +210,7 @@ export class AnterosAlert extends Component {
             {this.buildItens()}
           </div>
         ) : null}
-      </ReactCSSTransitionGroup>
+      </ReactCSSTransitionReplace>
     );
   }
 }

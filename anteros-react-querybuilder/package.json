@@ -59,7 +59,6 @@
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "react": "^16.11.0",
-    "react-accessible-accordion": "^5.0.0",
     "react-addons-shallow-compare": "^15.6.3",
     "react-date-object": "^2.1.5",
     "react-dom": "^16.11.0",

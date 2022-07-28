@@ -84,7 +84,7 @@ export default class AnterosSidebarContent extends Component {
         >
           <div className="site-logo">
             <Link to="/" className="logo-normal">
-              <img src={logoNormal} alt="site-logo" />
+                {typeof logoNormal==='object'?<logoNormal/>:<img src={logoNormal} alt="site-logo" />}
             </Link>
           </div>
           <div

@@ -68,6 +68,8 @@ export function createRemoteApi() {
     instance.baseURL = baseURL;
     axios.defaults.baseURL = baseURL;
   }
+
+  instance.configureRequest
   return instance;
 
   function configureRequest(config) {

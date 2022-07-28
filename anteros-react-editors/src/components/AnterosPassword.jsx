@@ -13,6 +13,7 @@ import {
 } from "@anterostecnologia/anteros-react-layout";
 import PropTypes from "prop-types";
 import zxcvbn from 'zxcvbn';
+import generator from 'generate-password';
 
 const strengthBarProps = {
   className: PropTypes.string,
@@ -108,24 +109,33 @@ export default class AnterosPassword extends React.Component {
   }
 
   handleChange(event) {
+    this.onChangeValue(value);
+    if (this.props.onChange) {
+      this.props.onChange(event, event.target.value);
+    }
+  }
+
+  onChangeValue(value){
     if (
       this.props.dataSource &&
       this.props.dataSource.getState !== "dsBrowse"
     ) {
       this.props.dataSource.setFieldByName(
         this.props.dataField,
-        event.target.value
+        value
       );
     } else {
-      this.setState({ ...this.state, value: event.target.value });
-    }
-    if (this.props.onChange) {
-      this.props.onChange(event, event.target.value);
+      this.setState({ ...this.state, value: value });
     }
   }
 
   handleCheckChange(event) {
     this.setState({ ...this.state, reveal: !this.state.reveal });
+  }
+
+  handleGeneratePassword(event){
+    let password = generator.generate(this.props.generatePasswordOptions);
+    this.onChangeValue(password);
   }
 
   render() {
@@ -184,6 +194,15 @@ export default class AnterosPassword extends React.Component {
               className={this.state.checked ? "fa fa-eye-slash" : "fa fa-eye"}
             ></i>
           </div>
+          {this.props.showGeneratePassword?<div
+            id="generatePassword"
+            className="input-group-addon"
+            onClick={this.handleGeneratePassword.bind(this)}
+          >
+            <i
+              className={this.state.checked ? "fa fa-eye-slash" : "fa fa-eye"}
+            ></i>
+          </div>:null}
         </div>
         {this.props.showStrengthBar?<AnterosPasswordStrength password={this.state.value} {...this.props.strengthBarProps}/>:null}
       </div>
@@ -222,7 +241,9 @@ AnterosPassword.propTypes = {
   extraLarge: columnProps,
   onKeyDown: PropTypes.func,
   showStrengthBar: PropTypes.bool.isRequired,
-  strengthBarProps: strengthBarProps
+  strengthBarProps: strengthBarProps,
+  showGeneratePassword: PropTypes.bool.isRequired,
+  generatePasswordOptions: PropTypes.object.isRequired
 };
 
 AnterosPassword.defaultProps = {
@@ -233,6 +254,17 @@ AnterosPassword.defaultProps = {
   minLength: 4,
   showStrengthBar: false,
   onKeyDown: () => {},
+  showGeneratePassword: false,
+  generatePasswordOptions: {
+    length: 8,
+    uppercase: true,
+    lowercase: true,
+    numbers: true,
+    exclude: '',
+    symbols: false,
+    excludeSimilarCharacters: false,
+    strict: false
+  }
 };
 
 const itemStyle = {

@@ -865,7 +865,15 @@ export default function WithTableContainerTemplate(_loadingProps) {
                     />
                   </div>
                 )}
-
+                <WrappedComponent
+                  {...this.props}
+                  ref={(ref) => (this.wrappedRef = ref)}
+                  state={this.state}
+                  user={this.props.user}
+                  ownerTemplate={this}
+                  history={this.props.history}
+                  dataSource={this.dataSource}
+                />
                 <AnterosDataTable
                   id={"table" + loadingProps.viewName}
                   height={"200px"}
@@ -883,15 +891,6 @@ export default function WithTableContainerTemplate(_loadingProps) {
                 >
                   {this.getColumns()}
                 </AnterosDataTable>
-                <WrappedComponent
-                  {...this.props}
-                  ref={(ref) => (this.wrappedRef = ref)}
-                  state={this.state}
-                  user={this.props.user}
-                  ownerTemplate={this}
-                  history={this.props.history}
-                  dataSource={this.dataSource}
-                />
               </AnterosBlockUi>
               <FooterActions className="versatil-card-footer">
                 <AnterosRow className="row justify-content-start align-items-center">

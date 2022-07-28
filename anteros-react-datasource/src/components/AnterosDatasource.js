@@ -6,7 +6,7 @@ import {
     Anteros,
     AnterosObjectUtils
 } from '@anterostecnologia/anteros-react-core';
-import {AnterosRemoteApi as remoteApi} from '@anterostecnologia/anteros-react-api';
+import remoteApi from './AnterosDatasourceApiAdapter';
 
 import {
     cloneDeep
@@ -1118,7 +1118,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.dispatchEvent(dataSourceEvents.BEFORE_POST);
 
         let ajaxPostConfig = this.ajaxPostConfigHandler(this.currentRecord);
-        remoteApi(ajaxPostConfig).then(function (response) {
+        remoteApi.save(ajaxPostConfig).then(function (response) {
             if (_this.validatePostResponse(response)) {
                 if (_this.dsState == dataSourceConstants.DS_EDIT) {
                     _this.data[_this.getRecno()] = _this.currentRecord;
@@ -1165,7 +1165,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this._validateDelete();
         this.dispatchEvent(dataSourceEvents.BEFORE_DELETE);
         let ajaxDeleteConfig = this.ajaxDeleteConfigHandler(this.currentRecord);
-        remoteApi(ajaxDeleteConfig).then(function (response) {
+        remoteApi.delete(ajaxDeleteConfig).then(function (response) {
             if (_this.validateDeleteResponse(response)) {
                 let index = -1;
                 _this.allData.forEach((item, idx)=>{
@@ -1229,7 +1229,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
     executeAjax(ajaxConfig, event, callback, accumulated) {
         let _this = this;
         this.executed = false;
-        remoteApi((ajaxConfig ? ajaxConfig : this.ajaxConfig)).then(function (response) {
+        remoteApi.get((ajaxConfig ? ajaxConfig : this.ajaxConfig)).then(function (response) {
             if (response.data.hasOwnProperty(_this.totalPagesProperty)) {
                 _this.totalPages = response.data[_this.totalPagesProperty];
             }

@@ -245,6 +245,9 @@ export default class AnterosDataTable extends Component {
 	}
 
 	renderNumber(data, type, full, meta) {
+		if (!data){
+			return "";
+		}
 		let column = this.getColumnByIndex(meta.col);
 		if (!column || !column.props.maskFormatNumber) return data;
 		return AnterosUtils.formatNumber(data, column.props.maskFormatNumber);
@@ -255,6 +258,9 @@ export default class AnterosDataTable extends Component {
 	}
 
 	renderCep(data, type, full, meta) {
+		if (!data){
+			return "";
+		}
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
 		let _mask = new AnterosStringMask("99999-999");
@@ -262,6 +268,9 @@ export default class AnterosDataTable extends Component {
 	}
 
 	renderFone(data, type, full, meta) {
+		if (!data){
+			return "";
+		}
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
 		let _mask = new AnterosStringMask("(99) 99999-9999");
@@ -269,6 +278,9 @@ export default class AnterosDataTable extends Component {
 	}
 
 	renderPlaca(data, type, full, meta) {
+		if (!data){
+			return "";
+		}
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
 		let _mask = new AnterosStringMask("SSS-AAAAA");
@@ -276,6 +288,9 @@ export default class AnterosDataTable extends Component {
 	}
 
 	renderCpf(data, type, full, meta) {
+		if (!data){
+			return "";
+		}
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
 		let _mask = new AnterosStringMask("999.999.999-99");
@@ -283,6 +298,9 @@ export default class AnterosDataTable extends Component {
 	}
 
 	renderCnpj(data, type, full, meta) {
+		if (!data){
+			return "";
+		}
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
 		let _mask = new AnterosStringMask("99.999.999/9999-99");

@@ -64,7 +64,12 @@ export function processErrorMessage(error) {
       }
     }
   }
-  return msgErro;
+  if (typeof msgErro === 'object'){
+    if (error && (error.code === 'ERR_NETWORK' || error.message==='Network Error')){
+      msgErro = "Servidor não disponível ou algum problema na rede.";
+    }
+  }
+  return msgErro+"";
 }
 
 export function processDetailErrorMessage(error) {
@@ -72,5 +77,5 @@ export function processDetailErrorMessage(error) {
   if (error.response && error.response.data && error.response.data.apierror) {
     msgErro = error.response.data.apierror.debugMessage;
   }
-  return msgErro;
+  return msgErro+"";
 }

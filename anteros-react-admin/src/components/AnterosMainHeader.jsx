@@ -200,7 +200,7 @@ export default class AnterosMainHeader extends Component {
           {horizontalMenu || sidebarOpen ? (
             <div className="site-logo">
               <Link to="/" className="logo-normal">
-                <img src={logoNormal} alt="site-logo" />
+                {typeof logoNormal==='object'?<logoNormal/>:<img src={logoNormal} alt="site-logo" />}
               </Link>
             </div>
           ) : null}

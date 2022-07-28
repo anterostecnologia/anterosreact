@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-containers",
-  "version": "2.0.29",
+  "version": "2.0.30",
   "description": "Anteros components for React - Containers",
   "main": "lib/@anterostecnologia/anteros-react-containers.js",
   "scripts": {
@@ -66,7 +66,6 @@
     "react-dom": "^16.11.0",
     "react-iframe": "^1.8.0",
     "react-images": "^1.2.0-beta.7",
-    "react-motion": "^0.5.2",
     "react-move": "^2.7.0",
     "react-router-dom": "^4.2.2",
     "react-styleguidist": "^9.0.8",

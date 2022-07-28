@@ -1,0 +1,231 @@
+/*************************************************************
+*					  Colors Definitions
+Paleta de Cores Versátil
+Azul: #2180F9
+Verde: #1FEFBC
+Fundo Grey: #F1F1F1
+Textos Grey: #D8D8D8
+**************************************************************/
+$color-primary: #052b47;
+$color-primary-two: #052b47; //#1decb4;
+$color-primary-three: rgb(2, 61, 138);
+// $color-primary: #1b3dec;
+// $color-primary-two: #1decb4;
+$color-primary-light: lighten($color-primary, 10%) !default;
+$color-primary-lighter: lighten($color-primary-light, 6%) !default;
+$color-primary-dark: darken($color-primary, 10%) !default;
+$color-primary-darker: darken($color-primary-dark, 6%) !default;
+
+$color-divider: #d7dde4 !default;
+$color-bg: #e4e5e6 !default;
+$color-bg-header: #32afda; //#85CE36;//#3FA9F4;
+
+$color-text: black;
+$color-text-light: #7e8e9f !default;
+$color-text-muted: #c2ccd6;
+$color-text-inverse: #ffffff !default;
+$color-text-passive: #c5c5c5 !default;
+
+$color-success: #59c6d0; //#5cb85c; // #4bcf99 !default;
+$color-success-darker: darken($color-success, 6%) !default;
+$color-info: #5bc0de; //#76D4F5 !default;
+$color-info-darker: darken($color-info, 6%) !default;
+$color-warning: #f0ad4e; //#fe974b !default;
+$color-warning-darker: darken($color-warning, 6%) !default;
+$color-danger: #d9534f; //#FF4444 !default;
+$color-danger-darker: darken($color-danger, 6%) !default;
+$color-secondary: #6b7a85; //#131e26 !default;
+$color-secondary-darker: darken($color-secondary, 6%) !default;
+$color-inverse: #131e26 !default;
+$color-default: #ffffff;
+
+/*************************************************************
+*					Common Element Variables
+**************************************************************/
+// Buttons
+$btn-radius: 25px !default;
+$btn-primary-color: $color-primary !default;
+$btn-primary-color-text: $color-text-inverse !default;
+
+// Links
+$link-color: white;
+$link-transition: initial;
+$link-decoration: none;
+
+$link-hover-color: darken($color-primary, 8%) !default;
+$link-hover-decoration: none !default;
+
+// Header
+$header-height: 70px !default;
+$header-height-xs: 58px !default;
+$header-hover: ligthen(black, 20%);
+$header-background: linear-gradient(
+  to right,
+  $color-primary,
+  $color-primary-two
+);
+
+// Sidebar
+$sidebar-width: 230px !default;
+$sidebar-color-hover: darken($color-primary-two, 10%);
+$sidebar-color-text-hover: white;
+$sidebar-color-primary: transparent;
+$sidebar-color-secondary: darken($sidebar-color-primary, 4%) !default;
+$sidebar-color-text: white;
+$sidebar-color-text-active: white;
+$sidebar-header-color: $color-primary;
+$sidebar-header-text: $color-text;
+$sidebar-color-active: #1d75f8;
+$sidebar-font-size: 0.9rem;
+$sidebar-font-icon-size: 1.1rem;
+$sidebar-background: #EEF2F4;//linear-gradient(180deg,#EEF2F4, #fafbfc);
+$sidebar-menu-background: transparent;
+
+// Search
+$input-search-color: #eceff1;
+$input-search-text-color: #969696;
+
+// Footer
+$footer-height: 40px !default;
+
+// Dropdowns
+$dropbown-color-border: fade-out($color-text-light, 0.9) !default;
+$dropdown-link-hover-color-bg: #f5f5f5 !default;
+
+// Content
+$content-padding-x-xl: 0px !default;
+$content-padding-y-xl: 20px !default;
+
+$content-padding-x-lg: 0px !default;
+$content-padding-y-lg: 20px !default;
+
+$content-padding-x-md: 0px !default;
+$content-padding-y-md: 20px !default;
+
+$content-padding-x-sm: 0px !default;
+$content-padding-y-sm: 20px !default;
+
+$content-padding-x-xs: 10px !default;
+$content-padding-y-xs: 15px !default;
+
+// Card
+$card-padding-x: 15px !default;
+$card-padding-x-xl: 20px !default;
+$card-padding-x-sm: 10px !default;
+$card-margin-bottom: 10px;
+
+// Item list
+$item-list-color-border: lighten($color-divider, 6%) !default;
+
+// Charts
+$chart-color-primary: $color-primary !default;
+$chart-color-secondary: lighten($chart-color-primary, 10%) !default;
+
+// Dashboard
+$dashboard-stat-icon-color: #bdbdbd !default;
+
+// Notifications
+$notifications-font-base-path: "../fonts" !default;
+$notifications-transition-time: 0.4s !default;
+$notifications-container-top: 0 !default;
+$notifications-container-right: 0 !default;
+$notifications-container-z-index: 999999 !default;
+$notifications-container-width: 320px !default;
+$notifications-container-top-padding: 0px !default;
+$notifications-container-max-height: calc(100% - 30px) !default;
+$notifications-container-right-padding: 15px !default;
+$notifications-border-radius: 2px !default;
+$notifications-padding-top: 15px !default;
+$notifications-padding-right: 15px !default;
+$notifications-padding-bottom: 15px !default;
+$notifications-padding-left: 58px !default;
+$notifications-color: #fff !default;
+$notifications-background-color: #ccc !default;
+$notifications-box-shadow: 0 0 12px #999 !default;
+$notifications-cursor: pointer !default;
+$notifications-font-size: 1em !default;
+$notifications-line-height: 1.2em !default;
+$notifications-opacity: 0.9 !default;
+$notifications-margin-top: 15px !default;
+$notifications-icon-top: 50% !default;
+$notifications-icon-left: 15px !default;
+$notifications-icon-margin-top: -14px !default;
+$notifications-icon-width: 28px !default;
+$notifications-icon-height: 28px !default;
+$notifications-icon-font-size: 28px !default;
+$notifications-icon-line-height: 28px !default;
+$notifications-hover-opacity: 1 !default;
+$notifications-title-font-size: 1em !default;
+$notifications-title-line-height: 1.2em !default;
+$notifications-title-font-weight: bold !default;
+$notifications-title-margin: 0 0 5px 0 !default;
+$notifications-info-background-color: #2f96b4 !default;
+$notifications-info-content: "\f05a" !default;
+$notifications-success-background-color: $color-success !default;
+$notifications-success-content: "\f058" !default;
+$notifications-warning-background-color: $color-warning !default;
+$notifications-warning-content: "\f06a" !default;
+$notifications-error-background-color: $color-danger !default;
+$notifications-error-content: "\f057" !default;
+
+$table-selected: #26553f29;
+$table-text-selected: #4124de;
+
+
+
+@mixin arrow-down() {
+  width: 0;
+  height: 0;
+  border: $balloon-arrow-size solid transparent;
+  border-top-color: var(--balloon-color);
+}
+
+@mixin arrow-up() {
+  width: 0;
+  height: 0;
+  border: $balloon-arrow-size solid transparent;
+  border-bottom-color: var(--balloon-color);
+}
+
+@mixin arrow-left() {
+  width: 0;
+  height: 0;
+  border: $balloon-arrow-size solid transparent;
+  border-right-color: var(--balloon-color);
+}
+
+@mixin arrow-right() {
+  width: 0;
+  height: 0;
+  border: $balloon-arrow-size solid transparent;
+  border-left-color: var(--balloon-color);
+}
+
+@mixin base-effects() {
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.18s ease-out 0.18s;
+}
+
+@mixin no-effects() {
+  transition: none;
+}
+
+@mixin normalized-text() {
+  text-indent: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  text-shadow: none;
+  font-size: var(--balloon-font-size);
+}
+
+$balloon-bg: fade-out(#22277A, 0.05) !default;
+$balloon-base-size: 12px !default;
+$balloon-arrow-size: 5px !default;
+$balloon-move: 4px !default;
+
+$calendar-navigation: #dadde9;
+$calendar-navigation-text: #105995;
+

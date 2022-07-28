@@ -706,8 +706,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
                     />
                   </AnterosCol>
                 </AnterosRow>
-                <div style={{height: '55px', maxHeight:'120px', overflowY: 'auto'}}>
-                  {loadingProps.cumulativeSelection ? (
+                {loadingProps.cumulativeSelection ? (
+                  <div style={{height: '55px', maxHeight:'120px', overflowY: 'auto'}}>
                     <AnterosTags
                       addTags={false}
                       tags={this.props.selectedRecords}
@@ -716,8 +716,8 @@ export default function WithSearchModalTemplate(_loadingProps) {
                       allowUnique={true}
                       onClear={this.onClear}
                     />
-                  ) : null}
-                </div>
+                    </div>
+                  ) : null}                
                 <WrappedComponent
                   {...this.props}
                   ref={(ref) => (this.wrappedRef = ref)}

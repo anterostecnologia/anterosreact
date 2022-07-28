@@ -46,7 +46,6 @@ import AnterosToolbar, {
   AnterosToolbarGroup,
 } from "./components/AnterosToolbar";
 import AnterosScrollbars from "./components/AnterosScrollbars";
-import AnterosScrollHorizontal from "./components/AnterosScrollHorizontal";
 import {
   AnterosResponsiveTabs,
   AnterosResponsiveTab,
@@ -107,7 +106,6 @@ export {
   AnterosStepFooter,
   AnterosStepHeader,
   AnterosScrollbars,
-  AnterosScrollHorizontal,
   AnterosResponsiveTabs,
   AnterosResponsiveTab,
   TabHeaderActions,

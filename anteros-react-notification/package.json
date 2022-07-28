@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-notification",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "Anteros components for React - Notifications",
   "main": "lib/@anterostecnologia/anteros-react-notification.js",
   "scripts": {
@@ -50,6 +50,7 @@
     "purifycss-webpack": "^0.7.0",
     "react": "^16.11.0",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-css-transition-replace": "^4.0.5",
     "react-dom": "^16.11.0",
     "react-lifecycles-compat": "^3.0.4",
     "react-transition-group": "^2.9.0",

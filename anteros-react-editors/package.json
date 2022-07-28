@@ -58,6 +58,7 @@
     "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
+    "generate-password": "^1.7.0",
     "get-user-locale": "^1.3.0",
     "install": "^0.12.2",
     "jquery-mask-plugin": "^1.14.16",

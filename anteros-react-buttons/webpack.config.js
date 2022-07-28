@@ -51,7 +51,7 @@ const config = {
       },
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        loaders: ['file-loader']
+        use: ['file-loader']
       }
       // {
       //   test: /(\.jsx|\.js)$/,

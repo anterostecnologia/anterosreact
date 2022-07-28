@@ -63,7 +63,6 @@
     "react-dnd": "^14.0.2",
     "react-dnd-multi-backend": "^6.0.2",
     "react-dom": "^16.11.0",
-    "react-motion": "^0.5.2",
     "react-move": "^2.7.0",
     "react-router-dom": "^4.2.2",
     "react-styleguidist": "^9.0.8",
