@@ -1034,14 +1034,27 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         this.data = [];
         this.allData = [];
         this.active = true;
-        if (config && config != null) {
-            this.executeAjax((config ? config : this.config), dataSourceEvents.AFTER_OPEN, callback);
-        } else {
-            if (this.ajaxOpenConfigHandler && this.ajaxOpenConfigHandler !== null){
-                let openConfig = this.ajaxOpenConfigHandler();
-                this.executeAjax(openConfig, dataSourceEvents.AFTER_OPEN, callback);
+        if (Array.isArray(config) && !callback){
+            this.allData = config;
+            if (!config) {
+                this.data = [];
+                this.allData = [];
+            }
+            this.data = this.allData;
+            this.totalRecords = this.data.length;
+            this.grandTotalRecords = this.allData.length;
+            this.first();
+            this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
+        } else {        
+            if (config && config != null) {
+                this.executeAjax((config ? config : this.config), dataSourceEvents.AFTER_OPEN, callback);
             } else {
-                this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
+                if (this.ajaxOpenConfigHandler && this.ajaxOpenConfigHandler !== null){
+                    let openConfig = this.ajaxOpenConfigHandler();
+                    this.executeAjax(openConfig, dataSourceEvents.AFTER_OPEN, callback);
+                } else {
+                    this.dispatchEvent(dataSourceEvents.AFTER_OPEN);
+                }
             }
         }
     }

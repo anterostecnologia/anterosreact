@@ -1,0 +1,121 @@
+import { Component, ReactNode } from "react";
+import { AnterosRemoteDatasource, AnterosDatasource } from "@anterostecnologia/anteros-react-datasource";
+import { UserData, IAnterosRemoteResource, AnterosEntity } from "@anterostecnologia/anteros-react-api2";
+import { RouteComponentProps } from "react-router";
+export declare enum PositionUserActions {
+    first = 0,
+    last = 1
+}
+interface AnterosSearchTemplateProps<T extends AnterosEntity, TypeID> {
+    caption: string;
+    openDataSourceFilter: boolean;
+    openMainDataSource: boolean;
+    dataSource: AnterosDatasource | undefined;
+    messageLoading: string;
+    withFilter: boolean;
+    fieldsToForceLazy: string;
+    defaultSortFields: string;
+    selectedRecords: Array<any>;
+    filterName: string;
+    labelField: string;
+    version: string;
+    viewName: string;
+    user: UserData;
+    pageSize: number;
+    currentFilter: any;
+    needRefresh: boolean;
+    columns: ReactNode | undefined;
+    routes: any;
+    positionUserActions: PositionUserActions;
+    fieldsFilter: ReactNode | undefined;
+    userActions?: ReactNode | undefined;
+    remoteResource: IAnterosRemoteResource<T, TypeID>;
+    labelButtonOk: string;
+    labelButtonCancel: string;
+    isCumulativeSelection: boolean;
+    setDatasource(dataSource: AnterosDatasource): void;
+    setFilter(filter: any, activeFilterIndex: number): void;
+    hideTour(): void;
+    history: RouteComponentProps["history"];
+    activeFilterIndex: number;
+    onButtonClick?: Function;
+    onDidMount?(): void;
+    onWillUnmount?(): void;
+    onClickOk: Function;
+    onClickCancel: Function;
+    onCustomCreateDatasource?(): AnterosDatasource;
+    onCustomFindWithFilter?(filter: string, page: number, pageSize: number, sort: string, fieldsToForceLazy: string): any | undefined;
+    onCustomFindAll?(page: number, pageSize: number, sort: string, fieldsToForceLazy: string): any | undefined;
+    onCustomFindMultipleFields?(filter: string, fields: string, page: number, pageSize: number, sort: string, fieldsToForceLazy: string): any | undefined;
+    onCustomDoubleClick?(data: any): void;
+    onCustomUser?(): UserData;
+    onSelectRecord?(row: any, data: any, tableId: string): void;
+    onUnselectRecord?(row: any, data: any, tableId: string): void;
+    onSelectAllRecords?(records: any[], tableId: string): void;
+    onUnselectAllRecords?(tableId: any): void;
+    getCustomLoader?(): ReactNode | undefined;
+    getCustomMessageLoading?(): string | undefined;
+}
+interface AnterosTableTemplateState {
+    dataSource: AnterosDatasource;
+    alertIsOpen: boolean;
+    alertMessage: string;
+    loading: boolean;
+    width: any;
+    newHeight: any;
+    filterExpanded: boolean;
+    update: number;
+}
+declare class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<AnterosSearchTemplateProps<T, TypeID>, AnterosTableTemplateState> {
+    private _dataSource;
+    private _dataSourceFilter;
+    private _cardRef;
+    private _tableRef;
+    private _filterRef;
+    static defaultProps: {
+        openDataSourceFilter: boolean;
+        openMainDataSource: boolean;
+        messageLoading: string;
+        withFilter: boolean;
+        fieldsToForceLazy: string;
+        defaultSortFields: string;
+        labelButtonOk: string;
+        labelButtonCancel: string;
+        positionUserActions: PositionUserActions;
+        userActions: undefined;
+        isCumulativeSelection: boolean;
+    };
+    constructor(props: AnterosSearchTemplateProps<T, TypeID>);
+    createDataSourceFilter(props: AnterosSearchTemplateProps<T, TypeID>): AnterosRemoteDatasource;
+    getUser(): UserData;
+    createMainDataSource(): void;
+    componentDidMount(): void;
+    componentWillUnmount(): void;
+    shouldComponentUpdate(nextProps: any, nextState: any): any;
+    onFilterChanged(filter: any, activeFilterIndex: any, callback?: any): void;
+    onToggleExpandedFilter(expanded: any): void;
+    onSelectedFilter(filter: any, index: any): void;
+    onBeforePageChanged(_currentPage: any, _newPage: any): void;
+    handlePageChanged(_newPage: any): void;
+    getSortFields(): any;
+    onDatasourceEvent(event: any, error: any): void;
+    onSearchByFilter(): void;
+    getData(currentFilter: any, page: number): any;
+    getDataWithFilter(currentFilter: any, page: any): any;
+    getDataWithoutFilter(page: any): any;
+    getDataWithQuickFilter(currentFilter: any, page: any): any;
+    onDoubleClickTable(data: any): void;
+    pageConfigHandler(page: any): any;
+    onCloseAlert(): void;
+    onShowHideLoad(show: any): void;
+    handleOnSelectRecord(row: any, data: any, tableId: any): void;
+    handleOnUnselectRecord(row: any, data: any, tableId: any): void;
+    handleOnSelectAllRecords(records: any, tableId: any): void;
+    handleOnUnselectAllRecords(tableId: any): void;
+    changeState(state: any, callback: any): void;
+    onClick(event: any): void;
+    handleDelete(i: any): void;
+    onClear(): void;
+    render(): JSX.Element;
+}
+export { AnterosSearchTemplate };

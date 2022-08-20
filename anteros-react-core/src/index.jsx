@@ -12,7 +12,7 @@ import {
 	Switch,
 	Default
 } from "./components/AnterosControlStatements";
-import { AnterosJacksonParser } from "./components/AnterosJacksonParser";
+import {AnterosJacksonParser} from "./components/AnterosJacksonParser";
 import { AnterosObjectUtils } from "./components/AnterosObjectUtils";
 import { AnterosDateUtils } from "./components/AnterosDateUtils";
 import { AnterosStringUtils } from "./components/AnterosStringUtils";

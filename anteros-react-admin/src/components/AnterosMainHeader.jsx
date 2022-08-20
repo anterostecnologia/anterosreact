@@ -204,7 +204,7 @@ export default class AnterosMainHeader extends Component {
               </Link>
             </div>
           ) : null}
-          {horizontalMenu ? null : (
+          {horizontalMenu ? null : this.props.showToggleSidebar? 
             <AnterosButton
               circle
               medium
@@ -213,8 +213,8 @@ export default class AnterosMainHeader extends Component {
               color={this.props.toolbarIconColor}
               onButtonClick={this.toggleSidebar}
               hintPosition="bottom"
-            />
-          )}
+            />:null
+          }
           {quickLinks ? (
             <AnterosDropdownButton
               medium
@@ -307,12 +307,14 @@ export default class AnterosMainHeader extends Component {
 AnterosMainHeader.propTypes = {
   showInputSearch: PropTypes.bool.isRequired,
   toolbarIconColor: PropTypes.any,
+  showToggleSidebar: PropTypes.bool.isRequired
 };
 
 AnterosMainHeader.defaultPropTypes = {
   showInputSearch: true,
   quickLinkHeaderColor: "blue",
   toolbarIconColor: "white",
+  showToggleSidebar: true
 };
 
 export class QuickLinks extends Component {

@@ -1,12 +1,11 @@
 import { cloneDeep } from "lodash";
 
-class AnterosJacksonParser {
-    constructor() { }
+export class AnterosJacksonParser {
 	/**
 	 * Converte um objeto Json serializado com Anteros e Jackson
 	 * @param {*} json Json a ser convertido para objeto
 	 */
-    convertJsonToObject(json) {
+    static convertJsonToObject(json) {
         // Verifica se o objeto é um array
         var isObject = function (value) {
             return typeof value === "object";
@@ -76,7 +75,7 @@ class AnterosJacksonParser {
 	 * Converte um objeto para Json serializando com @id no formato Anteros e Jackson
 	 * @param {*} obj Objeto a ser serializado para json
 	 */
-    convertObjectToJson(obj) {
+    static convertObjectToJson(obj) {
         var newObj = cloneDeep(obj);
 
         // Gera um id global randômico - GUID
@@ -159,5 +158,3 @@ class AnterosJacksonParser {
     }
 }
 
-const instance = new AnterosJacksonParser();
-export { instance as AnterosJacksonParser };

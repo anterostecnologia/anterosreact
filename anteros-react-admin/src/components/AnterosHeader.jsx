@@ -24,6 +24,8 @@ export default class AnterosHeader extends Component {
     return "AnterosHeader";
   }
 
+  
+
   render() {
     let newNavigatorLinks = [];
     let menu;
@@ -68,7 +70,7 @@ export default class AnterosHeader extends Component {
             <div className="input-container">
               {" "}
               <i className="fa fa-search" />{" "}
-              <input type="search" placeholder="Localizar" />
+              <input type="search" placeholder="Localizar"/>
               <div className="underline" />
             </div>
           </form>

@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "lib": ["es5", "es6", "es2015", "es2016", "dom", "esnext"],
+        "types": ["node"],
+        "module": "es6",
+        "moduleResolution": "node",
+        "allowJs": true, 
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noImplicitThis": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es6"
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

@@ -284,7 +284,7 @@ export default class AnterosDataTable extends Component {
 		let column = this.getColumnByIndex(meta.col);
 		if (!column) return data;
 		let _mask = new AnterosStringMask("SSS-AAAAA");
-		return _mask.apply(value);
+		return _mask.apply(data);
 	}
 
 	renderCpf(data, type, full, meta) {
