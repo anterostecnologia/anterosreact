@@ -6,7 +6,11 @@ import {
   AnterosFormModalTemplateState,
 } from "./AnterosFormModalTemplate";
 import { AnterosFormTemplate } from "./AnterosFormTemplate";
-import { AnterosMainLayoutTemplate } from "./AnterosMainLayoutTemplate";
+import {
+  AnterosMainLayoutTemplate,
+  CommandMenu,
+  CommandColor,
+} from "./AnterosMainLayoutTemplate";
 import { AnterosMasonryTemplate } from "./AnterosMasonryTemplate";
 import { AnterosSearchTemplate } from "./AnterosSearchTemplate";
 import { AnterosTableTemplate } from "./AnterosTableTemplate";
@@ -22,4 +26,6 @@ export {
   ModalSize,
   AnterosFormModalTemplateProps,
   AnterosFormModalTemplateState,
+  CommandMenu,
+  CommandColor,
 };

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, FC } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { UserData, AnterosEntity } from "@anterostecnologia/anteros-react-api2";
 import { connect } from "react-redux";
@@ -162,14 +162,10 @@ export const connectSearchViewWithStore = <E extends AnterosEntity, TypeID>(
   };
 
   return (ViewComponent) => {
-    class HComp<E extends AnterosEntity, TypeID> extends Component<
-      AnterosSearchViewProps<E, TypeID>
-    > {
-      render() {
-        return <ViewComponent {...this.props} controller={controller} />;
-      }
-    }
+    const HC: FC = (props): JSX.Element => {
+      return <ViewComponent {...props} controller={controller} />;
+    };
 
-    return connect(mapStateToProps, mapDispatchToProps)(HComp);
+    return connect(mapStateToProps, mapDispatchToProps)(HC);
   };
 };

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, FC } from "react";
 import { Switch, Route } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import {
@@ -249,13 +249,9 @@ export const connectViewWithStore = <E extends AnterosEntity, TypeID>(
   };
 
   return (ViewComponent) => {
-    class HC<E extends AnterosEntity, TypeID> extends Component<
-      AnterosViewProps<E, TypeID>
-    > {
-      render() {
-        return <ViewComponent {...this.props} controller={controller} />;
-      }
-    }
+    const HC: FC = (props): JSX.Element => {
+      return <ViewComponent {...props} controller={controller} />;
+    };
 
     return connect(mapStateToProps, mapDispatchToProps)(HC);
   };
