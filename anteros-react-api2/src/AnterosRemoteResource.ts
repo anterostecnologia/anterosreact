@@ -1,5 +1,5 @@
 import { AnterosEntity } from "./AnterosEntity";
-import { IAnterosApiClient } from "./index.js";
+import { IAnterosApiClient } from "./AnterosRemoteApi";
 import { AnterosJacksonParser } from "@anterostecnologia/anteros-react-core";
 import { IAnterosUserService } from "./AnterosUserService";
 import { AxiosRequestConfig } from "axios";
@@ -74,10 +74,11 @@ export interface IAnterosRemoteResource<T extends AnterosEntity, TypeID> {
     sort: string,
     fieldsToForceLazy: string
   ): any;
-  buildLookupValue(value, onSuccess, onError, fieldsToForceLazy): any;
+  buildLookupValue(value, onSuccess, onError, fieldsToForceLazy): Promise<any>;
+  execute(config: any): Promise<any>;
 }
 
-export class AnterosRemoteResource<T extends AnterosEntity, TypeID>
+export abstract class AnterosRemoteResource<T extends AnterosEntity, TypeID>
   implements IAnterosRemoteResource<T, TypeID>
 {
   private _apiClient: IAnterosApiClient;
@@ -152,11 +153,23 @@ export class AnterosRemoteResource<T extends AnterosEntity, TypeID>
     return this._userService;
   }
 
+  public getCustomActions(): any | undefined {}
+  public getCustomSearchActions(): any | undefined {}
+
   get searchActions() {
+    const customSearchActions = this.getCustomSearchActions();
+    if (customSearchActions) {
+      return customSearchActions;
+    }
     return makeDefaultReduxActions(`${this._reducerName.toUpperCase()}_SEARCH`);
   }
 
   get actions() {
+    const customActions = this.getCustomActions();
+    if (customActions) {
+      return customActions;
+    }
+
     return makeDefaultReduxActions(`${this._reducerName.toUpperCase()}`);
   }
 
@@ -407,27 +420,32 @@ export class AnterosRemoteResource<T extends AnterosEntity, TypeID>
     if (config.method === POST) {
       return this._apiClient.post<any, any>(config.url, config.data, config);
     } else if (config.method === GET) {
-      return this._apiClient.get<any>(config.url);
+      return this._apiClient.get<any>(config.url, config);
     } else if (config.method === PUTCH) {
-      return this._apiClient.put<any, any>(config.url, config.data, config.url);
+      return this._apiClient.put<any, any>(config.url, config.data, config);
     } else if (config.method === DELETE) {
-      return this._apiClient.delete<any, any>(config.url, config.data);
+      return this._apiClient.delete<any, any>(config.url, config.data, config);
     }
     throw new Error("Configuração inválida " + config);
   }
 
-  buildLookupValue(value, onSuccess, onError, fieldsToForceLazy = "") {
-    let _this = this;
-    return new Promise(function (resolve, reject) {
-      _this._apiClient
-        .get(_this.findOne(value, fieldsToForceLazy))
-        .then(function (response: any) {
-          resolve(response.data);
+  buildLookupValue(
+    value,
+    onSuccess,
+    onError,
+    fieldsToForceLazy = ""
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._apiClient
+        .get(this.findOne(value, fieldsToForceLazy))
+        .then((response: any) => {
+          let data = AnterosJacksonParser.convertJsonToObject(response);
+          resolve(data);
           if (onSuccess) {
-            onSuccess(response.data);
+            onSuccess(data);
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           reject(error);
           if (onError) {
             onError(error);

@@ -1,5 +1,5 @@
 import { AnterosEntity } from "./AnterosEntity";
-import { IAnterosApiClient } from "./index.js";
+import { IAnterosApiClient } from "./AnterosRemoteApi";
 import { IAnterosUserService } from "./AnterosUserService";
 import { AxiosRequestConfig } from "axios";
 export declare const POST = "post";
@@ -30,9 +30,10 @@ export interface IAnterosRemoteResource<T extends AnterosEntity, TypeID> {
     findAllByRelationShip(field: string, id: any, page: number, size: number, sort: string, fieldsToForceLazy: string): any;
     findWithFilterByRelationShip(field: string, id: any, filter: any, page: number, size: number, fieldsToForceLazy: string): any;
     findMultipleFieldsByRelationShip(field: string, id: any, filter: string, fields: string, page: number, size: number, sort: string, fieldsToForceLazy: string): any;
-    buildLookupValue(value: any, onSuccess: any, onError: any, fieldsToForceLazy: any): any;
+    buildLookupValue(value: any, onSuccess: any, onError: any, fieldsToForceLazy: any): Promise<any>;
+    execute(config: any): Promise<any>;
 }
-export declare class AnterosRemoteResource<T extends AnterosEntity, TypeID> implements IAnterosRemoteResource<T, TypeID> {
+export declare abstract class AnterosRemoteResource<T extends AnterosEntity, TypeID> implements IAnterosRemoteResource<T, TypeID> {
     private _apiClient;
     private _reducerName;
     private _searchReducerName;
@@ -53,56 +54,10 @@ export declare class AnterosRemoteResource<T extends AnterosEntity, TypeID> impl
     getUseCode(): boolean;
     setUseCode(useCode: boolean): void;
     get userService(): IAnterosUserService;
-    get searchActions(): {
-        setDatasource(dataSource: any): {
-            type: string;
-            payload: {
-                dataSource: any;
-            };
-        };
-        setFilter(currentFilter: any, activeFilterIndex: any): {
-            type: string;
-            payload: {
-                currentFilter: any;
-                activeFilterIndex: any;
-            };
-        };
-        clear(): {
-            type: string;
-            payload: {};
-        };
-        setNeedRefresh(): {
-            type: string;
-            payload: {
-                needRefresh: boolean;
-            };
-        };
-    };
-    get actions(): {
-        setDatasource(dataSource: any): {
-            type: string;
-            payload: {
-                dataSource: any;
-            };
-        };
-        setFilter(currentFilter: any, activeFilterIndex: any): {
-            type: string;
-            payload: {
-                currentFilter: any;
-                activeFilterIndex: any;
-            };
-        };
-        clear(): {
-            type: string;
-            payload: {};
-        };
-        setNeedRefresh(): {
-            type: string;
-            payload: {
-                needRefresh: boolean;
-            };
-        };
-    };
+    getCustomActions(): any | undefined;
+    getCustomSearchActions(): any | undefined;
+    get searchActions(): any;
+    get actions(): any;
     get url(): string;
     save(entity: T): AxiosRequestConfig<any>;
     delete(entity: T): any;
@@ -126,5 +81,5 @@ export declare class AnterosRemoteResource<T extends AnterosEntity, TypeID> impl
     applyCompany(user: any, result: any): any;
     applyOwner(user: any, result: any): any;
     execute(config: any): Promise<any>;
-    buildLookupValue(value: any, onSuccess: any, onError: any, fieldsToForceLazy?: string): Promise<unknown>;
+    buildLookupValue(value: any, onSuccess: any, onError: any, fieldsToForceLazy?: string): Promise<any>;
 }

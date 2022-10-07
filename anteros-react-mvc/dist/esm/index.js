@@ -1,5 +1,5 @@
 import { AnterosController } from "./AnterosController";
-import { AnterosSearchView, connectSearchViewWithStore, } from "./AnterosSearchView";
-import { AnterosView, connectViewWithStore } from "./AnterosView";
-export { AnterosController, AnterosSearchView, AnterosView, connectViewWithStore, connectSearchViewWithStore, };
+import { AnterosSearchView, makeDefaultReduxPropsSearchView, } from "./AnterosSearchView";
+import { AnterosView, makeDefaultReduxPropsView, ADD, EDIT, VIEW, SEARCH, } from "./AnterosView";
+export { AnterosController, AnterosSearchView, AnterosView, makeDefaultReduxPropsView, makeDefaultReduxPropsSearchView, ADD, EDIT, VIEW, SEARCH, };
 //# sourceMappingURL=index.js.map

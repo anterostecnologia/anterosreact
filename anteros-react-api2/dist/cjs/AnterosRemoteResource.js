@@ -53,10 +53,20 @@ class AnterosRemoteResource {
     get userService() {
         return this._userService;
     }
+    getCustomActions() { }
+    getCustomSearchActions() { }
     get searchActions() {
+        const customSearchActions = this.getCustomSearchActions();
+        if (customSearchActions) {
+            return customSearchActions;
+        }
         return (0, AnterosReduxHelper_1.makeDefaultReduxActions)(`${this._reducerName.toUpperCase()}_SEARCH`);
     }
     get actions() {
+        const customActions = this.getCustomActions();
+        if (customActions) {
+            return customActions;
+        }
         return (0, AnterosReduxHelper_1.makeDefaultReduxActions)(`${this._reducerName.toUpperCase()}`);
     }
     get url() {
@@ -213,28 +223,28 @@ class AnterosRemoteResource {
             return this._apiClient.post(config.url, config.data, config);
         }
         else if (config.method === exports.GET) {
-            return this._apiClient.get(config.url);
+            return this._apiClient.get(config.url, config);
         }
         else if (config.method === exports.PUTCH) {
-            return this._apiClient.put(config.url, config.data, config.url);
+            return this._apiClient.put(config.url, config.data, config);
         }
         else if (config.method === exports.DELETE) {
-            return this._apiClient.delete(config.url, config.data);
+            return this._apiClient.delete(config.url, config.data, config);
         }
         throw new Error("Configuração inválida " + config);
     }
     buildLookupValue(value, onSuccess, onError, fieldsToForceLazy = "") {
-        let _this = this;
-        return new Promise(function (resolve, reject) {
-            _this._apiClient
-                .get(_this.findOne(value, fieldsToForceLazy))
-                .then(function (response) {
-                resolve(response.data);
+        return new Promise((resolve, reject) => {
+            this._apiClient
+                .get(this.findOne(value, fieldsToForceLazy))
+                .then((response) => {
+                let data = anteros_react_core_1.AnterosJacksonParser.convertJsonToObject(response);
+                resolve(data);
                 if (onSuccess) {
-                    onSuccess(response.data);
+                    onSuccess(data);
                 }
             })
-                .catch(function (error) {
+                .catch((error) => {
                 reject(error);
                 if (onError) {
                     onError(error);

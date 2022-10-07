@@ -1,13 +1,9 @@
-import React, { Component, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { UserData, AnterosEntity } from "@anterostecnologia/anteros-react-api2";
 import { AnterosController } from "./AnterosController";
 import { AnterosDatasource } from "@anterostecnologia/anteros-react-datasource";
 import { ModalSize } from "@anterostecnologia/anteros-react-template2";
-export declare const ADD = "add";
-export declare const EDIT = "edit";
-export declare const VIEW = "view";
-export declare const SEARCH = "search";
 export interface AnterosSearchViewProps<E extends AnterosEntity, TypeID> {
     user: UserData;
     controller?: AnterosController<E, TypeID>;
@@ -25,15 +21,18 @@ export interface AnterosSearchViewProps<E extends AnterosEntity, TypeID> {
     history: RouteComponentProps["history"];
     onClickOk(event: any, selectedRecords: any): void;
     onClickCancel(event: any): void;
+    parameters?: any;
 }
-declare abstract class AnterosSearchView<E extends AnterosEntity, TypeID> extends Component<AnterosSearchViewProps<E, TypeID>> {
+export interface AnterosSearchViewState {
+}
+declare abstract class AnterosSearchView<E extends AnterosEntity, TypeID, Props extends AnterosSearchViewProps<E, TypeID>, State extends AnterosSearchViewState> extends Component<Props, State> {
     private _controller;
     static defaultProps: {
         modalSize: ModalSize;
         isOpenModal: boolean;
         needUpdateView: boolean;
     };
-    constructor(props: AnterosSearchViewProps<E, TypeID>);
+    constructor(props: Props);
     abstract getRouteName(): string;
     abstract getComponentSearch(props: any): ReactNode;
     abstract getCaption(): string;
@@ -52,4 +51,19 @@ declare abstract class AnterosSearchView<E extends AnterosEntity, TypeID> extend
     render(): ReactNode;
 }
 export { AnterosSearchView };
-export declare const connectSearchViewWithStore: <E extends AnterosEntity, TypeID>(controller: AnterosController<E, TypeID>) => (ViewComponent: any) => import("react-redux").ConnectedComponent<React.FC<{}>, Omit<{}, never> & import("react-redux").ConnectProps>;
+export declare function makeDefaultReduxPropsSearchView(controller: any): {
+    mapStateToProps: (state: any) => {
+        dataSource: any;
+        currentFilter: undefined;
+        activeFilterIndex: number;
+        user: any;
+        needRefresh: boolean;
+        needUpdateView: boolean;
+        controller: any;
+    };
+    mapDispatchToProps: (dispatch: any) => {
+        setDatasource: (dataSource: any) => void;
+        hideTour: () => void;
+        setFilter: (currentFilter: any, activeFilterIndex: any) => void;
+    };
+};

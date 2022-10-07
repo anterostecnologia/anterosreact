@@ -1,4 +1,8 @@
-import { AnterosFormComponent } from "./AnterosFormComponent";
+import {
+  AnterosFormComponent,
+  AnterosFormComponentProps,
+  AnterosFormComponentState,
+} from "./AnterosFormComponent";
 import {
   AnterosFormModalTemplate,
   ModalSize,
@@ -14,6 +18,11 @@ import {
 import { AnterosMasonryTemplate } from "./AnterosMasonryTemplate";
 import { AnterosSearchTemplate } from "./AnterosSearchTemplate";
 import { AnterosTableTemplate } from "./AnterosTableTemplate";
+import {
+  AnterosReactComponent,
+  AnterosReactComponentProps,
+  AnterosReactComponentState,
+} from "./AnterosReactComponent";
 
 export {
   AnterosTableTemplate,
@@ -22,10 +31,15 @@ export {
   AnterosMainLayoutTemplate,
   AnterosFormTemplate,
   AnterosFormComponent,
+  AnterosFormComponentProps,
+  AnterosFormComponentState,
   AnterosFormModalTemplate,
   ModalSize,
   AnterosFormModalTemplateProps,
   AnterosFormModalTemplateState,
   CommandMenu,
   CommandColor,
+  AnterosReactComponent,
+  AnterosReactComponentProps,
+  AnterosReactComponentState,
 };

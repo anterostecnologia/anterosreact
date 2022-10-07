@@ -27,7 +27,7 @@ export interface AnterosFormModalTemplateProps<T extends AnterosEntity, TypeID> 
     onWillUnmount?(): void;
     onCustomButtons?(): ReactNode;
     onAfterSave?(): boolean;
-    onClickOk(event: any): void;
+    onClickOk(event: any, result?: any): void;
     onClickCancel(event: any): void;
     onBeforeOk?(event: any): any;
     remoteResource?: IAnterosRemoteResource<T, TypeID>;

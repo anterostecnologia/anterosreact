@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactCSSTransitionReplace from "react-css-transition-replace";
 import PropTypes from "prop-types";
 
 const FirstChild = ({ children }) =>
@@ -14,7 +13,7 @@ export class AnterosAlert extends Component {
     this.onClose = this.onClose.bind(this);
     this.buildItens = this.buildItens.bind(this);
     this.state = {
-      isOpen: props.isOpen
+      isOpen: props.isOpen,
     };
   }
 
@@ -32,23 +31,14 @@ export class AnterosAlert extends Component {
     }
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
     this.setState({ isOpen: nextProps.isOpen });
   }
 
   componentDidUpdate() {
-    if (this.state.isOpen) {
-      if (this.alertRef.parentElement.scrollTop > 0) {
-        $(this.alertRef.parentElement).animate(
-          {
-            scrollTop: 0
-          },
-          200
-        );
-      }
-    }
+    
   }
 
   componentWillUnmount() {
@@ -85,14 +75,19 @@ export class AnterosAlert extends Component {
     }
     let result = [];
     this.props.children.forEach((item, index) => {
-      result.push(<span style={{
-        whiteSpace: "pre"
-      }} key={index}>{item + "\n"}</span>);
-    })
+      result.push(
+        <span
+          style={{
+            whiteSpace: "pre",
+          }}
+          key={index}
+        >
+          {item + "\n"}
+        </span>
+      );
+    });
     return result;
   }
-
-
 
   render() {
     if (this.state.isOpen) {
@@ -167,31 +162,13 @@ export class AnterosAlert extends Component {
       className += " alert-icon";
     }
 
-
-
     return (
-      <ReactCSSTransitionReplace
-        component={FirstChild}
-        transitionName={{
-          appear: "fade",
-          appearActive: "show",
-          enter: "fade",
-          enterActive: "show",
-          leave: "fade",
-          leaveActive: "out"
-        }}
-        transitionAppear={this.props.transitionAppearTimeout > 0}
-        transitionAppearTimeout={this.props.transitionAppearTimeout}
-        transitionEnter={this.props.transitionEnterTimeout > 0}
-        transitionEnterTimeout={this.props.transitionEnterTimeout}
-        transitionLeave={this.props.transitionLeaveTimeout > 0}
-        transitionLeaveTimeout={this.props.transitionLeaveTimeout}
-      >
+      <div>
         {this.state.isOpen == true ? (
           <div
             className={className}
             role="alert"
-            ref={ref => (this.alertRef = ref)}
+            ref={(ref) => (this.alertRef = ref)}
           >
             <button
               type="button"
@@ -210,7 +187,7 @@ export class AnterosAlert extends Component {
             {this.buildItens()}
           </div>
         ) : null}
-      </ReactCSSTransitionReplace>
+      </div>
     );
   }
 }
@@ -241,7 +218,7 @@ AnterosAlert.propTypes = {
   autoCloseInterval: PropTypes.number.isRequired,
   transitionAppearTimeout: PropTypes.number,
   transitionEnterTimeout: PropTypes.number,
-  transitionLeaveTimeout: PropTypes.number
+  transitionLeaveTimeout: PropTypes.number,
 };
 
 AnterosAlert.defaultProps = {
@@ -251,5 +228,5 @@ AnterosAlert.defaultProps = {
   transitionAppearTimeout: 150,
   transitionEnterTimeout: 150,
   transitionLeaveTimeout: 150,
-  autoCloseInterval: 0
+  autoCloseInterval: 0,
 };

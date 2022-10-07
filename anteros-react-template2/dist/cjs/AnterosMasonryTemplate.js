@@ -36,7 +36,7 @@ const anteros_react_containers_1 = require("@anterostecnologia/anteros-react-con
 const anteros_react_loaders_1 = require("@anterostecnologia/anteros-react-loaders");
 const anteros_react_layout_1 = require("@anterostecnologia/anteros-react-layout");
 const anteros_react_navigation_1 = require("@anterostecnologia/anteros-react-navigation");
-const AnterosAlert_1 = require("./AnterosAlert");
+const anteros_react_notification_1 = require("@anterostecnologia/anteros-react-notification");
 const anteros_react_buttons_1 = require("@anterostecnologia/anteros-react-buttons");
 const anteros_react_label_1 = require("@anterostecnologia/anteros-react-label");
 const react_addons_shallow_compare_1 = __importDefault(require("react-addons-shallow-compare"));
@@ -412,7 +412,7 @@ class AnterosMasonryTemplate extends react_1.Component {
         }
         return (react_1.default.createElement(react_1.Fragment, null,
             react_1.default.createElement(anteros_react_core_1.AnterosResizeDetector, { handleWidth: true, handleHeight: true, onResize: this.onResize }),
-            react_1.default.createElement(AnterosAlert_1.AnterosAlert, { danger: true, fill: true, isOpen: this.state.alertIsOpen, autoCloseInterval: 15000, onClose: this.onCloseAlert }, this.state.alertMessage),
+            react_1.default.createElement(anteros_react_notification_1.AnterosAlert, { danger: true, fill: true, isOpen: this.state.alertIsOpen, autoCloseInterval: 15000, onClose: this.onCloseAlert }, this.state.alertMessage),
             react_1.default.createElement(anteros_react_loaders_1.AnterosBlockUi, { tagStyle: {
                     height: "100%",
                 }, styleBlockMessage: {

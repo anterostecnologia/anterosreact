@@ -1,6 +1,6 @@
 {
     "name": "@anterostecnologia/anteros-react-mvc",
-    "version": "1.0.1",
+    "version": "1.0.10",
     "description": "Anteros React MVC - Typescript",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -37,7 +37,7 @@
         "react-router": "^5.3.3",
         "react-router-dom": "^5.3.3",
         "regenerator-runtime": "^0.13.9",
-        "typescript": "^4.5.2",
+        "typescript": "^4.7.4",
         "universal-base64": "^2.1.0"
     },
     "peerDependencies": {

@@ -1,6 +1,6 @@
 {
     "name": "@anterostecnologia/anteros-react-template2",
-    "version": "1.0.1",
+    "version": "1.0.11",
     "description": "Anteros components for React - Template2 Typescript",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -27,7 +27,7 @@
         "@anterostecnologia/anteros-react-loaders": "^2.0.8",
         "@anterostecnologia/anteros-react-masonry": "^2.0.9",
         "@anterostecnologia/anteros-react-navigation": "^2.0.9",
-        "@anterostecnologia/anteros-react-notification": "^2.0.9",
+        "@anterostecnologia/anteros-react-notification": "^2.0.10",
         "@anterostecnologia/anteros-react-querybuilder": "^2.0.49",
         "@anterostecnologia/anteros-react-table": "^2.0.18",
         "@types/node": "^17.0.21",

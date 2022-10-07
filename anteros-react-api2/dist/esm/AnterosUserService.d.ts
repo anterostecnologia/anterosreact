@@ -12,7 +12,9 @@ export declare class UserConfig {
     private _onAuthRefreshError?;
     private _onTokenExpired?;
     private _owner;
-    constructor(url: string, realm: string, clientId: string, clientSecret: string, owner: string, tokenTimeoutHandle?: number, onAuthError?: Function, onAuthLogout?: Function, onAuthLogin?: Function, onAuthRefreshSuccess?: Function, onAuthRefreshError?: Function, onTokenExpired?: Function);
+    private _localStorage;
+    private _secretKey;
+    constructor(url: string, realm: string, clientId: string, clientSecret: string, owner: any, localStorage: any, secretKey: string, tokenTimeoutHandle?: number, onAuthError?: Function, onAuthLogout?: Function, onAuthLogin?: Function, onAuthRefreshSuccess?: Function, onAuthRefreshError?: Function, onTokenExpired?: Function);
     /**
      * Getter url
      * @return {string}
@@ -127,12 +129,32 @@ export declare class UserConfig {
      * Getter owner
      * @return {string}
      */
-    get owner(): string;
+    get owner(): any;
     /**
      * Setter owner
      * @param {string} value
      */
-    set owner(value: string);
+    set owner(value: any);
+    /**
+     * Getter localStorage
+     * @return {any}
+     */
+    get localStorage(): any;
+    /**
+     * Setter localStorage
+     * @param {any} value
+     */
+    set localStorage(value: any);
+    /**
+     * Getter secretKey
+     * @return {string}
+     */
+    get secretKey(): string;
+    /**
+     * Setter secretKey
+     * @param {string} value
+     */
+    set secretKey(value: string);
 }
 export declare type UserData = {
     id: string;
@@ -143,24 +165,19 @@ export declare type UserData = {
     email: string;
     avatar: string | undefined;
     company: any | undefined;
-    owner: string | undefined;
+    owner: any | undefined;
     role: string;
     store: any | undefined;
+    userSystem: any | undefined;
 };
-export interface SuccessCallback {
-    onSuccess(userData: UserData): any;
-}
-export interface ErrorCallback {
-    onError(error: string): any;
-}
 export interface IAnterosUserService {
-    login(username: string, password: string, successCallback: SuccessCallback, errorCallback: ErrorCallback): any;
+    login(username: string, password: string, successCallback: Function, errorCallback: Function): any;
     logout(): any;
     isLoggedIn(): boolean;
     clearToken(): any;
     getToken(): string | undefined;
     isTokenExpired(minValidity?: number): boolean;
-    updateToken(minValidity: number | undefined, successCallback: SuccessCallback | undefined, errorCallback: ErrorCallback | undefined): any;
+    updateToken(minValidity: number | undefined, successCallback: Function | undefined, errorCallback: Function | undefined): any;
     getUsername(): string;
     getEmail(): string;
     getName(): string;
@@ -174,8 +191,10 @@ export interface IAnterosUserService {
     setCompany(company: any): void;
     getStore(): any | undefined;
     setStore(store: any): void;
-    getOwner(): string | undefined;
-    setOwner(owner: string): void;
+    getOwner(): any | undefined;
+    setOwner(owner: any): void;
+    getUserSystem(): any | undefined;
+    setUserSystem(user: any): void;
 }
 export declare class AnterosKeycloakUserService implements IAnterosUserService {
     private userConfig;
@@ -190,21 +209,24 @@ export declare class AnterosKeycloakUserService implements IAnterosUserService {
     private company?;
     private store?;
     private owner?;
+    private userSystem?;
     constructor(config: UserConfig);
     getUserData(): UserData;
-    login(username: string, password: string, successCallback: SuccessCallback | undefined, errorCallback: ErrorCallback | undefined): void;
+    login(username: string, password: string, successCallback: Function | undefined, errorCallback: Function | undefined): void;
     logout(): void;
     isLoggedIn(): boolean;
     getToken(): string | undefined;
     setToken(token: string | undefined, refreshToken: string | undefined, idToken: string | undefined, timeLocal: any): void;
     getRole(): any;
     decodeToken(str: any): any;
-    updateToken(minValidity: number | undefined, successCallback: SuccessCallback, errorCallback: ErrorCallback): void;
+    updateToken(minValidity: number | undefined, successCallback: Function, errorCallback: Function): void;
     getStore(): any | undefined;
     setStore(store: any): void;
     getCompany(): any | undefined;
     setCompany(company: any): void;
-    getOwner(): string | undefined;
+    getUserSystem(): any | undefined;
+    setUserSystem(user: any): void;
+    getOwner(): any | undefined;
     setOwner(owner: any): void;
     getUsername(): string;
     getEmail(): string;

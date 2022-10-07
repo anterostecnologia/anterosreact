@@ -29,7 +29,7 @@ import {
   AnterosRow,
 } from "@anterostecnologia/anteros-react-layout";
 import { AnterosPagination } from "@anterostecnologia/anteros-react-navigation";
-import { AnterosAlert } from "./AnterosAlert";
+import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
 import shallowCompare from "react-addons-shallow-compare";

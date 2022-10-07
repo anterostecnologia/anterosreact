@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModalSize = exports.AnterosFormModalTemplate = exports.AnterosFormComponent = exports.AnterosFormTemplate = exports.AnterosMainLayoutTemplate = exports.AnterosMasonryTemplate = exports.AnterosSearchTemplate = exports.AnterosTableTemplate = void 0;
+exports.AnterosReactComponent = exports.ModalSize = exports.AnterosFormModalTemplate = exports.AnterosFormComponent = exports.AnterosFormTemplate = exports.AnterosMainLayoutTemplate = exports.AnterosMasonryTemplate = exports.AnterosSearchTemplate = exports.AnterosTableTemplate = void 0;
 const AnterosFormComponent_1 = require("./AnterosFormComponent");
 Object.defineProperty(exports, "AnterosFormComponent", { enumerable: true, get: function () { return AnterosFormComponent_1.AnterosFormComponent; } });
 const AnterosFormModalTemplate_1 = require("./AnterosFormModalTemplate");
@@ -16,4 +16,6 @@ const AnterosSearchTemplate_1 = require("./AnterosSearchTemplate");
 Object.defineProperty(exports, "AnterosSearchTemplate", { enumerable: true, get: function () { return AnterosSearchTemplate_1.AnterosSearchTemplate; } });
 const AnterosTableTemplate_1 = require("./AnterosTableTemplate");
 Object.defineProperty(exports, "AnterosTableTemplate", { enumerable: true, get: function () { return AnterosTableTemplate_1.AnterosTableTemplate; } });
+const AnterosReactComponent_1 = require("./AnterosReactComponent");
+Object.defineProperty(exports, "AnterosReactComponent", { enumerable: true, get: function () { return AnterosReactComponent_1.AnterosReactComponent; } });
 //# sourceMappingURL=index.js.map

@@ -72,7 +72,7 @@ interface AnterosSearchTemplateProps<T extends AnterosEntity, TypeID> {
   positionUserActions: PositionUserActions;
   fieldsFilter: ReactNode | undefined;
   userActions?: ReactNode | undefined;
-  remoteResource: IAnterosRemoteResource<T, TypeID>;
+  remoteResource?: IAnterosRemoteResource<T, TypeID>;
   labelButtonOk: string;
   labelButtonCancel: string;
   isCumulativeSelection: boolean;
@@ -213,13 +213,13 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
     } else {
       this._dataSource = new AnterosRemoteDatasource();
       this._dataSource.setAjaxPostConfigHandler((entity: T) => {
-        return this.props.remoteResource.save(entity);
+        return this.props.remoteResource!.save(entity);
       });
       this._dataSource.setValidatePostResponse((response) => {
         return response.data !== undefined;
       });
       this._dataSource.setAjaxDeleteConfigHandler((entity: T) => {
-        return this.props.remoteResource.delete(entity);
+        return this.props.remoteResource!.delete(entity);
       });
       this._dataSource.setValidateDeleteResponse((response) => {
         return response.data !== undefined;
@@ -396,7 +396,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
         );
       }
       if (!result) {
-        result = this.props.remoteResource.findWithFilter(
+        result = this.props.remoteResource!.findWithFilter(
           filter.toJSON(),
           page,
           this.props.pageSize,
@@ -420,7 +420,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
       );
     }
     if (!result) {
-      result = this.props.remoteResource.findAll(
+      result = this.props.remoteResource!.findAll(
         page,
         this.props.pageSize,
         this.getSortFields(),
@@ -444,7 +444,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
       );
     }
     if (!result) {
-      return this.props.remoteResource.findMultipleFields(
+      return this.props.remoteResource!.findMultipleFields(
         currentFilter.filter.quickFilterText,
         currentFilter.filter.quickFilterFieldsText,
         page,

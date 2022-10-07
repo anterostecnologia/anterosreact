@@ -4,10 +4,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+//@ts-nocheck
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import { AnterosCard, HeaderActions, } from "@anterostecnologia/anteros-react-containers";
-import { connect } from "react-redux";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { boundClass, AnterosResizeDetector, } from "@anterostecnologia/anteros-react-core";
 import { AnterosBlockUi } from "@anterostecnologia/anteros-react-loaders";
@@ -20,9 +20,17 @@ let AnterosView = class AnterosView extends Component {
     constructor(props) {
         super(props);
         this._controller = props.controller;
-        // this.state = {
-        //   loading: false
-        // }
+        this._datasourceEvents = [];
+    }
+    registerDatasourceEvent(ds, event, fn) {
+        ds.addEventListener(event, fn);
+        this._datasourceEvents.push({ ds, event, fn });
+    }
+    componentWillUnmount() {
+        this._datasourceEvents.map((record) => {
+            record.ds.removeEventListener(record.event, record.fn);
+            return null;
+        });
     }
     getViewHeight() {
         return "calc(100% - 100px)";
@@ -92,12 +100,13 @@ AnterosView = __decorate([
     boundClass
 ], AnterosView);
 export { AnterosView };
-export const connectViewWithStore = (controller) => {
+export function makeDefaultReduxPropsView(controller) {
     const mapStateToProps = (state) => {
-        let dataSource, currentFilter = undefined, activeFilterIndex = -1, needRefresh = false, needUpdateView = false, user;
+        let dataSource, dataSourceEdition, currentFilter = undefined, activeFilterIndex = -1, needRefresh = false, needUpdateView = false, user;
         let reducer = state[controller.getResource().getReducerName()];
         if (reducer) {
             dataSource = reducer.dataSource;
+            dataSourceEdition = reducer.dataSourceEdition;
             currentFilter = reducer.currentFilter;
             activeFilterIndex = reducer.activeFilterIndex;
             needRefresh = reducer.needRefresh;
@@ -109,11 +118,13 @@ export const connectViewWithStore = (controller) => {
         }
         return {
             dataSource: dataSource,
+            dataSourceEdition: dataSourceEdition,
             currentFilter: currentFilter,
             activeFilterIndex: activeFilterIndex,
             user: user,
             needRefresh: needRefresh,
             needUpdateView: needUpdateView,
+            controller: controller,
         };
     };
     const mapDispatchToProps = (dispatch) => {
@@ -123,6 +134,9 @@ export const connectViewWithStore = (controller) => {
             },
             setDatasource: (dataSource) => {
                 dispatch(controller.getResource().actions.setDatasource(dataSource));
+            },
+            setDatasourceEdition: (dataSource) => {
+                dispatch(controller.getResource().actions.setDatasourceEdition(dataSource));
             },
             hideTour: () => {
                 dispatch({ type: "HIDE_TOUR" });
@@ -134,11 +148,6 @@ export const connectViewWithStore = (controller) => {
             },
         };
     };
-    return (ViewComponent) => {
-        const HC = (props) => {
-            return React.createElement(ViewComponent, Object.assign({}, props, { controller: controller }));
-        };
-        return connect(mapStateToProps, mapDispatchToProps)(HC);
-    };
-};
+    return { mapStateToProps, mapDispatchToProps };
+}
 //# sourceMappingURL=AnterosView.js.map

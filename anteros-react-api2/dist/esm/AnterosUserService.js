@@ -4,7 +4,7 @@ import qs from "qs";
 import "regenerator-runtime/runtime";
 import { processErrorMessage } from "./AnterosErrorMessageHelper";
 export class UserConfig {
-    constructor(url, realm, clientId, clientSecret, owner, tokenTimeoutHandle, onAuthError, onAuthLogout, onAuthLogin, onAuthRefreshSuccess, onAuthRefreshError, onTokenExpired) {
+    constructor(url, realm, clientId, clientSecret, owner, localStorage, secretKey, tokenTimeoutHandle, onAuthError, onAuthLogout, onAuthLogin, onAuthRefreshSuccess, onAuthRefreshError, onTokenExpired) {
         this._url = url;
         this._realm = realm;
         this._clientId = clientId;
@@ -17,6 +17,8 @@ export class UserConfig {
         this._onAuthRefreshSuccess = onAuthRefreshSuccess;
         this._onAuthRefreshError = onAuthRefreshError;
         this._onTokenExpired = onTokenExpired;
+        this._localStorage = localStorage;
+        this._secretKey = secretKey;
     }
     /**
      * Getter url
@@ -186,6 +188,34 @@ export class UserConfig {
     set owner(value) {
         this._owner = value;
     }
+    /**
+     * Getter localStorage
+     * @return {any}
+     */
+    get localStorage() {
+        return this._localStorage;
+    }
+    /**
+     * Setter localStorage
+     * @param {any} value
+     */
+    set localStorage(value) {
+        this._localStorage = value;
+    }
+    /**
+     * Getter secretKey
+     * @return {string}
+     */
+    get secretKey() {
+        return this._secretKey;
+    }
+    /**
+     * Setter secretKey
+     * @param {string} value
+     */
+    set secretKey(value) {
+        this._secretKey = value;
+    }
 }
 export class AnterosKeycloakUserService {
     constructor(config) {
@@ -206,6 +236,7 @@ export class AnterosKeycloakUserService {
             owner: this.getOwner(),
             role: this.getRole(),
             store: this.getStore(),
+            userSystem: this.getUserSystem(),
         };
     }
     login(username, password, successCallback, errorCallback) {
@@ -231,23 +262,25 @@ export class AnterosKeycloakUserService {
             timeLocal = (timeLocal + new Date().getTime()) / 2;
             var tokenResponse = response.data;
             this.setToken(tokenResponse["access_token"], tokenResponse["refresh_token"], tokenResponse["id_token"], timeLocal);
-            successCallback === null || successCallback === void 0 ? void 0 : successCallback.onSuccess({
-                id: this.getId(),
-                userName: this.getUsername(),
-                token: tokenResponse,
-                name: this.getName(),
-                fullName: this.getFullName(),
-                email: this.getEmail(),
-                avatar: this.getAvatar(),
-                company: this.getCompany(),
-                owner: this.getOwner(),
-                role: this.getRole(),
-                store: this.getStore(),
-            });
+            successCallback &&
+                successCallback({
+                    id: this.getId(),
+                    userName: this.getUsername(),
+                    token: tokenResponse,
+                    name: this.getName(),
+                    fullName: this.getFullName(),
+                    email: this.getEmail(),
+                    avatar: this.getAvatar(),
+                    company: this.getCompany(),
+                    owner: this.getOwner(),
+                    role: this.getRole(),
+                    store: this.getStore(),
+                    userSystem: this.getUserSystem(),
+                });
         })
             .catch((error) => {
             this.clearToken();
-            errorCallback === null || errorCallback === void 0 ? void 0 : errorCallback.onError(processErrorMessage(error));
+            errorCallback && errorCallback(processErrorMessage(error));
         });
     }
     logout() {
@@ -353,7 +386,7 @@ export class AnterosKeycloakUserService {
             console.log("[OAUTH2] Token refresh: o token expirou");
         }
         if (!refreshToken) {
-            successCallback.onSuccess(this.tokenParsed);
+            successCallback && successCallback(this.tokenParsed);
         }
         else {
             var data = qs.stringify({
@@ -378,7 +411,7 @@ export class AnterosKeycloakUserService {
                 var tokenResponse = JSON.parse(response.data);
                 this.setToken(tokenResponse["access_token"], tokenResponse["refresh_token"], tokenResponse["id_token"], timeLocal);
                 successCallback &&
-                    (successCallback === null || successCallback === void 0 ? void 0 : successCallback.onSuccess({
+                    successCallback({
                         id: this.getId(),
                         userName: this.getUsername(),
                         token: tokenResponse,
@@ -390,10 +423,11 @@ export class AnterosKeycloakUserService {
                         owner: this.getOwner(),
                         role: this.getRole(),
                         store: this.getStore(),
-                    }));
+                        userSystem: this.getUserSystem(),
+                    });
             })
                 .catch((error) => {
-                errorCallback && (errorCallback === null || errorCallback === void 0 ? void 0 : errorCallback.onError(processErrorMessage(error)));
+                errorCallback && errorCallback(processErrorMessage(error));
             });
         }
     }
@@ -408,6 +442,12 @@ export class AnterosKeycloakUserService {
     }
     setCompany(company) {
         this.company = company;
+    }
+    getUserSystem() {
+        return this.userSystem;
+    }
+    setUserSystem(user) {
+        this.userSystem = user;
     }
     getOwner() {
         return this.owner;

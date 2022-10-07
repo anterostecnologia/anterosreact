@@ -7,7 +7,7 @@ import { FooterActions } from "@anterostecnologia/anteros-react-containers";
 import { AnterosBlockUi } from "@anterostecnologia/anteros-react-loaders";
 import { AnterosCol, AnterosRow, } from "@anterostecnologia/anteros-react-layout";
 import { AnterosPagination } from "@anterostecnologia/anteros-react-navigation";
-import { AnterosAlert } from "./AnterosAlert";
+import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
 import { AnterosDataTable } from "@anterostecnologia/anteros-react-table";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
@@ -94,6 +94,9 @@ class AnterosTableTemplate extends Component {
                 this.props.onDidMount();
             }
         }, 100);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState(Object.assign(Object.assign({}, this.state), { alertIsOpen: nextProps.alertIsOpen, alertMessage: nextProps.alertMessage, loading: nextProps.loading }));
     }
     componentWillUnmount() {
         if (this._dataSource) {
@@ -414,6 +417,9 @@ AnterosTableTemplate.defaultProps = {
     positionUserActions: "first",
     userActions: undefined,
     allowRemove: true,
+    alertIsOpen: false,
+    alertMessage: undefined,
+    loading: false,
 };
 class UserActions extends Component {
     getLabelButtonEdit() {

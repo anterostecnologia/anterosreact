@@ -29,11 +29,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectViewWithStore = exports.AnterosView = exports.SEARCH = exports.VIEW = exports.EDIT = exports.ADD = void 0;
+exports.makeDefaultReduxPropsView = exports.AnterosView = exports.SEARCH = exports.VIEW = exports.EDIT = exports.ADD = void 0;
+//@ts-nocheck
 const react_1 = __importStar(require("react"));
 const react_router_dom_1 = require("react-router-dom");
 const anteros_react_containers_1 = require("@anterostecnologia/anteros-react-containers");
-const react_redux_1 = require("react-redux");
 const anteros_react_buttons_1 = require("@anterostecnologia/anteros-react-buttons");
 const anteros_react_core_1 = require("@anterostecnologia/anteros-react-core");
 const anteros_react_loaders_1 = require("@anterostecnologia/anteros-react-loaders");
@@ -46,9 +46,17 @@ let AnterosView = class AnterosView extends react_1.Component {
     constructor(props) {
         super(props);
         this._controller = props.controller;
-        // this.state = {
-        //   loading: false
-        // }
+        this._datasourceEvents = [];
+    }
+    registerDatasourceEvent(ds, event, fn) {
+        ds.addEventListener(event, fn);
+        this._datasourceEvents.push({ ds, event, fn });
+    }
+    componentWillUnmount() {
+        this._datasourceEvents.map((record) => {
+            record.ds.removeEventListener(record.event, record.fn);
+            return null;
+        });
     }
     getViewHeight() {
         return "calc(100% - 100px)";
@@ -118,12 +126,13 @@ AnterosView = __decorate([
     anteros_react_core_1.boundClass
 ], AnterosView);
 exports.AnterosView = AnterosView;
-const connectViewWithStore = (controller) => {
+function makeDefaultReduxPropsView(controller) {
     const mapStateToProps = (state) => {
-        let dataSource, currentFilter = undefined, activeFilterIndex = -1, needRefresh = false, needUpdateView = false, user;
+        let dataSource, dataSourceEdition, currentFilter = undefined, activeFilterIndex = -1, needRefresh = false, needUpdateView = false, user;
         let reducer = state[controller.getResource().getReducerName()];
         if (reducer) {
             dataSource = reducer.dataSource;
+            dataSourceEdition = reducer.dataSourceEdition;
             currentFilter = reducer.currentFilter;
             activeFilterIndex = reducer.activeFilterIndex;
             needRefresh = reducer.needRefresh;
@@ -135,11 +144,13 @@ const connectViewWithStore = (controller) => {
         }
         return {
             dataSource: dataSource,
+            dataSourceEdition: dataSourceEdition,
             currentFilter: currentFilter,
             activeFilterIndex: activeFilterIndex,
             user: user,
             needRefresh: needRefresh,
             needUpdateView: needUpdateView,
+            controller: controller,
         };
     };
     const mapDispatchToProps = (dispatch) => {
@@ -149,6 +160,9 @@ const connectViewWithStore = (controller) => {
             },
             setDatasource: (dataSource) => {
                 dispatch(controller.getResource().actions.setDatasource(dataSource));
+            },
+            setDatasourceEdition: (dataSource) => {
+                dispatch(controller.getResource().actions.setDatasourceEdition(dataSource));
             },
             hideTour: () => {
                 dispatch({ type: "HIDE_TOUR" });
@@ -160,12 +174,7 @@ const connectViewWithStore = (controller) => {
             },
         };
     };
-    return (ViewComponent) => {
-        const HC = (props) => {
-            return react_1.default.createElement(ViewComponent, Object.assign({}, props, { controller: controller }));
-        };
-        return (0, react_redux_1.connect)(mapStateToProps, mapDispatchToProps)(HC);
-    };
-};
-exports.connectViewWithStore = connectViewWithStore;
+    return { mapStateToProps, mapDispatchToProps };
+}
+exports.makeDefaultReduxPropsView = makeDefaultReduxPropsView;
 //# sourceMappingURL=AnterosView.js.map

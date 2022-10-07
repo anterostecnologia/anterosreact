@@ -29,16 +29,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectSearchViewWithStore = exports.AnterosSearchView = exports.SEARCH = exports.VIEW = exports.EDIT = exports.ADD = void 0;
+exports.makeDefaultReduxPropsSearchView = exports.AnterosSearchView = void 0;
+//@ts-nocheck
 const react_1 = __importStar(require("react"));
-const react_redux_1 = require("react-redux");
 const anteros_react_core_1 = require("@anterostecnologia/anteros-react-core");
 const anteros_react_containers_1 = require("@anterostecnologia/anteros-react-containers");
 const anteros_react_template2_1 = require("@anterostecnologia/anteros-react-template2");
-exports.ADD = "add";
-exports.EDIT = "edit";
-exports.VIEW = "view";
-exports.SEARCH = "search";
 let AnterosSearchView = class AnterosSearchView extends react_1.Component {
     constructor(props) {
         super(props);
@@ -90,7 +86,7 @@ AnterosSearchView = __decorate([
     anteros_react_core_1.boundClass
 ], AnterosSearchView);
 exports.AnterosSearchView = AnterosSearchView;
-const connectSearchViewWithStore = (controller) => {
+function makeDefaultReduxPropsSearchView(controller) {
     const mapStateToProps = (state) => {
         let dataSource, currentFilter = undefined, activeFilterIndex = -1, needRefresh = false, needUpdateView = false, user;
         let reducer = state[controller.getResource().getSearchReducerName()];
@@ -112,6 +108,7 @@ const connectSearchViewWithStore = (controller) => {
             user: user,
             needRefresh: needRefresh,
             needUpdateView: needUpdateView,
+            controller: controller,
         };
     };
     const mapDispatchToProps = (dispatch) => {
@@ -129,12 +126,7 @@ const connectSearchViewWithStore = (controller) => {
             },
         };
     };
-    return (ViewComponent) => {
-        const HC = (props) => {
-            return react_1.default.createElement(ViewComponent, Object.assign({}, props, { controller: controller }));
-        };
-        return (0, react_redux_1.connect)(mapStateToProps, mapDispatchToProps)(HC);
-    };
-};
-exports.connectSearchViewWithStore = connectSearchViewWithStore;
+    return { mapStateToProps, mapDispatchToProps };
+}
+exports.makeDefaultReduxPropsSearchView = makeDefaultReduxPropsSearchView;
 //# sourceMappingURL=AnterosSearchView.js.map

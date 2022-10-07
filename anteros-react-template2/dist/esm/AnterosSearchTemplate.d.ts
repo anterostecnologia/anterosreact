@@ -29,7 +29,7 @@ interface AnterosSearchTemplateProps<T extends AnterosEntity, TypeID> {
     positionUserActions: PositionUserActions;
     fieldsFilter: ReactNode | undefined;
     userActions?: ReactNode | undefined;
-    remoteResource: IAnterosRemoteResource<T, TypeID>;
+    remoteResource?: IAnterosRemoteResource<T, TypeID>;
     labelButtonOk: string;
     labelButtonCancel: string;
     isCumulativeSelection: boolean;

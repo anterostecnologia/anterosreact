@@ -76,6 +76,12 @@ export declare function makeDefaultReduxActions(_actionName: any): {
             dataSource: any;
         };
     };
+    setDatasourceEdition(dataSource: any): {
+        type: string;
+        payload: {
+            dataSource: any;
+        };
+    };
     setFilter(currentFilter: any, activeFilterIndex: any): {
         type: string;
         payload: {

@@ -16,14 +16,18 @@ export class UserConfig {
   private _onAuthRefreshSuccess?: Function;
   private _onAuthRefreshError?: Function;
   private _onTokenExpired?: Function;
-  private _owner: string;
+  private _owner: any;
+  private _localStorage: any;
+  private _secretKey: string;
 
   constructor(
     url: string,
     realm: string,
     clientId: string,
     clientSecret: string,
-    owner: string,
+    owner: any,
+    localStorage: any,
+    secretKey: string,
     tokenTimeoutHandle?: number,
     onAuthError?: Function,
     onAuthLogout?: Function,
@@ -44,6 +48,8 @@ export class UserConfig {
     this._onAuthRefreshSuccess = onAuthRefreshSuccess;
     this._onAuthRefreshError = onAuthRefreshError;
     this._onTokenExpired = onTokenExpired;
+    this._localStorage = localStorage;
+    this._secretKey = secretKey;
   }
 
   /**
@@ -226,7 +232,7 @@ export class UserConfig {
    * Getter owner
    * @return {string}
    */
-  public get owner(): string {
+  public get owner(): any {
     return this._owner;
   }
 
@@ -234,8 +240,39 @@ export class UserConfig {
    * Setter owner
    * @param {string} value
    */
-  public set owner(value: string) {
+  public set owner(value: any) {
     this._owner = value;
+  }
+  /**
+   * Getter localStorage
+   * @return {any}
+   */
+  public get localStorage(): any {
+    return this._localStorage;
+  }
+
+  /**
+   * Setter localStorage
+   * @param {any} value
+   */
+  public set localStorage(value: any) {
+    this._localStorage = value;
+  }
+
+  /**
+   * Getter secretKey
+   * @return {string}
+   */
+  public get secretKey(): string {
+    return this._secretKey;
+  }
+
+  /**
+   * Setter secretKey
+   * @param {string} value
+   */
+  public set secretKey(value: string) {
+    this._secretKey = value;
   }
 }
 
@@ -248,25 +285,18 @@ export type UserData = {
   email: string;
   avatar: string | undefined;
   company: any | undefined;
-  owner: string | undefined;
+  owner: any | undefined;
   role: string;
   store: any | undefined;
+  userSystem: any | undefined;
 };
-
-export interface SuccessCallback {
-  onSuccess(userData: UserData);
-}
-
-export interface ErrorCallback {
-  onError(error: string);
-}
 
 export interface IAnterosUserService {
   login(
     username: string,
     password: string,
-    successCallback: SuccessCallback,
-    errorCallback: ErrorCallback
+    successCallback: Function,
+    errorCallback: Function
   );
   logout();
   isLoggedIn(): boolean;
@@ -275,8 +305,8 @@ export interface IAnterosUserService {
   isTokenExpired(minValidity?: number): boolean;
   updateToken(
     minValidity: number | undefined,
-    successCallback: SuccessCallback | undefined,
-    errorCallback: ErrorCallback | undefined
+    successCallback: Function | undefined,
+    errorCallback: Function | undefined
   );
   getUsername(): string;
   getEmail(): string;
@@ -291,8 +321,10 @@ export interface IAnterosUserService {
   setCompany(company: any): void;
   getStore(): any | undefined;
   setStore(store: any): void;
-  getOwner(): string | undefined;
-  setOwner(owner: string): void;
+  getOwner(): any | undefined;
+  setOwner(owner: any): void;
+  getUserSystem(): any | undefined;
+  setUserSystem(user: any): void;
 }
 
 export class AnterosKeycloakUserService implements IAnterosUserService {
@@ -307,7 +339,8 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
   private timeSkew?: number;
   private company?: any;
   private store?: any;
-  private owner?: string;
+  private owner?: any;
+  private userSystem?: any;
 
   constructor(config: UserConfig) {
     this.userConfig = config;
@@ -327,14 +360,15 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
       owner: this.getOwner(),
       role: this.getRole(),
       store: this.getStore(),
+      userSystem: this.getUserSystem(),
     };
   }
 
   login(
     username: string,
     password: string,
-    successCallback: SuccessCallback | undefined,
-    errorCallback: ErrorCallback | undefined
+    successCallback: Function | undefined,
+    errorCallback: Function | undefined
   ) {
     var data = qs.stringify({
       client_id: this.userConfig.clientId,
@@ -363,23 +397,25 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
           tokenResponse["id_token"],
           timeLocal
         );
-        successCallback?.onSuccess({
-          id: this.getId(),
-          userName: this.getUsername(),
-          token: tokenResponse,
-          name: this.getName(),
-          fullName: this.getFullName(),
-          email: this.getEmail(),
-          avatar: this.getAvatar(),
-          company: this.getCompany(),
-          owner: this.getOwner(),
-          role: this.getRole(),
-          store: this.getStore(),
-        });
+        successCallback &&
+          successCallback({
+            id: this.getId(),
+            userName: this.getUsername(),
+            token: tokenResponse,
+            name: this.getName(),
+            fullName: this.getFullName(),
+            email: this.getEmail(),
+            avatar: this.getAvatar(),
+            company: this.getCompany(),
+            owner: this.getOwner(),
+            role: this.getRole(),
+            store: this.getStore(),
+            userSystem: this.getUserSystem(),
+          });
       })
       .catch((error) => {
         this.clearToken();
-        errorCallback?.onError(processErrorMessage(error));
+        errorCallback && errorCallback(processErrorMessage(error));
       });
   }
 
@@ -502,8 +538,8 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
 
   updateToken(
     minValidity: number | undefined,
-    successCallback: SuccessCallback,
-    errorCallback: ErrorCallback
+    successCallback: Function,
+    errorCallback: Function
   ) {
     minValidity = minValidity || 5;
 
@@ -517,7 +553,7 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
     }
 
     if (!refreshToken) {
-      successCallback.onSuccess(this.tokenParsed);
+      successCallback && successCallback(this.tokenParsed);
     } else {
       var data = qs.stringify({
         client_id: this.userConfig.clientId,
@@ -546,7 +582,7 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
             timeLocal
           );
           successCallback &&
-            successCallback?.onSuccess({
+            successCallback({
               id: this.getId(),
               userName: this.getUsername(),
               token: tokenResponse,
@@ -558,10 +594,11 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
               owner: this.getOwner(),
               role: this.getRole(),
               store: this.getStore(),
+              userSystem: this.getUserSystem(),
             });
         })
         .catch((error) => {
-          errorCallback && errorCallback?.onError(processErrorMessage(error));
+          errorCallback && errorCallback(processErrorMessage(error));
         });
     }
   }
@@ -582,11 +619,19 @@ export class AnterosKeycloakUserService implements IAnterosUserService {
     this.company = company;
   }
 
-  getOwner(): string | undefined {
+  getUserSystem(): any | undefined {
+    return this.userSystem;
+  }
+
+  setUserSystem(user: any): void {
+    this.userSystem = user;
+  }
+
+  getOwner(): any | undefined {
     return this.owner;
   }
 
-  setOwner(owner): void {
+  setOwner(owner: any): void {
     this.owner = owner;
   }
 

@@ -4,15 +4,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+//@ts-nocheck
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { boundClass } from "@anterostecnologia/anteros-react-core";
 import { AnterosModal } from "@anterostecnologia/anteros-react-containers";
 import { ModalSize } from "@anterostecnologia/anteros-react-template2";
-export const ADD = "add";
-export const EDIT = "edit";
-export const VIEW = "view";
-export const SEARCH = "search";
 let AnterosSearchView = class AnterosSearchView extends Component {
     constructor(props) {
         super(props);
@@ -64,7 +60,7 @@ AnterosSearchView = __decorate([
     boundClass
 ], AnterosSearchView);
 export { AnterosSearchView };
-export const connectSearchViewWithStore = (controller) => {
+export function makeDefaultReduxPropsSearchView(controller) {
     const mapStateToProps = (state) => {
         let dataSource, currentFilter = undefined, activeFilterIndex = -1, needRefresh = false, needUpdateView = false, user;
         let reducer = state[controller.getResource().getSearchReducerName()];
@@ -86,6 +82,7 @@ export const connectSearchViewWithStore = (controller) => {
             user: user,
             needRefresh: needRefresh,
             needUpdateView: needUpdateView,
+            controller: controller,
         };
     };
     const mapDispatchToProps = (dispatch) => {
@@ -103,11 +100,6 @@ export const connectSearchViewWithStore = (controller) => {
             },
         };
     };
-    return (ViewComponent) => {
-        const HC = (props) => {
-            return React.createElement(ViewComponent, Object.assign({}, props, { controller: controller }));
-        };
-        return connect(mapStateToProps, mapDispatchToProps)(HC);
-    };
-};
+    return { mapStateToProps, mapDispatchToProps };
+}
 //# sourceMappingURL=AnterosSearchView.js.map

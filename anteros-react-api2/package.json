@@ -1,6 +1,6 @@
 {
     "name": "@anterostecnologia/anteros-react-api2",
-    "version": "1.0.7",
+    "version": "1.0.14",
     "description": "Anteros Remote API2",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",

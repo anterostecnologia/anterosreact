@@ -29,7 +29,7 @@ import {
   AnterosRow,
 } from "@anterostecnologia/anteros-react-layout";
 import { AnterosPagination } from "@anterostecnologia/anteros-react-navigation";
-import { AnterosAlert } from "./AnterosAlert";
+import { AnterosAlert } from "@anterostecnologia/anteros-react-notification";
 import { AnterosDataTable } from "@anterostecnologia/anteros-react-table";
 import { AnterosButton } from "@anterostecnologia/anteros-react-buttons";
 import { AnterosLabel } from "@anterostecnologia/anteros-react-label";
@@ -63,13 +63,16 @@ interface AnterosTableTemplateProps<T extends AnterosEntity, TypeID> {
   fieldsFilter: ReactNode | undefined;
   userActions?: ReactNode | undefined;
   positionUserActions?: string | undefined;
-  remoteResource: IAnterosRemoteResource<T, TypeID>;
+  remoteResource?: IAnterosRemoteResource<T, TypeID>;
   labelButtonAdd: string;
   labelButtonEdit: string;
   labelButtonRemove: string;
   labelButtonSelect: string;
   labelButtonView: string;
   allowRemove: boolean;
+  alertIsOpen: boolean;
+  alertMessage: string | undefined;
+  loading: boolean;
   setDatasource(dataSource: AnterosDatasource): void;
   setFilter(filter: any, activeFilterIndex: number): void;
   hideTour(): void;
@@ -155,6 +158,9 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
     positionUserActions: "first",
     userActions: undefined,
     allowRemove: true,
+    alertIsOpen: false,
+    alertMessage: undefined,
+    loading: false,
   };
 
   constructor(props: AnterosTableTemplateProps<T, TypeID>) {
@@ -217,13 +223,13 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
     } else {
       this._dataSource = new AnterosRemoteDatasource();
       this._dataSource.setAjaxPostConfigHandler((entity: T) => {
-        return this.props.remoteResource.save(entity);
+        return this.props.remoteResource!.save(entity);
       });
       this._dataSource.setValidatePostResponse((response) => {
         return response.data !== undefined;
       });
       this._dataSource.setAjaxDeleteConfigHandler((entity: T) => {
-        return this.props.remoteResource.delete(entity);
+        return this.props.remoteResource!.delete(entity);
       });
       this._dataSource.setValidateDeleteResponse((response) => {
         return response.data !== undefined;
@@ -259,6 +265,15 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
         this.props.onDidMount();
       }
     }, 100);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      ...this.state,
+      alertIsOpen: nextProps.alertIsOpen,
+      alertMessage: nextProps.alertMessage,
+      loading: nextProps.loading,
+    });
   }
 
   componentWillUnmount() {
@@ -480,7 +495,7 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
         );
       }
       if (!result) {
-        result = this.props.remoteResource.findWithFilter(
+        result = this.props.remoteResource!.findWithFilter(
           filter.toJSON(),
           page,
           this.props.pageSize,
@@ -504,7 +519,7 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
       );
     }
     if (!result) {
-      result = this.props.remoteResource.findAll(
+      result = this.props.remoteResource!.findAll(
         page,
         this.props.pageSize,
         this.getSortFields(),
@@ -528,7 +543,7 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
       );
     }
     if (!result) {
-      return this.props.remoteResource.findMultipleFields(
+      return this.props.remoteResource!.findMultipleFields(
         currentFilter.filter.quickFilterText,
         currentFilter.filter.quickFilterFieldsText,
         page,

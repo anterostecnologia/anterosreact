@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { Component, ReactNode, FC } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { UserData, AnterosEntity } from "@anterostecnologia/anteros-react-api2";
@@ -7,11 +8,6 @@ import { AnterosDatasource } from "@anterostecnologia/anteros-react-datasource";
 import { boundClass } from "@anterostecnologia/anteros-react-core";
 import { AnterosModal } from "@anterostecnologia/anteros-react-containers";
 import { ModalSize } from "@anterostecnologia/anteros-react-template2";
-
-export const ADD = "add";
-export const EDIT = "edit";
-export const VIEW = "view";
-export const SEARCH = "search";
 
 export interface AnterosSearchViewProps<E extends AnterosEntity, TypeID> {
   user: UserData;
@@ -30,13 +26,18 @@ export interface AnterosSearchViewProps<E extends AnterosEntity, TypeID> {
   history: RouteComponentProps["history"];
   onClickOk(event, selectedRecords): void;
   onClickCancel(event): void;
+  parameters?: any;
 }
+
+export interface AnterosSearchViewState {}
 
 @boundClass
 abstract class AnterosSearchView<
   E extends AnterosEntity,
-  TypeID
-> extends Component<AnterosSearchViewProps<E, TypeID>> {
+  TypeID,
+  Props extends AnterosSearchViewProps<E, TypeID>,
+  State extends AnterosSearchViewState
+> extends Component<Props, State> {
   private _controller!: AnterosController<E, TypeID>;
 
   static defaultProps = {
@@ -44,7 +45,7 @@ abstract class AnterosSearchView<
     isOpenModal: false,
     needUpdateView: false,
   };
-  constructor(props: AnterosSearchViewProps<E, TypeID>) {
+  constructor(props: Props) {
     super(props);
     this._controller = props.controller!;
   }
@@ -108,9 +109,7 @@ abstract class AnterosSearchView<
 
 export { AnterosSearchView };
 
-export const connectSearchViewWithStore = <E extends AnterosEntity, TypeID>(
-  controller: AnterosController<E, TypeID>
-) => {
+export function makeDefaultReduxPropsSearchView(controller) {
   const mapStateToProps = (state) => {
     let dataSource,
       currentFilter = undefined,
@@ -138,6 +137,7 @@ export const connectSearchViewWithStore = <E extends AnterosEntity, TypeID>(
       user: user,
       needRefresh: needRefresh,
       needUpdateView: needUpdateView,
+      controller: controller,
     };
   };
 
@@ -160,12 +160,5 @@ export const connectSearchViewWithStore = <E extends AnterosEntity, TypeID>(
       },
     };
   };
-
-  return (ViewComponent) => {
-    const HC: FC = (props): JSX.Element => {
-      return <ViewComponent {...props} controller={controller} />;
-    };
-
-    return connect(mapStateToProps, mapDispatchToProps)(HC);
-  };
-};
+  return { mapStateToProps, mapDispatchToProps };
+}

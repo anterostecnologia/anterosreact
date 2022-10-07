@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { Component, ReactNode, FC } from "react";
 import { Switch, Route } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
@@ -29,10 +30,12 @@ export interface AnterosViewProps<E extends AnterosEntity, TypeID>
   caption: string;
   needRefresh: boolean;
   dataSource: AnterosDatasource;
+  dataSourceEdition: AnterosDatasource;
   currentFilter: any | undefined;
   activeFilterIndex: number;
   needUpdateView: boolean;
   setDatasource(dataSource: AnterosDatasource): any;
+  setDatasourceEdition(dataSource: AnterosDatasource): any;
   setNeedRefresh(): void;
   hideTour(): any;
   setFilter(currentFilter: any, activeFilterIndex: number): any;
@@ -40,6 +43,7 @@ export interface AnterosViewProps<E extends AnterosEntity, TypeID>
   loading: boolean;
   loadingColor: string;
   loadingBackgroundColor: string;
+  parameters?: any;
 }
 
 export interface AnterosViewState {
@@ -54,6 +58,7 @@ abstract class AnterosView<
   State extends AnterosViewState
 > extends Component<Props, State> {
   private _controller!: AnterosController<E, TypeID>;
+  private _datasourceEvents: any[];
 
   static defaultProps = {
     loadingMessage: "Aguarde...",
@@ -64,9 +69,7 @@ abstract class AnterosView<
   constructor(props: Props) {
     super(props);
     this._controller = props.controller;
-    // this.state = {
-    //   loading: false
-    // }
+    this._datasourceEvents = [];
   }
 
   public abstract getRouteName(): string;
@@ -75,6 +78,18 @@ abstract class AnterosView<
   public abstract getCaption(): string;
   public abstract onCloseView(): void;
   public abstract isCloseViewEnabled(): boolean;
+
+  registerDatasourceEvent(ds, event, fn) {
+    ds.addEventListener(event, fn);
+    this._datasourceEvents.push({ ds, event, fn });
+  }
+
+  componentWillUnmount() {
+    this._datasourceEvents.map((record) => {
+      record.ds.removeEventListener(record.event, record.fn);
+      return null;
+    });
+  }
 
   public getViewHeight(): any {
     return "calc(100% - 100px)";
@@ -194,11 +209,10 @@ abstract class AnterosView<
 
 export { AnterosView };
 
-export const connectViewWithStore = <E extends AnterosEntity, TypeID>(
-  controller: AnterosController<E, TypeID>
-) => {
+export function makeDefaultReduxPropsView(controller) {
   const mapStateToProps = (state) => {
     let dataSource,
+      dataSourceEdition,
       currentFilter = undefined,
       activeFilterIndex = -1,
       needRefresh = false,
@@ -207,6 +221,7 @@ export const connectViewWithStore = <E extends AnterosEntity, TypeID>(
     let reducer = state[controller.getResource().getReducerName()];
     if (reducer) {
       dataSource = reducer.dataSource;
+      dataSourceEdition = reducer.dataSourceEdition;
       currentFilter = reducer.currentFilter;
       activeFilterIndex = reducer.activeFilterIndex;
       needRefresh = reducer.needRefresh;
@@ -219,11 +234,13 @@ export const connectViewWithStore = <E extends AnterosEntity, TypeID>(
 
     return {
       dataSource: dataSource,
+      dataSourceEdition: dataSourceEdition,
       currentFilter: currentFilter,
       activeFilterIndex: activeFilterIndex,
       user: user,
       needRefresh: needRefresh,
       needUpdateView: needUpdateView,
+      controller: controller,
     };
   };
 
@@ -234,6 +251,11 @@ export const connectViewWithStore = <E extends AnterosEntity, TypeID>(
       },
       setDatasource: (dataSource) => {
         dispatch(controller.getResource().actions.setDatasource(dataSource));
+      },
+      setDatasourceEdition: (dataSource) => {
+        dispatch(
+          controller.getResource().actions.setDatasourceEdition(dataSource)
+        );
       },
       hideTour: () => {
         dispatch({ type: "HIDE_TOUR" });
@@ -247,12 +269,5 @@ export const connectViewWithStore = <E extends AnterosEntity, TypeID>(
       },
     };
   };
-
-  return (ViewComponent) => {
-    const HC: FC = (props): JSX.Element => {
-      return <ViewComponent {...props} controller={controller} />;
-    };
-
-    return connect(mapStateToProps, mapDispatchToProps)(HC);
-  };
-};
+  return { mapStateToProps, mapDispatchToProps };
+}

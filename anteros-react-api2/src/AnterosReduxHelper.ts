@@ -91,6 +91,14 @@ export function makeDefaultReduxObject(_reducerName) {
       dataSource: payload.dataSource,
       needRefresh: false,
     }),
+    [`SET_DATASOURCE_EDITION_${_reducerName.toUpperCase()}`]: (
+      state,
+      payload
+    ) => ({
+      ...state,
+      dataSource: payload.dataSource,
+      needRefresh: false,
+    }),
     [`SET_FILTER_${_reducerName.toUpperCase()}`]: (state, payload) => ({
       ...state,
       currentFilter: payload.currentFilter,
@@ -109,6 +117,14 @@ export function makeDefaultReduxActions(_actionName) {
     setDatasource(dataSource) {
       return {
         type: `SET_DATASOURCE_${_actionName}`,
+        payload: {
+          dataSource,
+        },
+      };
+    },
+    setDatasourceEdition(dataSource) {
+      return {
+        type: `SET_DATASOURCE_EDITION_${_actionName}`,
         payload: {
           dataSource,
         },

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 import { RouteComponentProps } from "react-router";
 import { UserData, AnterosEntity } from "@anterostecnologia/anteros-react-api2";
 import { AnterosController } from "./AnterosController";
@@ -13,10 +13,12 @@ export interface AnterosViewProps<E extends AnterosEntity, TypeID> extends Route
     caption: string;
     needRefresh: boolean;
     dataSource: AnterosDatasource;
+    dataSourceEdition: AnterosDatasource;
     currentFilter: any | undefined;
     activeFilterIndex: number;
     needUpdateView: boolean;
     setDatasource(dataSource: AnterosDatasource): any;
+    setDatasourceEdition(dataSource: AnterosDatasource): any;
     setNeedRefresh(): void;
     hideTour(): any;
     setFilter(currentFilter: any, activeFilterIndex: number): any;
@@ -24,12 +26,14 @@ export interface AnterosViewProps<E extends AnterosEntity, TypeID> extends Route
     loading: boolean;
     loadingColor: string;
     loadingBackgroundColor: string;
+    parameters?: any;
 }
 export interface AnterosViewState {
     loading: boolean;
 }
 declare abstract class AnterosView<E extends AnterosEntity, TypeID, Props extends AnterosViewProps<E, TypeID>, State extends AnterosViewState> extends Component<Props, State> {
     private _controller;
+    private _datasourceEvents;
     static defaultProps: {
         loadingMessage: string;
         loadingBackgroundColor: string;
@@ -42,6 +46,8 @@ declare abstract class AnterosView<E extends AnterosEntity, TypeID, Props extend
     abstract getCaption(): string;
     abstract onCloseView(): void;
     abstract isCloseViewEnabled(): boolean;
+    registerDatasourceEvent(ds: any, event: any, fn: any): void;
+    componentWillUnmount(): void;
     getViewHeight(): any;
     showHideLoad(show: any): void;
     /**
@@ -58,4 +64,22 @@ declare abstract class AnterosView<E extends AnterosEntity, TypeID, Props extend
     render(): ReactNode;
 }
 export { AnterosView };
-export declare const connectViewWithStore: <E extends AnterosEntity, TypeID>(controller: AnterosController<E, TypeID>) => (ViewComponent: any) => import("react-redux").ConnectedComponent<React.FC<{}>, Omit<{}, never> & import("react-redux").ConnectProps>;
+export declare function makeDefaultReduxPropsView(controller: any): {
+    mapStateToProps: (state: any) => {
+        dataSource: any;
+        dataSourceEdition: any;
+        currentFilter: undefined;
+        activeFilterIndex: number;
+        user: any;
+        needRefresh: boolean;
+        needUpdateView: boolean;
+        controller: any;
+    };
+    mapDispatchToProps: (dispatch: any) => {
+        setNeedRefresh: () => void;
+        setDatasource: (dataSource: any) => void;
+        setDatasourceEdition: (dataSource: any) => void;
+        hideTour: () => void;
+        setFilter: (currentFilter: any, activeFilterIndex: any) => void;
+    };
+};

@@ -1,14 +1,35 @@
 import { AnterosController } from "./AnterosController";
 import {
   AnterosSearchView,
-  connectSearchViewWithStore,
+  makeDefaultReduxPropsSearchView,
+  AnterosSearchViewProps,
+  AnterosSearchViewState,
 } from "./AnterosSearchView";
-import { AnterosView, connectViewWithStore } from "./AnterosView";
+import {
+  AnterosView,
+  makeDefaultReduxPropsView,
+  AnterosViewProps,
+  AnterosViewState,
+  ADD,
+  EDIT,
+  VIEW,
+  SEARCH,
+} from "./AnterosView";
 
 export {
   AnterosController,
   AnterosSearchView,
   AnterosView,
-  connectViewWithStore,
-  connectSearchViewWithStore,
+  makeDefaultReduxPropsView,
+  makeDefaultReduxPropsSearchView,
+  ADD,
+  EDIT,
+  VIEW,
+  SEARCH,
+};
+export type {
+  AnterosViewProps,
+  AnterosViewState,
+  AnterosSearchViewProps,
+  AnterosSearchViewState,
 };

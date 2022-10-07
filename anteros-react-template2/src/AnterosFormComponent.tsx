@@ -7,7 +7,7 @@ export interface AnterosFormComponentProps {}
 export interface AnterosFormComponentState {
   modalOpen: string | undefined;
   lookup: any | undefined;
-  alertIsOpen: boolean;
+  alertIsOpen: boolean | undefined;
   alertMessage: string | undefined;
   fieldName: string | undefined;
 }
