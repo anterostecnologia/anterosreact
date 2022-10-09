@@ -20,6 +20,10 @@ import { AnterosEntity } from "./AnterosEntity";
 import {
   IAnterosRemoteResource,
   AnterosRemoteResource,
+  DELETE,
+  POST,
+  PUTCH,
+  GET
 } from "./AnterosRemoteResource";
 import {
   processErrorMessage,
@@ -41,5 +45,9 @@ export {
   UserData,
   processErrorMessage,
   processDetailErrorMessage,
+  DELETE,
+  GET,
+  PUTCH,
+  POST,
 };
 export type { IAnterosApiClient, IAnterosUserService, RequestConfig };

@@ -109,34 +109,14 @@ export abstract class AnterosFormComponent<
     let _this = this;
     records.forEach((record, _indice) => {
       if (!_this.hasOnDataSource(record, datasource, field, subfield)) {
-        AnterosSweetAlert({
-          title: `O item escolhido está ${
-            record.tpStatus
-              ? record.tpStatus
-              : record.status
-              ? record.status
-              : "INATIVO"
-          }`,
-          text: "Deseja inserir o item mesmo assim?",
-          type: "question",
-          showCancelButton: true,
-          confirmButtonText: "Inserir item",
-          cancelButtonText: "Cancelar",
-          focusCancel: false,
-        })
-          .then(() => {
-            if (callback) {
-              callback(datasource, field, record);
-            } else {
-              this.defaulInsertValueOnDataSource(datasource, field, record);
-            }
-          })
-          .catch((error) => {
-            AnterosSweetAlert(processErrorMessage(error));
-          });
+        if (callback) {
+          callback(datasource, field, record);
+        } else {
+          this.defaulInsertValueOnDataSource(datasource, field, record);
+        }
       } else {
         AnterosSweetAlert({
-          title: "Item já inserido!",
+          title: "Item já foi inserido!",
           text: "",
           type: "warning",
         });

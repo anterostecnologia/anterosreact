@@ -438,8 +438,7 @@ export abstract class AnterosRemoteResource<T extends AnterosEntity, TypeID>
     return new Promise((resolve, reject) => {
       this._apiClient
         .get(this.findOne(value, fieldsToForceLazy))
-        .then((response: any) => {
-          let data = AnterosJacksonParser.convertJsonToObject(response);
+        .then((data: any) => {
           resolve(data);
           if (onSuccess) {
             onSuccess(data);
