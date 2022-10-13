@@ -138,6 +138,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
   private _cardRef: any;
   private _tableRef: any;
   private _filterRef: any;
+  private selectedRecords : Array<any>;
 
   static defaultProps = {
     openDataSourceFilter: true,
@@ -155,6 +156,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
 
   constructor(props: AnterosSearchTemplateProps<T, TypeID>) {
     super(props);
+    this.selectedRecords = [];
     autoBind(this);
     this._dataSourceFilter = this.createDataSourceFilter(props);
 
@@ -211,7 +213,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
         this._dataSource.cancel();
       }
     } else {
-      this._dataSource = new AnterosRemoteDatasource();
+      this._dataSource = new AnterosRemoteDatasource('ds'+this.props.viewName);
       this._dataSource.setAjaxPostConfigHandler((entity: T) => {
         return this.props.remoteResource!.save(entity);
       });
@@ -484,25 +486,55 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
     });
   }
 
+  onSelectRecord(row, data, tableId) {
+    let sr = this.selectedRecords;
+    if (sr === undefined) sr = [];
+    sr.push(data);
+    this.selectedRecords = sr;
+  }
+
+  onUnSelectRecord(row, data, tableId) {
+    for (var i = 0; i < this.selectedRecords.length; i++) {
+      if (this.selectedRecords[i] === data) {
+        this.selectedRecords.splice(i, 1);
+      }
+    }
+  }
+
+  onSelectAllRecords(records, tableId) {
+    this.selectedRecords = [];
+    records.forEach((element) => {
+      this.selectedRecords.push(element);
+    });
+  }
+
+  onUnSelectAllRecords(tableId) {
+    this.selectedRecords = [];
+  }
+
   handleOnSelectRecord(row, data, tableId) {
+    this.onSelectRecord(row,data,tableId);
     if (this.props.onSelectRecord) {
       this.props.onSelectRecord(row, data, tableId);
     }
   }
 
   handleOnUnselectRecord(row, data, tableId) {
+    this.onUnSelectRecord(row,data,tableId);
     if (this.props.onUnselectRecord) {
       this.props.onUnselectRecord(row, data, tableId);
     }
   }
 
   handleOnSelectAllRecords(records, tableId) {
+    this.onSelectAllRecords(records, tableId);
     if (this.props.onSelectAllRecords) {
       this.props.onSelectAllRecords(records, tableId);
     }
   }
 
   handleOnUnselectAllRecords(tableId) {
+    this.onUnSelectAllRecords(tableId);
     if (this.props.onUnselectAllRecords) {
       this.props.onUnselectAllRecords(tableId);
     }
@@ -528,14 +560,14 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
           alertMessage: "Selecione um registro para continuar.",
         });
       } else {
-        if (this.props.selectedRecords) {
-          if (this.props.selectedRecords.length === 0) {
-            this.props.selectedRecords.push(
+        if (this.selectedRecords) {
+          if (this.selectedRecords.length === 0) {
+            this.selectedRecords.push(
               this._dataSource.getCurrentRecord()
             );
           }
         }
-        this.props.onClickOk(event, this.props.selectedRecords);
+        this.props.onClickOk(event, this.selectedRecords);
       }
     } else if (event.target.getAttribute("data-user") === "btnCancel") {
       if (this.props.onClickCancel) {

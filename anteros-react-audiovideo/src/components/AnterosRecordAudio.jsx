@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AnterosButton } from '@anterostecnologia/anteros-react-buttons';
 import { AnterosModal, AnterosDivider } from "@anterostecnologia/anteros-react-containers";
-import { AnterosStatistic } from "@anterostecnologia/anteros-react-dashboard";
+import { AnterosStatistic } from "@anterostecnologia/anteros-react-misc";
 import { AnterosCol, AnterosRow } from '@anterostecnologia/anteros-react-layout';
 import { boundClass, AnterosSweetAlert } from "@anterostecnologia/anteros-react-core";
 import AnterosAudioPlayer from './AnterosAudioPlayer';

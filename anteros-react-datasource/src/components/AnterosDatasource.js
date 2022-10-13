@@ -191,13 +191,17 @@ class AnterosDatasource {
         }
     }
 
+    getDataSourceName() {
+        return this.dataSourceName;
+    }
+
     getData() {
         return this.data;
     }
 
     applyFilter(filter){
         if (!(filter instanceof Function)){
-            throw new AnterosDatasourceError('Um filtro deve ser do tipo Function.');
+            throw new AnterosDatasourceError('Um filtro deve ser do tipo Function. Fonte de dados: '+this.getDataSourceName()+" Método: applyFilter");
         }
         this.filter = filter;
         this.data = this.filter?this.allData.filter(this.filter):[].concat(this.allData);
@@ -259,18 +263,18 @@ class AnterosDatasource {
     }
     gotoRecordByPrimaryKey(values) {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
         if (!values) {
-            throw new AnterosDatasourceError('Informe os valores da chave primária para ir para um registro.');
+            throw new AnterosDatasourceError('Informe os valores da chave primária para ir para um registro. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
         let arrValues = React.Children.toArray(values);
         if (arrValues.length != getPrimaryKeyFields().length) {
-            throw new AnterosDatasourceError('Número de valores da chave primária incorretos.');
+            throw new AnterosDatasourceError('Número de valores da chave primária incorretos. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
 
         if (!this.primaryKeyFields || this.primaryKeyFields.length == 0) {
-            throw new AnterosDatasourceError('Campos da chave primária do Datasource não foram definidas.');
+            throw new AnterosDatasourceError('Campos da chave primária do Datasource não foram definidas. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
 
         if (this.data) {
@@ -305,18 +309,18 @@ class AnterosDatasource {
     }
     gotoRecord(recno) {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
 
         if (recno == undefined || recno < 0) {
-            throw new AnterosDatasourceError('Número do registro informado inválido ' + recno);
+            throw new AnterosDatasourceError('Número do registro informado inválido ' + recno+' Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
         if (this.isEmpty()) {
-            throw new AnterosDatasourceError('Não há registros para posicionar.');
+            throw new AnterosDatasourceError('Não há registros para posicionar. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
 
         if (recno > (this.getTotalRecords() - 1)) {
-            throw new AnterosDatasourceError('Número do registro maior que o total de registros.');
+            throw new AnterosDatasourceError('Número do registro maior que o total de registros. Fonte de dados: '+this.getDataSourceName()+" Método: gotoRecordByPrimaryKey");
         }
 
         this.currentRecno = recno;
@@ -329,7 +333,7 @@ class AnterosDatasource {
             return false;
         }
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: moveRecord");
         }
         let record = this.currentRecord;
         this.data = arrayMove(this.data, oldIndex, newIndex);
@@ -339,7 +343,7 @@ class AnterosDatasource {
     gotoRecordByData(record) {
         let _this = this;
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: moveRecord");
         }
 
         if (this.isEmpty()) {
@@ -363,23 +367,23 @@ class AnterosDatasource {
 
     isEmptyField(fieldName) {
         if (!fieldName) {
-            throw new AnterosDatasourceError('Nome do campo não pode ser nulo.');
+            throw new AnterosDatasourceError('Nome do campo não pode ser nulo. Fonte de dados: '+this.getDataSourceName()+" Método: isEmptyField");
         }
         return this.fieldByName(fieldName) === undefined || this.fieldByName(fieldName) === '';
     }
 
     fieldByName(fieldName, defaultValue) {
         if (!fieldName) {
-            throw new AnterosDatasourceError('Nome do campo inválido.');
+            throw new AnterosDatasourceError('Nome do campo inválido. Fonte de dados: '+this.getDataSourceName()+" Método: fieldByName");
         }
         if (this.isEmpty()) {
             return;
         }
         if (this.isBOF()) {
-            throw new AnterosDatasourceError('Inicio do Datasource encontrado.');
+            throw new AnterosDatasourceError('Inicio do Datasource encontrado. Fonte de dados: '+this.getDataSourceName()+" Método: fieldByName");
         }
-        if (this.isBOF()) {
-            throw new AnterosDatasourceError('Fim do Datasource encontrado.');
+        if (this.isEOF()) {
+            throw new AnterosDatasourceError('Fim do Datasource encontrado. Fonte de dados: '+this.getDataSourceName()+" Método: fieldByName");
         }
 
         let record = this.data[this.currentRecno];
@@ -411,11 +415,11 @@ class AnterosDatasource {
             return;
         }
         if (this.getState() == dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro não está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro não está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: setFieldByName");
         }
 
         if (!fieldName) {
-            throw new AnterosDatasourceError('Nome do campo não pode ser nulo.');
+            throw new AnterosDatasourceError('Nome do campo não pode ser nulo. Fonte de dados: '+this.getDataSourceName()+" Método: setFieldByName");
         }
 
         let newValue = value;
@@ -434,7 +438,7 @@ class AnterosDatasource {
 
     locate(values) {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: locate");
         }
 
         if (this.isEmpty()) {
@@ -478,7 +482,7 @@ class AnterosDatasource {
 
     first() {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: first");
         }
 
         if (this.getTotalRecords() > 0) {
@@ -493,7 +497,7 @@ class AnterosDatasource {
 
     last() {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: last");
         }
 
         if (this.getTotalRecords() > 0) {
@@ -509,14 +513,14 @@ class AnterosDatasource {
 
     next() {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: next");
         }
 
         if (this.isEmpty()) {
-            throw new AnterosDatasourceError('Não há registros. Impossível avançar um registro.');
+            throw new AnterosDatasourceError('Não há registros. Impossível avançar um registro. Fonte de dados: '+this.getDataSourceName()+" Método: next");
         }
         if (this.isEOF()) {
-            throw new AnterosDatasourceError('Não é possível avançar pois você já está no final do DataSource.');
+            throw new AnterosDatasourceError('Não é possível avançar pois você já está no final do DataSource. Fonte de dados: '+this.getDataSourceName()+" Método: next");
         }
         if ((this.currentRecno + 1) > (this.getTotalRecords() - 1)) {
             this.currentRecno = this.currentRecno + 1;
@@ -530,14 +534,14 @@ class AnterosDatasource {
 
     prior() {
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: prior");
         }
 
         if (this.isEmpty()) {
-            throw new AnterosDatasourceError('Não há registros. Impossível voltar um registro.');
+            throw new AnterosDatasourceError('Não há registros. Impossível voltar um registro. Fonte de dados: '+this.getDataSourceName()+" Método: prior");
         }
         if (this.isBOF()) {
-            throw new AnterosDatasourceError('Não é possível retroceder pois você já está no inicio do DataSource.');
+            throw new AnterosDatasourceError('Não é possível retroceder pois você já está no inicio do DataSource. Fonte de dados: '+this.getDataSourceName()+" Método: prior");
         }
         if ((this.currentRecno - 1) < 0) {
             this.currentRecno = -1;
@@ -575,13 +579,13 @@ class AnterosDatasource {
 
     _validateInsert() {
         if (!this.isOpen()) {
-            throw new AnterosDatasourceError('Não é possível realizar INSERT com o dataSource fechado.');
+            throw new AnterosDatasourceError('Não é possível realizar INSERT com o dataSource fechado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateInsert");
         }
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateInsert");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: _validateInsert");
         }
     }
 
@@ -603,19 +607,19 @@ class AnterosDatasource {
 
     _validateDelete() {
         if (this.isEmpty()) {
-            throw new AnterosDatasourceError('Não há registros para remover.');
+            throw new AnterosDatasourceError('Não há registros para remover. Fonte de dados: '+this.getDataSourceName()+" Método: _validateDelete");
         }
         if (this.isBOF()) {
-            throw new AnterosDatasourceError('Inicio do Datasource encontrado.');
+            throw new AnterosDatasourceError('Inicio do Datasource encontrado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateDelete");
         }
         if (this.isBOF()) {
-            throw new AnterosDatasourceError('Fim do Datasource encontrado.');
+            throw new AnterosDatasourceError('Fim do Datasource encontrado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateDelete");
         }
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateDelete");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: _validateDelete");
         }
     }
 
@@ -648,22 +652,22 @@ class AnterosDatasource {
 
     _validateEdit() {
         if (!this.isOpen()) {
-            throw new AnterosDatasourceError('Não é possível realizar EDIT com o dataSource fechado.');
+            throw new AnterosDatasourceError('Não é possível realizar EDIT com o dataSource fechado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateEdit");
         }
         if (this.isEmpty()) {
-            throw new AnterosDatasourceError('Não há registros para editar.');
+            throw new AnterosDatasourceError('Não há registros para editar. Fonte de dados: '+this.getDataSourceName()+" Método: _validateEdit");
         }
         if (this.isBOF()) {
-            throw new AnterosDatasourceError('Inicio do Datasource encontrado.');
+            throw new AnterosDatasourceError('Inicio do Datasource encontrado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateEdit");
         }
         if (this.isEOF()) {
-            throw new AnterosDatasourceError('Fim do Datasource encontrado.');
+            throw new AnterosDatasourceError('Fim do Datasource encontrado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateEdit");
         }
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: _validateEdit");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: _validateEdit");
         }
     }
 
@@ -679,7 +683,7 @@ class AnterosDatasource {
 
     _validatePost() {
         if (this.dsState == dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError("Registro não está sendo inserido ou editado.");
+            throw new AnterosDatasourceError("Registro não está sendo inserido ou editado. Fonte de dados: "+this.getDataSourceName()+" Método: _validatePost");
         }
     }
 
@@ -710,7 +714,7 @@ class AnterosDatasource {
 
     _validateCancel() {
         if (this.dsState == dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError("Registro não está sendo inserido ou editado.");
+            throw new AnterosDatasourceError("Registro não está sendo inserido ou editado. Fonte de dados: "+this.getDataSourceName()+" Método: _validateCancel");
         }
     }
 
@@ -856,7 +860,7 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
     refresh(){
         if (this.getState() != dataSourceConstants.DS_BROWSE) {
-            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado.');
+            throw new AnterosDatasourceError('Registro atual está sendo inserido ou editado. Fonte de dados: '+this.getDataSourceName()+" Método: refresh");
         }
         this.close();
         this.dispatchEvent(dataSourceEvents.BEFORE_OPEN);
@@ -868,10 +872,10 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
     append(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: append");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: append");
         }
 
         if (!this.data) {
@@ -894,13 +898,13 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
     replace(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: replace");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: replace");
         }
         if (!this.data) {
-            throw new AnterosDatasourceError('Fonte de dados vazia não é possível fazer um replace no registro.');
+            throw new AnterosDatasourceError('Fonte de dados vazia não é possível fazer um replace no registro. Fonte de dados: '+this.getDataSourceName()+" Método: replace");
         }
 
         let index = -1;
@@ -923,13 +927,13 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
     appendFirst(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: appendFirst");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: appendFirst");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Não é possível utilizar o método appendFirst com um filtro aplicado');
+            throw new AnterosDatasourceError('Não é possível utilizar o método appendFirst com um filtro aplicado. Fonte de dados: '+this.getDataSourceName()+" Método: appendFirst");
         }
 
         if (!this.data) {
@@ -950,13 +954,13 @@ class AnterosLocalDatasource extends AnterosDatasource {
 
     appendAtIndex(record, index) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: appendAtIndex");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: appendAtIndex");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Não é possível utilizar o método appendAtIndex com um filtro aplicado');
+            throw new AnterosDatasourceError('Não é possível utilizar o método appendAtIndex com um filtro aplicado. Fonte de dados: '+this.getDataSourceName()+" Método: appendAtIndex");
         }
 
         if (!this.data) {
@@ -1067,10 +1071,10 @@ class AnterosRemoteDatasource extends AnterosDatasource {
 
     append(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: append");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: append");
         }
 
         if (!this.data) {
@@ -1093,13 +1097,13 @@ class AnterosRemoteDatasource extends AnterosDatasource {
 
     replace(record) {
         if (this.getState() == dataSourceConstants.DS_EDIT) {
-            throw new AnterosDatasourceError('Registro já está sendo editado.');
+            throw new AnterosDatasourceError('Registro já está sendo editado. Fonte de dados: '+this.getDataSourceName()+" Método: replace");
         }
         if (this.getState() == dataSourceConstants.DS_INSERT) {
-            throw new AnterosDatasourceError('Registro já está sendo inserido.');
+            throw new AnterosDatasourceError('Registro já está sendo inserido. Fonte de dados: '+this.getDataSourceName()+" Método: replace");
         }
         if (!this.data) {
-            throw new AnterosDatasourceError('Fonte de dados vazia não é possível fazer um replace no registro.');
+            throw new AnterosDatasourceError('Fonte de dados vazia não é possível fazer um replace no registro. Fonte de dados: '+this.getDataSourceName()+" Método: replace");
         }
 
         let index = -1;
@@ -1124,7 +1128,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (!this.ajaxPostConfigHandler || !this.validatePostResponse) {
             let error = "Para salvar dados remotamente é necessário configurar 'setAjaxPostConfigHandler' e 'setValidatePostResponse' ";
             this.dispatchEvent(dataSourceEvents.ON_ERROR, error);
-            throw new AnterosDatasourceError(error);
+            throw new AnterosDatasourceError(error+' Fonte de dados: '+this.getDataSourceName()+" Método: post");
         }
         let _this = this;
         this._validatePost();
@@ -1172,7 +1176,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (!this.ajaxDeleteConfigHandler || !this.validateDeleteResponse) {
             let error = "Para remover dados remotamente é necessário configurar 'setAjaxDeleteConfigHandler' e 'setValidateDeleteResponse' ";
             this.dispatchEvent(dataSourceEvents.ON_ERROR, error);
-            throw new AnterosDatasourceError(error);
+            throw new AnterosDatasourceError(error+' Fonte de dados: '+this.getDataSourceName()+" Método: delete");
         }
         let _this = this;
         this._validateDelete();
@@ -1216,7 +1220,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (!this.ajaxPageConfigHandler) {
             let error = "Para buscar dados paginados remotamente é necessário configurar 'setAjaxPageConfigHandler'";
             this.dispatchEvent(dataSourceEvents.ON_ERROR, error);
-            throw new AnterosDatasourceError(error);
+            throw new AnterosDatasourceError(error+' Fonte de dados: '+this.getDataSourceName()+" Método: goToPage");
         }
         this.dispatchEvent(dataSourceEvents.BEFORE_GOTO_PAGE);
         let ajaxPageConfig = this.ajaxPageConfigHandler(page);
@@ -1227,7 +1231,7 @@ class AnterosRemoteDatasource extends AnterosDatasource {
         if (!this.ajaxPageConfigHandler) {
             let error = "Para buscar dados paginados remotamente é necessário configurar 'setAjaxPageConfigHandler'";
             this.dispatchEvent(dataSourceEvents.ON_ERROR, error);
-            throw new AnterosDatasourceError(error);
+            throw new AnterosDatasourceError(error+' Fonte de dados: '+this.getDataSourceName()+" Método: goNextPage");
         }
         this.dispatchEvent(dataSourceEvents.BEFORE_GOTO_PAGE);
         let ajaxPageConfig = this.ajaxPageConfigHandler(this.currentPage + 1);

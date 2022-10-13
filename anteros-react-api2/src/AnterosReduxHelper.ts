@@ -79,6 +79,7 @@ export function createReducer(_initialState, _reducer) {
 export const initialState = {
   currentFilter: undefined,
   dataSource: undefined,
+  dataSourceEdition: undefined,
   activeFilterIndex: -1,
   needRefresh: false,
   needUpdateView: false,
@@ -96,7 +97,7 @@ export function makeDefaultReduxObject(_reducerName) {
       payload
     ) => ({
       ...state,
-      dataSource: payload.dataSource,
+      dataSourceEdition: payload.dataSource,
       needRefresh: false,
     }),
     [`SET_FILTER_${_reducerName.toUpperCase()}`]: (state, payload) => ({

@@ -218,7 +218,7 @@ class AnterosFormModalTemplate extends react_1.Component {
     }
     createMainDataSource() {
         if (this.props.remoteResource) {
-            this._dataSource = new anteros_react_datasource_1.AnterosRemoteDatasource();
+            this._dataSource = new anteros_react_datasource_1.AnterosRemoteDatasource('ds' + this.props.viewName);
             this._dataSource.setAjaxPostConfigHandler((entity) => {
                 return this.props.remoteResource.actions.post(entity);
             });
@@ -506,7 +506,6 @@ class AnterosFormTemplate extends react_1.Component {
         }
     }
     onButtonClick(_event, button) {
-        let _this = this;
         if (button.props.id === "btnClose") {
             if (this.props.onBeforeClose) {
                 if (!this.props.onBeforeClose()) {
@@ -542,12 +541,12 @@ class AnterosFormTemplate extends react_1.Component {
                 focusCancel: false,
             })
                 .then(() => {
-                this.setState(Object.assign(Object.assign({}, _this.state), { saving: true }));
+                this.setState(Object.assign(Object.assign({}, this.state), { saving: true }));
                 this.props.dataSource.post((error) => {
                     if (error) {
-                        var result = _this.convertMessage((0, anteros_react_core_1.processErrorMessage)(error));
+                        var result = this.convertMessage((0, anteros_react_core_1.processErrorMessage)(error));
                         var debugMessage = (0, anteros_react_core_1.processDetailErrorMessage)(error);
-                        this.setState(Object.assign(Object.assign({}, _this.state), { alertIsOpen: true, alertMessage: result, debugMessage: debugMessage === "" ? undefined : debugMessage, saving: false }));
+                        this.setState(Object.assign(Object.assign({}, this.state), { alertIsOpen: true, alertMessage: result, debugMessage: debugMessage === "" ? undefined : debugMessage, saving: false }));
                     }
                     else {
                         if (this.props.onAfterSave) {
@@ -555,7 +554,7 @@ class AnterosFormTemplate extends react_1.Component {
                                 return;
                             }
                         }
-                        this.setState(Object.assign(Object.assign({}, _this.state), { alertIsOpen: false, alertMessage: "", saving: false }));
+                        this.setState(Object.assign(Object.assign({}, this.state), { alertIsOpen: false, alertMessage: "", saving: false }));
                         if (this.props.forceRefresh && this.props.setNeedRefresh) {
                             this.props.setNeedRefresh();
                         }
@@ -662,7 +661,7 @@ class AnterosFormTemplate extends react_1.Component {
                 }, tag: "div", blocking: this.state.loading || this.state.saving, message: messageLoading, loader: customLoader ? (customLoader) : (react_1.default.createElement(react_loader_spinner_1.TailSpin, { width: "40px", height: "40px", ariaLabel: "loading-indicator", color: "#f2d335" })) },
                 react_1.default.createElement(anteros_react_containers_1.AnterosForm, { id: this.props.formName },
                     this.props.children,
-                    react_1.default.createElement(SaveCancelButtons, { readOnly: this.props.dataSource.getState() === "dsBrowse", onButtonClick: this.onButtonClick, routeSave: this.props.saveRoute, routeCancel: this.props.cancelRoute })))));
+                    this.props.saveRoute ? react_1.default.createElement(SaveCancelButtons, { readOnly: this.props.dataSource.getState() === "dsBrowse", onButtonClick: this.onButtonClick, routeSave: this.props.saveRoute, routeCancel: this.props.cancelRoute }) : null))));
     }
 }
 exports.AnterosFormTemplate = AnterosFormTemplate;
@@ -1663,6 +1662,7 @@ var PositionUserActions;
 class AnterosSearchTemplate extends react_1.Component {
     constructor(props) {
         super(props);
+        this.selectedRecords = [];
         (0, anteros_react_core_1.autoBind)(this);
         this._dataSourceFilter = this.createDataSourceFilter(props);
         if (props.onCustomCreateDatasource) {
@@ -1707,7 +1707,7 @@ class AnterosSearchTemplate extends react_1.Component {
             }
         }
         else {
-            this._dataSource = new anteros_react_datasource_1.AnterosRemoteDatasource();
+            this._dataSource = new anteros_react_datasource_1.AnterosRemoteDatasource('ds' + this.props.viewName);
             this._dataSource.setAjaxPostConfigHandler((entity) => {
                 return this.props.remoteResource.save(entity);
             });
@@ -1873,22 +1873,49 @@ class AnterosSearchTemplate extends react_1.Component {
     onShowHideLoad(show) {
         this.setState(Object.assign(Object.assign({}, this.state), { loading: show, update: Math.random() }));
     }
+    onSelectRecord(row, data, tableId) {
+        let sr = this.selectedRecords;
+        if (sr === undefined)
+            sr = [];
+        sr.push(data);
+        this.selectedRecords = sr;
+    }
+    onUnSelectRecord(row, data, tableId) {
+        for (var i = 0; i < this.selectedRecords.length; i++) {
+            if (this.selectedRecords[i] === data) {
+                this.selectedRecords.splice(i, 1);
+            }
+        }
+    }
+    onSelectAllRecords(records, tableId) {
+        this.selectedRecords = [];
+        records.forEach((element) => {
+            this.selectedRecords.push(element);
+        });
+    }
+    onUnSelectAllRecords(tableId) {
+        this.selectedRecords = [];
+    }
     handleOnSelectRecord(row, data, tableId) {
+        this.onSelectRecord(row, data, tableId);
         if (this.props.onSelectRecord) {
             this.props.onSelectRecord(row, data, tableId);
         }
     }
     handleOnUnselectRecord(row, data, tableId) {
+        this.onUnSelectRecord(row, data, tableId);
         if (this.props.onUnselectRecord) {
             this.props.onUnselectRecord(row, data, tableId);
         }
     }
     handleOnSelectAllRecords(records, tableId) {
+        this.onSelectAllRecords(records, tableId);
         if (this.props.onSelectAllRecords) {
             this.props.onSelectAllRecords(records, tableId);
         }
     }
     handleOnUnselectAllRecords(tableId) {
+        this.onUnSelectAllRecords(tableId);
         if (this.props.onUnselectAllRecords) {
             this.props.onUnselectAllRecords(tableId);
         }
@@ -1907,12 +1934,12 @@ class AnterosSearchTemplate extends react_1.Component {
                 this.setState(Object.assign(Object.assign({}, this.state), { alertIsOpen: true, alertMessage: "Selecione um registro para continuar." }));
             }
             else {
-                if (this.props.selectedRecords) {
-                    if (this.props.selectedRecords.length === 0) {
-                        this.props.selectedRecords.push(this._dataSource.getCurrentRecord());
+                if (this.selectedRecords) {
+                    if (this.selectedRecords.length === 0) {
+                        this.selectedRecords.push(this._dataSource.getCurrentRecord());
                     }
                 }
-                this.props.onClickOk(event, this.props.selectedRecords);
+                this.props.onClickOk(event, this.selectedRecords);
             }
         }
         else if (event.target.getAttribute("data-user") === "btnCancel") {
@@ -2105,7 +2132,7 @@ class AnterosTableTemplate extends react_1.Component {
             }
         }
         else {
-            this._dataSource = new anteros_react_datasource_1.AnterosRemoteDatasource();
+            this._dataSource = new anteros_react_datasource_1.AnterosRemoteDatasource('ds' + this.props.viewName);
             this._dataSource.setAjaxPostConfigHandler((entity) => {
                 return this.props.remoteResource.save(entity);
             });
@@ -2124,24 +2151,28 @@ class AnterosTableTemplate extends react_1.Component {
     }
     componentDidMount() {
         setTimeout(() => {
-            if (this.props.openMainDataSource) {
-                if (!this._dataSource.isOpen()) {
-                    this._dataSource.open(this.getData(this.props.currentFilter, 0));
-                }
-                else if (this.props.needRefresh) {
-                    this._dataSource.open(this.getData(this.props.currentFilter, this._dataSource.getCurrentPage()));
-                }
-                if (this._dataSource.getState() !== anteros_react_datasource_1.dataSourceConstants.DS_BROWSE) {
-                    this._dataSource.cancel();
-                }
-            }
+            this.refreshData(this.props);
             if (this.props.onDidMount) {
                 this.props.onDidMount();
             }
         }, 100);
     }
     componentWillReceiveProps(nextProps) {
+        this.refreshData(nextProps);
         this.setState(Object.assign(Object.assign({}, this.state), { alertIsOpen: nextProps.alertIsOpen, alertMessage: nextProps.alertMessage, loading: nextProps.loading }));
+    }
+    refreshData(props) {
+        if (props.openMainDataSource) {
+            if (!this._dataSource.isOpen()) {
+                this._dataSource.open(this.getData(this.props.currentFilter, 0));
+            }
+            else if (props.needRefresh) {
+                this._dataSource.open(this.getData(props.currentFilter, this._dataSource.getCurrentPage()));
+            }
+            if (this._dataSource.getState() !== anteros_react_datasource_1.dataSourceConstants.DS_BROWSE) {
+                this._dataSource.cancel();
+            }
+        }
     }
     componentWillUnmount() {
         if (this._dataSource) {

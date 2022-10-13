@@ -49,7 +49,7 @@ declare abstract class AnterosView<E extends AnterosEntity, TypeID, Props extend
     registerDatasourceEvent(ds: any, event: any, fn: any): void;
     componentWillUnmount(): void;
     getViewHeight(): any;
-    showHideLoad(show: any): void;
+    showHideLoad(show: any, callback: any): void;
     /**
      * Getter controller
      * @return {AnterosController<E,TypeID>}

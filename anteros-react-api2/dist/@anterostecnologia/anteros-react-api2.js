@@ -206,6 +206,7 @@ exports.createReducer = createReducer;
 exports.initialState = {
     currentFilter: undefined,
     dataSource: undefined,
+    dataSourceEdition: undefined,
     activeFilterIndex: -1,
     needRefresh: false,
     needUpdateView: false,
@@ -213,7 +214,7 @@ exports.initialState = {
 function makeDefaultReduxObject(_reducerName) {
     return {
         [`SET_DATASOURCE_${_reducerName.toUpperCase()}`]: (state, payload) => (Object.assign(Object.assign({}, state), { dataSource: payload.dataSource, needRefresh: false })),
-        [`SET_DATASOURCE_EDITION_${_reducerName.toUpperCase()}`]: (state, payload) => (Object.assign(Object.assign({}, state), { dataSource: payload.dataSource, needRefresh: false })),
+        [`SET_DATASOURCE_EDITION_${_reducerName.toUpperCase()}`]: (state, payload) => (Object.assign(Object.assign({}, state), { dataSourceEdition: payload.dataSource, needRefresh: false })),
         [`SET_FILTER_${_reducerName.toUpperCase()}`]: (state, payload) => (Object.assign(Object.assign({}, state), { currentFilter: payload.currentFilter, activeFilterIndex: payload.activeFilterIndex })),
         [`CLEAR_${_reducerName.toUpperCase()}`]: { initialState: exports.initialState },
         [`SET_${_reducerName.toUpperCase()}_NEEDREFRESH`]: (state, payload) => (Object.assign(Object.assign({}, state), { needRefresh: true })),

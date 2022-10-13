@@ -1,6 +1,6 @@
 {
     "name": "@anterostecnologia/anteros-react-template2",
-    "version": "1.0.21",
+    "version": "1.0.26",
     "description": "Anteros components for React - Template2 Typescript",
     "main": "dist/@anterostecnologia/anteros-react-template2",
     "module": "dist/esm/index.js",

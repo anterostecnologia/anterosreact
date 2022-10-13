@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-misc",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "description": "Anteros components for React - Misc",
   "main": "lib/@anterostecnologia/anteros-react-misc.js",
   "scripts": {

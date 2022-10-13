@@ -17,6 +17,7 @@ import {
 } from "@anterostecnologia/anteros-react-core";
 import { AnterosBlockUi } from "@anterostecnologia/anteros-react-loaders";
 import { TailSpin } from "react-loader-spinner";
+import shallowCompare from "react-addons-shallow-compare";
 
 export const ADD = "add";
 export const EDIT = "edit";
@@ -70,6 +71,7 @@ abstract class AnterosView<
     super(props);
     this._controller = props.controller;
     this._datasourceEvents = [];
+    this.state = {loading : props.loading};
   }
 
   public abstract getRouteName(): string;
@@ -84,6 +86,14 @@ abstract class AnterosView<
     this._datasourceEvents.push({ ds, event, fn });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
+  componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+    this.setState({...this.state, loading: nextProps.loading});
+  }
+
   componentWillUnmount() {
     this._datasourceEvents.map((record) => {
       record.ds.removeEventListener(record.event, record.fn);
@@ -95,12 +105,12 @@ abstract class AnterosView<
     return "calc(100% - 100px)";
   }
 
-  showHideLoad(show) {
+  showHideLoad(show, callback) {
     this.setState({
       ...this.state,
       loading: show,
       update: Math.random(),
-    });
+    }, callback);
   }
 
   /**
@@ -170,7 +180,7 @@ abstract class AnterosView<
             backgroundColor: "black",
           }}
           tag="div"
-          blocking={this.props.loading}
+          blocking={this.state.loading}
           message={this.props.loadingMessage}
           loader={
             <TailSpin

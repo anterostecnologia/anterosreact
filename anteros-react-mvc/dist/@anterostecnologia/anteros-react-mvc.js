@@ -238,8 +238,8 @@ let AnterosView = class AnterosView extends react_1.Component {
     getViewHeight() {
         return "calc(100% - 100px)";
     }
-    showHideLoad(show) {
-        this.setState(Object.assign(Object.assign({}, this.state), { loading: show, update: Math.random() }));
+    showHideLoad(show, callback) {
+        this.setState(Object.assign(Object.assign({}, this.state), { loading: show, update: Math.random() }), callback);
     }
     /**
      * Getter controller

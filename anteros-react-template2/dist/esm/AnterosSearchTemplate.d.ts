@@ -72,6 +72,7 @@ declare class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Com
     private _cardRef;
     private _tableRef;
     private _filterRef;
+    private selectedRecords;
     static defaultProps: {
         openDataSourceFilter: boolean;
         openMainDataSource: boolean;
@@ -108,6 +109,10 @@ declare class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Com
     pageConfigHandler(page: any): any;
     onCloseAlert(): void;
     onShowHideLoad(show: any): void;
+    onSelectRecord(row: any, data: any, tableId: any): void;
+    onUnSelectRecord(row: any, data: any, tableId: any): void;
+    onSelectAllRecords(records: any, tableId: any): void;
+    onUnSelectAllRecords(tableId: any): void;
     handleOnSelectRecord(row: any, data: any, tableId: any): void;
     handleOnUnselectRecord(row: any, data: any, tableId: any): void;
     handleOnSelectAllRecords(records: any, tableId: any): void;

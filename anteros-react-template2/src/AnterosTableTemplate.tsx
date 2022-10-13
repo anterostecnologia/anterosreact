@@ -221,7 +221,7 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
         this._dataSource.cancel();
       }
     } else {
-      this._dataSource = new AnterosRemoteDatasource();
+      this._dataSource = new AnterosRemoteDatasource('ds'+this.props.viewName);
       this._dataSource.setAjaxPostConfigHandler((entity: T) => {
         return this.props.remoteResource!.save(entity);
       });
@@ -245,21 +245,7 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
 
   componentDidMount() {
     setTimeout(() => {
-      if (this.props.openMainDataSource) {
-        if (!this._dataSource.isOpen()) {
-          this._dataSource.open(this.getData(this.props.currentFilter, 0));
-        } else if (this.props.needRefresh) {
-          this._dataSource.open(
-            this.getData(
-              this.props.currentFilter,
-              this._dataSource.getCurrentPage()
-            )
-          );
-        }
-        if (this._dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-          this._dataSource.cancel();
-        }
-      }
+      this.refreshData(this.props);
 
       if (this.props.onDidMount) {
         this.props.onDidMount();
@@ -268,12 +254,31 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
   }
 
   componentWillReceiveProps(nextProps) {
+    this.refreshData(nextProps);
     this.setState({
       ...this.state,
       alertIsOpen: nextProps.alertIsOpen,
       alertMessage: nextProps.alertMessage,
       loading: nextProps.loading,
     });
+  }
+
+  refreshData(props){
+    if (props.openMainDataSource) {
+      if (!this._dataSource.isOpen()) {
+        this._dataSource.open(this.getData(this.props.currentFilter, 0));
+      } else if (props.needRefresh) {
+        this._dataSource.open(
+          this.getData(
+            props.currentFilter,
+            this._dataSource.getCurrentPage()
+          )
+        );
+      }
+      if (this._dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+        this._dataSource.cancel();
+      }
+    }
   }
 
   componentWillUnmount() {

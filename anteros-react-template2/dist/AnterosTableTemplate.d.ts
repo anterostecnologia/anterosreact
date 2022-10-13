@@ -105,6 +105,7 @@ declare class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Comp
     createMainDataSource(): void;
     componentDidMount(): void;
     componentWillReceiveProps(nextProps: any): void;
+    refreshData(props: any): void;
     componentWillUnmount(): void;
     shouldComponentUpdate(nextProps: any, nextState: any): any;
     onFilterChanged(filter: any, activeFilterIndex: any, callback?: any): void;

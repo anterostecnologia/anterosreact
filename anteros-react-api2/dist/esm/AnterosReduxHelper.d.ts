@@ -54,6 +54,7 @@ export declare function createReducer(_initialState: any, _reducer: any): (state
 export declare const initialState: {
     currentFilter: undefined;
     dataSource: undefined;
+    dataSourceEdition: undefined;
     activeFilterIndex: number;
     needRefresh: boolean;
     needUpdateView: boolean;
@@ -63,6 +64,7 @@ export declare function makeDefaultReduxObject(_reducerName: any): {
         initialState: {
             currentFilter: undefined;
             dataSource: undefined;
+            dataSourceEdition: undefined;
             activeFilterIndex: number;
             needRefresh: boolean;
             needUpdateView: boolean;

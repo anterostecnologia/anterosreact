@@ -172,25 +172,31 @@ class AnterosResponsiveTabs extends Component {
       let result = [];
       let arrChildren = React.Children.toArray(this.props.children);
       arrChildren.forEach(function (child, index) {
-        if (child.type.componentName === "AnterosSecurityRoute"){
-          result.push(child);
-        } else if (child.type && child.type.componentName === "AnterosResponsiveTab") {
-          if (child.props.visible === true) {
+        let _child = child;
+        if (child.children && child.children.length>0) {
+          if (child.children[0].type && child.children[0].type.componentName === "AnterosResponsiveTab"){
+            _child = child.children[0];
+          }
+        }
+        if (_child.type.componentName === "AnterosSecurityRoute"){
+          result.push(_child);
+        } else if (_child.type && _child.type.componentName === "AnterosResponsiveTab") {
+          if (_child.props.visible === true) {
             result.push({
-              title: child.props.title,
-              caption: child.props.caption,
-              key: child.props.id,
-              id: child.props.id,
-              content: child.props.children,
-              disabled: child.props.disabled,
-              tabClassName: child.props.tabClassName,
-              panelClassName: child.props.panelClassName,
-              icon: child.props.icon,
-              image: child.props.image,
-              imageCircle: child.props.imageCircle,
-              imageHeight: child.props.imageHeight,
-              imageWidth: child.props.imageWidth,
-              visible: child.props.visible,
+              title: _child.props.title,
+              caption: _child.props.caption,
+              key: _child.props.id,
+              id: _child.props.id,
+              content: _child.props.children,
+              disabled: _child.props.disabled,
+              tabClassName: _child.props.tabClassName,
+              panelClassName: _child.props.panelClassName,
+              icon: _child.props.icon,
+              image: _child.props.image,
+              imageCircle: _child.props.imageCircle,
+              imageHeight: _child.props.imageHeight,
+              imageWidth: _child.props.imageWidth,
+              visible: _child.props.visible,
             });
           }
         }

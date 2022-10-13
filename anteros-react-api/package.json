@@ -40,7 +40,6 @@
     "eslint-config": "^0.3.0",
     "eslint-config-rallycoding": "^3.2.0",
     "eslint-plugin-react": "^6.10.3",
-    "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
     "form-data": "^4.0.0",
     "formdata-polyfill": "^4.0.8",

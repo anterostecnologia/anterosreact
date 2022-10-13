@@ -106,7 +106,6 @@ class AnterosFormTemplate extends Component<
   }
 
   public onButtonClick(_event, button): void {
-    let _this = this;
     if (button.props.id === "btnClose") {
       if (this.props.onBeforeClose) {
         if (!this.props.onBeforeClose()) {
@@ -142,15 +141,15 @@ class AnterosFormTemplate extends Component<
       })
         .then(() => {
           this.setState({
-            ..._this.state,
+            ...this.state,
             saving: true,
           });
           this.props.dataSource.post((error) => {
             if (error) {
-              var result = _this.convertMessage(processErrorMessage(error));
+              var result = this.convertMessage(processErrorMessage(error));
               var debugMessage = processDetailErrorMessage(error);
               this.setState({
-                ..._this.state,
+                ...this.state,
                 alertIsOpen: true,
                 alertMessage: result,
                 debugMessage: debugMessage === "" ? undefined : debugMessage,
@@ -163,7 +162,7 @@ class AnterosFormTemplate extends Component<
                 }
               }
               this.setState({
-                ..._this.state,
+                ...this.state,
                 alertIsOpen: false,
                 alertMessage: "",
                 saving: false,
@@ -333,12 +332,12 @@ class AnterosFormTemplate extends Component<
         >
           <AnterosForm id={this.props.formName}>
             {this.props.children}
-            <SaveCancelButtons
+            {this.props.saveRoute?<SaveCancelButtons
               readOnly={this.props.dataSource.getState() === "dsBrowse"}
               onButtonClick={this.onButtonClick}
               routeSave={this.props.saveRoute}
               routeCancel={this.props.cancelRoute}
-            />
+            />:null}
           </AnterosForm>
         </AnterosBlockUi>
       </>
