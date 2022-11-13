@@ -114,7 +114,7 @@ export class AnterosFormModalTemplate<
 
   createMainDataSource() {
     if (this.props.remoteResource) {
-      this._dataSource = new AnterosRemoteDatasource('ds'+this.props.viewName);
+      this._dataSource = new AnterosRemoteDatasource({},'ds'+this.props.viewName);
       this._dataSource.setAjaxPostConfigHandler((entity) => {
         return this.props.remoteResource!.actions.post(entity);
       });

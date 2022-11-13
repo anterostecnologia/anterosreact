@@ -1,6 +1,6 @@
 {
     "name": "@anterostecnologia/anteros-react-mvc",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "description": "Anteros React MVC - Typescript",
     "main": "dist/@anterostecnologia/anteros-react-mvc",
     "module": "dist/esm/index.js",
@@ -40,6 +40,7 @@
         "cross-env": "^7.0.3",
         "qs": "^6.11.0",
         "react": "^16.14.0",
+        "react-addons-shallow-compare": "^15.6.3",
         "react-dom": "^16.14.0",
         "react-loader-spinner": "^5.1.7-beta.1",
         "react-redux": "^8.0.2",

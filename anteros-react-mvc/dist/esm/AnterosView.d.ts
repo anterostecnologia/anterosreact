@@ -47,6 +47,8 @@ declare abstract class AnterosView<E extends AnterosEntity, TypeID, Props extend
     abstract onCloseView(): void;
     abstract isCloseViewEnabled(): boolean;
     registerDatasourceEvent(ds: any, event: any, fn: any): void;
+    shouldComponentUpdate(nextProps: any, nextState: any): any;
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void;
     componentWillUnmount(): void;
     getViewHeight(): any;
     showHideLoad(show: any, callback: any): void;

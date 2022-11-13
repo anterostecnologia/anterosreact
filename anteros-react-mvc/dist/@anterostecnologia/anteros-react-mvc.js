@@ -205,6 +205,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.makeDefaultReduxPropsView = exports.AnterosView = exports.SEARCH = exports.VIEW = exports.EDIT = exports.ADD = void 0;
 //@ts-nocheck
@@ -215,6 +218,7 @@ const anteros_react_buttons_1 = __webpack_require__(/*! @anterostecnologia/anter
 const anteros_react_core_1 = __webpack_require__(/*! @anterostecnologia/anteros-react-core */ "@anterostecnologia/anteros-react-core");
 const anteros_react_loaders_1 = __webpack_require__(/*! @anterostecnologia/anteros-react-loaders */ "@anterostecnologia/anteros-react-loaders");
 const react_loader_spinner_1 = __webpack_require__(/*! react-loader-spinner */ "react-loader-spinner");
+const react_addons_shallow_compare_1 = __importDefault(__webpack_require__(/*! react-addons-shallow-compare */ "react-addons-shallow-compare"));
 exports.ADD = "add";
 exports.EDIT = "edit";
 exports.VIEW = "view";
@@ -224,10 +228,17 @@ let AnterosView = class AnterosView extends react_1.Component {
         super(props);
         this._controller = props.controller;
         this._datasourceEvents = [];
+        this.state = { loading: props.loading };
     }
     registerDatasourceEvent(ds, event, fn) {
         ds.addEventListener(event, fn);
         this._datasourceEvents.push({ ds, event, fn });
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        return (0, react_addons_shallow_compare_1.default)(this, nextProps, nextState);
+    }
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.setState(Object.assign(Object.assign({}, this.state), { loading: nextProps.loading }));
     }
     componentWillUnmount() {
         this._datasourceEvents.map((record) => {
@@ -280,7 +291,7 @@ let AnterosView = class AnterosView extends react_1.Component {
                 }, styleOverlay: {
                     opacity: 0.1,
                     backgroundColor: "black",
-                }, tag: "div", blocking: this.props.loading, message: this.props.loadingMessage, loader: react_1.default.createElement(react_loader_spinner_1.TailSpin, { width: "40px", height: "40px", ariaLabel: "loading-indicator", color: this.props.loadingColor }) },
+                }, tag: "div", blocking: this.state.loading, message: this.props.loadingMessage, loader: react_1.default.createElement(react_loader_spinner_1.TailSpin, { width: "40px", height: "40px", ariaLabel: "loading-indicator", color: this.props.loadingColor }) },
                 react_1.default.createElement(react_router_dom_1.Switch, null,
                     react_1.default.createElement(react_router_dom_1.Route, { exact: true, path: [`${routeName}`, `${routeName}/${exports.SEARCH}`], render: (props) => {
                             return this.getComponentSearch(props);
@@ -415,6 +426,16 @@ module.exports = require("@anterostecnologia/anteros-react-template2");
 /***/ ((module) => {
 
 module.exports = require("react");
+
+/***/ }),
+
+/***/ "react-addons-shallow-compare":
+/*!***********************************************!*\
+  !*** external "react-addons-shallow-compare" ***!
+  \***********************************************/
+/***/ ((module) => {
+
+module.exports = require("react-addons-shallow-compare");
 
 /***/ }),
 

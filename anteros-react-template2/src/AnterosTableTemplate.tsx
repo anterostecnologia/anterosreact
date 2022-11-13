@@ -221,7 +221,7 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
         this._dataSource.cancel();
       }
     } else {
-      this._dataSource = new AnterosRemoteDatasource('ds'+this.props.viewName);
+      this._dataSource = new AnterosRemoteDatasource({},'ds'+this.props.viewName);
       this._dataSource.setAjaxPostConfigHandler((entity: T) => {
         return this.props.remoteResource!.save(entity);
       });
@@ -265,19 +265,27 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
 
   refreshData(props){
     if (props.openMainDataSource) {
-      if (!this._dataSource.isOpen()) {
-        this._dataSource.open(this.getData(this.props.currentFilter, 0));
-      } else if (props.needRefresh) {
-        this._dataSource.open(
-          this.getData(
-            props.currentFilter,
-            this._dataSource.getCurrentPage()
-          )
-        );
-      }
-      if (this._dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
-        this._dataSource.cancel();
-      }
+      this.onShowHideLoad(true,()=>{
+        if (!this._dataSource.isOpen()) {
+          this._dataSource.open(this.getData(this.props.currentFilter, 0),()=>{
+            this.onShowHideLoad(false,()=>{});
+          });
+        } else if (props.needRefresh) {
+          this._dataSource.open(
+            this.getData(
+              props.currentFilter,
+              this._dataSource.getCurrentPage()
+            ),()=>{
+              this.onShowHideLoad(false,()=>{});
+            }
+          );
+        } else {
+          this.onShowHideLoad(false,()=>{});
+        }
+        if (this._dataSource.getState() !== dataSourceConstants.DS_BROWSE) {
+          this._dataSource.cancel();
+        }
+      });
     }
   }
 
@@ -459,9 +467,10 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
   }
 
   onSearchByFilter() {
-    this.onShowHideLoad(true);
-    this._dataSource.open(this.getData(this.props.currentFilter, 0), () => {
-      this.onShowHideLoad(false);
+    this.onShowHideLoad(true,()=>{
+      this._dataSource.open(this.getData(this.props.currentFilter, 0), () => {
+        this.onShowHideLoad(false,()=>{});
+      });
     });
   }
 
@@ -580,12 +589,12 @@ class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Component<
     });
   }
 
-  onShowHideLoad(show) {
+  onShowHideLoad(show, callback) {
     this.setState({
       ...this.state,
       loading: show,
       update: Math.random(),
-    });
+    },callback);
   }
 
   handleOnSelectRecord(row, data, tableId) {

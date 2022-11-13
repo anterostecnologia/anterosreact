@@ -2163,15 +2163,24 @@ class AnterosTableTemplate extends react_1.Component {
     }
     refreshData(props) {
         if (props.openMainDataSource) {
-            if (!this._dataSource.isOpen()) {
-                this._dataSource.open(this.getData(this.props.currentFilter, 0));
-            }
-            else if (props.needRefresh) {
-                this._dataSource.open(this.getData(props.currentFilter, this._dataSource.getCurrentPage()));
-            }
-            if (this._dataSource.getState() !== anteros_react_datasource_1.dataSourceConstants.DS_BROWSE) {
-                this._dataSource.cancel();
-            }
+            this.onShowHideLoad(true, () => {
+                if (!this._dataSource.isOpen()) {
+                    this._dataSource.open(this.getData(this.props.currentFilter, 0), () => {
+                        this.onShowHideLoad(false, () => { });
+                    });
+                }
+                else if (props.needRefresh) {
+                    this._dataSource.open(this.getData(props.currentFilter, this._dataSource.getCurrentPage()), () => {
+                        this.onShowHideLoad(false, () => { });
+                    });
+                }
+                else {
+                    this.onShowHideLoad(false, () => { });
+                }
+                if (this._dataSource.getState() !== anteros_react_datasource_1.dataSourceConstants.DS_BROWSE) {
+                    this._dataSource.cancel();
+                }
+            });
         }
     }
     componentWillUnmount() {
@@ -2307,9 +2316,10 @@ class AnterosTableTemplate extends react_1.Component {
         }
     }
     onSearchByFilter() {
-        this.onShowHideLoad(true);
-        this._dataSource.open(this.getData(this.props.currentFilter, 0), () => {
-            this.onShowHideLoad(false);
+        this.onShowHideLoad(true, () => {
+            this._dataSource.open(this.getData(this.props.currentFilter, 0), () => {
+                this.onShowHideLoad(false, () => { });
+            });
         });
     }
     getData(currentFilter, page) {
@@ -2377,8 +2387,8 @@ class AnterosTableTemplate extends react_1.Component {
     onCloseAlert() {
         this.setState(Object.assign(Object.assign({}, this.state), { alertIsOpen: false, update: Math.random(), alertMessage: "" }));
     }
-    onShowHideLoad(show) {
-        this.setState(Object.assign(Object.assign({}, this.state), { loading: show, update: Math.random() }));
+    onShowHideLoad(show, callback) {
+        this.setState(Object.assign(Object.assign({}, this.state), { loading: show, update: Math.random() }), callback);
     }
     handleOnSelectRecord(row, data, tableId) {
         if (this.props.onSelectRecord) {

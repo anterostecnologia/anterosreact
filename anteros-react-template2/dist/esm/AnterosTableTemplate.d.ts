@@ -124,7 +124,7 @@ declare class AnterosTableTemplate<T extends AnterosEntity, TypeID> extends Comp
     onDoubleClickTable(data: any): void;
     pageConfigHandler(page: any): any;
     onCloseAlert(): void;
-    onShowHideLoad(show: any): void;
+    onShowHideLoad(show: any, callback: any): void;
     handleOnSelectRecord(row: any, data: any, tableId: any): void;
     handleOnUnselectRecord(row: any, data: any, tableId: any): void;
     handleOnSelectAllRecords(records: any, tableId: any): void;

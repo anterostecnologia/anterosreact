@@ -213,7 +213,7 @@ class AnterosSearchTemplate<T extends AnterosEntity, TypeID> extends Component<
         this._dataSource.cancel();
       }
     } else {
-      this._dataSource = new AnterosRemoteDatasource('ds'+this.props.viewName);
+      this._dataSource = new AnterosRemoteDatasource({}, 'ds'+this.props.viewName);
       this._dataSource.setAjaxPostConfigHandler((entity: T) => {
         return this.props.remoteResource!.save(entity);
       });
