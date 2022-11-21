@@ -1,6 +1,6 @@
 {
   "name": "@anterostecnologia/anteros-react-admin",
-  "version": "2.0.40",
+  "version": "2.0.41",
   "description": "Anteros components for React - Admin menu",
   "main": "lib/@anterostecnologia/anteros-react-admin.js",
   "scripts": {

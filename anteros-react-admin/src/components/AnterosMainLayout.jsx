@@ -73,7 +73,7 @@ export default class AnterosMainLayout extends Component {
           position: 'relative',
           overflow: 'hidden',
           width: '100%',
-          height: 'calc(100vh + -60px)'
+          height: 'calc(100vh + -70px)'
         }}
       >
         <div className="app-page-content">

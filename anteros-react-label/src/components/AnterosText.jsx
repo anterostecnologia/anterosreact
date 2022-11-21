@@ -112,7 +112,7 @@ export default class AnterosText extends Component {
     } else if (maskPattern == "cep") {
       mask = "99999-999";
     } else if (maskPattern == "fone") {
-      mask = "(99) 99999-9999";
+      mask = newText && newText.startsWith("+")?"+99 (99) 99999-9999":"(99) 99999-9999";
     } else if (maskPattern == "currency") {
       newText = AnterosUtils.formatNumber(text, "###.###.##0,00");
       if (currencyPrefix) {
