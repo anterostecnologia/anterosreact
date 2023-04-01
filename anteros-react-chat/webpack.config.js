@@ -19,12 +19,12 @@ if (env === 'build') {
 
 const config = {
   mode: mode,
-  entry: __dirname + '/src/index.jsx',
+  entry: __dirname + '/src/index.ts',
   devtool: 'source-map',
   target: 'node', // in order to ignore built-in modules like path, fs, etc.
   externals: [nodeExternals()],
   output: {
-    path: __dirname + '/lib',
+    path: __dirname + '/dist',
     filename: outputFile,
     library: libraryName,
     libraryTarget: 'umd',
@@ -42,6 +42,11 @@ const config = {
         use: ['babel-loader']
       },
       {
+        test: [/\.ts$/, /\.tsx$/],
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(css|scss)$/,
         use: [
           "style-loader", // creates style nodes from JS strings
@@ -51,19 +56,15 @@ const config = {
       },
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        loaders: ['file-loader']
+        loader: 'file-loader'
       }
-      // {
-      //   test: /(\.jsx|\.js)$/,
-      //   loader: 'eslint-loader',
-      //   exclude: /node_modules/
-      // }
     ]
   },
   resolve: {
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
-    extensions: ['.json', '.js','.jsx']
+    extensions: ['.json', '.js','.jsx','.tsx', '.ts', '.js']
   }
 };
 
 module.exports = config;
+
